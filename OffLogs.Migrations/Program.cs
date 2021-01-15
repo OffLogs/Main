@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OffLogs.Migration
+namespace OffLogs.Migrations
 {
     class Program
     {
