@@ -18,5 +18,5 @@ COPY . ./
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.5.0/wait /wait
 RUN chmod +x /wait
 
-#ENV ConnectionStrings__DefaultConnection: 'Data Source=database;Initial Catalog=master;PersistSecurityInfo=True;User ID=sa;Password=P@ssW0rd!'
-CMD /wait && dotnet test --logger trx --results-directory /var/temp OffLogs.Api.Tests.Integration/OffLogs.Api.Tests.Integration.csproj
+ENV ConnectionStrings__DefaultConnection: 'Data Source=database;Initial Catalog=master;PersistSecurityInfo=True;User ID=sa;Password=P@ssW0rd!'
+#CMD /wait && dotnet test --logger trx --results-directory /var/temp OffLogs.Api.Tests.Integration/

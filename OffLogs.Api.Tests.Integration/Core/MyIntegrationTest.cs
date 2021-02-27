@@ -20,8 +20,7 @@ namespace Vizit.Api.Mobile.Tests.Integration.Core
         public MyIntegrationTest(CustomWebApplicationFactory factory)
         {
             _factory = factory;
-            var configuration = _factory.Services.GetService(typeof(IConfiguration)) as IConfiguration;
-            jwtService = _factory.Services.GetService(typeof(IJwtService)) as IJwtService;
+            // jwtService = _factory.Services.GetService(typeof(IJwtService)) as IJwtService;
             Dao = _factory.Services.GetService(typeof(ICommonDao)) as ICommonDao;
         }
 
