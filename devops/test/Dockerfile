@@ -1,7 +1,4 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
-
-COPY . /app
-RUN ls /app
 WORKDIR /app
 
 ENV ASPNETCORE_ENVIRONMENT=Development
@@ -22,5 +19,4 @@ ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.5.0/wait
 RUN chmod +x /wait
 
 ENV ConnectionStrings__DefaultConnection: 'Data Source=database;Initial Catalog=master;PersistSecurityInfo=True;User ID=sa;Password=P@ssW0rd!'
-CMD /wait
-CMD dotnet test --logger trx --results-directory /var/temp OffLogs.Api.Tests.Integration/OffLogs.Api.Tests.Integration.csproj
+CMD /wait && dotnet test --logger trx --results-directory /var/temp OffLogs.Api.Tests.Integration/OffLogs.Api.Tests.Integration.csproj
