@@ -9,7 +9,9 @@ services:
       WAIT_HOSTS: database:1433
     volumes:
       - /opt/vsts/work/_temp:/var/temp
-
+    depends_on:
+      - database
+    
   database:
     image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
