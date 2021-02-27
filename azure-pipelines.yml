@@ -1,0 +1,44 @@
+# PHP
+# Test and package your PHP project.
+# Add steps that run tests, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/php
+
+trigger:
+  - master
+  - dev
+
+pool: default
+
+variables:
+  buildConfiguration: 'Testing'
+  Environment: 'Testing'
+  ConnectionStrings__DefaultConnection: 'Server=127.0.0.1;Database=OffLogs; User Id=sa; Password=;MultipleActiveResultSets=true'
+  
+steps:
+  - task: UseDotNet@2
+    displayName: DotNet Initialization
+    inputs:
+      packageType: 'sdk'
+      version: '5.0.x'
+  
+  - script: |
+      sqlcmd -S 127.0.0.1 -U sa -P '' -i ./azure-pipelines.sql
+    displayName: 'Refresh MsSQL Server'
+
+  - script: |
+      echo "{}" > OffLogs.Migration/appsettings.Local.json
+      echo "{}" > OffLogs.Api.Tests.Integration/appsettings.Local.json
+    displayName: 'Create empty config file'
+  
+  - task: DotNetCoreCLI@2
+    displayName: Run Migrations
+    inputs:
+      command: run
+      projects: '**OffLogs.Migration/*.csproj'
+
+  - task: DotNetCoreCLI@2
+    displayName: Api Integration Tests
+    inputs:
+      command: test
+      projects: '**OffLogs.Api.Tests.Integration/*.csproj'
+      arguments: '--configuration $(buildConfiguration) --verbosity=normal'
