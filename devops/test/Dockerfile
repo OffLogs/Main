@@ -13,7 +13,8 @@ RUN chmod +x /wait-for-it.sh
 
 ENV ConnectionStrings__DefaultConnection: 'Data Source=database;Initial Catalog=master;PersistSecurityInfo=True;User ID=sa;Password=P@ssW0rd!'
 #CMD /wait-for-it.sh database:1433 -t 120 
-CMD dotnet test --logger trx --results-directory /var/temp OffLogs.Api.Tests.Integration/
+#CMD dotnet test --logger trx --results-directory /var/temp OffLogs.Api.Tests.Integration/
+CMD dotnet test OffLogs.Api.Tests.Integration/
 
 #CMD /wait
 #CMD dotnet test --logger trx --results-directory /var/temp OffLogs.Api.Tests.Integration/
