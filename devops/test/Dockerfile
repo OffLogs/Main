@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 
 COPY . /app
 RUN ls /app
-WORKDIR /app/OffLogs.Api.Tests.Integration
+WORKDIR /app
 
 ENV ASPNETCORE_ENVIRONMENT=Development
 ENV DOTNET_USE_POLLING_FILE_WATCHER=true  
@@ -23,4 +23,4 @@ RUN chmod +x /wait
 
 ENV ConnectionStrings__DefaultConnection: 'Server=database;Database=OffLogs; User Id=sa; Password=P@ssW0rd!;MultipleActiveResultSets=true'
 CMD /wait
-CMD dotnet test --logger trx --results-directory /var/temp
+CMD dotnet test --logger trx --results-directory /var/temp ~/OffLogs.Api.Tests.Integration/OffLogs.Api.Tests.Integration.csproj
