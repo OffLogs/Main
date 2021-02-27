@@ -6,7 +6,7 @@ services:
       context: ./../../
       dockerfile: devops/test/Dockerfile
     environment:
-      WAIT_HOSTS: database:1433
+      ConnectionStrings__DefaultConnection: 'Data Source=database;Initial Catalog=master;PersistSecurityInfo=True;User ID=sa;Password=P@ssW0rd!'
     volumes:
       - /opt/vsts/work/_temp:/var/temp
     depends_on:
