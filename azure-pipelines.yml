@@ -7,7 +7,7 @@ trigger:
   - master
   - dev
 
-pool: default
+pool: ubuntu-latest
 
 variables:
   buildConfiguration: 'Testing'
