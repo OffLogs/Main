@@ -22,5 +22,5 @@ ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.5.0/wait
 RUN chmod +x /wait
 
 ENV ConnectionStrings__DefaultConnection: 'Server=database;Database=OffLogs; User Id=sa; Password=P@ssW0rd!;MultipleActiveResultSets=true'
-CMD cd --logger trx --results-directory /var/temp
+CMD /wait
 CMD dotnet test --logger trx --results-directory /var/temp
