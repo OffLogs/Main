@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 
 COPY . /app
 RUN ls /app
-WORKDIR /app/Vizit.Api
+WORKDIR /app/OffLogs.Api.Tests.Integration
 
 ENV ASPNETCORE_ENVIRONMENT=Development
 ENV DOTNET_USE_POLLING_FILE_WATCHER=true  
@@ -14,7 +14,7 @@ RUN apt install -y apt-transport-https wget ca-certificates
 
 RUN echo "{}" > appsettings.Local.json
 
-COPY /OffLogs.Api.Tests.Integration ./
+COPY . ./
 RUN dotnet restore
 
 COPY . ./
@@ -22,4 +22,5 @@ ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.5.0/wait
 RUN chmod +x /wait
 
 ENV ConnectionStrings__DefaultConnection: 'Server=database;Database=OffLogs; User Id=sa; Password=P@ssW0rd!;MultipleActiveResultSets=true'
-CMD /wait && dotnet test --logger trx --results-directory /var/temp
+CMD cd --logger trx --results-directory /var/temp
+CMD dotnet test --logger trx --results-directory /var/temp
