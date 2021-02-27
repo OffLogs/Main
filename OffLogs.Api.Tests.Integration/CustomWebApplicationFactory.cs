@@ -46,15 +46,16 @@ namespace OffLogs.Api.Tests.Integration
                 .ConfigureWebHostDefaults(builder =>
                 {
                     builder.UseStartup<Startup>()
+                        .ConfigureTestServices(services => 
+                        {
+                            services.AddHttpContextAccessor();
+                            // We can further customize our application setup here.
+                        })
                         .ConfigureAppConfiguration(builder =>
                         {
                             builder.AddJsonFile("appsettings.json")
                                 .AddJsonFile($"appsettings.Local.json", optional: true)
                                 .AddEnvironmentVariables();
-                        })
-                        .ConfigureTestServices(services => 
-                        {
-                            // We can further customize our application setup here.
                         })
                         .UseSerilog()
                         .UseTestServer();

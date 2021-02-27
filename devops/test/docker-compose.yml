@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  tests:
+    build:
+      context: ./../../
+      dockerfile: devops/test/Dockerfile
+    environment:
+      ConnectionStrings__DefaultConnection: 'Data Source=database;Initial Catalog=master;PersistSecurityInfo=True;User ID=sa;Password=P@ssW0rd!'
+    volumes:
+      - /opt/vsts/work/_temp:/var/temp
+    depends_on:
+      - database
+    
+  database:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: "P@ssW0rd!"
+      ACCEPT_EULA: "Y"

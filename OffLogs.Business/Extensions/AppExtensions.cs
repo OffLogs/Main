@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Constants.Dapper;
 using OffLogs.Business.Db.Dao;
+using OffLogs.Business.Services;
 
 namespace OffLogs.Business.Extensions
 {
@@ -13,7 +14,8 @@ namespace OffLogs.Business.Extensions
         {
             InitDbMappers();
             
-            services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddHttpContextAccessor();
+            services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<ICommonDao, CommonDao>();
         }
         

@@ -7,38 +7,24 @@ trigger:
   - master
   - dev
 
-pool: default
+pool:
+  vmImage: 'ubuntu-latest'
 
 variables:
   buildConfiguration: 'Testing'
   Environment: 'Testing'
-  ConnectionStrings__DefaultConnection: 'Server=127.0.0.1;Database=OffLogs; User Id=sa; Password=;MultipleActiveResultSets=true'
   
 steps:
-  - task: UseDotNet@2
-    displayName: DotNet Initialization
+  - task: DockerCompose@0
+    displayName: "Run a Docker Compose command"
     inputs:
-      packageType: 'sdk'
-      version: '5.0.x'
-  
-  - script: |
-      sqlcmd -S 127.0.0.1 -U sa -P '' -i ./azure-pipelines.sql
-    displayName: 'Refresh MsSQL Server'
+      dockerComposeFile: "devops/test/docker-compose.yml"
+      dockerComposeCommand: "up --abort-on-container-exit"
 
-  - script: |
-      echo "{}" > OffLogs.Migration/appsettings.Local.json
-      echo "{}" > OffLogs.Api.Tests.Integration/appsettings.Local.json
-    displayName: 'Create empty config file'
-  
-  - task: DotNetCoreCLI@2
-    displayName: Run Migrations
+  - task: PublishTestResults@2
+    displayName: "Publish Test Results  /opt/vsts/work/_temp/*.trx"
     inputs:
-      command: run
-      projects: '**OffLogs.Migration/*.csproj'
-
-  - task: DotNetCoreCLI@2
-    displayName: Api Integration Tests
-    inputs:
-      command: test
-      projects: '**OffLogs.Api.Tests.Integration/*.csproj'
-      arguments: '--configuration $(buildConfiguration) --verbosity=normal'
+      testResultsFormat: VSTest
+      testResultsFiles: " /opt/vsts/work/_temp/*.trx"
+      mergeTestResults: true
+      failTaskOnFailedTests: true
