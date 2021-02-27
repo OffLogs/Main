@@ -1,13 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using OffLogs.Api.Models.Response;
+using OffLogs.Business.Mvc.Controller;
 
 namespace OffLogs.Api.Controller
 {
-    public class HomeController : Microsoft.AspNetCore.Mvc.Controller
+    [ApiController]
+    public class HomeController : BaseApiController
     {
-        [HttpGet]
+        public HomeController(ILogger<HomeController> logger, IConfiguration configuration) : base(logger, configuration)
+        {
+        }
+        
+        [HttpGet("/ping")]
         public IActionResult Ping()
         {
-            return Json(new { Pong = true });
+            return JsonSuccess(new PongResponseModel());
         }
     }
 }

@@ -42,7 +42,7 @@ namespace OffLogs.Api
                 });
             var jwtSecurityKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(
-                    Configuration.GetValue<string>("App:uth:SymmetricSecurityKey")
+                    Configuration.GetValue<string>("App:Auth:SymmetricSecurityKey")
                 )
             );
             services.AddAuthentication(options =>

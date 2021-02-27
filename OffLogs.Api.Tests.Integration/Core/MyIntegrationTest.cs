@@ -17,14 +17,10 @@ namespace Vizit.Api.Mobile.Tests.Integration.Core
         protected ICommonDao Dao;
         protected readonly IJwtService jwtService;
         
-        protected readonly string ApiToken;
-        protected readonly string DefaultSiteUrl;
-
         public MyIntegrationTest(CustomWebApplicationFactory factory)
         {
             _factory = factory;
             var configuration = _factory.Services.GetService(typeof(IConfiguration)) as IConfiguration;
-            DefaultSiteUrl = configuration["App:DefaultSiteUrl"];
             jwtService = _factory.Services.GetService(typeof(IJwtService)) as IJwtService;
         }
 

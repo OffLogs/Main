@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using OffLogs.Api.Models.Response;
 using OffLogs.Business.Test.Extensions;
 using Vizit.Api.Mobile.Tests.Integration.Core;
 using Xunit;
@@ -21,9 +22,9 @@ namespace OffLogs.Api.Tests.Integration.Controller
 
             // Assert
             response.EnsureSuccessStatusCode();
-            var responseData = await response.GetJsonDataAsync<object>();
+            var responseData = await response.GetJsonDataAsync<PongResponseModel>();
             Assert.Equal(
-                new { Pong = true },
+                new PongResponseModel(),
                 responseData.Data
             );
         }
