@@ -14,7 +14,7 @@ namespace Vizit.Api.Mobile.Tests.Integration.Core
     {
         protected readonly CustomWebApplicationFactory _factory;
 
-        protected ICommonDao Dao;
+        protected readonly ICommonDao Dao;
         protected readonly IJwtService jwtService;
         
         public MyIntegrationTest(CustomWebApplicationFactory factory)
@@ -22,6 +22,7 @@ namespace Vizit.Api.Mobile.Tests.Integration.Core
             _factory = factory;
             var configuration = _factory.Services.GetService(typeof(IConfiguration)) as IConfiguration;
             jwtService = _factory.Services.GetService(typeof(IJwtService)) as IJwtService;
+            Dao = _factory.Services.GetService(typeof(ICommonDao)) as ICommonDao;
         }
 
         public async Task<HttpResponseMessage> PostRequestAsAnonymousAsync(string url, object data = null)

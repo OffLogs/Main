@@ -1,20 +1,6 @@
-IF EXISTS(SELECT * FROM sys.databases WHERE name = 'ViberBot')
+IF EXISTS(SELECT * FROM sys.databases WHERE name = 'OffLogs')
     BEGIN
-        DROP DATABASE [ViberBot]
+        DROP DATABASE [OffLogs]
     END
 
-CREATE DATABASE [ViberBot]
-
-IF EXISTS(SELECT * FROM sys.databases WHERE name = 'Intercome system')
-    BEGIN
-        DROP DATABASE [Intercome system]
-    END
-
-CREATE DATABASE [Intercome system]
-
-IF EXISTS(SELECT * FROM sys.databases WHERE name = 'IntercomeSystemMobile')
-    BEGIN
-        DROP DATABASE [IntercomeSystemMobile]
-    END
-
-CREATE DATABASE [IntercomeSystemMobile]
+CREATE DATABASE [OffLogs]

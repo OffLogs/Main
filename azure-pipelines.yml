@@ -12,26 +12,7 @@ pool: default
 variables:
   buildConfiguration: 'Testing'
   Environment: 'Testing'
-
-  ConnectionStrings__ZpConnection: 'Server=mssql;Database=Intercome system; User Id=sa; Password=StronG67Pass;MultipleActiveResultSets=true'
-  ConnectionStrings__ZpMobileConnection: 'Server=mssql;Database=IntercomeSystemMobile; User Id=sa; Password=StronG67Pass;MultipleActiveResultSets=true'
-  ConnectionStrings__ZpViberBotConnection: 'Server=mssql;Database=ViberBot; User Id=sa; Password=StronG67Pass;MultipleActiveResultSets=true'
-  
-  ConnectionStrings__NkConnection: 'Server=mssql-3;Database=Intercome system; User Id=sa; Password=StronG67Pass;MultipleActiveResultSets=true'
-  ConnectionStrings__NkMobileConnection: 'Server=mssql-3;Database=IntercomeSystemMobile; User Id=sa; Password=StronG67Pass;MultipleActiveResultSets=true'
-  ConnectionStrings__NkViberBotConnection: 'Server=mssql-3;Database=ViberBot; User Id=sa; Password=StronG67Pass;MultipleActiveResultSets=true'
-  
-  ConnectionStrings__KievConnection: 'Server=mssql-2;Database=Intercome system; User Id=sa; Password=StronG67Pass;MultipleActiveResultSets=true'
-  ConnectionStrings__KievMobileConnection: 'Server=mssql-2;Database=IntercomeSystemMobile; User Id=sa; Password=StronG67Pass;MultipleActiveResultSets=true'
-  ConnectionStrings__KievViberBotConnection: 'Server=mssql-2;Database=ViberBot; User Id=sa; Password=StronG67Pass;MultipleActiveResultSets=true'
-
-  ConnectionStrings__DnpConnection: 'Server=mssql-4;Database=Intercome system; User Id=sa; Password=StronG67Pass;MultipleActiveResultSets=true'
-  ConnectionStrings__DnpMobileConnection: 'Server=mssql-4;Database=IntercomeSystemMobile; User Id=sa; Password=StronG67Pass;MultipleActiveResultSets=true'
-  ConnectionStrings__DnpViberBotConnection: 'Server=mssql-4;Database=ViberBot; User Id=sa; Password=StronG67Pass;MultipleActiveResultSets=true'
-
-  ConnectionStrings__KrRgConnection: 'Server=mssql-5;Database=Intercome system; User Id=sa; Password=StronG67Pass;MultipleActiveResultSets=true'
-  ConnectionStrings__KrRgMobileConnection: 'Server=mssql-5;Database=IntercomeSystemMobile; User Id=sa; Password=StronG67Pass;MultipleActiveResultSets=true'
-  ConnectionStrings__KrRgViberBotConnection: 'Server=mssql-5;Database=ViberBot; User Id=sa; Password=StronG67Pass;MultipleActiveResultSets=true'
+  ConnectionStrings__DefaultConnection: 'Server=127.0.0.1;Database=OffLogs; User Id=sa; Password=;MultipleActiveResultSets=true'
   
 steps:
   - task: UseDotNet@2
@@ -41,55 +22,23 @@ steps:
       version: '5.0.x'
   
   - script: |
-      sqlcmd -S mssql -U sa -P 'StronG67Pass' -i ./azure-pipelines.sql
-    displayName: 'Refresh MsSQL Server #1'
+      sqlcmd -S 127.0.0.1 -U sa -P '' -i ./azure-pipelines.sql
+    displayName: 'Refresh MsSQL Server'
 
   - script: |
-      sqlcmd -S mssql-2 -U sa -P 'StronG67Pass' -i ./azure-pipelines.sql
-    displayName: 'Refresh MsSQL Server #2'
-
-  - script: |
-      sqlcmd -S mssql-3 -U sa -P 'StronG67Pass' -i ./azure-pipelines.sql
-    displayName: 'Refresh MsSQL Server #3'
-
-  - script: |
-      sqlcmd -S mssql-4 -U sa -P 'StronG67Pass' -i ./azure-pipelines.sql
-    displayName: 'Refresh MsSQL Server #4'
-
-  - script: |
-      sqlcmd -S mssql-5 -U sa -P 'StronG67Pass' -i ./azure-pipelines.sql
-    displayName: 'Refresh MsSQL Server #5'
-
-  - script: |
-      echo "{}" > Vizit.Migration/appsettings.Local.json
-      echo "{}" > Vizit.ViberBot.Tests.Integration/appsettings.Local.json
-      echo "{}" > Vizit.Api.Mobile.Tests.Integration/appsettings.Local.json
-      echo "{}" > Vizit.Api.Tests.Integration/appsettings.Local.json
+      echo "{}" > OffLogs.Migration/appsettings.Local.json
+      echo "{}" > OffLogs.Api.Tests.Integration/appsettings.Local.json
     displayName: 'Create empty config file'
   
   - task: DotNetCoreCLI@2
     displayName: Run Migrations
     inputs:
       command: run
-      projects: '**Vizit.Migration/*.csproj'
+      projects: '**OffLogs.Migration/*.csproj'
 
   - task: DotNetCoreCLI@2
-    displayName: Viber Bot Integration Tests
+    displayName: Api Integration Tests
     inputs:
       command: test
-      projects: '**Vizit.ViberBot.Tests.Integration/*.csproj'
+      projects: '**OffLogs.Api.Tests.Integration/*.csproj'
       arguments: '--configuration $(buildConfiguration) --verbosity=normal'
-
-  - task: DotNetCoreCLI@2
-    displayName: Mobile API Integration Tests
-    inputs:
-      command: test
-      projects: '**Vizit.Api.Mobile.Tests.Integration/*.csproj'
-      arguments: '--configuration $(buildConfiguration) --verbosity=normal'
-
-  - task: DotNetCoreCLI@2
-    displayName: Vizit API Integration Tests
-    inputs:
-      command: test
-      projects: '**Vizit.Api.Tests.Integration/*.csproj'
-      arguments: '--logger --configuration $(buildConfiguration) --verbosity=normal'
