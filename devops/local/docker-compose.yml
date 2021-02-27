@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  mssql:
+    container_name: offlogs-local-database
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    restart: always
+    environment:
+      - SA_PASSWORD=${MSSQL_PASSWORD}
+      - ACCEPT_EULA=Y
+    ports:
+      - 1448:1433
+  mssql-test:
+    container_name: offlogs-local-test-database
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    restart: always
+    environment:
+      - SA_PASSWORD=${MSSQL_PASSWORD}
+      - ACCEPT_EULA=Y
+    ports:
+      - 1449:1433
