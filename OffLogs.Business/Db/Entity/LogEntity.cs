@@ -10,7 +10,7 @@ namespace OffLogs.Business.Db.Entity
     {
         [Key]
         public long Id { get; set; }
-        public long UserId { get; set; }
+        public long ApplicationId { get; set; }
         public LogLevel Level { get; set; }
         public string Message { get; set; }
         public DateTime LogTime { get; set; }
@@ -18,7 +18,7 @@ namespace OffLogs.Business.Db.Entity
         
         [Write(false)]
         [Computed]
-        public User User { get; set; }
+        public ApplicationEntity Application { get; set; }
         
         [Write(false)]
         [Computed]
