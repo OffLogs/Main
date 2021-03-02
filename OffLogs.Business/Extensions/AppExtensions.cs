@@ -23,6 +23,7 @@ namespace OffLogs.Business.Extensions
         {
             // Extend Dapper types
             SqlMapper.AddTypeHandler(new DapperConstantHandler<CityCode>());
+            SqlMapper.AddTypeHandler(new DapperConstantHandler<LogLevel>());
         }
     }
 }

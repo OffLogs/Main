@@ -25,6 +25,7 @@
 
     <ItemGroup>
       <Folder Include="Core" />
+      <Folder Include="Models\Request" />
     </ItemGroup>
 
 </Project>
