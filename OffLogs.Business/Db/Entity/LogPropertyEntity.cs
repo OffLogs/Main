@@ -12,7 +12,5 @@ namespace OffLogs.Business.Db.Entity
         public string Key { get; set; }
         public string Value { get; set; }
         public DateTime CreateTime { get; set; }
-        
-        public UserEntity UserEntity { get; set; }
     }
 }

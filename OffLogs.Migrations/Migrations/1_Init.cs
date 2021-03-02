@@ -8,12 +8,51 @@ namespace OffLogs.Migrations.Migrations
     {
         public override void Up()
         {
-            Create.Table("UserImage")
-                .WithColumn("Id").AsInt64().PrimaryKey().Identity()
-                .WithColumn("UserID").AsInt32().ForeignKey("FK_UserImage_UserID", "User", "ID")
-                .WithColumn("Hash").AsString(200)
-                .WithColumn("ImageBytes").AsCustom("varbinary(max)")
-                .WithColumn("CreateDate").AsDateTime();
+            Create.Table("Users")
+                .WithColumn("Id").AsInt64().Identity()
+                .WithColumn("UserName").AsString(200)   
+                .WithColumn("Email").AsString(200)
+                .WithColumn("CreateTime").AsDateTime()
+                .WithColumn("UpdateTime").AsDateTime();
+            
+            Create.Table("Applications")
+                .WithColumn("Id").AsInt64().Identity()
+                .WithColumn("UserId").AsInt64()
+                    .ForeignKey()
+                    .ReferencedBy("FK_Applications_UserId", "Users", "Id")
+                .WithColumn("Name").AsString(200)   
+                .WithColumn("ApiToken").AsString(2048)
+                .WithColumn("CreateTime").AsDateTime()
+                .WithColumn("UpdateTime").AsDateTime();
+            
+            Create.Table("Logs")
+                .WithColumn("Id").AsInt64().Identity()
+                .WithColumn("ApplicationId").AsInt64()
+                    .ForeignKey()
+                    .ReferencedBy("FK_Logs_ApplicationId", "Applications", "Id")
+                .WithColumn("Level").AsString(20)
+                .WithColumn("Message").AsString(2048)
+                .WithColumn("Message").AsString(2048)
+                .WithColumn("LogTime").AsDateTime()
+                .WithColumn("CreateTime").AsDateTime();
+            
+            Create.Table("LogProperties")
+                .WithColumn("Id").AsInt64().Identity()
+                .WithColumn("LogId").AsInt64()
+                    .ForeignKey()
+                    .ReferencedBy("FK_LogProperties_LogId", "Applications", "Id")
+                .WithColumn("Level").AsString(20)
+                .WithColumn("Key").AsString(200)
+                .WithColumn("Value").AsString(2048)
+                .WithColumn("CreateTime").AsDateTime();
+            
+            Create.Table("LogTraces")
+                .WithColumn("Id").AsInt64().Identity()
+                .WithColumn("LogId").AsInt64()
+                    .ForeignKey()
+                    .ReferencedBy("FK_LogTraces_LogId", "Applications", "Id")
+                .WithColumn("Trace").AsString(2048)
+                .WithColumn("CreateTime").AsDateTime();
             
             base.Up();
         }
