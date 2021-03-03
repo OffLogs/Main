@@ -21,10 +21,17 @@ steps:
       dockerComposeFile: "devops/test/docker-compose.yml"
       dockerComposeCommand: "up --abort-on-container-exit"
 
+  - task: DotNetCoreCLI@2
+    displayName: Unit Tests
+    inputs:
+      command: test
+      projects: '**OffLogs.Api.Tests.Unit/*.csproj'
+      arguments: '--logger=trx --results-directory=/opt/vsts/work/_temp --configuration $(buildConfiguration) --verbosity=normal'
+  
   - task: PublishTestResults@2
-    displayName: "Publish Test Results  /opt/vsts/work/_temp/*.trx"
+    displayName: "Publish Test Results"
     inputs:
       testResultsFormat: VSTest
-      testResultsFiles: " /opt/vsts/work/_temp/*.trx"
+      testResultsFiles: "/opt/vsts/work/_temp/*.trx"
       mergeTestResults: true
       failTaskOnFailedTests: true

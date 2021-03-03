@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffLogs.Migrations", "OffLo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffLogs.Api.Tests.Integration", "OffLogs.Api.Tests.Integration\OffLogs.Api.Tests.Integration.csproj", "{234E3909-391C-4E02-937B-382E105A4BB2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffLogs.Api.Tests.Unit", "OffLogs.Api.Tests.Unit\OffLogs.Api.Tests.Unit.csproj", "{BAC75AD4-940E-4E6F-853D-5A01D916F3BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{234E3909-391C-4E02-937B-382E105A4BB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{234E3909-391C-4E02-937B-382E105A4BB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{234E3909-391C-4E02-937B-382E105A4BB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAC75AD4-940E-4E6F-853D-5A01D916F3BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAC75AD4-940E-4E6F-853D-5A01D916F3BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAC75AD4-940E-4E6F-853D-5A01D916F3BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAC75AD4-940E-4E6F-853D-5A01D916F3BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
