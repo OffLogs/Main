@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OffLogs.Api.Models.Request.Log.Serilog;
 using OffLogs.Api.Services.LogParser;
+using OffLogs.Business.Mvc.Attribute.Auth;
 using OffLogs.Business.Mvc.Controller;
 
 namespace OffLogs.Api.Controller
@@ -25,6 +26,7 @@ namespace OffLogs.Api.Controller
             _serilogLogParserService = serilogLogParserService;
         }
         
+        [OnlyAuthorizedApplication]
         [HttpPost("serilog")]
         public async Task<IActionResult> LogSerilog(SerilogEventsRequestModel model)
         {
