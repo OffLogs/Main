@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace OffLogs.Business.Services
+namespace OffLogs.Business.Services.Jwt
 {
-    public class JwtService: IJwtService
+    public class JwtAuthService: IJwtAuthService
     {
         private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContext;
@@ -32,7 +32,7 @@ namespace OffLogs.Business.Services
             }
         }
         
-        public JwtService(IConfiguration configuration, IHttpContextAccessor httpContext)
+        public JwtAuthService(IConfiguration configuration, IHttpContextAccessor httpContext)
         {
             _configuration = configuration;
             _httpContext = httpContext;
@@ -51,16 +51,10 @@ namespace OffLogs.Business.Services
                 new(ClaimsIdentity.DefaultRoleClaimType, "user"),
                 new(ClaimTypes.NameIdentifier, userId.ToString())
             };
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(
-                claims, 
-                "Token", 
-                ClaimsIdentity.DefaultNameClaimType,
-                ClaimsIdentity.DefaultRoleClaimType
-            );
-
+            
             var jwtSecurityKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(
-                    _configuration.GetValue<string>("Auth:SymmetricSecurityKey")
+                    _configuration.GetValue<string>("App:Auth:SymmetricSecurityKey")
                 )
             );
             var now = DateTime.UtcNow;
@@ -76,17 +70,17 @@ namespace OffLogs.Business.Services
                 _configuration.GetValue<string>("App:Auth:Issuer"),
                 _configuration.GetValue<string>("App:Auth:Audience"),
                 notBefore: now,
-                claims: claimsIdentity.Claims,
+                claims: claims,
                 expires: expirationTime,
                 signingCredentials: signingCredentials
             );
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
-
+        
         public int? GetUserId(string jwtString = null)
         {
             try
-            {
+            {   
                 var jwt = new JwtSecurityToken(string.IsNullOrEmpty(jwtString) ? JwtToken : jwtString);
                 return int.Parse(jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
             }
