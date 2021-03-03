@@ -5,6 +5,7 @@ using OffLogs.Business.Constants;
 using OffLogs.Business.Constants.Dapper;
 using OffLogs.Business.Db.Dao;
 using OffLogs.Business.Services;
+using OffLogs.Business.Services.Jwt;
 
 namespace OffLogs.Business.Extensions
 {
@@ -15,7 +16,8 @@ namespace OffLogs.Business.Extensions
             InitDbMappers();
             
             services.AddHttpContextAccessor();
-            services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<IJwtAuthService, JwtAuthService>();
+            services.AddScoped<IJwtApplicationService, JwtApplicationService>();
             services.AddScoped<ICommonDao, CommonDao>();
         }
         
@@ -23,6 +25,7 @@ namespace OffLogs.Business.Extensions
         {
             // Extend Dapper types
             SqlMapper.AddTypeHandler(new DapperConstantHandler<CityCode>());
+            SqlMapper.AddTypeHandler(new DapperConstantHandler<LogLevel>());
         }
     }
 }

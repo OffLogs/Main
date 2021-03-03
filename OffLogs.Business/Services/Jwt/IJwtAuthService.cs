@@ -1,6 +1,6 @@
-namespace OffLogs.Business.Services
+namespace OffLogs.Business.Services.Jwt
 {
-    public interface IJwtService
+    public interface IJwtAuthService
     {
         public string GetToken();
         public string BuildJwt(int userId);

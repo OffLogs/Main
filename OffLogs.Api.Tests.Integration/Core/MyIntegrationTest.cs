@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using OffLogs.Api.Tests.Integration;
 using OffLogs.Business.Db.Dao;
 using OffLogs.Business.Services;
+using OffLogs.Business.Services.Jwt;
 using Xunit;
 
 namespace Vizit.Api.Mobile.Tests.Integration.Core
@@ -15,7 +16,7 @@ namespace Vizit.Api.Mobile.Tests.Integration.Core
         protected readonly CustomWebApplicationFactory _factory;
 
         protected readonly ICommonDao Dao;
-        protected readonly IJwtService jwtService;
+        protected readonly IJwtAuthService JwtAuthService;
         
         public MyIntegrationTest(CustomWebApplicationFactory factory)
         {
