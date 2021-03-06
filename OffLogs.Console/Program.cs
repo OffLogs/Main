@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using CommandLine;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
 using OffLogs.Business.Extensions;
 using OffLogs.Business.Helpers;
 using OffLogs.Console.Core;
 using OffLogs.Console.Verbs;
 using Serilog;
+using Serilog.Extensions.Logging;
 
 namespace OffLogs.Console
 {
@@ -24,11 +26,10 @@ namespace OffLogs.Console
             Log.Logger = log;
             
             var serviceBuilder = new ServiceCollection()
-                .AddLogging()
                 .InitCommonServices()
                 .AddSingleton<IConfiguration>(configuration)
-                .AddSingleton<IRunService, RunService>();
-            
+                .AddSingleton<ICreateUserService, CreateUserService>();
+
             serviceBuilder.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
 
             var serviceProvider = serviceBuilder.BuildServiceProvider();
@@ -37,9 +38,8 @@ namespace OffLogs.Console
                 .MapResult(
                     (CreateNewUserVerb opts) =>
                     {
-                        var runService = serviceProvider.GetService<IRunService>();
-                        runService.RunStart();
-                        return 0;
+                        var runService = serviceProvider.GetService<ICreateUserService>();
+                        return runService.CreateUser();
                     },
                     errs => 1);
         }
