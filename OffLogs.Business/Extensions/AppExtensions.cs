@@ -19,6 +19,7 @@ namespace OffLogs.Business.Extensions
             services.AddScoped<IJwtAuthService, JwtAuthService>();
             services.AddScoped<IJwtApplicationService, JwtApplicationService>();
             services.AddScoped<ICommonDao, CommonDao>();
+            services.AddScoped<IUserDao, UserDao>();
         }
         
         private static void InitDbMappers()
