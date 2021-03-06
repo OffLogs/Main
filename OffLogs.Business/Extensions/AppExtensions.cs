@@ -13,16 +13,21 @@ namespace OffLogs.Business.Extensions
 {
     public static class AppExtensions
     {
-        public static void InitCommonServices(this IServiceCollection services)
+        public static IServiceCollection InitCommonServices(this IServiceCollection services)
         {
             InitDbMappers();
             
+            // System
             services.AddHttpContextAccessor();
             services.AddScoped<IDataFactoryService, DataFactoryService>();
             services.AddScoped<IJwtAuthService, JwtAuthService>();
             services.AddScoped<IJwtApplicationService, JwtApplicationService>();
+            
+            // DAO
             services.AddScoped<ICommonDao, CommonDao>();
             services.AddScoped<IUserDao, UserDao>();
+            services.AddScoped<IApplicationDao, ApplicationDao>();
+            return services;
         }
         
         private static void InitDbMappers()

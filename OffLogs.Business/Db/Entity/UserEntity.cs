@@ -17,7 +17,5 @@ namespace OffLogs.Business.Db.Entity
         
         [Computed]
         public string Password { get; set; }
-
-        [Computed] public List<ApplicationEntity> Applications { get; set; } = new();
     }
 }

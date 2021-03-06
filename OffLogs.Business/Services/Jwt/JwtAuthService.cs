@@ -43,7 +43,7 @@ namespace OffLogs.Business.Services.Jwt
             return JwtToken;
         }
 
-        public string BuildJwt(int userId)
+        public string BuildJwt(long userId)
         {
             var claims = new List<Claim>
             {
@@ -77,12 +77,12 @@ namespace OffLogs.Business.Services.Jwt
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
         
-        public int? GetUserId(string jwtString = null)
+        public long? GetUserId(string jwtString = null)
         {
             try
             {   
                 var jwt = new JwtSecurityToken(string.IsNullOrEmpty(jwtString) ? JwtToken : jwtString);
-                return int.Parse(jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+                return long.Parse(jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
             }
             catch (Exception)
             {

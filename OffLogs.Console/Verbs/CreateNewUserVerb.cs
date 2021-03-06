@@ -8,6 +8,9 @@ namespace OffLogs.Console.Verbs
         [Option('u', "username", Required = true, HelpText = "Name of new user.")]
         public string UserName { get; set; }
         
+        [Option('e', "email", Required = true, HelpText = "Email of new user.")]
+        public string Email { get; set; }
+        
         public int Handle()
         {
             System.Console.WriteLine("User is created: " + UserName);
