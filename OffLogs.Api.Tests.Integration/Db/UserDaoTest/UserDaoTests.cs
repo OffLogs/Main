@@ -31,14 +31,25 @@ namespace OffLogs.Api.Tests.Integration.Db.UserDaoTest
         }
         
         [Theory]
-        [InlineData("some-user")]
-        [InlineData("some-user-2")]
-        public async Task ShouldNotCreateNewUserWithSameUserName(string expectedUserName)
+        [InlineData("some-user", "test@test.com", "test2@test.com")]
+        [InlineData("some-user-2", "test3@test.com", "test4@test.com")]
+        public async Task ShouldNotCreateNewUserWithSameUserName(string expectedUserName, string email1, string email2)
         {
             await UserDao.DeleteByUserName(expectedUserName);
             
-            await UserDao.CreateNewUser(expectedUserName);
-            await Assert.ThrowsAsync<SqlException>(() => UserDao.CreateNewUser(expectedUserName));
+            await UserDao.CreateNewUser(expectedUserName, email1);
+            await Assert.ThrowsAsync<SqlException>(() => UserDao.CreateNewUser(expectedUserName, email2));
+        }
+        
+        [Theory]
+        [InlineData("test@test.com", "someUserName", "someUserName2")]
+        [InlineData("test2@test.com", "someUserName", "someUserName2")]
+        public async Task ShouldNotCreateNewUserWithSameEmail(string expectedEmail, string userName, string userName2)
+        {
+            await UserDao.DeleteByUserName(userName);
+            
+            await UserDao.CreateNewUser(userName, expectedEmail);
+            await Assert.ThrowsAsync<SqlException>(() => UserDao.CreateNewUser(userName2, expectedEmail));
         }
     }
 }

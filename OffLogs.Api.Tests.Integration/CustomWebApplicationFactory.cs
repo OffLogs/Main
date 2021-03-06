@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OffLogs.Api.Tests.Integration.Core.Service;
+using OffLogs.Business.Helpers;
 using Serilog;
 
 namespace OffLogs.Api.Tests.Integration
@@ -13,12 +15,6 @@ namespace OffLogs.Api.Tests.Integration
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .AddJsonFile("appsettings.Local.json", true)
-                .Build();
-            
             builder.ConfigureServices(services =>
             {
                 // var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IViberCommunicationService));
@@ -49,13 +45,12 @@ namespace OffLogs.Api.Tests.Integration
                         .ConfigureTestServices(services => 
                         {
                             services.AddHttpContextAccessor();
+                            services.AddScoped<IDataSeederService, DataSeederService>();
                             // We can further customize our application setup here.
                         })
                         .ConfigureAppConfiguration(builder =>
                         {
-                            builder.AddJsonFile("appsettings.json")
-                                .AddJsonFile($"appsettings.Local.json", optional: true)
-                                .AddEnvironmentVariables();
+                            builder.ConfigureConfigurationProvider();
                         })
                         .UseSerilog()
                         .UseTestServer();

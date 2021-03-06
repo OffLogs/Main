@@ -11,7 +11,7 @@ namespace OffLogs.Migrations.Migrations
             Create.Table("Users")
                 .WithColumn("Id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("UserName").AsString(200).Unique()
-                .WithColumn("Email").AsString(200).Nullable()
+                .WithColumn("Email").AsString(200).Nullable().Unique()
                 .WithColumn("PasswordHash").AsBinary()
                 .WithColumn("PasswordSalt").AsBinary()
                 .WithColumn("CreateTime").AsDateTime()
