@@ -13,10 +13,7 @@ namespace OffLogs.Api.Tests.Integration.Db.UserDaoTest
     [Collection("UserDaoTests")]
     public class UserDaoTests: MyIntegrationTest
     {
-        public UserDaoTests(CustomWebApplicationFactory factory) : base(factory)
-        {
-            
-        }
+        public UserDaoTests(CustomWebApplicationFactory factory) : base(factory) {}
         
         [Theory]
         [InlineData("some-user", "user@email.com")]
