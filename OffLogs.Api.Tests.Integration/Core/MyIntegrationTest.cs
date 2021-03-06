@@ -2,6 +2,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using OffLogs.Api.Tests.Integration.Core.Service;
 using OffLogs.Business.Db.Dao;
 using OffLogs.Business.Services.Data;
 using OffLogs.Business.Services.Jwt;
@@ -18,6 +19,7 @@ namespace OffLogs.Api.Tests.Integration.Core
         protected readonly IUserDao UserDao;
         protected readonly IJwtAuthService JwtAuthService;
         protected readonly IDataFactoryService DataFactory;
+        protected readonly IDataSeederService DataSeeder;
         
         public MyIntegrationTest(CustomWebApplicationFactory factory)
         {
@@ -26,6 +28,7 @@ namespace OffLogs.Api.Tests.Integration.Core
             Dao = _factory.Services.GetService(typeof(ICommonDao)) as ICommonDao;
             UserDao = _factory.Services.GetService(typeof(IUserDao)) as IUserDao;
             DataFactory = _factory.Services.GetService(typeof(IDataFactoryService)) as IDataFactoryService;
+            DataSeeder = _factory.Services.GetService(typeof(IDataSeederService)) as IDataSeederService;
         }
 
         public async Task<HttpResponseMessage> PostRequestAsAnonymousAsync(string url, object data = null)

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OffLogs.Api.Tests.Integration.Core.Service;
 using Serilog;
 
 namespace OffLogs.Api.Tests.Integration
@@ -49,6 +50,7 @@ namespace OffLogs.Api.Tests.Integration
                         .ConfigureTestServices(services => 
                         {
                             services.AddHttpContextAccessor();
+                            services.AddScoped<IDataSeederService, DataSeederService>();
                             // We can further customize our application setup here.
                         })
                         .ConfigureAppConfiguration(builder =>
