@@ -38,9 +38,6 @@ namespace OffLogs.Migrations
             Migrate(ConnectionString);
 
             Console.WriteLine("Migrations are applied...");
-#if DEBUG
-            Console.ReadKey();
-#endif
         }
 
         /// <summary>

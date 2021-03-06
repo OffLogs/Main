@@ -14,12 +14,7 @@ variables:
   buildConfiguration: 'Testing'
   Environment: 'Testing'
   
-steps:
-  - script: |
-      echo "{}" > OffLogs.Api.Tests.Integration/appsettings.Local.json
-      echo "{}" > OffLogs.Migrations/appsettings.Local.json
-    displayName: 'Create empty config file'
-  
+steps: 
   - task: DockerCompose@0
     displayName: "Run a Docker Compose command"
     inputs:
