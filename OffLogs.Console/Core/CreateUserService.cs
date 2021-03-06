@@ -1,7 +1,10 @@
+using System;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using OffLogs.Business.Db.Dao;
 using OffLogs.Business.Services.Data;
 using OffLogs.Business.Services.Jwt;
+using OffLogs.Console.Verbs;
 
 namespace OffLogs.Console.Core
 {
@@ -28,9 +31,23 @@ namespace OffLogs.Console.Core
             _logger = logger;
         }
 
-        public int CreateUser()
+        public async Task<int> CreateUser(CreateNewUserVerb verb)
         {
-            _logger.LogInformation("Create user starting..");
+            try
+            {
+                _logger.LogInformation("Create user starting..");
+                var user = await _userDao.CreateNewUser(verb.UserName, verb.Email);
+                _logger.LogInformation("User is created!");
+                _logger.LogInformation($"----------------------------------");
+                _logger.LogInformation($"UserName: {user.UserName}");
+                _logger.LogInformation($"Password: {user.Password}");
+                _logger.LogInformation($"----------------------------------");
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+                return 1;
+            }
             return 0;
         }
     }

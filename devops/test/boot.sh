@@ -9,6 +9,10 @@ sleep 10
 cd OffLogs.Migrations/
 dotnet run --configuration Development
 
+>&2 echo "Run Console App Tests"
+cd ../OffLogs.Console
+dotnet run user-create --username=test --email=test@test.com
+
 >&2 echo "Run Tests"
 cd ../OffLogs.Api.Tests.Integration
 dotnet test --logger trx --results-directory /var/temp .

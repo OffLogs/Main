@@ -39,7 +39,7 @@ namespace OffLogs.Console
                     (CreateNewUserVerb opts) =>
                     {
                         var runService = serviceProvider.GetService<ICreateUserService>();
-                        return runService.CreateUser();
+                        return runService.CreateUser(opts).Result;
                     },
                     errs => 1);
         }

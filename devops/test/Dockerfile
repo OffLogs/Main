@@ -5,6 +5,7 @@ COPY . ./
 RUN echo "{}" > appsettings.Local.json
 RUN echo "{}" > OffLogs.Api.Tests.Integration/appsettings.Local.json
 RUN echo "{}" > OffLogs.Migrations/appsettings.Local.json
+RUN echo "{}" > OffLogs.Console/appsettings.Local.json
 RUN dotnet restore
 
 COPY ./devops/test/boot.sh /usr/local/bin/php_boot
