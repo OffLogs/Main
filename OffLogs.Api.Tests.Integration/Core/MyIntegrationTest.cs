@@ -45,12 +45,5 @@ namespace OffLogs.Api.Tests.Integration.Core
             var requestData = JsonContent.Create(data ?? new {});
             return await client.PostAsync(url, requestData);
         }
-        
-        // protected (MobileProfileEntity, String) CreateMobileProfileWithToken()
-        // {   
-        //     var mobileProfile = CommonDataSeeder.CreateMobileProfile();
-        //     var token = jwtService.BuildJwt(mobileProfile.Id);
-        //     return (mobileProfile, token);
-        // }
     }
 }

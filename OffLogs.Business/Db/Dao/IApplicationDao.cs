@@ -6,6 +6,6 @@ namespace OffLogs.Business.Db.Dao
 {
     public interface IApplicationDao: ICommonDao
     {
-        Task<ApplicationEntity> CreateNewApplication(int userId, string name);
+        Task<ApplicationEntity> CreateNewApplication(long userId, string name);
     }
 }

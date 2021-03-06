@@ -7,7 +7,6 @@ namespace OffLogs.Business.Db.Dao
     public interface IUserDao: ICommonDao
     {
         Task DeleteByUserName(string userName);
-        Task<UserEntity> CreateNewUser(string userName);
         Task<UserEntity> CreateNewUser(string userName, string email);
     }
 }

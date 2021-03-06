@@ -6,6 +6,6 @@ namespace OffLogs.Business.Services.Data
     public interface IDataFactoryService
     {
         Faker<UserEntity> UserFactory();
-        Faker<ApplicationEntity> ApplicationFactory(int userId);
+        Faker<ApplicationEntity> ApplicationFactory(long userId);
     }
 }

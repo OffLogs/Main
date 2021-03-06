@@ -35,7 +35,7 @@ namespace OffLogs.Business.Services.Data
                 );
         }
         
-        public Faker<ApplicationEntity> ApplicationFactory(int userId)
+        public Faker<ApplicationEntity> ApplicationFactory(long userId)
         {
             return new Faker<ApplicationEntity>()
                 .RuleFor(

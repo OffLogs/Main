@@ -26,7 +26,7 @@ namespace OffLogs.Business.Db.Dao
             this._jwtService = jwtService;
         }
 
-        public async Task<ApplicationEntity> CreateNewApplication(int userId,  string name)
+        public async Task<ApplicationEntity> CreateNewApplication(long userId,  string name)
         {   
             var application = new ApplicationEntity()
             {
