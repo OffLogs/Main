@@ -23,6 +23,9 @@
       <None Update="SQLFiles\Scripts\refreshDB.sql">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="SQLFiles\Procedures\pr_UserDeleteByUserName.sql">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>

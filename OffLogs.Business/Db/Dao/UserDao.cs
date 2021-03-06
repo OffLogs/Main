@@ -41,5 +41,13 @@ namespace OffLogs.Business.Db.Dao
             await Connection.InsertAsync(user);
             return user;
         }
+        
+        public async Task DeleteByUserName(string userName)
+        {
+            await ExecuteWithReturnAsync("pr_UserDeleteByUserName", new 
+            {
+                UserName = userName
+            });
+        }
     }
 }

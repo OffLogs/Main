@@ -8,6 +8,7 @@ using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Core
 {
+    [Collection("Default collection")]
     public class MyIntegrationTest:IClassFixture<CustomWebApplicationFactory>
     {
         protected readonly CustomWebApplicationFactory _factory;
