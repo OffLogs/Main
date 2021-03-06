@@ -39,16 +39,15 @@ namespace OffLogs.Business.Helpers
             return GetBase58RandomString(passwordSize);
         }
 
-        public static byte[] GeneratePasswordHash(string password, string salt)
+        public static byte[] GeneratePasswordHash(string password, byte[] salt)
         {
             return GeneratePasswordHash(password, salt, HASH_ITERATIONS);
         }
 
-        public static byte[] GeneratePasswordHash(string password, string salt, int iterations)
+        public static byte[] GeneratePasswordHash(string password, byte[] salt, int iterations)
         {
-            byte[] saltBytes = Encoding.Unicode.GetBytes(salt);
             //create hash
-            var pbkdf2 = new Rfc2898DeriveBytes(password, saltBytes, iterations);
+            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations);
             return pbkdf2.GetBytes(HASH_SIZE);  
         }
 
