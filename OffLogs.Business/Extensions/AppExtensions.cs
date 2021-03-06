@@ -5,7 +5,9 @@ using OffLogs.Business.Constants;
 using OffLogs.Business.Constants.Dapper;
 using OffLogs.Business.Db.Dao;
 using OffLogs.Business.Services;
+using OffLogs.Business.Services.Data;
 using OffLogs.Business.Services.Jwt;
+using JwtAuthService = OffLogs.Business.Services.Jwt.JwtAuthService;
 
 namespace OffLogs.Business.Extensions
 {
@@ -16,6 +18,7 @@ namespace OffLogs.Business.Extensions
             InitDbMappers();
             
             services.AddHttpContextAccessor();
+            services.AddScoped<IDataFactoryService, DataFactoryService>();
             services.AddScoped<IJwtAuthService, JwtAuthService>();
             services.AddScoped<IJwtApplicationService, JwtApplicationService>();
             services.AddScoped<ICommonDao, CommonDao>();
