@@ -18,6 +18,11 @@ namespace OffLogs.Business.Db.Dao
         {
         }
 
+        public async Task<UserEntity> CreateNewUser(string userName)
+        {
+            return await CreateNewUser(userName, null);
+        }
+
         public async Task<UserEntity> CreateNewUser(string userName,  string email)
         {
             var password = SecurityUtil.GeneratePassword(8);

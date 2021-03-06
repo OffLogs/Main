@@ -1,5 +1,5 @@
 ﻿using System.Data;
-using Vizit.Api.Mobile.Tests.Integration.Core;
+using OffLogs.Api.Tests.Integration.Core;
 using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Common
