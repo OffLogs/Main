@@ -12,6 +12,8 @@ namespace OffLogs.Migrations.Migrations
                 .WithColumn("Id").AsInt64().Identity()
                 .WithColumn("UserName").AsString(200)   
                 .WithColumn("Email").AsString(200)
+                .WithColumn("PasswordHash").AsBinary()
+                .WithColumn("PasswordSalt").AsBinary()
                 .WithColumn("CreateTime").AsDateTime()
                 .WithColumn("UpdateTime").AsDateTime();
             
