@@ -1,9 +1,9 @@
 ﻿using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using OffLogs.Api.Models.Response;
+using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Test.Extensions;
-using Vizit.Api.Mobile.Tests.Integration.Core;
 using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Controller

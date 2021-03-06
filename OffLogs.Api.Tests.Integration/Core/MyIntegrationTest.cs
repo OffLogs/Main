@@ -2,20 +2,19 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using OffLogs.Api.Tests.Integration;
 using OffLogs.Business.Db.Dao;
-using OffLogs.Business.Services;
 using OffLogs.Business.Services.Jwt;
 using Xunit;
 
-namespace Vizit.Api.Mobile.Tests.Integration.Core
+namespace OffLogs.Api.Tests.Integration.Core
 {
+    [Collection("Default collection")]
     public class MyIntegrationTest:IClassFixture<CustomWebApplicationFactory>
     {
         protected readonly CustomWebApplicationFactory _factory;
 
         protected readonly ICommonDao Dao;
+        protected readonly IUserDao UserDao;
         protected readonly IJwtAuthService JwtAuthService;
         
         public MyIntegrationTest(CustomWebApplicationFactory factory)
@@ -23,6 +22,7 @@ namespace Vizit.Api.Mobile.Tests.Integration.Core
             _factory = factory;
             // jwtService = _factory.Services.GetService(typeof(IJwtService)) as IJwtService;
             Dao = _factory.Services.GetService(typeof(ICommonDao)) as ICommonDao;
+            UserDao = _factory.Services.GetService(typeof(IUserDao)) as IUserDao;
         }
 
         public async Task<HttpResponseMessage> PostRequestAsAnonymousAsync(string url, object data = null)
