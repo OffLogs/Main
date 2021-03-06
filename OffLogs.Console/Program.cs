@@ -36,10 +36,10 @@ namespace OffLogs.Console
             
             return Parser.Default.ParseArguments<CreateNewUserVerb>(args)
                 .MapResult(
-                    (CreateNewUserVerb opts) =>
+                    createNewUserVerb =>
                     {
                         var runService = serviceProvider.GetService<ICreateUserService>();
-                        return runService.CreateUser(opts).Result;
+                        return runService.CreateUser(createNewUserVerb).Result;
                     },
                     errs => 1);
         }
