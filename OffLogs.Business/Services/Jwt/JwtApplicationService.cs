@@ -54,7 +54,7 @@ namespace OffLogs.Business.Services.Jwt
             return JwtToken;
         }
 
-        public string BuildJwt(int applicationId)
+        public string BuildJwt(long applicationId)
         {
             var claims = new List<Claim>
             {
@@ -76,7 +76,7 @@ namespace OffLogs.Business.Services.Jwt
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
         
-        public int? GetApplicationId(string jwtString = null)
+        public long? GetApplicationId(string jwtString = null)
         {
             try
             {   
