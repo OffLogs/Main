@@ -10,10 +10,10 @@ using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Db.UserDaoTest
 {
-    [Collection("UserDaoTests")]
-    public class UserDaoTests: MyIntegrationTest
+    [Collection("UserDaoTest.CreateUserTests")]
+    public class CreateUserTests: MyIntegrationTest
     {
-        public UserDaoTests(CustomWebApplicationFactory factory) : base(factory) {}
+        public CreateUserTests(CustomWebApplicationFactory factory) : base(factory) {}
         
         [Theory]
         [InlineData("some-user", "user@email.com")]

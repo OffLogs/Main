@@ -28,20 +28,34 @@ namespace OffLogs.Console
             var serviceBuilder = new ServiceCollection()
                 .InitCommonServices()
                 .AddSingleton<IConfiguration>(configuration)
-                .AddSingleton<ICreateUserService, CreateUserService>();
+                .AddScoped<ICreateUserService, CreateUserService>()
+                .AddScoped<ICreateApplicationService, CreateApplicationService>();
 
             serviceBuilder.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
 
             var serviceProvider = serviceBuilder.BuildServiceProvider();
             
-            return Parser.Default.ParseArguments<CreateNewUserVerb>(args)
+            return Parser.Default.ParseArguments<CreateNewUserVerb, CreateNewApplicationVerb, int>(args)
                 .MapResult(
-                    createNewUserVerb =>
+                    (CreateNewUserVerb verb) =>
                     {
                         var runService = serviceProvider.GetService<ICreateUserService>();
-                        return runService.CreateUser(createNewUserVerb).Result;
+                        return runService.CreateUser(verb).Result;
                     },
-                    errs => 1);
+                    (CreateNewApplicationVerb verb) =>
+                    {
+                        var runService = serviceProvider.GetService<ICreateApplicationService>();
+                        return runService.Create(verb).Result;
+                    },
+                    errs =>
+                    {
+                        foreach (var error in errs)
+                        {
+                            log.Error(error.ToString());
+                        }
+                        return 1;
+                    }
+                );
         }
     }
 }

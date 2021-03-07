@@ -1,6 +1,8 @@
 using System;
+using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using Dapper;
 using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -18,11 +20,6 @@ namespace OffLogs.Business.Db.Dao
         {
         }
 
-        public async Task<UserEntity> CreateNewUser(string userName)
-        {
-            return await CreateNewUser(userName, null);
-        }
-
         public async Task<UserEntity> CreateNewUser(string userName,  string email)
         {
             var password = SecurityUtil.GeneratePassword(8);
@@ -30,7 +27,7 @@ namespace OffLogs.Business.Db.Dao
             var passwordHash = SecurityUtil.GeneratePasswordHash(password, passwordSalt);
             var user = new UserEntity()
             {
-                UserName = userName,
+                UserName = FormatUtil.ClearUserName(userName),
                 Email = email,
                 Password = password,
                 PasswordSalt = passwordSalt,
@@ -48,6 +45,14 @@ namespace OffLogs.Business.Db.Dao
             {
                 UserName = userName
             });
+        }
+        
+        public Task<UserEntity> GetByUserName(string userName)
+        {
+            return Connection.QueryFirstOrDefaultAsync<UserEntity>("pr_UserGetByUserName", new
+            {
+                UserName = userName
+            },  null, null, CommandType.StoredProcedure);
         }
     }
 }
