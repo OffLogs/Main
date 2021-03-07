@@ -10,14 +10,14 @@ using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Db.UserDaoTest
 {
-    [Collection("UserDaoTests")]
-    public class UserDaoTests: MyIntegrationTest
+    [Collection("UserDaoTest.CreateUserTests")]
+    public class CreateUserTests: MyIntegrationTest
     {
-        public UserDaoTests(CustomWebApplicationFactory factory) : base(factory) {}
+        public CreateUserTests(CustomWebApplicationFactory factory) : base(factory) {}
         
         [Theory]
         [InlineData("some-user", "user@email.com")]
-        [InlineData("some-user-2", "user2@email.com")]
+        [InlineData("some-user-2", "user1@email.com")]
         public async Task ShouldCreateNewUser(string expectedUserName, string expectedEmail)
         {
             await UserDao.DeleteByUserName(expectedUserName);
@@ -31,8 +31,8 @@ namespace OffLogs.Api.Tests.Integration.Db.UserDaoTest
         }
         
         [Theory]
-        [InlineData("some-user", "test@test.com", "test2@test.com")]
-        [InlineData("some-user-2", "test3@test.com", "test4@test.com")]
+        [InlineData("some-user", "test2@test.com", "test3@test.com")]
+        [InlineData("some-user-2", "test4@test.com", "test5@test.com")]
         public async Task ShouldNotCreateNewUserWithSameUserName(string expectedUserName, string email1, string email2)
         {
             await UserDao.DeleteByUserName(expectedUserName);
@@ -42,8 +42,8 @@ namespace OffLogs.Api.Tests.Integration.Db.UserDaoTest
         }
         
         [Theory]
-        [InlineData("test@test.com", "someUserName", "someUserName2")]
-        [InlineData("test2@test.com", "someUserName", "someUserName2")]
+        [InlineData("test6@test.com", "someUserName", "someUserName2")]
+        [InlineData("test7@test.com", "someUserName3", "someUserName4")]
         public async Task ShouldNotCreateNewUserWithSameEmail(string expectedEmail, string userName, string userName2)
         {
             await UserDao.DeleteByUserName(userName);

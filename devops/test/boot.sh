@@ -12,6 +12,7 @@ dotnet run --configuration Development
 >&2 echo "Test Console Commands"
 cd ../OffLogs.Console
 dotnet run user-create --username=test_console_username --email=test_console@test.com
+dotnet run application-create --username test_console_username --name TestApplication
 
 >&2 echo "Run Tests"
 cd ../OffLogs.Api.Tests.Integration
