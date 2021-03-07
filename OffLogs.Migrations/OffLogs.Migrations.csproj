@@ -29,6 +29,12 @@
       <None Update="SQLFiles\Procedures\pr_UserGetByUserName.sql">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="SQLFiles\Procedures\pr_LogAdd.sql">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="SQLFiles\Scripts\2_CreateTypes.sql">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>

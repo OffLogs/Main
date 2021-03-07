@@ -12,7 +12,7 @@ namespace OffLogs.Business.Helpers
         private static readonly int SALT_SIZE = 499;
         private static readonly int PASSWORD_SIZE = 12;
         private static readonly int HASH_SIZE = 1023;
-        private static readonly int HASH_ITERATIONS = 10000;
+        private static readonly int HASH_ITERATIONS = 300;
 
         public static byte[] GenerateSalt(int? size = null)
         {

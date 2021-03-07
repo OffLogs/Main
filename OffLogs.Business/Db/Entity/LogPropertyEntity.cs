@@ -12,5 +12,14 @@ namespace OffLogs.Business.Db.Entity
         public string Key { get; set; }
         public string Value { get; set; }
         public DateTime CreateTime { get; set; }
+
+        public LogPropertyEntity() {}
+
+        public LogPropertyEntity(string key, string value)
+        {
+            Key = key;
+            Value = value;
+            CreateTime = DateTime.Now;
+        }
     }
 }

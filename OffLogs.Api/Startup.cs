@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using OffLogs.Api.Services.LogParser;
 using OffLogs.Business.Extensions;
 using Serilog;
 
@@ -30,6 +31,7 @@ namespace OffLogs.Api
         public virtual void ConfigureServices(IServiceCollection services)
         {
             services.InitCommonServices();
+            services.AddScoped<ISerilogLogParserService, SerilogLogParserService>();
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
                 {

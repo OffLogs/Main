@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Dapper.Contrib.Extensions;
 using OffLogs.Business.Db.Entity;
 
@@ -11,6 +12,12 @@ namespace OffLogs.Api.Tests.Integration.Core.Models
 
         [Computed] 
         public string ApiToken { get; set; }
+        
+        [Computed] 
+        public string ApplicationApiToken
+        {
+            get => Applications.First().ApiToken;
+        }
         
         public UserTestModel(UserEntity entity)
         {

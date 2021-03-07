@@ -44,7 +44,6 @@ namespace OffLogs.Migrations.Migrations
             Create.Table("LogProperties")
                 .WithColumn("Id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("LogId").AsInt64()
-                .WithColumn("Level").AsString(20)
                 .WithColumn("Key").AsString(200)
                 .WithColumn("Value").AsString(2048)
                 .WithColumn("CreateTime").AsDateTime();
