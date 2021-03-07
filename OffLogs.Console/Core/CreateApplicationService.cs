@@ -42,7 +42,7 @@ namespace OffLogs.Console.Core
                     _logger.LogError("User not found!");    
                     return 1;
                 }
-                _logger.LogError("User was found...");  
+                _logger.LogInformation("User was found...");  
                 var application = await _applicationDao.CreateNewApplication(user.Id, verb.Name);
                 
                 _logger.LogInformation("Application is created!");
