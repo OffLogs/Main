@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -33,6 +34,15 @@ namespace OffLogs.Api
             services.InitCommonServices();
             services.AddScoped<ISerilogLogParserService, SerilogLogParserService>();
             services.AddControllers()
+                .ConfigureApiBehaviorOptions(options =>
+                {
+                    options.InvalidModelStateResponseFactory = context =>
+                    {
+                        // Get an instance of ILogger (see below) and log accordingly.
+                        Log.Logger.Information(context.ModelState.GetErrorsFromModelState().FirstOrDefault());
+                        return new BadRequestObjectResult(context.ModelState);
+                    };
+                })
                 .AddNewtonsoftJson(options =>
                 {
                     // Remove nullable fields from response Json
