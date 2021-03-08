@@ -11,18 +11,10 @@ namespace OffLogs.Migrations
 {
     public class Program
     {
-        private static string HostingEnvironment {
-            get {
-                var value = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-                return string.IsNullOrEmpty(value) ? "Development" : value;
-            }
-        }
-
         private static string CustomConnectionString => Environment.GetEnvironmentVariable("ASPNETCORE_CONNECTION_STRING");
 
         public static IConfiguration Configuration;
-        public static string ConnectionString;
-
+        
         static void Main(string[] args)
         {
             Configuration = new ConfigurationBuilder()
@@ -31,12 +23,17 @@ namespace OffLogs.Migrations
                 .AddJsonFile("appsettings.Local.json", true)
                 .AddEnvironmentVariables()
                 .Build();
-            ConnectionString = string.IsNullOrEmpty(CustomConnectionString)
+            
+            var defaultConnectionString = string.IsNullOrEmpty(CustomConnectionString)
                 ? Configuration.GetConnectionString("DefaultConnection")
                 : CustomConnectionString;
+            Migrate(defaultConnectionString);
 
-            Migrate(ConnectionString);
-
+            var testConnectionString = Configuration.GetConnectionString("TestConnection");
+            if (!string.IsNullOrEmpty(testConnectionString))
+            {
+                Migrate(testConnectionString);    
+            }
             Console.WriteLine("Migrations are applied...");
         }
 
