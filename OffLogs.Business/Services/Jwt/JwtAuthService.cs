@@ -7,6 +7,7 @@ using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using OffLogs.Business.Extensions;
 
 namespace OffLogs.Business.Services.Jwt
 {
@@ -15,22 +16,7 @@ namespace OffLogs.Business.Services.Jwt
         private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContext;
         
-        private string JwtToken
-        {
-            get {
-                if (_httpContext
-                    .HttpContext != null)
-                {
-                    string authString = _httpContext
-                        .HttpContext
-                        .Request
-                        .Headers["authorization"]
-                        .ToString();
-                    return authString.Substring(7, authString.Length - 7);
-                }
-                return null;
-            }
-        }
+        private string JwtToken => _httpContext.HttpContext?.Request.GetApiToken();
         
         public JwtAuthService(IConfiguration configuration, IHttpContextAccessor httpContext)
         {

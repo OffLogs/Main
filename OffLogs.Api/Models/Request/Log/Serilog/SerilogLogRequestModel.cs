@@ -25,5 +25,11 @@ namespace OffLogs.Api.Models.Request.Log.Serilog
         public string Exception { get; set; }
 
         public Dictionary<string, string> Properties { get; set; } = new();
+        
+        [JsonIgnore]
+        public LogLevel LogLevel
+        {
+            get => new LogLevel().FromString(Level);
+        }
     }
 }

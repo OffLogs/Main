@@ -1,3 +1,5 @@
+using OffLogs.Business.Extensions;
+
 namespace OffLogs.Business.Constants
 {
     public class SerilogLogLevel : AConstant<SerilogLogLevel>
@@ -12,7 +14,7 @@ namespace OffLogs.Business.Constants
         
         public override bool IsValid(string value)
         {
-            value = value.Trim().ToLower();
+            value = value.Trim().FirstCharToUpper();
             return value == Error.ToString() 
                    || value == Warning.ToString() 
                    || value == Fatal.ToString() 

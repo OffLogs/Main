@@ -7,6 +7,7 @@ using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using OffLogs.Business.Extensions;
 
 namespace OffLogs.Business.Services.Jwt
 {
@@ -19,23 +20,8 @@ namespace OffLogs.Business.Services.Jwt
         private readonly string _audience;
         private readonly SymmetricSecurityKey _key;
         
-        private string JwtToken
-        {
-            get {
-                if (_httpContext
-                    .HttpContext != null)
-                {
-                    string authString = _httpContext
-                        .HttpContext
-                        .Request
-                        .Headers["authorization"]
-                        .ToString();
-                    return authString.Substring(7, authString.Length - 7);
-                }
-                return null;
-            }
-        }
-        
+        private string JwtToken => _httpContext.HttpContext?.Request.GetApiToken();
+
         public JwtApplicationService(IConfiguration configuration, IHttpContextAccessor httpContext)
         {
             _configuration = configuration;
