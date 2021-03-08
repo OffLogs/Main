@@ -5,29 +5,23 @@ services:
     container_name: offlogs-api-production
     restart: always
     build:
-      context: ./../../../
-      dockerfile: devops/dev/Api/Dockerfile
+      context: ./../../
+      dockerfile: devops/prod/Api/Dockerfile
       args:
         BUILD_COMMAND: build
     environment:
       - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
-    volumes:
-      - ./../../../Vizit.Api/wwwroot:/app/wwwroot
     ports:
-      - 5031:80
+      - 5051:80
     depends_on:
       - migrations
   migrations:
     container_name: offlogs-migrations-production
     restart: always
     build:
-      context: ./../../../
-      dockerfile: devops/dev/Migrations/Dockerfile
+      context: ./../../
+      dockerfile: devops/prod/Migrations/Dockerfile
       args:
         BUILD_COMMAND: build
     environment:
       - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
-    volumes:
-      - ./../../../Vizit.Api/wwwroot:/app/wwwroot
-    ports:
-      - 5031:80

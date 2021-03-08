@@ -5,6 +5,5 @@
 #    sleep 1
 #done
 
-cd OffLogs.Api/
 >&2 echo "SQL Server is up - executing command"
 dotnet run --no-launch-profile

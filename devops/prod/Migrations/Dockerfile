@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0
 
 COPY . /app
 RUN ls /app
-WORKDIR /app/Vizit.Migrations
+WORKDIR /app/OffLogs.Migrations
 
 ENV ASPNETCORE_ENVIRONMENT=Development
 ENV DOTNET_USE_POLLING_FILE_WATCHER=true  
