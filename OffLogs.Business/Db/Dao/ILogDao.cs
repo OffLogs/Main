@@ -17,5 +17,7 @@ namespace OffLogs.Business.Db.Dao
             ICollection<LogPropertyEntity> properties = null,
             ICollection<LogTraceEntity> traces = null
         );
+
+        Task<(IEnumerable<LogEntity>, int)> GetList(long applicationId, int page);
     }
 }

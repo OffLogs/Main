@@ -22,10 +22,9 @@ namespace OffLogs.Business.Db.Entity
         
         [Write(false)]
         [Computed]
-        public List<LogTraceEntity> Traces { get; set; }
-        
-        [Write(false)]
-        [Computed]
-        public List<LogPropertyEntity> Properties { get; set; }
+        public List<LogTraceEntity> Traces { get; set; } = new();
+
+        [Write(false)] [Computed] 
+        public List<LogPropertyEntity> Properties { get; set; } = new();
     }
 }

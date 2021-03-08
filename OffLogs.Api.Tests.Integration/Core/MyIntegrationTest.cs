@@ -17,6 +17,7 @@ namespace OffLogs.Api.Tests.Integration.Core
 
         protected readonly ICommonDao Dao;
         protected readonly IUserDao UserDao;
+        protected readonly ILogDao LogDao;
         protected readonly IJwtAuthService JwtAuthService;
         protected readonly IDataFactoryService DataFactory;
         protected readonly IDataSeederService DataSeeder;
@@ -27,6 +28,7 @@ namespace OffLogs.Api.Tests.Integration.Core
             // jwtService = _factory.Services.GetService(typeof(IJwtService)) as IJwtService;
             Dao = _factory.Services.GetService(typeof(ICommonDao)) as ICommonDao;
             UserDao = _factory.Services.GetService(typeof(IUserDao)) as IUserDao;
+            LogDao = _factory.Services.GetService(typeof(ILogDao)) as ILogDao;
             DataFactory = _factory.Services.GetService(typeof(IDataFactoryService)) as IDataFactoryService;
             DataSeeder = _factory.Services.GetService(typeof(IDataSeederService)) as IDataSeederService;
         }

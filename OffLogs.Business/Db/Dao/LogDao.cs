@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Dapper.Contrib.Extensions;
@@ -45,6 +47,44 @@ namespace OffLogs.Business.Db.Dao
             parameters.AddTable("@Properties", "[dbo].[LogPropertyType]", properties ?? new List<LogPropertyEntity>());
             parameters.AddTable("@Traces", "[dbo].[LogTraceType]", traces ?? new List<LogTraceEntity>());
             await ExecuteWithReturnAsync("pr_LogAdd", parameters);
+        }
+        
+        public async Task<(IEnumerable<LogEntity>, int)> GetList(long applicationId, int page)
+        {
+            var sumCounter = 0;
+            var result = new List<LogEntity>();
+            var parameters = new
+            {
+                ApplicationId = applicationId,
+                Page = page,
+                PageSize = 30
+            };
+            var query = await Connection.QueryAsync<LogEntity, LogPropertyEntity, LogTraceEntity, int, LogEntity>(
+                sql: "pr_LogGetList",
+                map: (log, property, trace, count) =>
+                {
+                    var existsLog = result.FirstOrDefault(innerLog => innerLog.Id == log.Id);
+                    if (existsLog == null)
+                    {
+                        existsLog = log;
+                        result.Add(existsLog);
+                    }
+                    if (property != null && !existsLog.Properties.Exists(innerProp => innerProp.Id == property?.Id))
+                    {
+                        existsLog.Properties.Add(property);    
+                    }
+                    if (trace != null && !existsLog.Traces.Exists(innerTrace => innerTrace.Id == trace?.Id))
+                    {
+                        existsLog.Traces.Add(trace);    
+                    }
+                    sumCounter = count;
+                    return log;
+                },
+                param: parameters,
+                splitOn: "Id,Id,Id,sumCount",
+                commandType: CommandType.StoredProcedure
+            );
+            return (result, sumCounter);
         }
     }
 }
