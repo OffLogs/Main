@@ -6,7 +6,6 @@ namespace OffLogs.Api.Models.Request.Log.Common
 {
     public class AddCommonLogsRequestModel
     {
-        [Required]
         [JsonPropertyName("logs")]
         public List<CommonLogRequestModel> Logs { get; set; } = new();
     }
