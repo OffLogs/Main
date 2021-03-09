@@ -1,17 +1,12 @@
-using System;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using OffLogs.Api.Models.Request.Log.Serilog;
 using OffLogs.Api.Models.Request.User;
-using OffLogs.Api.Services.LogParser;
 using OffLogs.Business.Db.Dao;
 using OffLogs.Business.Extensions;
 using OffLogs.Business.Helpers;
-using OffLogs.Business.Mvc.Attribute.Auth;
 using OffLogs.Business.Mvc.Controller;
 using OffLogs.Business.Services.Jwt;
 
