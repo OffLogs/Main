@@ -1,15 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using OffLogs.Business.Mvc.Attribute.Validation;
 
 namespace OffLogs.Api.Models.Request
 {
-    public class LoginRequestModel
+    public record PaginatedRequestModel
     {
         [Required]
-        [StringLength(200)]
-        public string UserName { get; set; }
-        
-        [Required]
-        [StringLength(200)]
-        public string Password { get; set; }
+        [IsPositive]
+        public int Page { get; set; }
     }
 }

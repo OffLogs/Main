@@ -38,6 +38,12 @@
       <None Update="SQLFiles\Procedures\pr_LogGetList.sql">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="SQLFiles\Procedures\pr_ApplicationGet.sql">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="SQLFiles\Procedures\fn_ApplicationIsOwner.sql">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>

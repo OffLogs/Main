@@ -74,7 +74,7 @@ namespace OffLogs.Business.Services.Jwt
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
         
-        public long? GetUserId(string jwtString = null)
+        public long GetUserId(string jwtString = null)
         {
             try
             {   
@@ -83,7 +83,7 @@ namespace OffLogs.Business.Services.Jwt
             }
             catch (Exception)
             {
-                return null;
+                return 0;
             }
         }
         

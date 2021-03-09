@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Mvc.Attribute.Constant;
+using OffLogs.Business.Mvc.Attribute.Validation;
 
 namespace OffLogs.Api.Models.Request.Log.Common
 {
@@ -18,6 +19,7 @@ namespace OffLogs.Api.Models.Request.Log.Common
         [StringLength(1024)]
         public string Message { get; set; }
         
+        [StringArrayLength(512)]
         public List<string> Traces { get; set; } = new();
 
         public Dictionary<string, string> Properties { get; set; } = new();

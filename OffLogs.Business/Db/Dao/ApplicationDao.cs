@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
+using Dapper;
 using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -40,6 +43,21 @@ namespace OffLogs.Business.Db.Dao
             application.ApiToken = _jwtService.BuildJwt(application.Id);
             await Connection.UpdateAsync(application);
             return application;
+        }
+        
+        public async Task<bool> IsOwner(long userId, long applicationId)
+        {
+            var inputParams = new
+            {
+                UserId = userId, 
+                ApplicationId = applicationId
+            };
+            var parameters = new DynamicParameters(inputParams);
+            using var multi = await Connection.QueryMultipleAsync(
+                "SELECT dbo.fn_ApplicationIsOwner(@UserId, @ApplicationId)",
+                parameters
+            );
+            return multi.Read<bool>().First();
         }
     }
 }

@@ -25,7 +25,6 @@
 
     <ItemGroup>
       <Folder Include="Core" />
-      <Folder Include="Models\Request\Board" />
       <Folder Include="Services\LogParser" />
     </ItemGroup>
 

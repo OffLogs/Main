@@ -1,10 +1,13 @@
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using OffLogs.Api.Models.Request;
+using OffLogs.Api.Models.Request.Board;
 using OffLogs.Api.Models.Request.Log.Common;
 using OffLogs.Api.Models.Request.Log.Serilog;
 using OffLogs.Business.Db.Dao;
@@ -22,45 +25,27 @@ namespace OffLogs.Api.Controller.Board
     {
         private readonly IJwtAuthService _jwtService;
         private readonly ILogDao _logDao;
+        private readonly IApplicationDao _applicationDao;
         
         public ApplicationController(
             ILogger<ApplicationController> logger, 
             IConfiguration configuration,
             ILogDao logDao,
+            IApplicationDao applicationDao,
             IJwtAuthService jwtService
         ) : base(logger, configuration)
         {
             _logDao = logDao;
+            _applicationDao = applicationDao;
             _jwtService = jwtService;
         }
         
         [HttpPost("list")]
-        public async Task<IActionResult> LogSerilogAction([FromBody]AddSerilogLogsRequestModel model)
+        public async Task<IActionResult> GetList([FromBody]LogListRequestModel model)
         {
-            if (!model.Events.Any())
-            {
-                return JsonSuccess();
-            }
             try
             {
-                // var applicationId = _jwtService.GetApplicationId().Value;
-                // foreach (var log in model.Events)
-                // {
-                //     var properties = log.Properties.Select(
-                //         property => new LogPropertyEntity(property.Key, property.Value)
-                //     ).ToArray();
-                //     var traces = log.Exception?.Split("\n").Select(
-                //         trace => new LogTraceEntity(trace)
-                //     ).ToArray();
-                //     await _logDao.AddAsync(
-                //         applicationId,
-                //         log.RenderedMessage,
-                //         log.LogLevel,
-                //         log.Timestamp,
-                //         properties,
-                //         traces
-                //     );    
-                // }
+                var userId = _jwtService.GetUserId();
                 return JsonSuccess();
             }
             catch (Exception e)
