@@ -25,6 +25,7 @@
 
     <ItemGroup>
       <Folder Include="Core" />
+      <Folder Include="Services\LogParser" />
     </ItemGroup>
 
 </Project>

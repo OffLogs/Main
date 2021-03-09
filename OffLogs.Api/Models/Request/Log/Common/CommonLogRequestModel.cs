@@ -7,7 +7,7 @@ using OffLogs.Business.Mvc.Attribute.Constant;
 
 namespace OffLogs.Api.Models.Request.Log.Common
 {
-    public class SerilogLogRequestModel
+    public class CommonLogRequestModel
     {
         public DateTime Timestamp { get; set; }
         
@@ -16,13 +16,10 @@ namespace OffLogs.Api.Models.Request.Log.Common
         public string Level { get; set; }
         
         [StringLength(1024)]
-        public string MessageTemplate { get; set; }
-        
-        [StringLength(1024)]
-        public string RenderedMessage { get; set; }
+        public string Message { get; set; }
         
         [StringLength(5028)]
-        public string Exception { get; set; }
+        public List<string> Traces { get; set; } = new();
 
         public Dictionary<string, string> Properties { get; set; } = new();
         
