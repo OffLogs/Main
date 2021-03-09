@@ -31,8 +31,20 @@ namespace OffLogs.Api.Controller
         }
         
         [OnlyAuthorizedApplication]
+        [HttpPost("")]
+        public async Task<IActionResult> LogAction([FromBody]AddSerilogLogsRequestModel model)
+        {
+            if (!model.Events.Any())
+            {
+                return JsonSuccess();
+            }
+            await _serilogLogParserService.SaveAsync(_jwtService.GetApplicationId().Value, model);
+            return JsonSuccess();
+        }
+        
+        [OnlyAuthorizedApplication]
         [HttpPost("serilog")]
-        public async Task<IActionResult> LogSerilog([FromBody]SerilogEventsRequestModel model)
+        public async Task<IActionResult> LogSerilogAction([FromBody]AddSerilogLogsRequestModel model)
         {
             if (!model.Events.Any())
             {

@@ -5,6 +5,6 @@ namespace OffLogs.Api.Services.LogParser
 {
     public interface ISerilogLogParserService
     {
-        Task SaveAsync(long applicationId, SerilogEventsRequestModel model);
+        Task SaveAsync(long applicationId, AddSerilogLogsRequestModel model);
     }
 }

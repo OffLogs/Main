@@ -17,7 +17,7 @@ namespace OffLogs.Api.Services.LogParser
             _logDao = logDao;
         }
 
-        public async Task SaveAsync(long applicationId, SerilogEventsRequestModel model)
+        public async Task SaveAsync(long applicationId, AddSerilogLogsRequestModel model)
         {
             foreach (var log in model.Events)
             {
