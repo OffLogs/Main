@@ -31,6 +31,7 @@ namespace OffLogs.Api.Tests.Integration.Core
             LogDao = _factory.Services.GetService(typeof(ILogDao)) as ILogDao;
             DataFactory = _factory.Services.GetService(typeof(IDataFactoryService)) as IDataFactoryService;
             DataSeeder = _factory.Services.GetService(typeof(IDataSeederService)) as IDataSeederService;
+            JwtAuthService = _factory.Services.GetService(typeof(IJwtAuthService)) as IJwtAuthService;
         }
 
         public async Task<HttpResponseMessage> PostRequestAsAnonymousAsync(string url, object data = null)
