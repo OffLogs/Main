@@ -33,7 +33,7 @@ namespace OffLogs.Api.Controller
         }
         
         [OnlyAuthorizedApplication]
-        [HttpPost("")]
+        [HttpPost("add")]
         public async Task<IActionResult> LogAction([FromBody]AddCommonLogsRequestModel model)
         {
             if (!model.Logs.Any())
@@ -70,7 +70,7 @@ namespace OffLogs.Api.Controller
         }
         
         [OnlyAuthorizedApplication]
-        [HttpPost("serilog")]
+        [HttpPost("add/serilog")]
         public async Task<IActionResult> LogSerilogAction([FromBody]AddSerilogLogsRequestModel model)
         {
             if (!model.Events.Any())
