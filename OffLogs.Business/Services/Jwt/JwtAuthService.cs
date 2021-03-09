@@ -16,12 +16,23 @@ namespace OffLogs.Business.Services.Jwt
         private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContext;
         
+        private readonly string _issuer;
+        private readonly string _audience;
+        private readonly SymmetricSecurityKey _key;
+        
         private string JwtToken => _httpContext.HttpContext?.Request.GetApiToken();
         
         public JwtAuthService(IConfiguration configuration, IHttpContextAccessor httpContext)
         {
             _configuration = configuration;
             _httpContext = httpContext;
+            _key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(
+                    _configuration.GetValue<string>("App:Auth:SymmetricSecurityKey")
+                )
+            );
+            _issuer = _configuration.GetValue<string>("App:Auth:Issuer");
+            _audience = _configuration.GetValue<string>("App:Auth:Audience");
         }
 
         public string GetToken()
@@ -74,6 +85,35 @@ namespace OffLogs.Business.Services.Jwt
             {
                 return null;
             }
+        }
+        
+        public bool IsValidJwt(string jwtString = null)
+        {
+            var token = string.IsNullOrEmpty(jwtString) ? JwtToken : jwtString;
+            var parameters = new TokenValidationParameters()
+            {
+                ValidateIssuerSigningKey = true,
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidIssuer = _issuer,
+                ValidAudience = _audience,
+                IssuerSigningKey = _key
+            };
+            try
+            {
+                var handler = new JwtSecurityTokenHandler();
+                handler.ValidateToken(
+                    token,
+                    parameters,
+                    out SecurityToken validatedToken
+                );
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

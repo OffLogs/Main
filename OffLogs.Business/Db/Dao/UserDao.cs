@@ -51,7 +51,7 @@ namespace OffLogs.Business.Db.Dao
         {
             return Connection.QueryFirstOrDefaultAsync<UserEntity>("pr_UserGetByUserName", new
             {
-                UserName = userName
+                UserName = FormatUtil.ClearUserName(userName)
             },  null, null, CommandType.StoredProcedure);
         }
     }

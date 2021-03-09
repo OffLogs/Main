@@ -33,8 +33,13 @@ namespace OffLogs.Business.Mvc.Controller
                 }
             );
         }
-        
-        protected JsonResult JsonError(string message = null)
+
+        protected JsonResult JsonError(HttpStatusCode statusCode)
+        {
+            return JsonError(null, statusCode);
+        }
+
+        protected JsonResult JsonError(string message = null, HttpStatusCode? statusCode = null)
         {
             var response = new JsonResult(
                 new JsonCommonResponse()
@@ -43,7 +48,7 @@ namespace OffLogs.Business.Mvc.Controller
                     Message = message
                 }
             );
-            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            response.StatusCode = (int)(statusCode ?? HttpStatusCode.BadRequest);
             return response;
         }
     }
