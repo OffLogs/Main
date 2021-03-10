@@ -9,6 +9,8 @@ using Microsoft.Extensions.Logging;
 using OffLogs.Api.Models.Request.Board;
 using OffLogs.Api.Models.Request.Log.Common;
 using OffLogs.Api.Models.Request.Log.Serilog;
+using OffLogs.Api.Models.Response;
+using OffLogs.Api.Models.Response.Board;
 using OffLogs.Business.Db.Dao;
 using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Mvc.Attribute.Auth;
@@ -49,11 +51,14 @@ namespace OffLogs.Api.Controller.Board
                 {
                     return JsonError(HttpStatusCode.Forbidden);
                 }
-                var list = await _logDao.GetList(
+                var (list, totalItems) = await _logDao.GetList(
                     model.ApplicationId,
                     model.Page
                 );
-                return JsonSuccess();
+                var responseList = list.Select(item => new LogResponseModel(item)).ToList();
+                return JsonSuccess(
+                    new PaginatedResponseModel<LogResponseModel>(responseList, totalItems)
+                );
             }
             catch (Exception e)
             {
