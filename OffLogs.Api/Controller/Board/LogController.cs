@@ -11,6 +11,7 @@ using OffLogs.Api.Models.Request.Log.Common;
 using OffLogs.Api.Models.Request.Log.Serilog;
 using OffLogs.Api.Models.Response;
 using OffLogs.Api.Models.Response.Board;
+using OffLogs.Business.Constants;
 using OffLogs.Business.Db.Dao;
 using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Mvc.Attribute.Auth;
@@ -53,7 +54,8 @@ namespace OffLogs.Api.Controller.Board
                 }
                 var (list, totalItems) = await _logDao.GetList(
                     model.ApplicationId,
-                    model.Page
+                    model.Page,
+                    GlobalConstants.ListPageSize
                 );
                 var responseList = list.Select(item => new LogResponseModel(item)).ToList();
                 return JsonSuccess(

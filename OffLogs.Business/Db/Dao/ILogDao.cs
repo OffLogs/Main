@@ -18,6 +18,6 @@ namespace OffLogs.Business.Db.Dao
             ICollection<LogTraceEntity> traces = null
         );
 
-        Task<(IEnumerable<LogEntity>, int)> GetList(long applicationId, int page);
+        Task<(IEnumerable<LogEntity>, int)> GetList(long applicationId, int page, int pageSize = GlobalConstants.ListPageSize);
     }
 }

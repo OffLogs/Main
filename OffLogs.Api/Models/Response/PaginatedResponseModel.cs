@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using OffLogs.Business.Constants;
 
 namespace OffLogs.Api.Models.Response
 {
@@ -19,7 +20,7 @@ namespace OffLogs.Api.Models.Response
         {
         }
 
-        public PaginatedResponseModel(ICollection<T> responseList, int totalItems, int pageSize = 20)
+        public PaginatedResponseModel(ICollection<T> responseList, int totalItems, int pageSize = GlobalConstants.ListPageSize)
         {
             Items = responseList;
             PageSize = pageSize;

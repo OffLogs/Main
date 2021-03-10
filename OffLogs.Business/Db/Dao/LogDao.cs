@@ -49,7 +49,7 @@ namespace OffLogs.Business.Db.Dao
             await ExecuteWithReturnAsync("pr_LogAdd", parameters);
         }
         
-        public async Task<(IEnumerable<LogEntity>, int)> GetList(long applicationId, int page)
+        public async Task<(IEnumerable<LogEntity>, int)> GetList(long applicationId, int page, int pageSize)
         {
             var sumCounter = 0;
             var result = new List<LogEntity>();
@@ -57,7 +57,7 @@ namespace OffLogs.Business.Db.Dao
             {
                 ApplicationId = applicationId,
                 Page = page,
-                PageSize = 30
+                PageSize = pageSize
             };
             var query = await Connection.QueryAsync<LogEntity, LogPropertyEntity, LogTraceEntity, int, LogEntity>(
                 sql: "pr_LogGetList",
