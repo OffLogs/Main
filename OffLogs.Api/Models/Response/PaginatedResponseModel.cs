@@ -14,13 +14,17 @@ namespace OffLogs.Api.Models.Response
 
         [JsonPropertyName("pageSize")]
         public int PageSize { get; set; }
-        
+
+        public PaginatedResponseModel()
+        {
+        }
+
         public PaginatedResponseModel(ICollection<T> responseList, int totalItems, int pageSize = 20)
         {
             Items = responseList;
             PageSize = pageSize;
-            decimal totalPages = totalItems / pageSize;
-            TotalPages = (int)Math.Floor(totalPages);
+            decimal totalPages = (decimal)totalItems / pageSize;
+            TotalPages = (int)Math.Ceiling(totalPages);
         }
     }
 }

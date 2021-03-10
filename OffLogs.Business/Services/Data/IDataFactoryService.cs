@@ -1,4 +1,5 @@
 using Bogus;
+using OffLogs.Business.Constants;
 using OffLogs.Business.Db.Entity;
 
 namespace OffLogs.Business.Services.Data
@@ -7,5 +8,8 @@ namespace OffLogs.Business.Services.Data
     {
         Faker<UserEntity> UserFactory();
         Faker<ApplicationEntity> ApplicationFactory(long userId);
+        Faker<LogEntity> LogFactory(long applicationId, LogLevel level);
+        Faker<LogTraceEntity> LogTraceFactory(long logId);
+        Faker<LogPropertyEntity> LogPropertyFactory(long logId);
     }
 }

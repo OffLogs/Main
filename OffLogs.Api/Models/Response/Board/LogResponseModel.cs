@@ -9,14 +9,18 @@ namespace OffLogs.Api.Models.Response.Board
     public record LogResponseModel
     {
         public long Id { get; }
-        public long ApplicationId { get; }
-        public string Level { get; }
-        public string Message { get; }
-        public DateTime LogTime { get; }
-        public DateTime CreateTime { get; }
+        public long ApplicationId { get; set; }
+        public string Level { get; set; }
+        public string Message { get; set; }
+        public DateTime LogTime { get; set; }
+        public DateTime CreateTime { get; set; }
         
-        public List<string> Traces { get; } = new();
-        public Dictionary<string, string> Properties { get; } = new();
+        public List<string> Traces { get; set; } = new();
+        public Dictionary<string, string> Properties { get; set; } = new();
+
+        public LogResponseModel()
+        {
+        }
 
         public LogResponseModel(LogEntity entity)
         {

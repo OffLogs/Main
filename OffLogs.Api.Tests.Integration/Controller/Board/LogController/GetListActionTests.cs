@@ -2,10 +2,14 @@
 using System.Net;
 using System.Threading.Tasks;
 using OffLogs.Api.Models.Request.Board;
+using OffLogs.Api.Models.Response;
+using OffLogs.Api.Models.Response.Board;
 using OffLogs.Api.Tests.Integration.Core;
+using OffLogs.Business.Constants;
+using OffLogs.Business.Test.Extensions;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Controller.Board.Log
+namespace OffLogs.Api.Tests.Integration.Controller.Board.LogController
 {
     public class GetListActionTests: MyIntegrationTest
     {
@@ -42,6 +46,32 @@ namespace OffLogs.Api.Tests.Integration.Controller.Board.Log
             });
             // Assert
             Assert.True(response.StatusCode == HttpStatusCode.Forbidden);
+        }
+        
+        [Theory]
+        [InlineData("/board/log/list")]
+        public async Task ShouldReceiveLogsList(string url)
+        {
+            var user = await DataSeeder.CreateNewUser();
+            await DataSeeder.CreateLogs(user.ApplicationId, LogLevel.Error, 3);
+            
+            var user2 = await DataSeeder.CreateNewUser();
+            await DataSeeder.CreateLogs(user2.ApplicationId, LogLevel.Error, 2);
+            
+            // Act
+            var response = await PostRequestAsync(url, user.ApiToken, new LogListRequestModel()
+            {
+                Page = 1,
+                ApplicationId = user.ApplicationId
+            });
+            response.EnsureSuccessStatusCode();
+            // Assert
+            var responseData = await response.GetJsonDataAsync<PaginatedResponseModel<LogResponseModel>>();
+            Assert.Equal(1, responseData.Data.TotalPages);
+            Assert.Equal(3, responseData.Data.Items.Count);
+            
+            Assert.Equal(4, responseData.Data.Items.First().Traces.Count);
+            Assert.Equal(3, responseData.Data.Items.First().Properties.Count);
         }
     }
 }

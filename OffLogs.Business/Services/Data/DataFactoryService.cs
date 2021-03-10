@@ -1,5 +1,6 @@
 using System;
 using Bogus;
+using OffLogs.Business.Constants;
 using OffLogs.Business.Db.Entity;
 
 namespace OffLogs.Business.Services.Data
@@ -56,6 +57,69 @@ namespace OffLogs.Business.Services.Data
                 )
                 .RuleFor(
                     entity => entity.UpdateTime,
+                    (faker) => faker.Date.Past()
+                );
+        }
+
+        public Faker<LogEntity> LogFactory(long applicationId, LogLevel level)
+        {
+            return new Faker<LogEntity>()
+                .RuleFor(
+                    entity => entity.ApplicationId,
+                    () => applicationId
+                )
+                .RuleFor(
+                    entity => entity.Message,
+                    (faker) => faker.Lorem.Sentence()
+                )
+                .RuleFor(
+                    entity => entity.Level,
+                    () => level
+                )
+                .RuleFor(
+                    entity => entity.LogTime,
+                    (faker) => faker.Date.Past()
+                )
+                .RuleFor(
+                    entity => entity.CreateTime,
+                    (faker) => faker.Date.Past()
+                );
+        }
+
+        public Faker<LogTraceEntity> LogTraceFactory(long logId)
+        {
+            return new Faker<LogTraceEntity>()
+                .RuleFor(
+                    entity => entity.LogId,
+                    () => logId
+                )
+                .RuleFor(
+                    entity => entity.Trace,
+                    (faker) => faker.Lorem.Sentence()
+                )
+                .RuleFor(
+                    entity => entity.CreateTime,
+                    (faker) => faker.Date.Past()
+                );
+        }
+        
+        public Faker<LogPropertyEntity> LogPropertyFactory(long logId)
+        {
+            return new Faker<LogPropertyEntity>()
+                .RuleFor(
+                    entity => entity.LogId,
+                    () => logId
+                )
+                .RuleFor(
+                    entity => entity.Key,
+                    (faker) => faker.Random.Word()
+                )
+                .RuleFor(
+                    entity => entity.Value,
+                    (faker) => faker.Random.Word()
+                )
+                .RuleFor(
+                    entity => entity.CreateTime,
                     (faker) => faker.Date.Past()
                 );
         }
