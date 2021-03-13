@@ -33,7 +33,18 @@ namespace OffLogs.Api
                     options.InvalidModelStateResponseFactory = context =>
                     {
                         // Get an instance of ILogger (see below) and log accordingly.
-                        Log.Logger.Information(context.ModelState.GetErrorsFromModelState().FirstOrDefault());
+                        var body = context.HttpContext.Request.ReadBodyAsync().Result;
+                        Log.Logger.Debug($"Request data: {body}");
+                        foreach (var value in context.ModelState.Values)
+                        {
+                            foreach (var error in value.Errors)
+                            {
+                                var errorMessage = !string.IsNullOrEmpty(error.ErrorMessage)
+                                    ? error.ErrorMessage
+                                    : error.Exception?.Message;
+                                Log.Logger.Error(errorMessage);
+                            }
+                        }
                         return new BadRequestObjectResult(context.ModelState);
                     };
                 })
