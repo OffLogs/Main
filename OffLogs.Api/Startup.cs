@@ -34,7 +34,7 @@ namespace OffLogs.Api
                     {
                         // Get an instance of ILogger (see below) and log accordingly.
                         var body = context.HttpContext.Request.ReadBodyAsync().Result;
-                        Log.Logger.Debug($"Request data: {body}");
+                        Log.Logger.Error($"Request data: {body}");
                         foreach (var value in context.ModelState.Values)
                         {
                             foreach (var error in value.Errors)
