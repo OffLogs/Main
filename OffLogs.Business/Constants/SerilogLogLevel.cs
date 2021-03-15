@@ -8,6 +8,7 @@ namespace OffLogs.Business.Constants
         public static readonly SerilogLogLevel Warning = new SerilogLogLevel("Warning", "Warning");
         public static readonly SerilogLogLevel Fatal = new SerilogLogLevel("Fatal", "Fatal");
         public static readonly SerilogLogLevel Information = new SerilogLogLevel("Information", "Information");
+        public static readonly SerilogLogLevel Debug = new SerilogLogLevel("Debug", "Debug");
         public SerilogLogLevel() { }
         
         private SerilogLogLevel(string value, string name) : base(value, name) { }
@@ -18,7 +19,8 @@ namespace OffLogs.Business.Constants
             return value == Error.ToString() 
                    || value == Warning.ToString() 
                    || value == Fatal.ToString() 
-                   || value == Information.ToString();
+                   || value == Information.ToString()
+                   || value == Debug.ToString();
         }
 
         public override SerilogLogLevel FromString(string Value)
@@ -31,6 +33,8 @@ namespace OffLogs.Business.Constants
                 return Fatal;
             if (Information.GetValue().Equals(Value))
                 return Information;
+            if (Debug.GetValue().Equals(Value))
+                return Debug;
             return null;
         }
     }
