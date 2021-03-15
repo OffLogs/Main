@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using OffLogs.Api.Middleware;
 using OffLogs.Business.Extensions;
 using Serilog;
 
@@ -94,6 +95,8 @@ namespace OffLogs.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseMiddleware<RequestResponseLoggerMiddleware>();
+            
             app.UseRouting();
 
             app.UseAuthentication();
