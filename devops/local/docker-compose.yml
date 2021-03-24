@@ -2,6 +2,7 @@ version: "3.8"
 
 volumes:
   common: {}
+  postgre-volume: {}
   
 
 services:
@@ -16,3 +17,13 @@ services:
       - 1448:1433
     volumes:
       - common:/var/opt/mssql
+  postgres:
+    container_name: offlogs-local-postgres
+    image: postgres:13.2
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - 5432:5432
+    volumes:
+      - postgre-volume:/var/lib/postgresql/data
