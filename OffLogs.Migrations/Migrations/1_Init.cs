@@ -8,59 +8,59 @@ namespace OffLogs.Migrations.Migrations
     {
         public override void Up()
         {
-            Create.Table("Users")
-                .WithColumn("Id").AsInt64().PrimaryKey().Identity()
-                .WithColumn("UserName").AsString(200).Unique()
-                .WithColumn("Email").AsString(200).Unique()
-                .WithColumn("PasswordHash").AsBinary()
-                .WithColumn("PasswordSalt").AsBinary()
-                .WithColumn("CreateTime").AsDateTime()
-                .WithColumn("UpdateTime").AsDateTime();
+            Create.Table("users")
+                .WithColumn("id").AsInt64().PrimaryKey().Identity()
+                .WithColumn("user_name").AsString(200).Unique()
+                .WithColumn("email").AsString(200).Unique()
+                .WithColumn("password_hash").AsBinary()
+                .WithColumn("password_salt").AsBinary()
+                .WithColumn("create_time").AsDateTime()
+                .WithColumn("update_time").AsDateTime();
             
-            Create.Table("Applications")
-                .WithColumn("Id").AsInt64().PrimaryKey().Identity()
-                .WithColumn("UserId").AsInt64()
-                .WithColumn("Name").AsString(200)   
-                .WithColumn("ApiToken").AsString(2048)
-                .WithColumn("CreateTime").AsDateTime()
-                .WithColumn("UpdateTime").AsDateTime();
+            Create.Table("applications")
+                .WithColumn("id").AsInt64().PrimaryKey().Identity()
+                .WithColumn("user_id").AsInt64()
+                .WithColumn("name").AsString(200)   
+                .WithColumn("api_token").AsString(2048)
+                .WithColumn("create_time").AsDateTime()
+                .WithColumn("update_time").AsDateTime();
 
             Create.ForeignKey()
-                .FromTable("Applications").ForeignColumn("UserId")
-                .ToTable("Users").PrimaryColumn("Id");
+                .FromTable("applications").ForeignColumn("user_id")
+                .ToTable("users").PrimaryColumn("id");
             
-            Create.Table("Logs")
-                .WithColumn("Id").AsInt64().PrimaryKey().Identity()
-                .WithColumn("ApplicationId").AsInt64()
-                .WithColumn("Level").AsString(20)
-                .WithColumn("Message").AsString(2048)
-                .WithColumn("LogTime").AsDateTime()
-                .WithColumn("CreateTime").AsDateTime();
-            
-            Create.ForeignKey()
-                .FromTable("Logs").ForeignColumn("ApplicationId")
-                .ToTable("Applications").PrimaryColumn("Id");
-            
-            Create.Table("LogProperties")
-                .WithColumn("Id").AsInt64().PrimaryKey().Identity()
-                .WithColumn("LogId").AsInt64()
-                .WithColumn("Key").AsString(200)
-                .WithColumn("Value").AsString(2048)
-                .WithColumn("CreateTime").AsDateTime();
+            Create.Table("logs")
+                .WithColumn("id").AsInt64().PrimaryKey().Identity()
+                .WithColumn("application_id").AsInt64()
+                .WithColumn("level").AsString(20)
+                .WithColumn("message").AsString(2048)
+                .WithColumn("log_time").AsDateTime()
+                .WithColumn("create_time").AsDateTime();
             
             Create.ForeignKey()
-                .FromTable("LogProperties").ForeignColumn("LogId")
-                .ToTable("Logs").PrimaryColumn("Id");
+                .FromTable("logs").ForeignColumn("application_id")
+                .ToTable("applications").PrimaryColumn("id");
             
-            Create.Table("LogTraces")
-                .WithColumn("Id").AsInt64().PrimaryKey().Identity()
-                .WithColumn("LogId").AsInt64()
-                .WithColumn("Trace").AsString(2048)
-                .WithColumn("CreateTime").AsDateTime();
+            Create.Table("log_properties")
+                .WithColumn("id").AsInt64().PrimaryKey().Identity()
+                .WithColumn("log_id").AsInt64()
+                .WithColumn("key").AsString(200)
+                .WithColumn("value").AsString(2048)
+                .WithColumn("create_time").AsDateTime();
             
             Create.ForeignKey()
-                .FromTable("LogTraces").ForeignColumn("LogId")
-                .ToTable("Logs").PrimaryColumn("Id");
+                .FromTable("log_properties").ForeignColumn("log_id")
+                .ToTable("logs").PrimaryColumn("id");
+            
+            Create.Table("log_traces")
+                .WithColumn("id").AsInt64().PrimaryKey().Identity()
+                .WithColumn("log_id").AsInt64()
+                .WithColumn("trace").AsString(2048)
+                .WithColumn("create_time").AsDateTime();
+            
+            Create.ForeignKey()
+                .FromTable("log_traces").ForeignColumn("log_id")
+                .ToTable("logs").PrimaryColumn("id");
             
             base.Up();
         }

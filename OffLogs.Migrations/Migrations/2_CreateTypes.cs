@@ -8,7 +8,7 @@ namespace OffLogs.Migrations.Migrations
     {
         public override void Up()
         {
-            ExecuteScriptByName("2_CreateTypes");
+            ExecuteScriptByName("2_create_types");
             
             base.Up();
         }
