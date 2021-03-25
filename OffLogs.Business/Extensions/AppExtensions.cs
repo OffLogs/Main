@@ -1,10 +1,8 @@
 using Dapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Constants.Dapper;
 using OffLogs.Business.Db.Dao;
-using OffLogs.Business.Services;
 using OffLogs.Business.Services.Data;
 using OffLogs.Business.Services.Jwt;
 using JwtAuthService = OffLogs.Business.Services.Jwt.JwtAuthService;

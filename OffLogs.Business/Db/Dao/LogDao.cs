@@ -60,25 +60,8 @@ namespace OffLogs.Business.Db.Dao
                 PageSize = 30,
                 Offset = 3
             };
-            var sql = @"SELECT
-            logT.*,
-            lp.*,
-            lt.*,
-            (
-                SELECT COUNT(id) FROM logs WHERE application_id = 2
-            ) AS sumCount
-        FROM (
-                 SELECT * FROM logs
-                 WHERE application_id = 2
-                 ORDER BY create_time DESC
-                    LIMIT 1
-                    OFFSET @Offset
-             ) AS logT
-                 LEFT JOIN log_properties AS lp ON lp.log_id =  logT.Id
-                 LEFT JOIN log_traces AS lt ON lt.log_id =  logT.Id;
-        END";
             var query = await Connection.QueryAsync<LogEntity, LogPropertyEntity, LogTraceEntity, int, LogEntity>(
-                sql: sql,
+                sql: GetQuery("log_get_list"),
                 map: (log, property, trace, count) =>
                 {
                     var existsLog = result.FirstOrDefault(innerLog => innerLog.Id == log.Id);

@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Concurrent;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Threading.Tasks;
 using Dapper;
 using Dapper.Contrib.Extensions;
@@ -12,6 +14,7 @@ namespace OffLogs.Business.Db.Dao
     public class BaseDao: IDisposable
     {
         protected ILogger<BaseDao> Logger;
+        private static ConcurrentDictionary<string, string> _queryFilesCache = new();
         
         protected NpgsqlConnection Connection
         {
@@ -105,6 +108,37 @@ namespace OffLogs.Business.Db.Dao
             return await Connection.InsertAsync(entity);
         }
         
+        #endregion
+
+        #region QueryReader
+
+        public string GetQuery(string fileName)
+        {
+            if (_queryFilesCache.ContainsKey(fileName))
+            {
+                return _queryFilesCache[fileName];
+            }
+
+            var queryString = LoadDbQueryFile(fileName);
+            _queryFilesCache.TryAdd(queryString, fileName);
+            return queryString;
+        }
+
+        private string LoadDbQueryFile(string fileName)
+        {
+            var assembly = GetType().Assembly;
+            var name = assembly.GetName();
+            var resource = assembly.GetManifestResourceStream($"{name.Name}.Db.Queries.{fileName}.sql");
+            if (resource == null)
+            {
+                throw new Exception($"Query file wasn't found: '{fileName}'");
+            }
+            using (var reader = new StreamReader(resource))
+            {
+                return reader.ReadToEnd();
+            }
+        }
+
         #endregion
     }
 }
