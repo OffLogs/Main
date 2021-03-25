@@ -33,6 +33,8 @@ namespace OffLogs.Business.Extensions
         
         private static void InitDbMappers()
         {
+            Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+            
             // Extend Dapper types
             SqlMapper.AddTypeHandler(new DapperConstantHandler<CityCode>());
             SqlMapper.AddTypeHandler(new DapperConstantHandler<LogLevel>());

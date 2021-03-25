@@ -3,7 +3,7 @@ using Dapper.Contrib.Extensions;
 
 namespace OffLogs.Business.Db.Entity
 {
-    [Table("LogProperties")]
+    [Table("log_properties")]
     public class LogPropertyEntity
     {
         [Key]

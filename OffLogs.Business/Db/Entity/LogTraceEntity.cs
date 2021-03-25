@@ -4,7 +4,7 @@ using OffLogs.Business.Constants;
 
 namespace OffLogs.Business.Db.Entity
 {
-    [Table("LogTraces")]
+    [Table("log_traces")]
     public class LogTraceEntity
     {
         [Key]

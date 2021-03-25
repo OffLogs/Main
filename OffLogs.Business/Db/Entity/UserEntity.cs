@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
 using Dapper.Contrib.Extensions;
 
 namespace OffLogs.Business.Db.Entity
 {
-    [System.ComponentModel.DataAnnotations.Schema.Table("Users")]
+    [Table("users")]
     public class UserEntity
     {
         public long Id { get; set; }

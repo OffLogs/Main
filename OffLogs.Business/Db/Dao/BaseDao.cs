@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Logging;
+using Npgsql;
 
 namespace OffLogs.Business.Db.Dao
 {
@@ -12,7 +13,7 @@ namespace OffLogs.Business.Db.Dao
     {
         protected ILogger<BaseDao> Logger;
         
-        protected SqlConnection Connection
+        protected NpgsqlConnection Connection
         {
             get
             {
@@ -21,14 +22,14 @@ namespace OffLogs.Business.Db.Dao
             }
         }
 
-        private readonly SqlConnection _connection;
+        private readonly NpgsqlConnection _connection;
 
         #region CommonMethods
 
         public BaseDao(string connString, ILogger<BaseDao> logger)
         {
             Logger = logger;
-            _connection = new SqlConnection(connString);
+            _connection = new NpgsqlConnection(connString);
             OpenConnection();
         }
 
@@ -68,7 +69,7 @@ namespace OffLogs.Business.Db.Dao
             GC.SuppressFinalize(this);
         }
 
-        public SqlConnection GetConnection()
+        public NpgsqlConnection GetConnection()
         {
             return Connection;
         }

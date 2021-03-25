@@ -5,7 +5,7 @@ using OffLogs.Business.Constants;
 
 namespace OffLogs.Business.Db.Entity
 {
-    [Table("Logs")]
+    [Table("logs")]
     public class LogEntity
     {
         [Key]

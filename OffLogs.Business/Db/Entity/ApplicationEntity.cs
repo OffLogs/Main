@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OffLogs.Business.Db.Entity
 {
-    [Table("Applications")]
+    [Table("applications")]
     public class ApplicationEntity
     {
         public long Id { get; set; }

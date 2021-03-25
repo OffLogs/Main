@@ -17,6 +17,7 @@
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
       <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.7.1" />
       <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+      <PackageReference Include="Npgsql" Version="5.0.4" />
       <PackageReference Include="System.Data.SqlClient" Version="4.4.3" />
       <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
     </ItemGroup>
@@ -41,6 +42,10 @@
       <EmbeddedResource Update="Resources\RG.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>RG.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <None Remove="Db\Queries\log_get_list.sql" />
+      <EmbeddedResource Include="Db\Queries\log_get_list.sql">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </EmbeddedResource>
     </ItemGroup>
 
