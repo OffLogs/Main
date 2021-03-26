@@ -1,30 +1,41 @@
 using System;
 using System.Collections.Generic;
-using Dapper.Contrib.Extensions;
 using OffLogs.Business.Constants;
+using SimpleStack.Orm.Attributes;
 
 namespace OffLogs.Business.Db.Entity
 {
-    [Table("logs")]
+    [Alias("logs")]
     public class LogEntity
     {
-        [Key]
+        [PrimaryKey]
+        [AutoIncrement]
+        [Alias("id")]
         public long Id { get; set; }
+        
+        [Alias("application_id")]
+        [ForeignKey(typeof(ApplicationEntity))]
         public long ApplicationId { get; set; }
+        
+        [Alias("level")]
         public LogLevel Level { get; set; }
+        
+        [Alias("message")]
         public string Message { get; set; }
+        
+        [Alias("log_time")]
         public DateTime LogTime { get; set; }
+        
+        [Alias("create_time")]
         public DateTime CreateTime { get; set; }
         
-        [Write(false)]
-        [Computed]
+        [Ignore]
         public ApplicationEntity Application { get; set; }
         
-        [Write(false)]
-        [Computed]
+        [Ignore]
         public List<LogTraceEntity> Traces { get; set; } = new();
 
-        [Write(false)] [Computed] 
+        [Ignore] 
         public List<LogPropertyEntity> Properties { get; set; } = new();
     }
 }

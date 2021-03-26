@@ -1,16 +1,27 @@
 using System;
-using Dapper.Contrib.Extensions;
+using SimpleStack.Orm.Attributes;
 
 namespace OffLogs.Business.Db.Entity
 {
-    [Table("log_properties")]
+    [Alias("log_properties")]
     public class LogPropertyEntity
     {
-        [Key]
+        [PrimaryKey]
+        [AutoIncrement]
+        [Alias("id")]
         public long Id { get; set; }
+        
+        [Alias("log_id")]
+        [ForeignKey(typeof(LogEntity))]
         public long LogId { get; set; }
+        
+        [Alias("key")]
         public string Key { get; set; }
+        
+        [Alias("value")]
         public string Value { get; set; }
+        
+        [Alias("create_time")]
         public DateTime CreateTime { get; set; }
 
         public LogPropertyEntity() {}
