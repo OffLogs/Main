@@ -8,6 +8,8 @@ using Dapper;
 using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Logging;
 using Npgsql;
+using SimpleStack.Orm;
+using SimpleStack.Orm.PostgreSQL;
 
 namespace OffLogs.Business.Db.Dao
 {
@@ -15,8 +17,10 @@ namespace OffLogs.Business.Db.Dao
     {
         protected ILogger<BaseDao> Logger;
         private static ConcurrentDictionary<string, string> _queryFilesCache = new();
+
+        private OrmConnectionFactory _connectionFactory;
         
-        protected NpgsqlConnection Connection
+        protected OrmConnection Connection
         {
             get
             {
@@ -25,19 +29,23 @@ namespace OffLogs.Business.Db.Dao
             }
         }
 
-        private readonly NpgsqlConnection _connection;
+        private OrmConnection _connection;
 
         #region CommonMethods
 
         public BaseDao(string connString, ILogger<BaseDao> logger)
         {
             Logger = logger;
-            _connection = new NpgsqlConnection(connString);
+            _connectionFactory = new OrmConnectionFactory(new PostgreSQLDialectProvider(), connString);
             OpenConnection();
         }
 
         public void OpenConnection()
         {
+            if (_connection == null)
+            {
+                _connection = _connectionFactory.OpenConnection();
+            }
             if (_connection.State != ConnectionState.Open)
             {
                 _connection.Open();
@@ -72,7 +80,7 @@ namespace OffLogs.Business.Db.Dao
             GC.SuppressFinalize(this);
         }
 
-        public NpgsqlConnection GetConnection()
+        public OrmConnection GetConnection()
         {
             return Connection;
         }

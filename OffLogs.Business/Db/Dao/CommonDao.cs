@@ -2,6 +2,7 @@ using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Npgsql;
+using SimpleStack.Orm;
 
 namespace OffLogs.Business.Db.Dao
 {
@@ -14,7 +15,7 @@ namespace OffLogs.Business.Db.Dao
         {
         }
         
-        public NpgsqlConnection GetConnection()
+        public OrmConnection GetConnection()
         {
             return base.GetConnection();
         }

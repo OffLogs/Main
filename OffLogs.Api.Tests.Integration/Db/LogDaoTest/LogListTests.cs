@@ -14,6 +14,8 @@ namespace OffLogs.Api.Tests.Integration.Db.LogDaoTest
         [InlineData("some-user")]
         public async Task ShouldReceiveLogsList(string some)
         {
+            var userModel = await DataSeeder.CreateNewUser();
+            
             await LogDao.GetList(1, 1);
         }
     }
