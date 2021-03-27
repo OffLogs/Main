@@ -19,7 +19,7 @@
       <None Update="SQLFiles\Scripts\init.sql">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="SQLFiles\Scripts\2_create_types.sql">
+      <None Update="SQLFiles\Scripts\1_create_types.sql">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="SQLFiles\Procedures\Old\AddDeviceRequestGetByToken.sql">

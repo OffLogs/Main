@@ -8,6 +8,8 @@ namespace OffLogs.Migrations.Migrations
     {
         public override void Up()
         {
+            ExecuteScriptByName("1_create_types");
+            
             Create.Table("users")
                 .WithColumn("id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("user_name").AsString(200).Unique()
@@ -32,10 +34,12 @@ namespace OffLogs.Migrations.Migrations
             Create.Table("logs")
                 .WithColumn("id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("application_id").AsInt64()
-                .WithColumn("level").AsString(20)
+                .WithColumn("level").AsString(5)
                 .WithColumn("message").AsString(2048)
                 .WithColumn("log_time").AsDateTime()
                 .WithColumn("create_time").AsDateTime();
+            
+            Execute.Sql("ALTER TABLE logs ADD CONSTRAINT cs_logs_check_log_level CHECK(level IN ('E', 'W', 'F', 'I'))");
             
             Create.ForeignKey()
                 .FromTable("logs").ForeignColumn("application_id")
