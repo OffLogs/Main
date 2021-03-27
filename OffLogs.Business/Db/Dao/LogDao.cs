@@ -26,11 +26,6 @@ namespace OffLogs.Business.Db.Dao
         )
         {
         }
-
-        public enum DivisionStatus
-        {
-            None = 'N',
-        }
         
         public async Task<LogEntity> AddAsync(
             long applicationId,  
@@ -50,7 +45,7 @@ namespace OffLogs.Business.Db.Dao
                 Properties = properties?.ToList(),
                 Traces = traces?.ToList(),
             };
-            await Connection.SaveAsync(log, references:true);
+            await Connection.SaveAsync(log, true);
             return log;
         }
         

@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Bogus.DataSets;
 using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Db.Entity;
-using Serilog;
-using ServiceStack;
 using ServiceStack.OrmLite;
 using Xunit;
 
