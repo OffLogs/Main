@@ -8,8 +8,7 @@ using Dapper;
 using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Logging;
 using Npgsql;
-using SimpleStack.Orm;
-using SimpleStack.Orm.PostgreSQL;
+using ServiceStack.OrmLite;
 
 namespace OffLogs.Business.Db.Dao
 {
@@ -18,9 +17,9 @@ namespace OffLogs.Business.Db.Dao
         protected ILogger<BaseDao> Logger;
         private static ConcurrentDictionary<string, string> _queryFilesCache = new();
 
-        private OrmConnectionFactory _connectionFactory;
+        private OrmLiteConnectionFactory _connectionFactory;
         
-        protected OrmConnection Connection
+        protected IDbConnection Connection
         {
             get
             {
@@ -29,14 +28,14 @@ namespace OffLogs.Business.Db.Dao
             }
         }
 
-        private OrmConnection _connection;
+        private IDbConnection _connection;
 
         #region CommonMethods
 
         public BaseDao(string connString, ILogger<BaseDao> logger)
         {
             Logger = logger;
-            _connectionFactory = new OrmConnectionFactory(new PostgreSQLDialectProvider(), connString);
+            _connectionFactory= new OrmLiteConnectionFactory(connString, PostgreSqlDialect.Provider);
             OpenConnection();
         }
 
@@ -44,9 +43,9 @@ namespace OffLogs.Business.Db.Dao
         {
             if (_connection == null)
             {
-                _connection = _connectionFactory.OpenConnection();
-            }
-            if (_connection.State != ConnectionState.Open)
+                _connection = _connectionFactory.Open();
+            } 
+            else if (_connection.State != ConnectionState.Open)
             {
                 _connection.Open();
             }
@@ -80,7 +79,7 @@ namespace OffLogs.Business.Db.Dao
             GC.SuppressFinalize(this);
         }
 
-        public OrmConnection GetConnection()
+        public IDbConnection GetConnection()
         {
             return Connection;
         }
@@ -104,16 +103,6 @@ namespace OffLogs.Business.Db.Dao
             param.Add("@ret", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
             await Connection.ExecuteAsync(sprName, param, null, null, CommandType.StoredProcedure);
             return param.Get<int>("ret");
-        }
-
-        protected long Insert(object entity)
-        {
-            return Connection.Insert(entity);
-        }
-        
-        protected async Task<int> InsertAsync(object entity)
-        {
-            return await Connection.InsertAsync(entity);
         }
         
         #endregion

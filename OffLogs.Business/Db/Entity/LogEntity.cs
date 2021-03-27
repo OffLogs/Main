@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using OffLogs.Business.Constants;
-using SimpleStack.Orm.Attributes;
+using ServiceStack.DataAnnotations;
 
 namespace OffLogs.Business.Db.Entity
 {

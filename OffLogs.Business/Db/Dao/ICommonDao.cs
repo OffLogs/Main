@@ -1,11 +1,9 @@
-using System.Data.SqlClient;
-using Npgsql;
-using SimpleStack.Orm;
+using System.Data;
 
 namespace OffLogs.Business.Db.Dao
 {
     public interface ICommonDao
     {
-        OrmConnection GetConnection();
+        IDbConnection GetConnection();
     }
 }

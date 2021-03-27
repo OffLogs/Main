@@ -1,7 +1,5 @@
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
-using Dapper.Contrib.Extensions;
-using SimpleStack.Orm.Attributes;
+using ServiceStack.DataAnnotations;
 
 namespace OffLogs.Business.Db.Entity
 {
@@ -30,7 +28,7 @@ namespace OffLogs.Business.Db.Entity
         [Alias("update_time")]
         public DateTime UpdateTime { get; set; }
         
-        [Computed]
+        [Dapper.Contrib.Extensions.Computed]
         [Ignore]
         public string Password { get; set; }
     }

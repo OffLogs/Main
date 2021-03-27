@@ -1,13 +1,11 @@
 using System;
-using SimpleStack.Orm.Attributes;
+using ServiceStack.DataAnnotations;
 
 namespace OffLogs.Business.Db.Entity
 {
     [Alias("applications")]
     public class ApplicationEntity
     {
-        [PrimaryKey]
-        [AutoIncrement]
         [Alias("id")]
         public long Id { get; set; }
         
