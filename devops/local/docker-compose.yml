@@ -1,22 +1,10 @@
 version: "3.8"
 
 volumes:
-  common: {}
   postgre-volume: {}
   
 
 services:
-  mssql:
-    container_name: offlogs-local-database
-    image: mcr.microsoft.com/mssql/server:2019-latest
-    restart: always
-    environment:
-      - SA_PASSWORD=${MSSQL_PASSWORD}
-      - ACCEPT_EULA=Y
-    ports:
-      - 1448:1433
-    volumes:
-      - common:/var/opt/mssql
   postgres:
     container_name: offlogs-local-postgres
     image: postgres:13.2

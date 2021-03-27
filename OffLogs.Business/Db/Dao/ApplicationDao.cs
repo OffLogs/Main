@@ -1,12 +1,10 @@
 using System;
-using System.Data.SqlClient;
 using System.Threading.Tasks;
-using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OffLogs.Business.Db.Entity;
-using OffLogs.Business.Helpers;
 using OffLogs.Business.Services.Jwt;
+using ServiceStack.OrmLite;
 
 namespace OffLogs.Business.Db.Dao
 {

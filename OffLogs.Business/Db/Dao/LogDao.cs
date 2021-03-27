@@ -1,17 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using Dapper;
-using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Extensions;
-using OffLogs.Business.Helpers;
-using OffLogs.Business.Services.Jwt;
+using ServiceStack.OrmLite.Dapper;
 using LogLevel = OffLogs.Business.Constants.LogLevel;
 
 namespace OffLogs.Business.Db.Dao

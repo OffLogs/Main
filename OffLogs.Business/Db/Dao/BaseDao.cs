@@ -4,11 +4,10 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Threading.Tasks;
-using Dapper;
-using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 using ServiceStack.OrmLite;
+using ServiceStack.OrmLite.Dapper;
 
 namespace OffLogs.Business.Db.Dao
 {
@@ -36,7 +35,6 @@ namespace OffLogs.Business.Db.Dao
         {
             Logger = logger;
             _connectionFactory= new OrmLiteConnectionFactory(connString, PostgreSqlDialect.Provider);
-            OpenConnection();
         }
 
         public void OpenConnection()

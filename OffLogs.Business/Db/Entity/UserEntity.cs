@@ -28,7 +28,6 @@ namespace OffLogs.Business.Db.Entity
         [Alias("update_time")]
         public DateTime UpdateTime { get; set; }
         
-        [Dapper.Contrib.Extensions.Computed]
         [Ignore]
         public string Password { get; set; }
     }

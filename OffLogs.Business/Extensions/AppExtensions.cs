@@ -1,10 +1,10 @@
-using Dapper;
 using Microsoft.Extensions.DependencyInjection;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Constants.Dapper;
 using OffLogs.Business.Db.Dao;
 using OffLogs.Business.Services.Data;
 using OffLogs.Business.Services.Jwt;
+using ServiceStack.OrmLite.Dapper;
 using JwtAuthService = OffLogs.Business.Services.Jwt.JwtAuthService;
 
 namespace OffLogs.Business.Extensions
@@ -31,8 +31,6 @@ namespace OffLogs.Business.Extensions
         
         private static void InitDbMappers()
         {
-            Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
-            
             // Extend Dapper types
             SqlMapper.AddTypeHandler(new DapperConstantHandler<CityCode>());
             SqlMapper.AddTypeHandler(new DapperConstantHandler<LogLevel>());

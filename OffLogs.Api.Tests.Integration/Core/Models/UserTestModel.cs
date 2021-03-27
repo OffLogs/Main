@@ -1,19 +1,19 @@
 using System.Collections.Generic;
 using System.Linq;
-using Dapper.Contrib.Extensions;
 using OffLogs.Business.Db.Entity;
+using ServiceStack.DataAnnotations;
 
 namespace OffLogs.Api.Tests.Integration.Core.Models
 {
     public class UserTestModel: UserEntity
     {
-        [Computed] 
+        [Ignore]
         public List<ApplicationEntity> Applications { get; set; } = new();
 
-        [Computed] 
+        [Ignore]
         public string ApiToken { get; set; }
         
-        [Computed] 
+        [Ignore] 
         public string ApplicationApiToken
         {
             get => Applications.First().ApiToken;
