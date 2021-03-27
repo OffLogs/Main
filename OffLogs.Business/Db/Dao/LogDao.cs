@@ -6,7 +6,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Extensions;
+using ServiceStack;
+using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.Dapper;
+using ServiceStack.Text;
 using LogLevel = OffLogs.Business.Constants.LogLevel;
 
 namespace OffLogs.Business.Db.Dao
@@ -41,22 +44,42 @@ namespace OffLogs.Business.Db.Dao
             });
             parameters.AddTable("@Properties", "[dbo].[LogPropertyType]", properties ?? new List<LogPropertyEntity>());
             parameters.AddTable("@Traces", "[dbo].[LogTraceType]", traces ?? new List<LogTraceEntity>());
-            await ExecuteWithReturnAsync("pr_LogAdd", parameters);
+            using (var aaa = Connection.SqlProc("pr_log_add", parameters))
+            {
+                var bb = 123;
+            }
+
+            ;
+            // await ExecuteWithReturnAsync("pr_log_add", parameters);
         }
         
-        public async Task<(IEnumerable<LogEntity>, int)> GetList(long applicationId, int page)
+        public async Task<(IEnumerable<LogEntity>, int)> GetList(long applicationId, int page, int pageSize = 30)
         {
             var sumCounter = 0;
             var result = new List<LogEntity>();
-            var parameters = new
-            {
-                ApplicationId = applicationId,
-                Page = page,
-                PageSize = 30,
-                Offset = 3
-            };
+            page = page - 1;
+            var offset = (page <= 0 ? 0 : page) * pageSize;
+
+            var countQuery = Connection.From<LogEntity>()
+                .Where(log => log.ApplicationId == applicationId)
+                .ToCountStatement();
+            var listQuery = Connection.From<LogEntity>()
+                .LeftJoin<LogEntity, LogPropertyEntity>((log, property) => log.Id == property.LogId)
+                .LeftJoin<LogEntity, LogTraceEntity>((log, trace) => log.Id == trace.LogId)
+                .Where<LogEntity>(log => log.ApplicationId == applicationId)
+                .Limit(offset, pageSize)
+                .OrderBy<LogEntity>(log => log.CreateTime)
+                .Select<LogEntity, LogPropertyEntity, LogTraceEntity>((log, property, trace) => new
+                {
+                    log,
+                    property,
+                    trace,
+                    sumCount = Sql.Custom($"({countQuery})")
+                });
+            var selectResult = Connection.SelectAsync<LogEntity>(listQuery);
+
             var query = await Connection.QueryAsync<LogEntity, LogPropertyEntity, LogTraceEntity, int, LogEntity>(
-                sql: GetQuery("log_get_list"),
+                sql: listQuery.ToSelectStatement(),
                 map: (log, property, trace, count) =>
                 {
                     var existsLog = result.FirstOrDefault(innerLog => innerLog.Id == log.Id);
@@ -76,7 +99,6 @@ namespace OffLogs.Business.Db.Dao
                     sumCounter = count;
                     return log;
                 },
-                param: parameters,
                 splitOn: "Id,Id,Id,sumCount"
             );
             return (result, sumCounter);

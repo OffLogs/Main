@@ -1,6 +1,9 @@
-﻿using System.Data.SqlClient;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OffLogs.Api.Tests.Integration.Core;
+using OffLogs.Business.Constants;
+using Serilog;
 using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Db.LogDaoTest
@@ -10,13 +13,24 @@ namespace OffLogs.Api.Tests.Integration.Db.LogDaoTest
     {
         public LogListTests(CustomWebApplicationFactory factory) : base(factory) {}
         
-        [Theory]
-        [InlineData("some-user")]
-        public async Task ShouldReceiveLogsList(string some)
+        [Fact]
+        public async Task ShouldAddNewErrorLog()
         {
             var userModel = await DataSeeder.CreateNewUser();
+            var application = userModel.Applications.First();
+
+            await LogDao.AddAsync(application.Id, "SomeMessage", LogLevel.Error, DateTime.Now);
+        }
+        
+        [Fact]
+        public async Task ShouldReceiveLogsList()
+        {
+            var userModel = await DataSeeder.CreateNewUser();
+            var application = userModel.Applications.First();
+
+            await LogDao.AddAsync(application.Id, "SomeMessage", LogLevel.Error, DateTime.Now);
             
-            await LogDao.GetList(1, 1);
+            await LogDao.GetList(1, 1, 30);
         }
     }
 }

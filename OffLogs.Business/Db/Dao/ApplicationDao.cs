@@ -34,7 +34,7 @@ namespace OffLogs.Business.Db.Dao
                 CreateTime = DateTime.Now,
                 UpdateTime = DateTime.Now
             };
-            await Connection.InsertAsync(application);
+            application.Id = await Connection.InsertAsync(application, selectIdentity: true);
             application.ApiToken = _jwtService.BuildJwt(application.Id);
             await Connection.UpdateAsync(application);
             return application;
