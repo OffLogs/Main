@@ -14,7 +14,7 @@ namespace OffLogs.Business.Db.Entity
         public long Id { get; set; }
         
         [Alias("application_id")]
-        [ForeignKey(typeof(ApplicationEntity))]
+        [References(typeof(ApplicationEntity))]
         public long ApplicationId { get; set; }
         
         [Alias("level")]
@@ -29,13 +29,13 @@ namespace OffLogs.Business.Db.Entity
         [Alias("create_time")]
         public DateTime CreateTime { get; set; }
         
-        [Ignore]
+        [Reference]
         public ApplicationEntity Application { get; set; }
         
-        [Ignore]
+        [Reference]
         public List<LogTraceEntity> Traces { get; set; } = new();
 
-        [Ignore] 
+        [Reference] 
         public List<LogPropertyEntity> Properties { get; set; } = new();
     }
 }

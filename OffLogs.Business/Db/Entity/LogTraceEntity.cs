@@ -12,7 +12,7 @@ namespace OffLogs.Business.Db.Entity
         public long Id { get; set; }
         
         [Alias("log_id")]
-        [ForeignKey(typeof(LogEntity))]
+        [References(typeof(LogEntity))]
         public long LogId { get; set; }
         
         [Alias("trace")]

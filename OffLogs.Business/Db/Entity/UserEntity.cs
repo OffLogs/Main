@@ -8,6 +8,7 @@ namespace OffLogs.Business.Db.Entity
     {
         [PrimaryKey]
         [AutoIncrement]
+        [Alias("id")]
         public long Id { get; set; }
         
         [Alias("user_name")]

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -44,12 +45,14 @@ namespace OffLogs.Business.Db.Dao
             });
             parameters.AddTable("@Properties", "[dbo].[LogPropertyType]", properties ?? new List<LogPropertyEntity>());
             parameters.AddTable("@Traces", "[dbo].[LogTraceType]", traces ?? new List<LogTraceEntity>());
-            using (var aaa = Connection.SqlProc("pr_log_add", parameters))
-            {
-                var bb = 123;
-            }
-
-            ;
+            
+            await Connection.ExecuteAsync(
+                "EXEC pr_log_add @ApplicationId, @Message, @Level, @Timestamp, @Properties, @Traces", 
+                parameters, 
+                null, 
+                null, 
+                CommandType.StoredProcedure
+            );
             // await ExecuteWithReturnAsync("pr_log_add", parameters);
         }
         
