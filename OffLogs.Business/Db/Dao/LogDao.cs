@@ -76,11 +76,14 @@ namespace OffLogs.Business.Db.Dao
                     existsLog = log;
                     result.Add(existsLog);
                 }
-                if (property != null && !existsLog.Properties.Exists(innerProp => innerProp.Id == property?.Id))
+
+                var isPropertyExists = existsLog.Properties.Exists(innerProp => innerProp.Id == property?.Id);
+                if (property != null && !isPropertyExists && property.Id > 0)
                 {
                     existsLog.Properties.Add(property);    
                 }
-                if (trace != null && !existsLog.Traces.Exists(innerTrace => innerTrace.Id == trace?.Id))
+                var isTraceExists = existsLog.Traces.Exists(innerTrace => innerTrace.Id == trace.Id);
+                if (trace != null && !isTraceExists && trace.Id > 0)
                 {
                     existsLog.Traces.Add(trace);    
                 }
