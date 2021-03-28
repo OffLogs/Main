@@ -1,12 +1,10 @@
 using System;
-using System.Data.SqlClient;
 using System.Threading.Tasks;
-using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OffLogs.Business.Db.Entity;
-using OffLogs.Business.Helpers;
 using OffLogs.Business.Services.Jwt;
+using ServiceStack.OrmLite;
 
 namespace OffLogs.Business.Db.Dao
 {
@@ -36,7 +34,7 @@ namespace OffLogs.Business.Db.Dao
                 CreateTime = DateTime.Now,
                 UpdateTime = DateTime.Now
             };
-            await Connection.InsertAsync(application);
+            application.Id = await Connection.InsertAsync(application, selectIdentity: true);
             application.ApiToken = _jwtService.BuildJwt(application.Id);
             await Connection.UpdateAsync(application);
             return application;

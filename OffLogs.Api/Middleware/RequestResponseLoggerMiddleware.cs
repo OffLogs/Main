@@ -12,31 +12,24 @@ namespace OffLogs.Api.Middleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<RequestResponseLoggerMiddleware> _logger;
-        private readonly bool _isRequestResponseLoggingEnabled;
-
+        
         public RequestResponseLoggerMiddleware(RequestDelegate next, IConfiguration config, ILogger<RequestResponseLoggerMiddleware> logger)
         {
             _next = next;
             _logger = logger;
-            _isRequestResponseLoggingEnabled = config.GetValue<bool>("EnableRequestResponseLogging", true);
         }
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
             // Middleware is enabled only when the EnableRequestResponseLogging config value is set.
-            if (_isRequestResponseLoggingEnabled)
-            {
-                _logger.LogDebug($"HTTP request information:\n" +
-                        $"\tMethod: {httpContext.Request.Method}\n" +
-                        $"\tPath: {httpContext.Request.Path}\n" +
-                        $"\tQueryString: {httpContext.Request.QueryString}\n" +
-                        $"\tHeaders: {FormatHeaders(httpContext.Request.Headers)}\n" +
-                        $"\tSchema: {httpContext.Request.Scheme}\n" +
-                        $"\tHost: {httpContext.Request.Host}\n" +
-                        $"\tBody: {await ReadBodyFromRequest(httpContext.Request)}");
-
-                // Call the next middleware in the pipeline
-            }
+            _logger.LogDebug($"HTTP request information:\n" +
+                $"\tMethod: {httpContext.Request.Method}\n" +
+                $"\tPath: {httpContext.Request.Path}\n" +
+                $"\tQueryString: {httpContext.Request.QueryString}\n" +
+                $"\tHeaders: {FormatHeaders(httpContext.Request.Headers)}\n" +
+                $"\tSchema: {httpContext.Request.Scheme}\n" +
+                $"\tHost: {httpContext.Request.Host}\n" +
+                $"\tBody: {await ReadBodyFromRequest(httpContext.Request)}");
             await _next(httpContext);
         }
 

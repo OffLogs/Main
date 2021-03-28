@@ -4,10 +4,12 @@ namespace OffLogs.Business.Constants
 {
     public class LogLevel : AConstant<LogLevel>
     {
-        public static readonly LogLevel Error = new LogLevel("Error", "Error");
-        public static readonly LogLevel Warning = new LogLevel("Warning", "Warning");
-        public static readonly LogLevel Fatal = new LogLevel("Fatal", "Fatal");
-        public static readonly LogLevel Information = new LogLevel("Information", "Information");
+        public static readonly LogLevel Error = new LogLevel("E", "Error");
+        public static readonly LogLevel Warning = new LogLevel("W", "Warning");
+        public static readonly LogLevel Fatal = new LogLevel("F", "Fatal");
+        public static readonly LogLevel Information = new LogLevel("I", "Information");
+        public static readonly LogLevel Debug = new LogLevel("D", "Debug");
+        
         public LogLevel() { }
         
         private LogLevel(string value, string name) : base(value, name) { }
@@ -15,10 +17,11 @@ namespace OffLogs.Business.Constants
         public override bool IsValid(string value)
         {
             value = value.Trim().FirstCharToUpper();
-            return value == Error.ToString() 
-                   || value == Warning.ToString() 
-                   || value == Fatal.ToString() 
-                   || value == Information.ToString();
+            return value == Error.GetValue()
+                   || value == Warning.GetValue()
+                   || value == Fatal.GetValue()
+                   || value == Information.GetValue()
+                   || value == Debug.GetValue();
         }
 
         public override LogLevel FromString(string value)
@@ -32,6 +35,8 @@ namespace OffLogs.Business.Constants
                 return Fatal;
             if (Information.GetValue().Equals(value))
                 return Information;
+            if (Debug.GetValue().Equals(value))
+                return Debug;
             return null;
         }
     }

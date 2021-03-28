@@ -16,11 +16,11 @@ namespace OffLogs.Business.Constants
         public override bool IsValid(string value)
         {
             value = value.Trim().FirstCharToUpper();
-            return value == Error.ToString() 
-                   || value == Warning.ToString() 
-                   || value == Fatal.ToString() 
-                   || value == Information.ToString()
-                   || value == Debug.ToString();
+            return value == Error.GetValue() 
+                   || value == Warning.GetValue() 
+                   || value == Fatal.GetValue() 
+                   || value == Information.GetValue()
+                   || value == Debug.GetValue();
         }
 
         public override SerilogLogLevel FromString(string Value)
@@ -35,6 +35,21 @@ namespace OffLogs.Business.Constants
                 return Information;
             if (Debug.GetValue().Equals(Value))
                 return Debug;
+            return null;
+        }
+        
+        public LogLevel ToLogLevel()
+        {
+            if (Error == this)
+                return LogLevel.Error;
+            if (Warning == this)
+                return LogLevel.Warning;
+            if (Fatal == this)
+                return LogLevel.Fatal;
+            if (Information == this)
+                return LogLevel.Information;
+            if (Debug == this)
+                return LogLevel.Debug;
             return null;
         }
     }

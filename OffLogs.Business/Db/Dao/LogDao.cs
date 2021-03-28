@@ -1,17 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using Dapper;
-using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Extensions;
-using OffLogs.Business.Helpers;
-using OffLogs.Business.Services.Jwt;
+using ServiceStack;
+using ServiceStack.OrmLite;
+using ServiceStack.OrmLite.Dapper;
+using ServiceStack.Text;
 using LogLevel = OffLogs.Business.Constants.LogLevel;
 
 namespace OffLogs.Business.Db.Dao
@@ -27,8 +26,8 @@ namespace OffLogs.Business.Db.Dao
         )
         {
         }
-
-        public async Task AddAsync(
+        
+        public async Task<LogEntity> AddAsync(
             long applicationId,  
             string message,
             LogLevel level,
@@ -37,53 +36,58 @@ namespace OffLogs.Business.Db.Dao
             ICollection<LogTraceEntity> traces = null
         )
         {
-            var parameters = new DynamicParameters(new
+            var log = new LogEntity()
             {
                 ApplicationId = applicationId,
                 Message = message,
-                Level = level.GetValue(),
-                Timestamp = timestamp
-            });
-            parameters.AddTable("@Properties", "[dbo].[LogPropertyType]", properties ?? new List<LogPropertyEntity>());
-            parameters.AddTable("@Traces", "[dbo].[LogTraceType]", traces ?? new List<LogTraceEntity>());
-            await ExecuteWithReturnAsync("pr_LogAdd", parameters);
+                Level = level,
+                LogTime = timestamp,
+                Properties = properties?.ToList(),
+                Traces = traces?.ToList(),
+            };
+            await Connection.SaveAsync(log, true);
+            return log;
         }
         
-        public async Task<(IEnumerable<LogEntity>, int)> GetList(long applicationId, int page)
+        public async Task<(IEnumerable<LogEntity>, long)> GetList(long applicationId, int page, int pageSize = 30)
         {
-            var sumCounter = 0;
             var result = new List<LogEntity>();
-            var parameters = new
+            page = page - 1;
+            var offset = (page <= 0 ? 0 : page) * pageSize;
+
+            var sumCounter = await Connection.CountAsync<LogEntity>(log => log.ApplicationId == applicationId);
+            
+            var logIdsQuery = Connection.From<LogEntity>()
+                .Where<LogEntity>(log => log.ApplicationId == applicationId)
+                .Limit(offset, pageSize)
+                .Select(log => log.Id);
+            var listQuery = Connection.From<LogEntity>()
+                .LeftJoin<LogEntity, LogPropertyEntity>((log, property) => log.Id == property.LogId)
+                .LeftJoin<LogEntity, LogTraceEntity>((log, trace) => log.Id == trace.LogId)
+                .Where(log => Sql.In(log.Id, logIdsQuery))
+                .OrderBy<LogEntity>(log => log.CreateTime)
+                .Select("*");
+            var selectResult = await Connection.SelectMultiAsync<LogEntity, LogPropertyEntity, LogTraceEntity>(listQuery);
+            foreach (var (log, property, trace) in selectResult)
             {
-                ApplicationId = applicationId,
-                Page = page,
-                PageSize = 30
-            };
-            var query = await Connection.QueryAsync<LogEntity, LogPropertyEntity, LogTraceEntity, int, LogEntity>(
-                sql: "pr_LogGetList",
-                map: (log, property, trace, count) =>
+                var existsLog = result.FirstOrDefault(innerLog => innerLog.Id == log.Id);
+                if (existsLog == null)
                 {
-                    var existsLog = result.FirstOrDefault(innerLog => innerLog.Id == log.Id);
-                    if (existsLog == null)
-                    {
-                        existsLog = log;
-                        result.Add(existsLog);
-                    }
-                    if (property != null && !existsLog.Properties.Exists(innerProp => innerProp.Id == property?.Id))
-                    {
-                        existsLog.Properties.Add(property);    
-                    }
-                    if (trace != null && !existsLog.Traces.Exists(innerTrace => innerTrace.Id == trace?.Id))
-                    {
-                        existsLog.Traces.Add(trace);    
-                    }
-                    sumCounter = count;
-                    return log;
-                },
-                param: parameters,
-                splitOn: "Id,Id,Id,sumCount",
-                commandType: CommandType.StoredProcedure
-            );
+                    existsLog = log;
+                    result.Add(existsLog);
+                }
+
+                var isPropertyExists = existsLog.Properties.Exists(innerProp => innerProp.Id == property?.Id);
+                if (property != null && !isPropertyExists && property.Id > 0)
+                {
+                    existsLog.Properties.Add(property);    
+                }
+                var isTraceExists = existsLog.Traces.Exists(innerTrace => innerTrace.Id == trace.Id);
+                if (trace != null && !isTraceExists && trace.Id > 0)
+                {
+                    existsLog.Traces.Add(trace);    
+                }
+            }
             return (result, sumCounter);
         }
     }

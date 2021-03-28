@@ -53,7 +53,7 @@ namespace OffLogs.Migrations
                 .AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb
                     // Add SQLite support to FluentMigrator
-                    .AddSqlServer()
+                    .AddPostgres()
                     // Set the connection string
                     .WithGlobalConnectionString(connectionString)
                     // Define the assembly containing the migrations

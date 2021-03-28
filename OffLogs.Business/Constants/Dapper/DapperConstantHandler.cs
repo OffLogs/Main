@@ -1,5 +1,5 @@
 using System.Data;
-using Dapper;
+using ServiceStack.OrmLite.Dapper;
 
 namespace OffLogs.Business.Constants.Dapper
 {

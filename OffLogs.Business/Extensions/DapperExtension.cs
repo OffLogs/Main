@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
-using Dapper;
+using ServiceStack.OrmLite.Dapper;
 
 namespace OffLogs.Business.Extensions
 {
