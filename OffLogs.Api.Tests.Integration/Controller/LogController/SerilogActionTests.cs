@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
         public SerilogActionTests(CustomWebApplicationFactory factory) : base(factory) {}
         
         [Theory]
-        [InlineData("/log/serilog")]
+        [InlineData("/log/add/serilog")]
         public async Task ShouldAddWarningLog(string url)
         {
             // Arrange
@@ -63,7 +64,7 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
         }
         
         [Theory]
-        [InlineData("/log/serilog")]
+        [InlineData("/log/add/serilog")]
         public async Task ShouldAddFatalLog(string url)
         {
             // Arrange
@@ -107,7 +108,7 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
         }
         
         [Theory]
-        [InlineData("/log/serilog")]
+        [InlineData("/log/add/serilog")]
         public async Task ShouldAddInformationLog(string url)
         {
             // Arrange
@@ -168,7 +169,7 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
         }
         
         [Theory]
-        [InlineData("/log/serilog")]
+        [InlineData("/log/add/serilog")]
         public async Task ShouldAddErrorLog(string url)
         {
             // Arrange
@@ -210,6 +211,41 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
             Assert.NotNull(actualLog.Level);
             Assert.True(actualLog.Properties.Count == 9);
             Assert.True(actualLog.Traces.Count == 7);
+        }
+        
+        [Theory]
+        [InlineData("/log/add/serilog")]
+        public async Task ShouldNotContainLotOfItems(string url)
+        {
+            // Arrange
+            var user = await DataSeeder.CreateNewUser();
+
+            // Act
+            var events = new List<object>();
+            for (int i = 0; i < 102; i++)
+            {
+                events.Add(new
+                {
+                    Timestamp = "2021-03-01T21:50:42.1422383+02:00",
+                    Level = "Warning",
+                    MessageTemplate = "This is Warning message",
+                    RenderedMessage = "This is Warning message",
+                    Properties = new {
+                        SourceContext = "OffLogs.Api.Controller.HomeController",
+                        ActionId = "a8564f16-ca80-41c6-9f92-393fd3051dd2",
+                        ActionName = "OffLogs.Api.Controller.HomeController.Ping (OffLogs.Api)",
+                        RequestId = "0HM6STD0804I2:00000003",
+                        RequestPath = "/ping",
+                        ConnectionId = "0HM6STD0804I2",
+                        MachineName = "lampego-mint",
+                        ProcessId = 18820,
+                        ThreadId = 13
+                    }
+                });
+            }
+            var response = await PostRequestAsync(url, user.ApplicationApiToken, new { events });
+            // Assert
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
     }
 }
