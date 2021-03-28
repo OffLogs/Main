@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using OffLogs.Api.Models.Request.Board;
 using OffLogs.Business.Db.Dao;
 using OffLogs.Business.Mvc.Controller;
 using OffLogs.Business.Services.Jwt;

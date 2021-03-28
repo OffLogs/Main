@@ -1,10 +1,15 @@
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using OffLogs.Api.Models.Request.Board;
+using OffLogs.Api.Models.Response;
+using OffLogs.Api.Models.Response.Board;
+using OffLogs.Business.Constants;
 using OffLogs.Business.Db.Dao;
 using OffLogs.Business.Mvc.Controller;
 using OffLogs.Business.Services.Jwt;
@@ -39,7 +44,7 @@ namespace OffLogs.Api.Controller.Board
             try
             {
                 var userId = _jwtService.GetUserId();
-                if (!(await _applicationDao.IsOwner(userId, model.ApplicationId)))
+                if (!(await _applicationDao.IsOwner(userId.Value, model.ApplicationId)))
                 {
                     return JsonError(HttpStatusCode.Forbidden);
                 }
