@@ -50,5 +50,47 @@ namespace OffLogs.Business.Resources {
                 return ResourceManager.GetString("Error_IncorrectConstantValue", resourceCulture);
             }
         }
+        
+        internal static string Error_FieldMayContainOnlyPositiveDigits {
+            get {
+                return ResourceManager.GetString("Error_FieldMayContainOnlyPositiveDigits", resourceCulture);
+            }
+        }
+        
+        internal static string Error_ArrayStringIsTooLong {
+            get {
+                return ResourceManager.GetString("Error_ArrayStringIsTooLong", resourceCulture);
+            }
+        }
+        
+        internal static string Error_ArrayIsTooBig {
+            get {
+                return ResourceManager.GetString("Error_ArrayIsTooBig", resourceCulture);
+            }
+        }
+        
+        internal static string Error_ArrayStringIsTooShort {
+            get {
+                return ResourceManager.GetString("Error_ArrayStringIsTooShort", resourceCulture);
+            }
+        }
+        
+        internal static string Error_ArrayStringCanNotBeNull {
+            get {
+                return ResourceManager.GetString("Error_ArrayStringCanNotBeNull", resourceCulture);
+            }
+        }
+        
+        internal static string Error_FieldContainsIncorrectIPv4Address {
+            get {
+                return ResourceManager.GetString("Error_FieldContainsIncorrectIPv4Address", resourceCulture);
+            }
+        }
+        
+        internal static string Error_FieldMayContainOnlyCurrencyCode {
+            get {
+                return ResourceManager.GetString("Error_FieldMayContainOnlyCurrencyCode", resourceCulture);
+            }
+        }
     }
 }

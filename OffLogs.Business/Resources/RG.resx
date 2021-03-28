@@ -21,4 +21,25 @@
     <data name="Error_IncorrectConstantValue" xml:space="preserve">
         <value>Field "{0}" contains incorrect constant value!</value>
     </data>
+    <data name="Error_FieldMayContainOnlyPositiveDigits" xml:space="preserve">
+        <value>Field "{0}" may contain only positive digits!</value>
+    </data>
+    <data name="Error_ArrayStringIsTooLong" xml:space="preserve">
+     <value>Field "{0}" should contain maximum {1} characters</value>
+    </data>
+    <data name="Error_ArrayIsTooBig" xml:space="preserve">
+     <value>Collection "{0}" should contain maximum {1} items</value>
+    </data>
+    <data name="Error_ArrayStringIsTooShort" xml:space="preserve">
+        <value>Field "{0}" should contain minimum {1} characters</value>
+    </data>
+    <data name="Error_ArrayStringCanNotBeNull" xml:space="preserve">
+        <value>Field "{0}" should not be null</value>
+    </data>
+    <data name="Error_FieldContainsIncorrectIPv4Address" xml:space="preserve">
+    <value>Field "{0}"contains incorrect IPv4 address!</value>
+  </data>
+    <data name="Error_FieldMayContainOnlyCurrencyCode" xml:space="preserve">
+    <value>Field "{0}" may contain only currency code!</value>
+  </data>
 </root>

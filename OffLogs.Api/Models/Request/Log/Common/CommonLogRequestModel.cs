@@ -18,6 +18,7 @@ namespace OffLogs.Api.Models.Request.Log.Common
         [StringLength(1024)]
         public string Message { get; set; }
         
+        [StringArrayLength(512)]
         public List<string> Traces { get; set; } = new();
 
         public Dictionary<string, string> Properties { get; set; } = new();

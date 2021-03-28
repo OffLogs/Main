@@ -19,6 +19,18 @@ namespace OffLogs.Api.Tests.Integration.Core.Models
             get => Applications.First().ApiToken;
         }
         
+        [Ignore] 
+        public long ApplicationId
+        {
+            get => Application.Id;
+        }
+        
+        [Ignore] 
+        public ApplicationEntity Application
+        {
+            get => Applications.First();
+        }
+        
         public UserTestModel(UserEntity entity)
         {
             Id = entity.Id;

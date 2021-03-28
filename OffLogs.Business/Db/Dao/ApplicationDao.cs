@@ -1,10 +1,12 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Services.Jwt;
 using ServiceStack.OrmLite;
+using ServiceStack.OrmLite.Dapper;
 
 namespace OffLogs.Business.Db.Dao
 {
@@ -38,6 +40,19 @@ namespace OffLogs.Business.Db.Dao
             application.ApiToken = _jwtService.BuildJwt(application.Id);
             await Connection.UpdateAsync(application);
             return application;
+        }
+        
+        public async Task<bool> IsOwner(long userId, long applicationId)
+        {
+            var inputParams = new
+            {
+                UserId = userId, 
+                ApplicationId = applicationId
+            };
+            var isExists = await Connection.ExistsAsync<ApplicationEntity>(
+                application => application.Id == applicationId && application.UserId == userId
+            );
+            return isExists;
         }
     }
 }
