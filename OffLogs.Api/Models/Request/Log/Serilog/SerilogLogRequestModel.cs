@@ -22,7 +22,7 @@ namespace OffLogs.Api.Models.Request.Log.Serilog
         [StringLength(1024)]
         public string RenderedMessage { get; set; }
         
-        [StringLength(5028)]
+        [StringLength(30000)]
         public string Exception { get; set; }
 
         public Dictionary<string, object> Properties { get; set; } = new();
