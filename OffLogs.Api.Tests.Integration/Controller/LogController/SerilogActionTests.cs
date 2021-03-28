@@ -247,5 +247,50 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
+        
+        [Theory]
+        [InlineData("/log/add/serilog")]
+        public async Task ShouldAddLogsIfPropertiesIsObjects(string url)
+        {
+            // Arrange
+            var property1 = @"{""Id"": 50, ""Name"": ""UsingInMemoryRepository""}";
+            var property2 = new { Id = 50, Name = "UsingInMemoryRepository" };
+            var user = await DataSeeder.CreateNewUser();
+
+            var (_, logsCounter) = await LogDao.GetList(user.Applications.First().Id, 1);
+            Assert.Equal(0, logsCounter);
+            // Act
+            var response = await PostRequestAsync(url, user.ApplicationApiToken, new
+            {
+                events = new List<object>()
+                {
+                    new  {
+                        Timestamp = "2021-03-01T21:50:42.1443263+02:00",
+                        Level = "Error",
+                        MessageTemplate = "The method or operation is not implemented.",
+                        RenderedMessage = "The method or operation is not implemented.",
+                        Exception = "System.NotImplementedException: The method or operation is not implemented.\n at OffLogs.Api.Controller.HomeController.Func41() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 58\n   at OffLogs.Api.Controller.HomeController.Func4() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 53\n   at OffLogs.Api.Controller.HomeController.Func3() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 48\n at OffLogs.Api.Controller.HomeController.Func2() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 43\n   at OffLogs.Api.Controller.HomeController.Func1() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 38\n at OffLogs.Api.Controller.HomeController.Ping() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 22",
+                        Properties = new {
+                            SourceContext = property1,
+                            EventId = property2
+                        }
+                    },
+                }
+            });
+            // Assert
+            response.EnsureSuccessStatusCode();
+            var (actualLogs, actualLogsCounter) = await LogDao.GetList(user.Applications.First().Id, 1);
+            Assert.Equal(1, actualLogsCounter);
+            var actualLog = actualLogs.First();
+            Assert.NotEmpty(actualLog.Message);
+            Assert.NotNull(actualLog.Level);
+            Assert.True(actualLog.Properties.Count == 2);
+            actualLog.Properties.ForEach(property =>
+            {
+                var isFirstTrue = "\"{\\\"Id\\\": 50, \\\"Name\\\": \\\"UsingInMemoryRepository\\\"}\"" == property.Value;
+                var isSecondTrue = @"{""id"":50,""name"":""UsingInMemoryRepository""}" == property.Value;
+                Assert.True(isFirstTrue || isSecondTrue);
+            });
+        }
     }
 }
