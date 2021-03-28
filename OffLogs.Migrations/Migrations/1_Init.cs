@@ -39,7 +39,7 @@ namespace OffLogs.Migrations.Migrations
                 .WithColumn("log_time").AsDateTime()
                 .WithColumn("create_time").AsDateTime();
             
-            Execute.Sql("ALTER TABLE logs ADD CONSTRAINT cs_logs_check_log_level CHECK(level IN ('E', 'W', 'F', 'I'))");
+            Execute.Sql("ALTER TABLE logs ADD CONSTRAINT cs_logs_check_log_level CHECK(level IN ('E', 'W', 'F', 'I', 'D'))");
             
             Create.ForeignKey()
                 .FromTable("logs").ForeignColumn("application_id")

@@ -27,9 +27,9 @@ namespace OffLogs.Api.Models.Request.Log.Serilog
         public Dictionary<string, string> Properties { get; set; } = new();
         
         [JsonIgnore]
-        public LogLevel LogLevel
+        public SerilogLogLevel LogLevel
         {
-            get => new LogLevel().FromString(Level);
+            get => new SerilogLogLevel().FromString(Level);
         }
     }
 }

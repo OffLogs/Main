@@ -16,11 +16,14 @@ namespace OffLogs.Api
 {
     public class Startup
     {
+        private readonly bool _isRequestResponseLoggingEnabled;
+        
         public IConfiguration Configuration { get; }
         
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            _isRequestResponseLoggingEnabled = configuration.GetValue("App:EnableRequestResponseLogging", false);
         }
         
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -95,7 +98,10 @@ namespace OffLogs.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMiddleware<RequestResponseLoggerMiddleware>();
+            if (_isRequestResponseLoggingEnabled)
+            {
+                app.UseMiddleware<RequestResponseLoggerMiddleware>();
+            }
             
             app.UseRouting();
 

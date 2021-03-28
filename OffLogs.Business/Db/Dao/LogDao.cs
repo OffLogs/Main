@@ -57,11 +57,14 @@ namespace OffLogs.Business.Db.Dao
 
             var sumCounter = await Connection.CountAsync<LogEntity>(log => log.ApplicationId == applicationId);
             
+            var logIdsQuery = Connection.From<LogEntity>()
+                .Where<LogEntity>(log => log.ApplicationId == applicationId)
+                .Limit(offset, pageSize)
+                .Select(log => log.Id);
             var listQuery = Connection.From<LogEntity>()
                 .LeftJoin<LogEntity, LogPropertyEntity>((log, property) => log.Id == property.LogId)
                 .LeftJoin<LogEntity, LogTraceEntity>((log, trace) => log.Id == trace.LogId)
-                .Where<LogEntity>(log => log.ApplicationId == applicationId)
-                .Limit(offset, pageSize)
+                .Where(log => Sql.In(log.Id, logIdsQuery))
                 .OrderBy<LogEntity>(log => log.CreateTime)
                 .Select("*");
             var selectResult = await Connection.SelectMultiAsync<LogEntity, LogPropertyEntity, LogTraceEntity>(listQuery);

@@ -91,7 +91,7 @@ namespace OffLogs.Api.Controller
                     await _logDao.AddAsync(
                         applicationId,
                         log.RenderedMessage,
-                        log.LogLevel,
+                        log.LogLevel.ToLogLevel(),
                         log.Timestamp,
                         properties,
                         traces

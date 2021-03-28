@@ -12,7 +12,7 @@ namespace OffLogs.Api.Models.Request.Log.Common
         public DateTime Timestamp { get; set; }
         
         [StringLength(100)]
-        [IsValidConstant(typeof(SerilogLogLevel))]
+        [IsValidConstant(typeof(LogLevel))]
         public string Level { get; set; }
         
         [StringLength(1024)]
