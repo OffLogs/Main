@@ -137,7 +137,7 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
                     },
                     new {
                         Timestamp = "2021-03-01T21:50:42.1440609+02:00",
-                        Level = "Information",
+                        Level = LogLevel.Information.GetValue(),
                         Message = "This is Information message",
                         Properties = new {
                             SourceContext = "OffLogs.Api.Controller.HomeController",
