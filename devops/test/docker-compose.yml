@@ -6,7 +6,7 @@ services:
       context: ./../../
       dockerfile: devops/test/Dockerfile
     environment:
-      ConnectionStrings__DefaultConnection: 'User ID=postgres;Password=P@ssW0rd!;Host=database;Port=5432;Database=offlogs;Pooling=true;'
+      ConnectionStrings__DefaultConnection: 'User ID=postgres;Password=P@ssW0rd!;Host=database;Port=5432;Database=postgres;Pooling=true;'
     volumes:
       - /opt/vsts/work/_temp:/var/temp
     depends_on:
