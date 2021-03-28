@@ -1,4 +1,5 @@
 using System;
+using Newtonsoft.Json;
 using ServiceStack.DataAnnotations;
 
 namespace OffLogs.Business.Db.Entity
@@ -30,6 +31,20 @@ namespace OffLogs.Business.Db.Entity
         {
             Key = key;
             Value = value;
+            CreateTime = DateTime.Now;
+        }
+        
+        public LogPropertyEntity(string key, object value)
+        {
+            Key = key;
+            try
+            {
+                Value = JsonConvert.SerializeObject(value);
+            }
+            catch (Exception e)
+            {
+                Value = "";
+            }
             CreateTime = DateTime.Now;
         }
     }
