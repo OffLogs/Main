@@ -7,7 +7,7 @@ using OffLogs.Business.Db.Entity;
 
 namespace OffLogs.Business.Db.Dao
 {
-    public interface ILogDao
+    public interface ILogDao: ICommonDao
     {
         Task<LogEntity> AddAsync(
             long applicationId,  

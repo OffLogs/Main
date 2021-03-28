@@ -1,10 +1,13 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using OffLogs.Api.Tests.Integration.Core.Models;
+using OffLogs.Business.Constants;
 using OffLogs.Business.Db.Dao;
 using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Services.Data;
 using OffLogs.Business.Services.Jwt;
+using ServiceStack.OrmLite;
 
 namespace OffLogs.Api.Tests.Integration.Core.Service
 {
@@ -44,14 +47,13 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
             return user;
         }
         
-        public Task<List<LogEntity>> CreateLogs(long applicationId, LogLevel level, int counter = 1)
+        public async Task<List<LogEntity>> CreateLogsAsync(long applicationId, LogLevel level, int counter = 1)
         {
             var logFactory = _factory.LogFactory(applicationId, level);
             var result = new List<LogEntity>();
             for (int i = 1; i <= counter; i++)
             {
                 var log = logFactory.Generate();
-                _logDao.GetConnection().Insert(log);
                 result.Add(log);
                 
                 var logTraceFactory = _factory.LogTraceFactory(log.Id);
@@ -59,18 +61,19 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
                     .ToList()
                     .ForEach(item =>
                     {
-                        _logDao.GetConnection().Insert(item);
+                        log.Traces.Add(item);
                     });
                 var logPropertyFactory = _factory.LogPropertyFactory(log.Id);
                 logPropertyFactory.GenerateLazy(3)
                     .ToList()
                     .ForEach(item =>
                     {
-                        _logDao.GetConnection().Insert(item);
+                        log.Properties.Add(item);
                     });
+                await _logDao.GetConnection().SaveAsync(log, true);
             }
 
-            return Task.FromResult(result);
+            return result;
         }
     }
 }

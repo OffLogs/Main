@@ -10,8 +10,18 @@ namespace OffLogs.Business.Test.Extensions
     {
         public static async Task<JsonCommonResponse<T>> GetJsonDataAsync<T>(this HttpResponseMessage response)
         {
-            var stringData = await response.Content.ReadAsStringAsync();
+            var stringData = await response.GetJsonDataStringAsync();
             return Newtonsoft.Json.JsonConvert.DeserializeObject<JsonCommonResponse<T>>(stringData);
+        }
+        
+        public static async Task<JsonCommonResponse<object>> GetJsonDataAsync(this HttpResponseMessage response)
+        {
+            return await response.GetJsonDataAsync<object>();
+        }
+        
+        public static async Task<string> GetJsonDataStringAsync(this HttpResponseMessage response)
+        {
+            return await response.Content.ReadAsStringAsync();
         }
     }
 }

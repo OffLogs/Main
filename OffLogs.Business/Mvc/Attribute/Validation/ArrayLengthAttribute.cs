@@ -12,7 +12,6 @@ namespace OffLogs.Business.Mvc.Attribute.Validation
 
         public ArrayLengthAttribute(int Max)
         {
-            Max = 0;
             this.Max = Max;
         }
 
