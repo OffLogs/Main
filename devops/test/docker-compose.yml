@@ -6,14 +6,15 @@ services:
       context: ./../../
       dockerfile: devops/test/Dockerfile
     environment:
-      ConnectionStrings__DefaultConnection: 'Data Source=database;Initial Catalog=master;PersistSecurityInfo=True;User ID=sa;Password=P@ssW0rd!'
+      ConnectionStrings__DefaultConnection: 'User ID=postgres;Password=P@ssW0rd!;Host=database;Port=5432;Database=offlogs;Pooling=true;'
     volumes:
       - /opt/vsts/work/_temp:/var/temp
     depends_on:
       - database
     
   database:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: offlogs-local-postgres
+    image: postgres:13.2
+    restart: always
     environment:
-      SA_PASSWORD: "P@ssW0rd!"
-      ACCEPT_EULA: "Y"
+      POSTGRES_PASSWORD: "P@ssW0rd!"

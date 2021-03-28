@@ -1,6 +1,2 @@
-IF EXISTS(SELECT * FROM sys.databases WHERE name = 'OffLogs')
-    BEGIN
-        DROP DATABASE [OffLogs]
-    END
-
-CREATE DATABASE [OffLogs]
+DROP DATABASE IF EXISTS offlogs;
+CREATE DATABASE offlogs;
