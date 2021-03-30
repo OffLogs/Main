@@ -14,6 +14,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffLogs.Console", "OffLogs.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffLogs.Web", "OffLogs.Web\OffLogs.Web.csproj", "{198917B0-A634-4F0D-A496-36161600DAFF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServiceStack", "ServiceStack", "{97F84B22-A4B5-4789-A17D-16A5C1EFD19A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStack.OrmLite", "ServiceStack.OrmLite\src\ServiceStack.OrmLite\ServiceStack.OrmLite.csproj", "{DC8A64CE-A163-42A2-8BAE-100C33ED6097}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStack.OrmLite.PostgreSQL", "ServiceStack.OrmLite\src\ServiceStack.OrmLite.PostgreSQL\ServiceStack.OrmLite.PostgreSQL.csproj", "{9AEBC661-A45B-43AE-B8B5-56BF84A274C1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{94C8D1CA-2DF9-4F3E-B08A-E7F49E9E050F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +56,19 @@ Global
 		{198917B0-A634-4F0D-A496-36161600DAFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{198917B0-A634-4F0D-A496-36161600DAFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{198917B0-A634-4F0D-A496-36161600DAFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC8A64CE-A163-42A2-8BAE-100C33ED6097}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC8A64CE-A163-42A2-8BAE-100C33ED6097}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC8A64CE-A163-42A2-8BAE-100C33ED6097}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC8A64CE-A163-42A2-8BAE-100C33ED6097}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AEBC661-A45B-43AE-B8B5-56BF84A274C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AEBC661-A45B-43AE-B8B5-56BF84A274C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AEBC661-A45B-43AE-B8B5-56BF84A274C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AEBC661-A45B-43AE-B8B5-56BF84A274C1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DC8A64CE-A163-42A2-8BAE-100C33ED6097} = {97F84B22-A4B5-4789-A17D-16A5C1EFD19A}
+		{9AEBC661-A45B-43AE-B8B5-56BF84A274C1} = {97F84B22-A4B5-4789-A17D-16A5C1EFD19A}
+		{234E3909-391C-4E02-937B-382E105A4BB2} = {94C8D1CA-2DF9-4F3E-B08A-E7F49E9E050F}
+		{BAC75AD4-940E-4E6F-853D-5A01D916F3BB} = {94C8D1CA-2DF9-4F3E-B08A-E7F49E9E050F}
 	EndGlobalSection
 EndGlobal
