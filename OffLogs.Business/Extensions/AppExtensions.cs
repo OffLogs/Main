@@ -34,32 +34,9 @@ namespace OffLogs.Business.Extensions
             return services;
         }
         
-        public class LogLevelConstantConverter: StringConverter
-        {
-            public override void InitDbParam(IDbDataParameter p, Type fieldType)
-            {
-                p.DbType = DbType.String;
-            }
-
-            public override object ToDbValue(Type fieldType, object value)
-            {
-                var constantValue = (LogLevel)value;
-                var stringValue = constantValue?.GetValue();
-                return stringValue;
-            }
-        
-            public override object FromDbValue(Type fieldType, object value)
-            {
-                var strValue = value as string; 
-                return strValue != null
-                    ? new LogLevel().FromString($"{value}")
-                    : base.FromDbValue(fieldType, value);
-            }
-        }
-        
         private static void InitDbMappers()
         {
-            PostgreSqlDialect.Provider.RegisterConverter<LogLevel>(new LogLevelConstantConverter());
+            PostgreSqlDialect.Provider.RegisterConverter<LogLevel>(new LogLevel());
         }
     }
 }

@@ -16,7 +16,6 @@
       <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.7.1" />
       <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
       <PackageReference Include="Npgsql" Version="5.0.4" />
-      <PackageReference Include="ServiceStack.OrmLite.PostgreSQL" Version="5.10.4" />
       <PackageReference Include="System.Data.SqlClient" Version="4.4.3" />
       <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
     </ItemGroup>
@@ -54,6 +53,10 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>RG.resx</DependentUpon>
       </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ServiceStack.OrmLite\src\ServiceStack.OrmLite.PostgreSQL\ServiceStack.OrmLite.PostgreSQL.csproj" />
     </ItemGroup>
 
 </Project>
