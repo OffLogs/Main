@@ -1,9 +1,15 @@
-﻿@inherits LayoutComponentBase
+﻿@inject IAuthorizationService AuthService
+@inject NavigationManager NavigationManager
+@inherits LayoutComponentBase
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu/>
-    </div>
+    
+    @if (_isLoggedIn)
+    {
+        <div class="sidebar">
+            <NavMenu/>
+        </div>    
+    }
 
     <div class="main">
         <div class="top-row px-4">
@@ -15,3 +21,28 @@
         </div>
     </div>
 </div>
+
+@code {
+    private bool _isLoggedIn = false;
+    
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        NavigationManager.LocationChanged += (sender, args) =>
+        {
+            CheckIsLoggedInAndRedirect();    
+        };
+
+        CheckIsLoggedInAndRedirect();
+    }
+
+    private void CheckIsLoggedInAndRedirect()
+    {
+        _isLoggedIn = AuthService.IsLoggedIn();
+        if (!_isLoggedIn)
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+    }
+}
