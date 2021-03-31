@@ -44,7 +44,7 @@ namespace OffLogs.Api.Controller.Board
             try
             {
                 var userId = _jwtService.GetUserId();
-                if (!(await _applicationDao.IsOwner(userId.Value, model.ApplicationId)))
+                if (!(await _applicationDao.IsOwner(userId, model.ApplicationId)))
                 {
                     return JsonError(HttpStatusCode.Forbidden);
                 }

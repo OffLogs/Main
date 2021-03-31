@@ -75,5 +75,18 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
 
             return result;
         }
+        
+        public async Task<List<ApplicationEntity>> CreateApplicationsAsync(long userId, int counter = 1)
+        {
+            var facotory = _factory.ApplicationFactory(userId);
+            var result = new List<ApplicationEntity>();
+            for (int i = 1; i <= counter; i++)
+            {
+                var application = facotory.Generate();
+                result.Add(application);
+                application.Id = await _logDao.GetConnection().InsertAsync(application, true);
+            }
+            return result;
+        }
     }
 }

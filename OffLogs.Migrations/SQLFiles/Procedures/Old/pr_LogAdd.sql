@@ -47,9 +47,9 @@ AS
         [Trace],
         CreateTime
     )
-    SELECT
-        @LogId AS LogId,
-        t1.[Trace],
-        t1.CreateTime
-    FROM @Traces AS t1
+        SELECT
+            @LogId AS LogId,
+            t1.[Trace],
+            t1.CreateTime
+        FROM @Traces AS t1
 GO    

@@ -10,5 +10,6 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
     {
         Task<UserTestModel> CreateNewUser();
         Task<List<LogEntity>> CreateLogsAsync(long applicationId, LogLevel level, int counter = 1);
+        Task<List<ApplicationEntity>> CreateApplicationsAsync(long userId, int counter = 1);
     }
 }
