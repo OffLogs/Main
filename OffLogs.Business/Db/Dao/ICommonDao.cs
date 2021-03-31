@@ -1,9 +1,9 @@
-using System.Data.SqlClient;
+using System.Data;
 
 namespace OffLogs.Business.Db.Dao
 {
     public interface ICommonDao
     {
-        SqlConnection GetConnection();
+        IDbConnection GetConnection();
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using OffLogs.Business.Constants;
@@ -11,7 +11,7 @@ namespace OffLogs.Api.Models.Response
         public ICollection<T> Items { get; set; }
         
         [JsonPropertyName("totalPages")]
-        public int TotalPages { get; set; }
+        public long TotalPages { get; set; }
 
         [JsonPropertyName("pageSize")]
         public int PageSize { get; set; }
@@ -20,7 +20,7 @@ namespace OffLogs.Api.Models.Response
         {
         }
 
-        public PaginatedResponseModel(ICollection<T> responseList, int totalItems, int pageSize = GlobalConstants.ListPageSize)
+        public PaginatedResponseModel(ICollection<T> responseList, long totalItems, int pageSize = GlobalConstants.ListPageSize)
         {
             Items = responseList;
             PageSize = pageSize;

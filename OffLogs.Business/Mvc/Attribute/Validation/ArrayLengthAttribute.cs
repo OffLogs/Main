@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using OffLogs.Business.Resources;
 
@@ -13,7 +12,6 @@ namespace OffLogs.Business.Mvc.Attribute.Validation
 
         public ArrayLengthAttribute(int Max)
         {
-            Max = 0;
             this.Max = Max;
         }
 

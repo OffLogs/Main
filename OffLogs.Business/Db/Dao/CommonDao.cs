@@ -1,4 +1,4 @@
-using System.Data.SqlClient;
+using System.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -13,7 +13,7 @@ namespace OffLogs.Business.Db.Dao
         {
         }
         
-        public SqlConnection GetConnection()
+        public IDbConnection GetConnection()
         {
             return base.GetConnection();
         }

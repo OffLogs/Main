@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using OffLogs.Business.Resources;
 
@@ -37,7 +37,7 @@ namespace OffLogs.Business.Mvc.Attribute.Validation
                         || !q.ToString().Length.Equals(quad.Length)
                         || q < 0
                         || q > 255) {
-                            return new ValidationResult(String.Format(RG.Error_FieldContainsIncorrectIPv4Address, validationContext.DisplayName));
+                        return new ValidationResult(String.Format(RG.Error_FieldContainsIncorrectIPv4Address, validationContext.DisplayName));
                     }
 
                 }

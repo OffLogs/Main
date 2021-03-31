@@ -9,6 +9,7 @@ namespace OffLogs.Api.Models.Request.Log.Serilog
     {
         [ArrayLength(100)]
         [JsonPropertyName("events")]
+        [ArrayLength(100)]
         public List<SerilogLogRequestModel> Events { get; set; } = new();
     }
 }

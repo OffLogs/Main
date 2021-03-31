@@ -1,5 +1,3 @@
-using OffLogs.Business.Extensions;
-
 namespace OffLogs.Business.Constants
 {
     public static class GlobalConstants

@@ -1,13 +1,12 @@
 using System;
 using System.Data;
-using System.Data.SqlClient;
 using System.Threading.Tasks;
-using Dapper;
-using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Helpers;
+using ServiceStack.OrmLite;
+using ServiceStack.OrmLite.Dapper;
 
 namespace OffLogs.Business.Db.Dao
 {
@@ -35,24 +34,18 @@ namespace OffLogs.Business.Db.Dao
                 CreateTime = DateTime.Now,
                 UpdateTime = DateTime.Now
             };
-            await Connection.InsertAsync(user);
+            user.Id = await Connection.InsertAsync(user, selectIdentity: true);
             return user;
         }
         
         public async Task DeleteByUserName(string userName)
         {
-            await ExecuteWithReturnAsync("pr_UserDeleteByUserName", new 
-            {
-                UserName = userName
-            });
+            await Connection.DeleteAsync<UserEntity>(user => user.UserName == FormatUtil.ClearUserName(userName));
         }
         
-        public Task<UserEntity> GetByUserName(string userName)
+        public async Task<UserEntity> GetByUserName(string userName)
         {
-            return Connection.QueryFirstOrDefaultAsync<UserEntity>("pr_UserGetByUserName", new
-            {
-                UserName = FormatUtil.ClearUserName(userName)
-            },  null, null, CommandType.StoredProcedure);
+            return await Connection.SingleAsync<UserEntity>(user => user.UserName == FormatUtil.ClearUserName(userName));
         }
     }
 }

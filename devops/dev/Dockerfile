@@ -1,5 +1,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0
 
+# Change timezone to local time
+ENV TZ=UTC
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 COPY . /app
 RUN ls /app
 WORKDIR /app/Vizit.Api

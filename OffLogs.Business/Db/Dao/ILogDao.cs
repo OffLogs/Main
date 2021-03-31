@@ -9,7 +9,7 @@ namespace OffLogs.Business.Db.Dao
 {
     public interface ILogDao: ICommonDao
     {
-        Task AddAsync(
+        Task<LogEntity> AddAsync(
             long applicationId,  
             string message,
             LogLevel level,
@@ -18,6 +18,6 @@ namespace OffLogs.Business.Db.Dao
             ICollection<LogTraceEntity> traces = null
         );
 
-        Task<(IEnumerable<LogEntity>, int)> GetList(long applicationId, int page, int pageSize = GlobalConstants.ListPageSize);
+        Task<(IEnumerable<LogEntity>, long)> GetList(long applicationId, int page, int pageSize = 30);
     }
 }

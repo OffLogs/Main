@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using OffLogs.Api.Middleware;
 using OffLogs.Business.Extensions;
 using Serilog;
 
@@ -15,11 +16,14 @@ namespace OffLogs.Api
 {
     public class Startup
     {
+        private readonly bool _isRequestResponseLoggingEnabled;
+        
         public IConfiguration Configuration { get; }
         
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            _isRequestResponseLoggingEnabled = configuration.GetValue("App:EnableRequestResponseLogging", false);
         }
         
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -33,7 +37,18 @@ namespace OffLogs.Api
                     options.InvalidModelStateResponseFactory = context =>
                     {
                         // Get an instance of ILogger (see below) and log accordingly.
-                        Log.Logger.Information(context.ModelState.GetErrorsFromModelState().FirstOrDefault());
+                        var body = context.HttpContext.Request.ReadBodyAsync().Result;
+                        Log.Logger.Error($"Request data: {body}");
+                        foreach (var value in context.ModelState.Values)
+                        {
+                            foreach (var error in value.Errors)
+                            {
+                                var errorMessage = !string.IsNullOrEmpty(error.ErrorMessage)
+                                    ? error.ErrorMessage
+                                    : error.Exception?.Message;
+                                Log.Logger.Error(errorMessage);
+                            }
+                        }
                         return new BadRequestObjectResult(context.ModelState);
                     };
                 })
@@ -83,6 +98,11 @@ namespace OffLogs.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            if (_isRequestResponseLoggingEnabled)
+            {
+                app.UseMiddleware<RequestResponseLoggerMiddleware>();
+            }
+            
             app.UseRouting();
 
             app.UseAuthentication();

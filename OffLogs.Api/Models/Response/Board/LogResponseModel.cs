@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OffLogs.Business.Constants;
 using OffLogs.Business.Db.Entity;
 
 namespace OffLogs.Api.Models.Response.Board

@@ -60,7 +60,7 @@ namespace OffLogs.Business.Services.Data
                     (faker) => faker.Date.Past()
                 );
         }
-
+        
         public Faker<LogEntity> LogFactory(long applicationId, LogLevel level)
         {
             return new Faker<LogEntity>()

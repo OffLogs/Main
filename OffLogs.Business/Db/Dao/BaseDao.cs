@@ -1,18 +1,24 @@
 using System;
+using System.Collections.Concurrent;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Threading.Tasks;
-using Dapper;
-using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Logging;
+using Npgsql;
+using ServiceStack.OrmLite;
+using ServiceStack.OrmLite.Dapper;
 
 namespace OffLogs.Business.Db.Dao
 {
     public class BaseDao: IDisposable
     {
         protected ILogger<BaseDao> Logger;
+        private static ConcurrentDictionary<string, string> _queryFilesCache = new();
+
+        private OrmLiteConnectionFactory _connectionFactory;
         
-        protected SqlConnection Connection
+        protected IDbConnection Connection
         {
             get
             {
@@ -21,20 +27,23 @@ namespace OffLogs.Business.Db.Dao
             }
         }
 
-        private readonly SqlConnection _connection;
+        private IDbConnection _connection;
 
         #region CommonMethods
 
         public BaseDao(string connString, ILogger<BaseDao> logger)
         {
             Logger = logger;
-            _connection = new SqlConnection(connString);
-            OpenConnection();
+            _connectionFactory= new OrmLiteConnectionFactory(connString, PostgreSqlDialect.Provider);
         }
 
         public void OpenConnection()
         {
-            if (_connection.State != ConnectionState.Open)
+            if (_connection == null)
+            {
+                _connection = _connectionFactory.Open();
+            } 
+            else if (_connection.State != ConnectionState.Open)
             {
                 _connection.Open();
             }
@@ -68,7 +77,7 @@ namespace OffLogs.Business.Db.Dao
             GC.SuppressFinalize(this);
         }
 
-        public SqlConnection GetConnection()
+        public IDbConnection GetConnection()
         {
             return Connection;
         }
@@ -93,17 +102,38 @@ namespace OffLogs.Business.Db.Dao
             await Connection.ExecuteAsync(sprName, param, null, null, CommandType.StoredProcedure);
             return param.Get<int>("ret");
         }
+        
+        #endregion
 
-        protected long Insert(object entity)
+        #region QueryReader
+
+        public string GetQuery(string fileName)
         {
-            return Connection.Insert(entity);
+            if (_queryFilesCache.ContainsKey(fileName))
+            {
+                return _queryFilesCache[fileName];
+            }
+
+            var queryString = LoadDbQueryFile(fileName);
+            _queryFilesCache.TryAdd(queryString, fileName);
+            return queryString;
         }
-        
-        protected async Task<int> InsertAsync(object entity)
+
+        private string LoadDbQueryFile(string fileName)
         {
-            return await Connection.InsertAsync(entity);
+            var assembly = GetType().Assembly;
+            var name = assembly.GetName();
+            var resource = assembly.GetManifestResourceStream($"{name.Name}.Db.Queries.{fileName}.sql");
+            if (resource == null)
+            {
+                throw new Exception($"Query file wasn't found: '{fileName}'");
+            }
+            using (var reader = new StreamReader(resource))
+            {
+                return reader.ReadToEnd();
+            }
         }
-        
+
         #endregion
     }
 }

@@ -1,5 +1,5 @@
-using System.ComponentModel.DataAnnotations;
 using OffLogs.Business.Mvc.Attribute.Validation;
+using ServiceStack.DataAnnotations;
 
 namespace OffLogs.Api.Models.Request.Board
 {

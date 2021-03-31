@@ -9,6 +9,6 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
     public interface IDataSeederService
     {
         Task<UserTestModel> CreateNewUser();
-        Task<List<LogEntity>> CreateLogs(long applicationId, LogLevel level, int counter = 1);
+        Task<List<LogEntity>> CreateLogsAsync(long applicationId, LogLevel level, int counter = 1);
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using OffLogs.Api.Models.Request.Board;
@@ -53,10 +53,10 @@ namespace OffLogs.Api.Tests.Integration.Controller.Board.LogController
         public async Task ShouldReceiveLogsList(string url)
         {
             var user = await DataSeeder.CreateNewUser();
-            await DataSeeder.CreateLogs(user.ApplicationId, LogLevel.Error, 3);
+            await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Error, 3);
             
             var user2 = await DataSeeder.CreateNewUser();
-            await DataSeeder.CreateLogs(user2.ApplicationId, LogLevel.Error, 2);
+            await DataSeeder.CreateLogsAsync(user2.ApplicationId, LogLevel.Error, 2);
             
             // Act
             var response = await PostRequestAsync(url, user.ApiToken, new LogListRequestModel()
@@ -79,7 +79,7 @@ namespace OffLogs.Api.Tests.Integration.Controller.Board.LogController
         public async Task ShouldReceiveMoreThanOnePages(string url)
         {
             var user = await DataSeeder.CreateNewUser();
-            await DataSeeder.CreateLogs(user.ApplicationId, LogLevel.Information, 25);
+            await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information, 25);
             
             // Act
             var response = await PostRequestAsync(url, user.ApiToken, new LogListRequestModel()

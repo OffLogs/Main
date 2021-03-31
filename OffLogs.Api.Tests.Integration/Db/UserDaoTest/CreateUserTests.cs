@@ -38,7 +38,7 @@ namespace OffLogs.Api.Tests.Integration.Db.UserDaoTest
             await UserDao.DeleteByUserName(expectedUserName);
             
             await UserDao.CreateNewUser(expectedUserName, email1);
-            await Assert.ThrowsAsync<SqlException>(() => UserDao.CreateNewUser(expectedUserName, email2));
+            await Assert.ThrowsAsync<Npgsql.PostgresException>(() => UserDao.CreateNewUser(expectedUserName, email2));
         }
         
         [Theory]
@@ -49,7 +49,10 @@ namespace OffLogs.Api.Tests.Integration.Db.UserDaoTest
             await UserDao.DeleteByUserName(userName);
             
             await UserDao.CreateNewUser(userName, expectedEmail);
-            await Assert.ThrowsAsync<SqlException>(() => UserDao.CreateNewUser(userName2, expectedEmail));
+            await Assert.ThrowsAsync<Npgsql.PostgresException>(async () =>
+            {
+                await UserDao.CreateNewUser(userName2, expectedEmail);
+            });
         }
     }
 }

@@ -1,15 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using Dapper;
-using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OffLogs.Business.Db.Entity;
-using OffLogs.Business.Helpers;
 using OffLogs.Business.Services.Jwt;
+using ServiceStack.OrmLite;
+using ServiceStack.OrmLite.Dapper;
 
 namespace OffLogs.Business.Db.Dao
 {
@@ -39,7 +36,7 @@ namespace OffLogs.Business.Db.Dao
                 CreateTime = DateTime.Now,
                 UpdateTime = DateTime.Now
             };
-            await Connection.InsertAsync(application);
+            application.Id = await Connection.InsertAsync(application, selectIdentity: true);
             application.ApiToken = _jwtService.BuildJwt(application.Id);
             await Connection.UpdateAsync(application);
             return application;
@@ -52,12 +49,10 @@ namespace OffLogs.Business.Db.Dao
                 UserId = userId, 
                 ApplicationId = applicationId
             };
-            var parameters = new DynamicParameters(inputParams);
-            using var multi = await Connection.QueryMultipleAsync(
-                "SELECT dbo.fn_ApplicationIsOwner(@UserId, @ApplicationId)",
-                parameters
+            var isExists = await Connection.ExistsAsync<ApplicationEntity>(
+                application => application.Id == applicationId && application.UserId == userId
             );
-            return multi.Read<bool>().First();
+            return isExists;
         }
     }
 }

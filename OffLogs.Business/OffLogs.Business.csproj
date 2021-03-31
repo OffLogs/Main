@@ -6,8 +6,6 @@
 
     <ItemGroup>
       <PackageReference Include="Bogus" Version="33.0.2" />
-      <PackageReference Include="Dapper" Version="2.0.78" />
-      <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
       <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
@@ -17,6 +15,7 @@
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
       <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.7.1" />
       <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+      <PackageReference Include="Npgsql" Version="5.0.4" />
       <PackageReference Include="System.Data.SqlClient" Version="4.4.3" />
       <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
     </ItemGroup>
@@ -42,6 +41,10 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>RG.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <None Remove="Db\Queries\log_get_list.sql" />
+      <EmbeddedResource Include="Db\Queries\log_get_list.sql">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -50,6 +53,10 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>RG.resx</DependentUpon>
       </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ServiceStack.OrmLite\src\ServiceStack.OrmLite.PostgreSQL\ServiceStack.OrmLite.PostgreSQL.csproj" />
     </ItemGroup>
 
 </Project>
