@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -53,6 +54,20 @@ namespace OffLogs.Business.Db.Dao
                 application => application.Id == applicationId && application.UserId == userId
             );
             return isExists;
+        }
+        
+        public async Task<(ICollection<ApplicationEntity>, long)> GetList(long userId, int page, int pageSize = 30)
+        {
+            page = page - 1;
+            var offset = (page <= 0 ? 0 : page) * pageSize;
+
+            var sumCounter = await Connection.CountAsync<ApplicationEntity>(entity => entity.UserId == userId);
+            var listQuery = Connection.From<ApplicationEntity>()
+                .Where<ApplicationEntity>(log => log.UserId == userId)
+                .Limit(offset, pageSize)
+                .OrderBy<LogEntity>(log => log.CreateTime);
+            var list = await Connection.SelectAsync(listQuery);
+            return (list, sumCounter);
         }
     }
 }

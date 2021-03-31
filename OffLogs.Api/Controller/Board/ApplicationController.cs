@@ -1,11 +1,16 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using OffLogs.Api.Models.Request;
 using OffLogs.Api.Models.Request.Board;
+using OffLogs.Api.Models.Response;
+using OffLogs.Api.Models.Response.Board;
 using OffLogs.Business.Db.Dao;
+using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Mvc.Controller;
 using OffLogs.Business.Services.Jwt;
 
@@ -34,12 +39,19 @@ namespace OffLogs.Api.Controller.Board
         }
         
         [HttpPost("list")]
-        public async Task<IActionResult> GetList([FromBody]LogListRequestModel model)
+        public async Task<IActionResult> GetList([FromBody]PaginatedRequestModel model)
         {
             try
             {
                 var userId = _jwtService.GetUserId();
-                return JsonSuccess();
+                var (list, totalItems) = await _applicationDao.GetList(
+                    userId,
+                    model.Page
+                );
+                var responseList = list.Select(item => new ApplicationResponseModel(item)).ToList();
+                return JsonSuccess(
+                    new PaginatedResponseModel<ApplicationResponseModel>(responseList, totalItems)    
+                );
             }
             catch (Exception e)
             {
