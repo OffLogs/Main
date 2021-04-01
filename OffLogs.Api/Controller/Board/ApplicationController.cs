@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -67,6 +68,29 @@ namespace OffLogs.Api.Controller.Board
             {
                 var userId = _jwtService.GetUserId();
                 var application = await _applicationDao.CreateNewApplication(userId, model.Name);
+                return JsonSuccess(
+                    new ApplicationResponseModel(application)    
+                );
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, e.Message);
+                return JsonError();
+            }
+        }
+        
+        [HttpPost("update")]
+        public async Task<IActionResult> Add([FromBody]ApplicationUpdateModel model)
+        {
+            try
+            {
+                var userId = _jwtService.GetUserId();
+                if (!await _applicationDao.IsOwner(userId, model.Id))
+                {
+                    return JsonError(HttpStatusCode.Forbidden);
+                }
+
+                var application = await _applicationDao.UpdateApplication(model.Id, model.Name);
                 return JsonSuccess(
                     new ApplicationResponseModel(application)    
                 );
