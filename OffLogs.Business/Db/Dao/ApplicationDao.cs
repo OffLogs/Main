@@ -43,6 +43,15 @@ namespace OffLogs.Business.Db.Dao
             return application;
         }
         
+        public async Task<ApplicationEntity> UpdateApplication(long applicationId, string name)
+        {
+            var application = GetConnection().SingleById<ApplicationEntity>(applicationId);
+            application.Name = name;
+            application.UpdateTime = DateTime.Now;
+            await Connection.UpdateAsync(application);
+            return application;
+        }
+        
         public async Task<bool> IsOwner(long userId, long applicationId)
         {
             var inputParams = new
