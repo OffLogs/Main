@@ -139,7 +139,6 @@ namespace OffLogs.Api
                     {
                         return new[] { controllerActionDescriptor.ControllerName };
                     }
-
                     throw new InvalidOperationException("Unable to determine tag for endpoint.");
                 });
                 c.DocInclusionPredicate((name, api) => true);
