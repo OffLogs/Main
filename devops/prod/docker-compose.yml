@@ -15,3 +15,13 @@ services:
       - App__Application__SymmetricSecurityKey=${JWT_APPLICATION_KEY}
     ports:
       - 5051:80
+  web:
+    container_name: offlogs-web-production
+    restart: always
+    build:
+      context: ./../../
+      dockerfile: devops/prod/Web/Dockerfile
+      args:
+        BUILD_COMMAND: build
+    ports:
+      - 6018:80
