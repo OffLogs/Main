@@ -1,6 +1,6 @@
 namespace OffLogs.Web.Core.Constants
 {
-    public class ApiUrls
+    public class ApiUrl
     {
         public static readonly string Login = "user/login";
         

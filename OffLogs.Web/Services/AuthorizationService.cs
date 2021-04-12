@@ -1,15 +1,17 @@
 using System.Net.Http;
 using System.Threading.Tasks;
+using OffLogs.Business.Common.Models.Api.Request.User;
+using OffLogs.Web.Services.Http;
 
 namespace OffLogs.Web.Services
 {
     public class AuthorizationService: IAuthorizationService
     {
-        private readonly HttpClient _httpClient;
-
-        public AuthorizationService(HttpClient httpClient)
+        private readonly IApiService _apiService;
+        
+        public AuthorizationService(IApiService apiService)
         {
-            _httpClient = httpClient;
+            _apiService = apiService;
         }
 
         public bool IsLoggedIn()
@@ -17,10 +19,10 @@ namespace OffLogs.Web.Services
             return false;
         }
         
-        public Task<bool> LoginAsync(string userName, string password)
+        public async Task<bool> LoginAsync(LoginRequestModel model)
         {
-            // _httpClient.PostAsync()
-            return Task.FromResult(true);
+            await _apiService.LoginAsync(model);
+            return true;
         }
         
         public Task<bool> IsLoggedInAsync()

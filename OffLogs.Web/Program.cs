@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using OffLogs.Web.Services;
+using OffLogs.Web.Services.Http;
 
 namespace OffLogs.Web
 {
@@ -22,6 +23,7 @@ namespace OffLogs.Web
                 }
             );
 
+            builder.Services.AddScoped<IApiService, ApiService>();
             builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
             
             await builder.Build().RunAsync();
