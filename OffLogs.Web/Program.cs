@@ -19,7 +19,7 @@ namespace OffLogs.Web
                 sp => new HttpClient
                 {
                     // BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
-                    BaseAddress = new Uri("https://offlogs.com")
+                    BaseAddress = new Uri("https://api.offlogs.com")
                 }
             );
 
