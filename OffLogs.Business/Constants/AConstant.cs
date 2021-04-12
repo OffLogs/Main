@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using OffLogs.Business.Mvc.Attribute.Constant;
+using OffLogs.Business.Common.Mvc.Attribute.Constant;
 using ServiceStack.OrmLite.Converters;
 
 namespace OffLogs.Business.Constants

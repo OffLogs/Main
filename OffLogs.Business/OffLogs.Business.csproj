@@ -33,6 +33,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Models" />
       <Folder Include="Test" />
     </ItemGroup>
 
@@ -56,6 +57,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\OffLogs.Business.Common\OffLogs.Business.Common.csproj" />
       <ProjectReference Include="..\ServiceStack.OrmLite\src\ServiceStack.OrmLite.PostgreSQL\ServiceStack.OrmLite.PostgreSQL.csproj" />
     </ItemGroup>
 

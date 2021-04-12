@@ -1,3 +1,4 @@
+using OffLogs.Business.Common.Extensions;
 using OffLogs.Business.Extensions;
 
 namespace OffLogs.Business.Constants

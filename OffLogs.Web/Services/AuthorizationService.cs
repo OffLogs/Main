@@ -22,5 +22,11 @@ namespace OffLogs.Web.Services
             // _httpClient.PostAsync()
             return Task.FromResult(true);
         }
+        
+        public Task<bool> IsLoggedInAsync()
+        {
+            // _httpClient.PostAsync()
+            return Task.FromResult(true);
+        }
     }
 }
