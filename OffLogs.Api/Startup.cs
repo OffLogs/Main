@@ -107,8 +107,6 @@ namespace OffLogs.Api
             {
                 app.UseMiddleware<RequestResponseLoggerMiddleware>();
             }
-            
-            app.UseRouting();
 
             app.UseAuthentication();
             app.UseSerilogRequestLogging();
