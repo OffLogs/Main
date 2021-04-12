@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
-using OffLogs.Business.Mvc.Attribute.Validation;
+using OffLogs.Business.Common.Mvc.Attribute.Validation;
 
 namespace OffLogs.Api.Models.Request.Log.Serilog
 {

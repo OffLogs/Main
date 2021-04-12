@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
+using OffLogs.Business.Common.Mvc.Attribute.Constant;
+using OffLogs.Business.Common.Mvc.Attribute.Validation;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Mvc.Attribute.Constant;
-using OffLogs.Business.Mvc.Attribute.Validation;
 
 namespace OffLogs.Api.Models.Request.Log.Common
 {
