@@ -80,7 +80,7 @@ namespace OffLogs.Api.Controller.Board
         }
         
         [HttpPost("update")]
-        public async Task<IActionResult> Add([FromBody]ApplicationUpdateModel model)
+        public async Task<IActionResult> Update([FromBody]ApplicationUpdateModel model)
         {
             try
             {

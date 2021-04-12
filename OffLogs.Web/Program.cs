@@ -15,9 +15,14 @@ namespace OffLogs.Web
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddScoped(
-                sp => new HttpClient {BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)});
+                sp => new HttpClient
+                {
+                    // BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
+                    BaseAddress = new Uri("https://offlogs.com")
+                }
+            );
 
-            builder.Services.AddSingleton<IAuthorizationService, AuthorizationService>();
+            builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
             
             await builder.Build().RunAsync();
         }

@@ -1,5 +1,6 @@
 ﻿@inject IAuthorizationService AuthService
 @inject NavigationManager NavigationManager
+@using OffLogs.Web.Core.Extensions
 @inherits LayoutComponentBase
 
 <div class="page">
@@ -40,7 +41,7 @@
     private void CheckIsLoggedInAndRedirect()
     {
         _isLoggedIn = AuthService.IsLoggedIn();
-        if (!_isLoggedIn)
+        if (!_isLoggedIn && !NavigationManager.GetPath().StartsWith("/login"))
         {
             NavigationManager.NavigateTo("/login");
         }
