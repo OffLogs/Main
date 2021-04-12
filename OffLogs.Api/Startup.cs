@@ -35,6 +35,7 @@ namespace OffLogs.Api
         {
             EnableSwaggerIntegration(services);
             services.InitCommonServices();
+            services.AddCors();
             services.AddControllers()
                 .ConfigureApiBehaviorOptions(options =>
                 {
@@ -114,6 +115,12 @@ namespace OffLogs.Api
             app.UseSwagger();
             app.UseSwaggerUI();
             app.UseRouting();
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()
+            );
             app.UseAuthorization();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

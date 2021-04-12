@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using OffLogs.Business.Common.Models.Http;
 using OffLogs.Business.Constants;
-using Vizit.Business.Models.Http;
 
 namespace OffLogs.Business.Mvc.Controller
 {

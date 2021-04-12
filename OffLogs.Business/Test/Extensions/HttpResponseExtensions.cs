@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Vizit.Business.Models.Http;
+using OffLogs.Business.Common.Models.Http;
 
 namespace OffLogs.Business.Test.Extensions
 {

@@ -1,4 +1,4 @@
-using OffLogs.Business.Extensions;
+using OffLogs.Business.Common.Extensions;
 using OffLogs.Business.Helpers;
 using Xunit;
 

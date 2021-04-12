@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using OffLogs.Api.Models.Request.User;
 using OffLogs.Api.Tests.Integration.Core;
+using OffLogs.Business.Common.Models.Api.Request.User;
 using OffLogs.Business.Test.Extensions;
 using Xunit;
 

@@ -1,5 +1,6 @@
 ﻿@page "/login"
-@using OffLogs.Web.Models.User
+@using OffLogs.Business.Common.Models.Api.Request.User
+@inject IAuthorizationService _authorizationService
 
 <h1>Please login</h1>
 
@@ -25,7 +26,7 @@
 
 @code
 {
-    private LoginModel model = new();
+    private LoginRequestModel model = new();
     private EditContext editContext;
 
     protected override void OnInitialized()
@@ -40,6 +41,7 @@
         Console.WriteLine("aaaa: " + isValid);
         if (isValid)
         {
+            _authorizationService.LoginAsync(model);
         }
         else
         {
