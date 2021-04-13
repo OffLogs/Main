@@ -1,20 +1,20 @@
 version: "3.8"
 
 services:
-#  api:
-#    container_name: offlogs-api-production
-#    restart: always
-#    build:
-#      context: ./../../
-#      dockerfile: devops/prod/Api/Dockerfile
-#      args:
-#        BUILD_COMMAND: build
-#    environment:
-#      - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
-#      - App__Auth__SymmetricSecurityKey=${JWT_USER_KEY}
-#      - App__Application__SymmetricSecurityKey=${JWT_APPLICATION_KEY}
-#    ports:
-#      - 5051:80
+  api:
+    container_name: offlogs-api-production
+    restart: always
+    build:
+      context: ./../../
+      dockerfile: devops/prod/Api/Dockerfile
+      args:
+        BUILD_COMMAND: build
+    environment:
+      - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
+      - App__Auth__SymmetricSecurityKey=${JWT_USER_KEY}
+      - App__Application__SymmetricSecurityKey=${JWT_APPLICATION_KEY}
+    ports:
+      - 5051:80
   web:
     container_name: offlogs-web-production
     restart: always
