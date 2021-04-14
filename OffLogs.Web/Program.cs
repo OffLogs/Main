@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OffLogs.Web.Services;
 using OffLogs.Web.Services.Http;
@@ -15,11 +16,12 @@ namespace OffLogs.Web
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
+            var apiUrl = builder.Configuration.GetValue<string>("ApiUrl");
             builder.Services.AddScoped(
                 sp => new HttpClient
                 {
                     // BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
-                    BaseAddress = new Uri("https://api.offlogs.com")
+                    BaseAddress = new Uri(apiUrl)
                 }
             );
 
