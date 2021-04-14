@@ -37,8 +37,6 @@
     private async Task HandleSubmit()
     {
         var isValid = editContext.Validate();
-
-        Console.WriteLine("aaaa: " + isValid);
         if (isValid)
         {
             _authorizationService.LoginAsync(model);

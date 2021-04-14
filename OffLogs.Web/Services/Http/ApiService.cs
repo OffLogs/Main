@@ -8,6 +8,7 @@ using OffLogs.Business.Common.Exceptions;
 using OffLogs.Business.Common.Models.Api.Request.User;
 using OffLogs.Business.Common.Models.Http;
 using OffLogs.Web.Core.Constants;
+using OffLogs.Web.Core.Exceptions;
 
 namespace OffLogs.Web.Services.Http
 {
@@ -41,8 +42,17 @@ namespace OffLogs.Web.Services.Http
         public async Task<LoginResponseModel> LoginAsync(LoginRequestModel model)
         {
             var response = await PostRequestAsync<LoginResponseModel>(ApiUrl.Login, model);
-            Console.WriteLine(JsonConvert.SerializeObject(response));
-            return response.Data;
+            if (response == null)
+            {
+                throw new ServerErrorException();
+            }
+
+            if (!response.IsSuccess)
+            {
+                throw new Exception(response.Message);
+            }
+
+            return response?.Data;
         }
     }
 }

@@ -1,17 +1,24 @@
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Blazored.LocalStorage;
 using OffLogs.Business.Common.Models.Api.Request.User;
+using OffLogs.Web.Core.Exceptions;
 using OffLogs.Web.Services.Http;
 
 namespace OffLogs.Web.Services
 {
     public class AuthorizationService: IAuthorizationService
     {
-        private readonly IApiService _apiService;
+        private const string AuthKey = "OffLogs_JwtToken";
         
-        public AuthorizationService(IApiService apiService)
+        private readonly IApiService _apiService;
+        private readonly ILocalStorageService _localStorage;
+
+        public AuthorizationService(IApiService apiService, ILocalStorageService localStorage)
         {
             _apiService = apiService;
+            _localStorage = localStorage;
         }
 
         public bool IsLoggedIn()
@@ -21,8 +28,14 @@ namespace OffLogs.Web.Services
         
         public async Task<bool> LoginAsync(LoginRequestModel model)
         {
-            await _apiService.LoginAsync(model);
-            return true;
+            var loginData = await _apiService.LoginAsync(model);
+            var jwtToken = loginData?.Token;
+            if (!string.IsNullOrEmpty(jwtToken))
+            {
+                await _localStorage.SetItemAsync(AuthKey, jwtToken);
+                return true;
+            }
+            return false;
         }
         
         public Task<bool> IsLoggedInAsync()
