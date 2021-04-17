@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -21,13 +22,16 @@ namespace OffLogs.Web.Services.Http
             _httpClient = httpClient;
         }
 
-        private async Task<JsonCommonResponse<T>> RequestAsync<T>(string requestUri, object data, HttpMethod httpMethod)
+        private async Task<JsonCommonResponse<T>> RequestAsync<T>(string requestUri, string jwtToken, object data, HttpMethod httpMethod)
         {
             // create request object
             var request = new HttpRequestMessage(httpMethod, requestUri);
             request.Content = JsonContent.Create(data);
             // add authorization header
-            // request.Headers.Authorization = new AuthenticationHeaderValue("bearer", await GetBearerToken());
+            if (!string.IsNullOrEmpty(jwtToken))
+            {
+                request.Headers.Authorization = new AuthenticationHeaderValue("bearer", jwtToken);    
+            }
             // send request
             HttpResponseMessage response = await _httpClient.SendAsync(request);
             var responseString = await response.Content.ReadAsStringAsync();
@@ -39,14 +43,14 @@ namespace OffLogs.Web.Services.Http
             throw new HttpResponseStatusException(response.StatusCode, "Add message");
         }
 
-        private async Task<JsonCommonResponse<T>> PostAsync<T>(string requestUri, object data)
+        private async Task<JsonCommonResponse<T>> PostAsync<T>(string requestUri, object data, string jwtToken = null)
         {
-            return await RequestAsync<T>(requestUri, data, HttpMethod.Post);
+            return await RequestAsync<T>(requestUri, jwtToken, data, HttpMethod.Post);
         }    
         
-        private async Task<JsonCommonResponse<T>> GetAsync<T>(string requestUri, object data)
+        private async Task<JsonCommonResponse<T>> GetAsync<T>(string requestUri, object data, string jwtToken = null)
         {
-            return await RequestAsync<T>(requestUri, data, HttpMethod.Get);
+            return await RequestAsync<T>(requestUri, jwtToken, data, HttpMethod.Get);
         }  
         
         public async Task<LoginResponseModel> LoginAsync(LoginRequestModel model)
@@ -65,20 +69,15 @@ namespace OffLogs.Web.Services.Http
             return response?.Data;
         }
         
-        public async Task<LoginResponseModel> CheckIsLoggedInAsync(LoginRequestModel model)
+        public async Task<bool> CheckIsLoggedInAsync(string token)
         {
-            var response = await GetAsync<LoginResponseModel>(ApiUrl.Login, model);
+            var response = await GetAsync<object>(ApiUrl.UserCheckIsLoggedIn, null, token);
             if (response == null)
             {
                 throw new ServerErrorException();
             }
 
-            if (!response.IsSuccess)
-            {
-                throw new Exception(response.Message);
-            }
-
-            return response?.Data;
+            return response.IsSuccess;
         }
     }
 }

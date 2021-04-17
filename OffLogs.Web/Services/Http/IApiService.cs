@@ -6,5 +6,6 @@ namespace OffLogs.Web.Services.Http
     public interface IApiService
     {
         Task<LoginResponseModel> LoginAsync(LoginRequestModel model);
+        Task<bool> CheckIsLoggedInAsync(string token);
     }
 }

@@ -15,6 +15,8 @@ namespace OffLogs.Web.Services
         private readonly IApiService _apiService;
         private readonly ILocalStorageService _localStorage;
 
+        private bool _isLoggedIn = false;
+
         public AuthorizationService(IApiService apiService, ILocalStorageService localStorage)
         {
             _apiService = apiService;
@@ -23,7 +25,7 @@ namespace OffLogs.Web.Services
 
         public bool IsLoggedIn()
         {
-            return false;
+            return _isLoggedIn;
         }
         
         public async Task<bool> LoginAsync(LoginRequestModel model)
@@ -43,10 +45,22 @@ namespace OffLogs.Web.Services
             return await _localStorage.ContainKeyAsync(AuthKey);
         }
         
-        public Task<bool> CheckIsLoggedIn()
+        public async Task<bool> CheckIsLoggedInAsync()
         {
-            // _httpClient.PostAsync()
-            return Task.FromResult(true);
+            if (await IsHasJwtAsync())
+            {
+                _isLoggedIn = await _apiService.CheckIsLoggedInAsync(await GetJwtAsync());
+            }
+            else
+            {
+                _isLoggedIn = false;    
+            }
+            return _isLoggedIn;
+        }
+
+        public async Task<string> GetJwtAsync()
+        {
+            return await _localStorage.GetItemAsStringAsync(AuthKey);
         }
     }
 }
