@@ -1,5 +1,6 @@
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -48,6 +49,13 @@ namespace OffLogs.Api.Controller
             {
                 Token = _jwtService.BuildJwt(existsUser.Id)
             });
+        }
+
+        [Authorize]
+        [HttpGet("checkIsLoggedIn")]
+        public IActionResult CheckIsLoggedIn()
+        {
+            return JsonSuccess();
         }
     }
 }

@@ -1,34 +1,66 @@
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Blazored.LocalStorage;
 using OffLogs.Business.Common.Models.Api.Request.User;
+using OffLogs.Web.Core.Exceptions;
 using OffLogs.Web.Services.Http;
 
 namespace OffLogs.Web.Services
 {
     public class AuthorizationService: IAuthorizationService
     {
-        private readonly IApiService _apiService;
+        private const string AuthKey = "OffLogs_JwtToken";
         
-        public AuthorizationService(IApiService apiService)
+        private readonly IApiService _apiService;
+        private readonly ILocalStorageService _localStorage;
+
+        private bool _isLoggedIn = false;
+
+        public AuthorizationService(IApiService apiService, ILocalStorageService localStorage)
         {
             _apiService = apiService;
+            _localStorage = localStorage;
         }
 
         public bool IsLoggedIn()
         {
-            return false;
+            return _isLoggedIn;
         }
         
         public async Task<bool> LoginAsync(LoginRequestModel model)
         {
-            await _apiService.LoginAsync(model);
-            return true;
+            var loginData = await _apiService.LoginAsync(model);
+            var jwtToken = loginData?.Token;
+            if (!string.IsNullOrEmpty(jwtToken))
+            {
+                await _localStorage.SetItemAsync(AuthKey, jwtToken);
+                return true;
+            }
+            return false;
         }
         
-        public Task<bool> IsLoggedInAsync()
+        public async Task<bool> IsHasJwtAsync()
         {
-            // _httpClient.PostAsync()
-            return Task.FromResult(true);
+            return await _localStorage.ContainKeyAsync(AuthKey);
+        }
+        
+        public async Task<bool> CheckIsLoggedInAsync()
+        {
+            if (await IsHasJwtAsync())
+            {
+                _isLoggedIn = await _apiService.CheckIsLoggedInAsync(await GetJwtAsync());
+            }
+            else
+            {
+                _isLoggedIn = false;    
+            }
+            return _isLoggedIn;
+        }
+
+        public async Task<string> GetJwtAsync()
+        {
+            return await _localStorage.GetItemAsStringAsync(AuthKey);
         }
     }
 }

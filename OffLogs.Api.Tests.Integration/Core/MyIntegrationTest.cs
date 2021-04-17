@@ -48,5 +48,18 @@ namespace OffLogs.Api.Tests.Integration.Core
             var requestData = JsonContent.Create(data ?? new {});
             return await client.PostAsync(url, requestData);
         }
+        
+        public async Task<HttpResponseMessage> GetRequestAsAnonymousAsync(string url)
+        {
+            var client = _factory.CreateClient();
+            return await client.GetAsync(url);
+        }
+        
+        public async Task<HttpResponseMessage> GetRequestAsync(string url, string jwtToken,  object data = null)
+        {
+            var client = _factory.CreateClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
+            return await client.GetAsync(url);
+        }
     }
 }

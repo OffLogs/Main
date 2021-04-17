@@ -12,6 +12,15 @@ namespace OffLogs.Business.Common.Models.Http
         
         [JsonProperty(PropertyName = "data")]
         public object Data { get; set; }
+
+        [JsonIgnore]
+        public bool IsSuccess
+        {
+            get
+            {
+                return (Status ?? "").Trim().ToLower() == "success";
+            }
+        }
     }
     
     public class JsonCommonResponse<T>: JsonCommonResponse

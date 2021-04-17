@@ -1,6 +1,7 @@
 ﻿@inject IAuthorizationService AuthService
 @inject NavigationManager NavigationManager
 @using OffLogs.Web.Core.Extensions
+@using OffLogs.Web.Services.Http
 @inherits LayoutComponentBase
 
 <div class="page">
@@ -26,7 +27,7 @@
 @code {
     private bool _isLoggedIn = false;
     
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         base.OnInitialized();
 
@@ -35,6 +36,7 @@
             CheckIsLoggedInAndRedirect();    
         };
 
+        await AuthService.CheckIsLoggedInAsync();
         CheckIsLoggedInAndRedirect();
     }
 
