@@ -38,7 +38,12 @@ namespace OffLogs.Web.Services
             return false;
         }
         
-        public Task<bool> IsLoggedInAsync()
+        public async Task<bool> IsHasJwtAsync()
+        {
+            return await _localStorage.ContainKeyAsync(AuthKey);
+        }
+        
+        public Task<bool> CheckIsLoggedIn()
         {
             // _httpClient.PostAsync()
             return Task.FromResult(true);
