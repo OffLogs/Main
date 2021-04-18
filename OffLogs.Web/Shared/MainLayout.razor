@@ -1,5 +1,5 @@
-﻿@inject IAuthorizationService AuthService
-@inject NavigationManager NavigationManager
+﻿@inject IAuthorizationService _authService
+@inject NavigationManager _navigationManager
 @using OffLogs.Web.Core.Extensions
 @using OffLogs.Web.Services.Http
 @inherits LayoutComponentBase
@@ -17,7 +17,9 @@
         <div class="top-row px-4">
             <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
         </div>
-
+        
+        @_isLoggedIn
+        
         <div class="content px-4">
             @Body
         </div>
@@ -26,26 +28,26 @@
 
 @code {
     private bool _isLoggedIn = false;
-    
+
     protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
+        await base.OnInitializedAsync();
 
-        NavigationManager.LocationChanged += (sender, args) =>
+        _navigationManager.LocationChanged += (sender, args) =>
         {
             CheckIsLoggedInAndRedirect();    
         };
 
-        await AuthService.CheckIsLoggedInAsync();
+        await _authService.CheckIsLoggedInAsync();
         CheckIsLoggedInAndRedirect();
     }
 
     private void CheckIsLoggedInAndRedirect()
     {
-        _isLoggedIn = AuthService.IsLoggedIn();
-        if (!_isLoggedIn && !NavigationManager.GetPath().StartsWith("/login"))
+        _isLoggedIn = _authService.IsLoggedIn();
+        if (!_isLoggedIn && !_navigationManager.GetPath().StartsWith("/login"))
         {
-            NavigationManager.NavigateTo("/login");
+            _navigationManager.NavigateTo("/login");
         }
     }
 }

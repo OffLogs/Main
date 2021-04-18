@@ -1,6 +1,7 @@
 ﻿@page "/login"
 @using OffLogs.Business.Common.Models.Api.Request.User
 @inject IAuthorizationService _authorizationService
+@inject NavigationManager _navigationManager
 
 <h1>Please login</h1>
 
@@ -39,7 +40,18 @@
         var isValid = editContext.Validate();
         if (isValid)
         {
-            _authorizationService.LoginAsync(model);
+            try
+            {
+                var isLoggedIn = await _authorizationService.LoginAsync(model);
+                if (isLoggedIn)
+                {
+                    _navigationManager.NavigateTo("/");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
         else
         {
