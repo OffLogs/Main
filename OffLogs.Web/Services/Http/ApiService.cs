@@ -26,7 +26,10 @@ namespace OffLogs.Web.Services.Http
         {
             // create request object
             var request = new HttpRequestMessage(httpMethod, requestUri);
-            request.Content = JsonContent.Create(data);
+            if (data != null)
+            {
+                request.Content = JsonContent.Create(data);    
+            }
             // add authorization header
             if (!string.IsNullOrEmpty(jwtToken))
             {

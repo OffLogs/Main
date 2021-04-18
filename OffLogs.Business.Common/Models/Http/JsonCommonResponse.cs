@@ -18,7 +18,7 @@ namespace OffLogs.Business.Common.Models.Http
         {
             get
             {
-                return (Status ?? "").Trim().ToLower() == "success";
+                return (Status ?? "").Trim().ToLower() == "ok";
             }
         }
     }
