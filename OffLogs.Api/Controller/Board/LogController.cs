@@ -13,8 +13,10 @@ using OffLogs.Business.Common.Models.Api.Request.Board;
 using OffLogs.Business.Common.Models.Api.Response;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Db.Dao;
+using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Mvc.Controller;
 using OffLogs.Business.Services.Jwt;
+using ServiceStack.OrmLite;
 
 namespace OffLogs.Api.Controller.Board
 {
@@ -59,6 +61,29 @@ namespace OffLogs.Api.Controller.Board
                 return JsonSuccess(
                     new PaginatedResponseModel<LogResponseModel>(responseList, totalItems)
                 );
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, e.Message);
+                return JsonError();
+            }
+        }
+        
+        [HttpPost("setFavorite")]
+        public async Task<IActionResult> GetList([FromBody]LogSetFavoriteRequestModel model)
+        {
+            try
+            {
+                var userId = _jwtService.GetUserId();
+                if (!(await _logDao.IsOwner(userId, model.LogId)))
+                {
+                    return JsonError(HttpStatusCode.Forbidden);
+                }
+
+                var log = _logDao.GetConnection().SingleById<LogEntity>(model.LogId);
+                log.IsFavorite = model.IsFavorite;
+                await _logDao.GetConnection().SaveAsync(log);
+                return JsonSuccess();
             }
             catch (Exception e)
             {
