@@ -90,5 +90,16 @@ namespace OffLogs.Business.Db.Dao
             }
             return (result, sumCounter);
         }
+        
+        public async Task<bool> IsOwner(long userId, long logId)
+        {
+            var isExistsQuery = Connection.From<LogEntity>()
+                .Join<LogEntity, ApplicationEntity>((log, app) => log.ApplicationId == app.Id)
+                .Where<LogEntity, ApplicationEntity>(
+                    (log, application) => log.Id == logId && application.UserId == userId
+                );
+            
+            return await Connection.ExistsAsync(isExistsQuery);
+        }
     }
 }

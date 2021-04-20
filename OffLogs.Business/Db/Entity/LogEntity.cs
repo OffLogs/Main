@@ -20,6 +20,9 @@ namespace OffLogs.Business.Db.Entity
         [Alias("level")]
         public LogLevel Level { get; set; }
         
+        [Alias("is_favorite")]
+        public bool IsFavorite { get; set; }
+        
         [Alias("message")]
         public string Message { get; set; }
         

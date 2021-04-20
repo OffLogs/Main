@@ -19,5 +19,6 @@ namespace OffLogs.Business.Db.Dao
         );
 
         Task<(IEnumerable<LogEntity>, long)> GetList(long applicationId, int page, int pageSize = 30);
+        Task<bool> IsOwner(long userId, long logId);
     }
 }
