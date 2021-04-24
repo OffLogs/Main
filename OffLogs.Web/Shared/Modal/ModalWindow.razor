@@ -1,0 +1,40 @@
+﻿@using OffLogs.Web.Core.Extensions
+@using OffLogs.Web.Core.Constants
+@using OffLogs.Web.Core.Models.Modal
+
+<div class="modal fade show" style="padding-right: 15px; display: block;">
+  <div class="w-modal-bg"></div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLiveLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Woohoo, you're reading this text in a modal!</p>
+      </div>
+      <div class="modal-footer">
+        @foreach (var button in Buttons)
+        {
+          <button type="button" class="btn btn-@button.Type" @OnClick="event => OnClickButton(event)">@button.Name</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+@code {
+  [Parameter]
+  public string Title { get; set; }
+  
+  [Parameter]
+  public RenderFragment ChildContent { get; set; }
+
+  [Parameter]
+  public ICollection<ModalButtonModel> Buttons { get; set; } = new List<ModalButtonModel>();
+
+  private void OnClickButton()
+  {
+    
+  }
+}
