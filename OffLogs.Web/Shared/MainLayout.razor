@@ -17,7 +17,13 @@
         @if (_isShowMainMenu)
         {
             <div class="top-row px-4">
-                <a href="/" target="_blank" class="ml-md-auto">Logout</a>
+                <a 
+                    @onClick="OnLogout"
+                    href="#"
+                    class="ml-md-auto"
+                >
+                    Logout
+                </a>
             </div>  
         }
 
@@ -32,7 +38,7 @@
 @code {
     private bool _isLoggedIn = false;
 
-    private bool _isShowMainMenu => _isLoggedIn && _navigationManager.GetPath().StartsWith(SiteUrl.Dashboard);
+    private bool _isShowMainMenu = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -54,5 +60,14 @@
         {
             _navigationManager.NavigateTo("/login");
         }
+        _isShowMainMenu = _isLoggedIn && _navigationManager.GetPath().StartsWith(SiteUrl.Dashboard);
     }
+
+    private async Task OnLogout()
+    {
+        await _authService.LogoutAsync();
+        _navigationManager.NavigateTo("/");
+        CheckIsLoggedInAndRedirect();
+    }
+
 }

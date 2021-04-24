@@ -28,7 +28,12 @@ namespace OffLogs.Web.Services
         {
             return _isLoggedIn;
         }
-        
+
+        public async Task LogoutAsync()
+        {
+            await _localStorage.RemoveItemAsync(AuthKey);
+        }
+
         public async Task<bool> LoginAsync(LoginRequestModel model)
         {
             var loginData = await _apiService.LoginAsync(model);
