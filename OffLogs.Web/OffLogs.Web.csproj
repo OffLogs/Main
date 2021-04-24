@@ -16,7 +16,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Pages\Dashboard" />
       <Folder Include="wwwroot\css\bootstrap" />
     </ItemGroup>
 
