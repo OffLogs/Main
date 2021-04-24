@@ -16,7 +16,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Models\User" />
+      <Folder Include="Pages\Dashboard" />
+      <Folder Include="wwwroot\css\bootstrap" />
     </ItemGroup>
 
 </Project>
