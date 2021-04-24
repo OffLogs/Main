@@ -1,5 +1,6 @@
 ﻿@page "/login"
 @using OffLogs.Business.Common.Models.Api.Request.User
+@using OffLogs.Web.Core.Constants
 @inject IAuthorizationService _authorizationService
 @inject NavigationManager _navigationManager
 
@@ -45,7 +46,7 @@
                 var isLoggedIn = await _authorizationService.LoginAsync(model);
                 if (isLoggedIn)
                 {
-                    _navigationManager.NavigateTo("/");
+                    _navigationManager.NavigateTo(SiteUrl.Dashboard);
                 }
             }
             catch (Exception e)

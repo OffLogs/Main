@@ -19,4 +19,8 @@
       <Folder Include="wwwroot\css\bootstrap" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="Pages\Dashboard\Application\Index.razor.less" />
+    </ItemGroup>
+
 </Project>
