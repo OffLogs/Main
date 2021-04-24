@@ -11,7 +11,7 @@ namespace OffLogs.Web.Services
 {
     public class AuthorizationService: IAuthorizationService
     {
-        private const string AuthKey = "OffLogs_JwtToken";
+        public const string AuthKey = "OffLogs_JwtToken";
         
         private readonly IApiService _apiService;
         private readonly ILocalStorageService _localStorage;

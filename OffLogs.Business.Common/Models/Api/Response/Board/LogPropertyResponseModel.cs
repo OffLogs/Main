@@ -8,13 +8,5 @@ namespace OffLogs.Business.Common.Models.Api.Response.Board
         public string Key { get; set; }
         public string Value { get; set; }
         public DateTime CreateTime { get; set; }
-
-        public LogPropertyResponseModel(LogPropertyEntity entity)
-        {
-            Id = entity.Id;
-            Key = entity.Key;
-            Value = entity.Value;
-            CreateTime = entity.CreateTime;
-        }
     }
 }

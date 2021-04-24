@@ -1,5 +1,7 @@
 using System;
+using Bogus.DataSets;
 using Newtonsoft.Json;
+using OffLogs.Business.Common.Models.Api.Response.Board;
 using ServiceStack.DataAnnotations;
 
 namespace OffLogs.Business.Db.Entity
@@ -25,6 +27,22 @@ namespace OffLogs.Business.Db.Entity
         [Alias("create_time")]
         public DateTime CreateTime { get; set; }
 
+        [Computed]
+        public LogPropertyResponseModel ResponseModel
+        {
+            get
+            {
+                var model = new LogPropertyResponseModel()
+                {
+                    Id = Id,
+                    Key = Key,
+                    Value = Value,
+                    CreateTime = CreateTime,
+                };
+                return model;
+            }
+        }
+        
         public LogPropertyEntity() {}
 
         public LogPropertyEntity(string key, string value)

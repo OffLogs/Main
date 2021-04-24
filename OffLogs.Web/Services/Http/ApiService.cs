@@ -4,9 +4,13 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Blazored.LocalStorage;
 using Newtonsoft.Json;
 using OffLogs.Business.Common.Exceptions;
+using OffLogs.Business.Common.Models.Api.Request;
 using OffLogs.Business.Common.Models.Api.Request.User;
+using OffLogs.Business.Common.Models.Api.Response;
+using OffLogs.Business.Common.Models.Api.Response.Board;
 using OffLogs.Business.Common.Models.Http;
 using OffLogs.Web.Core.Constants;
 using OffLogs.Web.Core.Exceptions;
@@ -16,10 +20,12 @@ namespace OffLogs.Web.Services.Http
     public class ApiService: IApiService
     {
         private readonly HttpClient _httpClient;
+        private readonly ILocalStorageService _localStorage;
 
-        public ApiService(HttpClient httpClient)
+        public ApiService(HttpClient httpClient, ILocalStorageService localStorage)
         {
             _httpClient = httpClient;
+            _localStorage = localStorage;
         }
 
         private async Task<JsonCommonResponse<T>> RequestAsync<T>(string requestUri, string jwtToken, object data, HttpMethod httpMethod)
@@ -51,6 +57,16 @@ namespace OffLogs.Web.Services.Http
             return await RequestAsync<T>(requestUri, jwtToken, data, HttpMethod.Post);
         }    
         
+        private async Task<JsonCommonResponse<T>> PostAuthorizedAsync<T>(string requestUri, object data)
+        {
+            return await RequestAsync<T>(
+                requestUri, 
+                await _localStorage.GetItemAsStringAsync(AuthorizationService.AuthKey), 
+                data, 
+                HttpMethod.Post
+            );
+        }
+        
         private async Task<JsonCommonResponse<T>> GetAsync<T>(string requestUri, object data, string jwtToken = null)
         {
             return await RequestAsync<T>(requestUri, jwtToken, data, HttpMethod.Get);
@@ -81,6 +97,22 @@ namespace OffLogs.Web.Services.Http
             }
 
             return response.IsSuccess;
+        }
+        
+        public async Task<PaginatedResponseModel<ApplicationResponseModel>> GetApplications(PaginatedRequestModel request)
+        {
+            var response = await PostAuthorizedAsync<PaginatedResponseModel<ApplicationResponseModel>>(ApiUrl.ApplicationList, request);
+            if (response == null)
+            {
+                throw new ServerErrorException();
+            }
+
+            if (!response.IsSuccess)
+            {
+                throw new Exception(response.Message);
+            }
+
+            return response?.Data;
         }
     }
 }
