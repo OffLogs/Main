@@ -1,7 +1,6 @@
 using System;
-using OffLogs.Business.Db.Entity;
 
-namespace OffLogs.Api.Models.Response.Board
+namespace OffLogs.Business.Common.Models.Api.Response.Board
 {
     public record LogTraceResponseModel
     {

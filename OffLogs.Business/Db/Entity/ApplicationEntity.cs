@@ -1,4 +1,5 @@
 using System;
+using OffLogs.Business.Common.Models.Api.Response.Board;
 using ServiceStack.DataAnnotations;
 
 namespace OffLogs.Business.Db.Entity
@@ -26,5 +27,21 @@ namespace OffLogs.Business.Db.Entity
         
         [Alias("update_time")]
         public DateTime UpdateTime { get; set; }
+
+        [Computed]
+        public ApplicationResponseModel ResponseModel
+        {
+            get
+            {
+                var model = new ApplicationResponseModel()
+                {
+                    Id = Id,
+                    UserId = UserId,
+                    Name = Name,
+                    CreateTime = CreateTime,
+                };
+                return model;
+            }
+        }
     }
 }
