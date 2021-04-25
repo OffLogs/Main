@@ -1,6 +1,7 @@
 ﻿@using OffLogs.Web.Core.Extensions
 @using OffLogs.Web.Core.Constants
 @using OffLogs.Web.Core.Models.Modal
+@using OffLogs.Web.Shared.Ui
 
 <div class="modal fade @(IsShow ? "show" : "")" style="@(IsShow ? "display:block;" : "")">
   <div class="w-modal-bg"></div>
@@ -20,7 +21,12 @@
       <div class="modal-footer">
         @foreach (var button in Buttons)
         {
-          <button type="button" class="btn btn-@button.Type" @onclick="@(async () => await OnClickButtonAsync(button))">@button.Name</button>
+          <MyButton
+            Type="@button.Type"
+            @onclick="@(async () => await OnClickButtonAsync(button))"
+          >
+            @button.Name
+          </MyButton>
         }
       </div>
     </div>

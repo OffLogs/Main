@@ -22,6 +22,7 @@
     <ItemGroup>
       <Content Include="Pages\Dashboard\Application\Add\AddApplicationModal.razor.less" />
       <Content Include="Pages\Dashboard\Application\Index.razor.less" />
+      <Content Include="Shared\Ui\MyButton.razor.less" />
     </ItemGroup>
 
 </Project>
