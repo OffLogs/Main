@@ -27,7 +27,7 @@ namespace OffLogs.Business.Db.Entity
         [Alias("create_time")]
         public DateTime CreateTime { get; set; }
 
-        [Computed]
+        [Ignore]
         public LogPropertyResponseModel ResponseModel
         {
             get

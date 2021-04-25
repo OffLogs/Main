@@ -43,7 +43,7 @@ namespace OffLogs.Business.Db.Entity
         [Reference] 
         public List<LogPropertyEntity> Properties { get; set; } = new();
 
-        [Computed]
+        [Ignore]
         public LogResponseModel ResponseModel
         {
             get

@@ -28,7 +28,7 @@ namespace OffLogs.Business.Db.Entity
         [Alias("update_time")]
         public DateTime UpdateTime { get; set; }
 
-        [Computed]
+        [Ignore]
         public ApplicationResponseModel ResponseModel
         {
             get
