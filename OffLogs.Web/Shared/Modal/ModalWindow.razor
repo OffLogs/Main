@@ -7,16 +7,20 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLiveLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="exampleModalLiveLabel">@Title</h5>
+        <button 
+          type="button" 
+          class="btn-close"
+          @onclick="OnClose"
+        />
       </div>
       <div class="modal-body">
-        <p>Woohoo, you're reading this text in a modal!</p>
+        @ChildContent
       </div>
       <div class="modal-footer">
         @foreach (var button in Buttons)
         {
-          <button type="button" class="btn btn-@button.Type" @onclick="@(() => OnClickButton(button))">@button.Name</button>
+          <button type="button" class="btn btn-@button.Type" @onclick="@(async () => await OnClickButtonAsync(button))">@button.Name</button>
         }
       </div>
     </div>
@@ -36,14 +40,23 @@
   [Parameter]
   public List<ModalButtonModel> Buttons { get; set; } = new List<ModalButtonModel>();
 
+  [Parameter]
+  public EventCallback OnClose { get; set; }
+  
   private void CloseModal()
   {
     
   }
   
-  private void OnClickButton(ModalButtonModel button)
+  private async Task OnClickButtonAsync(ModalButtonModel button)
   {
-    var onClickTask = button.OnClick?.InvokeAsync();
-    onClickTask?.Wait();
+    if (button.OnClick.HasValue)
+    {
+      await button.OnClick.Value.InvokeAsync();  
+    }
+    if (button.IsCloseAfterAction)
+    {
+      await OnClose.InvokeAsync();  
+    }
   }
 }
