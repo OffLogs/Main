@@ -3,36 +3,33 @@
 @using OffLogs.Web.Core.Models.Modal
 @using OffLogs.Web.Shared.Ui
 
-@if (IsShow)
-{
-  <div class="modal fade show" style="display: block">
-    <div class="w-modal-bg"></div>
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">@Title</h5>
-          <button
-            type="button"
-            class="btn-close"
-            @onclick="OnClose"/>
-        </div>
-        <div class="modal-body">
-          @ChildContent
-        </div>
-        <div class="modal-footer">
-          @foreach (var button in Buttons)
-          {
-            <MyButton
-              Type="@button.Type"
-              @onclick="@(async () => await OnClickButtonAsync(button))">
-              @button.Name
-            </MyButton>
-          }
-        </div>
+<div class="modal modal-fade @(IsShow ? "show" : "")" style="@(IsShow ? "display: block" : "")">
+  <div class="w-modal-bg"></div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">@Title</h5>
+        <button
+          type="button"
+          class="btn-close"
+          @onclick="OnClose"/>
+      </div>
+      <div class="modal-body">
+        @ChildContent
+      </div>
+      <div class="modal-footer">
+        @foreach (var button in Buttons)
+        {
+          <MyButton
+            Type="@button.Type"
+            @onclick="@(async () => await OnClickButtonAsync(button))">
+            @button.Name
+          </MyButton>
+        }
       </div>
     </div>
-  </div> 
-}
+  </div>
+</div> 
 
 @code {
   [Parameter]
