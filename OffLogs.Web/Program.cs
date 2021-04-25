@@ -31,6 +31,7 @@ namespace OffLogs.Web
             // Custom services
             builder.Services.AddScoped<IApiService, ApiService>();
             builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
+            builder.Services.AddSingleton<ToastService>();
             
             await builder.Build().RunAsync();
         }

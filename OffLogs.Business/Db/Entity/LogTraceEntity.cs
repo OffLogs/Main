@@ -1,4 +1,5 @@
 using System;
+using OffLogs.Business.Common.Models.Api.Response.Board;
 using ServiceStack.DataAnnotations;
 
 namespace OffLogs.Business.Db.Entity
@@ -21,6 +22,21 @@ namespace OffLogs.Business.Db.Entity
         [Alias("create_time")]
         public DateTime CreateTime { get; set; }
 
+        [Ignore]
+        public LogTraceResponseModel ResponseModel
+        {
+            get
+            {
+                var model = new LogTraceResponseModel()
+                {
+                    Id = Id,
+                    Trace = Trace,
+                    CreateTime = CreateTime,
+                };
+                return model;
+            }
+        }
+        
         public LogTraceEntity() {}
 
         public LogTraceEntity(string trace)

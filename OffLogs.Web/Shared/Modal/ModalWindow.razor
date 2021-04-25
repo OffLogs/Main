@@ -1,0 +1,66 @@
+﻿@using OffLogs.Web.Core.Extensions
+@using OffLogs.Web.Core.Constants
+@using OffLogs.Web.Core.Models.Modal
+@using OffLogs.Web.Shared.Ui
+
+<div class="modal modal-fade @(IsShow ? "show" : "")" style="@(IsShow ? "display: block" : "")">
+  <div class="w-modal-bg"></div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">@Title</h5>
+        <button
+          type="button"
+          class="btn-close"
+          @onclick="OnClose"/>
+      </div>
+      <div class="modal-body">
+        @ChildContent
+      </div>
+      <div class="modal-footer">
+        @foreach (var button in Buttons)
+        {
+          <MyButton
+            Type="@button.Type"
+            @onclick="@(async () => await OnClickButtonAsync(button))">
+            @button.Name
+          </MyButton>
+        }
+      </div>
+    </div>
+  </div>
+</div> 
+
+@code {
+  [Parameter]
+  public string Title { get; set; }
+  
+  [Parameter]
+  public RenderFragment ChildContent { get; set; }
+
+  [Parameter]
+  public bool IsShow { get; set; } = false;
+
+  [Parameter]
+  public List<ModalButtonModel> Buttons { get; set; } = new();
+
+  [Parameter]
+  public EventCallback OnClose { get; set; }
+  
+  private void CloseModal()
+  {
+    
+  }
+  
+  private async Task OnClickButtonAsync(ModalButtonModel button)
+  {
+    if (button.OnClick.HasValue)
+    {
+      await button.OnClick.Value.InvokeAsync();  
+    }
+    if (button.IsCloseAfterAction)
+    {
+      await OnClose.InvokeAsync();  
+    }
+  }
+}

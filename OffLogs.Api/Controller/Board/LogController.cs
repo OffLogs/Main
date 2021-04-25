@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OffLogs.Api.Models.Response;
-using OffLogs.Api.Models.Response.Board;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Models.Api.Request.Board;
 using OffLogs.Business.Common.Models.Api.Response;
+using OffLogs.Business.Common.Models.Api.Response.Board;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Db.Dao;
 using OffLogs.Business.Db.Entity;
@@ -57,7 +57,7 @@ namespace OffLogs.Api.Controller.Board
                     model.Page,
                     GlobalConstants.ListPageSize
                 );
-                var responseList = list.Select(item => new LogResponseModel(item)).ToList();
+                var responseList = list.Select(item => item.ResponseModel).ToList();
                 return JsonSuccess(
                     new PaginatedResponseModel<LogResponseModel>(responseList, totalItems)
                 );

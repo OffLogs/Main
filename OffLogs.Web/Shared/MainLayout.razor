@@ -1,12 +1,13 @@
 ﻿@inject IAuthorizationService _authService
 @inject NavigationManager _navigationManager
 @using OffLogs.Web.Core.Extensions
-@using OffLogs.Web.Services.Http
+@using OffLogs.Web.Core.Constants
+@using OffLogs.Web.Shared.Ui.Toast
 @inherits LayoutComponentBase
 
 <div class="page">
     
-    @if (_isLoggedIn)
+    @if (_isShowMainMenu)
     {
         <div class="sidebar">
             <NavMenu/>
@@ -14,20 +15,30 @@
     }
 
     <div class="main">
-        <div class="top-row px-4">
-            <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
-        </div>
-        
-        @_isLoggedIn
-        
+        @if (_isShowMainMenu)
+        {
+            <div class="top-row px-4">
+                <a 
+                    @onClick="OnLogout"
+                    href="#"
+                    class="ml-md-auto"
+                >
+                    Logout
+                </a>
+            </div>  
+        }
+
         <div class="content px-4">
             @Body
         </div>
+        <ToastMessageContainer/>
     </div>
 </div>
 
 @code {
     private bool _isLoggedIn = false;
+
+    private bool _isShowMainMenu = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -49,5 +60,14 @@
         {
             _navigationManager.NavigateTo("/login");
         }
+        _isShowMainMenu = _isLoggedIn && _navigationManager.GetPath().StartsWith(SiteUrl.Dashboard);
     }
+
+    private async Task OnLogout()
+    {
+        await _authService.LogoutAsync();
+        _navigationManager.NavigateTo("/");
+        CheckIsLoggedInAndRedirect();
+    }
+
 }

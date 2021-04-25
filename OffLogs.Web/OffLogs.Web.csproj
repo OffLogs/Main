@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="BlazorDeferredRemove" Version="0.2.5" />
         <PackageReference Include="Blazored.LocalStorage" Version="3.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.3" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.3" PrivateAssets="all" />
@@ -16,7 +17,19 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Models\User" />
+      <Folder Include="wwwroot\css\bootstrap" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Pages\Dashboard\Application\Add\AddApplicationModal.razor.less" />
+      <Content Include="Pages\Dashboard\Application\Index.razor.less" />
+      <Content Include="Shared\Ui\MyButton.razor.less" />
+      <Content Include="Shared\Ui\Toast\ToastMessage.razor.less" />
+      <Content Include="Shared\Ui\Toast\ToastMessageContainer.razor.less" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
     </ItemGroup>
 
 </Project>

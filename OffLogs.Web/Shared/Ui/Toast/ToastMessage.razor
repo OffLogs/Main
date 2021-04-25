@@ -1,0 +1,47 @@
+﻿@using OffLogs.Web.Core.Models.Toast
+@using System.Timers
+@inject ToastService _toastService
+
+<div class="toast align-items-center showing w-toast-message-fade">
+  <div class="d-flex">
+    <div class="toast-body">
+      @Message.Title
+    </div>
+    <button 
+      type="button" 
+      class="btn-close me-2 m-auto" 
+      @onclick="RemoveMessage"
+    ></button>
+  </div>
+</div>
+
+@code {
+
+  [Parameter]
+  public ToastMessageModel Message { get; set; }
+
+  protected override void OnInitialized()
+  {
+    base.OnInitialized(); 
+    _toastService.OnRemoveMessage += OnRemoveMessage;
+  }
+  
+  public void Dispose()
+  {
+    _toastService.OnRemoveMessage -= OnRemoveMessage;
+  }
+  
+  private void OnRemoveMessage(ToastMessageModel removedMessage)
+  {
+    Console.WriteLine("On remove message");
+    if (Message.Key == removedMessage.Key)
+    {
+      RemoveMessage();
+    }
+  }
+  
+  private void RemoveMessage()
+  {
+    _toastService.RemoveMessage(Message);
+  }
+}
