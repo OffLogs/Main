@@ -41,6 +41,12 @@ namespace OffLogs.Web.Services
             });
             NotifyListChanged();
         }
+        
+        public void RemoveMessage(ToastMessageModel messageModel)
+        {
+            _messages.Remove(messageModel);
+            NotifyListChanged();
+        }
 
         private void OnTimerTick(object sender, ElapsedEventArgs e)
         {

@@ -46,19 +46,11 @@
         {
             Page = 1
         });
-        
-        _toastService.AddMessage(ToastMessageType.Error, "Test error");
-    }
-
-    private Task ShowAddModal(bool isShow = false)
-    {
-        Console.WriteLine("NN");
-        _isShowAddModal = isShow;
-        return Task.CompletedTask;
     }
     
     private void OnAddAction()
     {
         Console.WriteLine("OnAddAction");
+        _toastService.AddMessage(ToastMessageType.Error, "Test error");
     }
 }

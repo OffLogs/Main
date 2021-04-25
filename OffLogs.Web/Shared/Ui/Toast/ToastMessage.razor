@@ -2,15 +2,16 @@
 @using System.Timers
 @inject ToastService _toastService
 
-<div class="toast">
-  <div class="toast-header">
-    <img src="..." class="rounded me-2" alt="...">
-    <strong class="me-auto">Bootstrap</strong>
-    <small>11 mins ago</small>
-    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-  </div>
-  <div class="toast-body">
-    Hello, world! This is a toast message.
+<div class="toast align-items-center showing">
+  <div class="d-flex">
+    <div class="toast-body">
+      @Message.Title
+    </div>
+    <button 
+      type="button" 
+      class="btn-close me-2 m-auto" 
+      @onclick="RemoveMessage"
+    ></button>
   </div>
 </div>
 
@@ -35,7 +36,12 @@
     Console.WriteLine("On remove message");
     if (Message.Key == removedMessage.Key)
     {
-      
+      RemoveMessage();
     }
+  }
+  
+  private void RemoveMessage()
+  {
+    _toastService.RemoveMessage(Message);
   }
 }

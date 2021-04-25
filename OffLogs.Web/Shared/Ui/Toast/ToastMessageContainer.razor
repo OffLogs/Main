@@ -5,8 +5,9 @@
 <div class="w-toast-container">
   @foreach (var message in Messages)
   {
-    @message.Title
-    <ToastMessage Message="message"></ToastMessage>
+    <div class="mb-3">
+      <ToastMessage Message="message"/>
+    </div>
   }
 </div>
 
