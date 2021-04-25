@@ -2,8 +2,10 @@
 @using OffLogs.Business.Common.Models.Api.Request
 @using OffLogs.Web.Core.Models.Modal
 @using Microsoft.AspNetCore.Components.Web
+@using OffLogs.Web.Core.Constants
 @using OffLogs.Web.Shared.Modal
 @inject IApiService _apiService
+@inject ToastService _toastService
 
 <button @onclick="() => _isShowAddModal = true">Add Application</button>
 <ModalWindow
@@ -45,7 +47,7 @@
             Page = 1
         });
         
-        Console.WriteLine(applications);
+        _toastService.AddMessage(ToastMessageType.Error, "Test error");
     }
 
     private Task ShowAddModal(bool isShow = false)
