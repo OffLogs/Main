@@ -24,11 +24,14 @@ namespace OffLogs.Web.Core.Models.Modal
             Console.WriteLine("Assign key: " + Key);
         }
 
-        public ModalButtonModel(string name, EventCallback? onClick, string type = "primary"): base()
+        public ModalButtonModel(string name, Action? onClick, string type = "primary"): base()
         {
             Type = type;
             Name = name;
-            OnClick = onClick;
+            if (onClick != null)
+            {
+                OnClick = new EventCallbackFactory().Create(this, onClick);
+            }
         }
     }
 }

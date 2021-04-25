@@ -4,9 +4,11 @@
 @using OffLogs.Web.Shared.Modal
 @inject IApiService _apiService
 
-<h1>Your application</h1>
-
-<ModalWindow Buttons="_modalButtons">
+<button>Add Application</button>
+<ModalWindow
+    IsShow="true"
+    Buttons="_modalButtons"
+    >
     @ChildContent
 </ModalWindow>
 
@@ -23,7 +25,7 @@
 
         var saveBtnModel = new ModalButtonModel(
             "Add",
-            new EventCallbackFactory().Create(this, OnAddAction),
+            OnAddAction,
             "primary"
         );
         saveBtnModel.IsCloseAfterAction = false;

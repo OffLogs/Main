@@ -2,7 +2,7 @@
 @using OffLogs.Web.Core.Constants
 @using OffLogs.Web.Core.Models.Modal
 
-<div class="modal fade show" style="padding-right: 15px; display: block;">
+<div class="modal fade @(IsShow ? "show" : "")" style="@(IsShow ? "display:block;" : "")">
   <div class="w-modal-bg"></div>
   <div class="modal-dialog">
     <div class="modal-content">
@@ -29,6 +29,9 @@
   
   [Parameter]
   public RenderFragment ChildContent { get; set; }
+
+  [Parameter]
+  public bool IsShow { get; set; } = false;
 
   [Parameter]
   public List<ModalButtonModel> Buttons { get; set; } = new List<ModalButtonModel>();
