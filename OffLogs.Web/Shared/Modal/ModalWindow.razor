@@ -16,7 +16,7 @@
       <div class="modal-footer">
         @foreach (var button in Buttons)
         {
-          <button type="button" class="btn btn-@button.Type" @OnClick="event => OnClickButton(event)">@button.Name</button>
+          <button type="button" class="btn btn-@button.Type" @onclick="@(() => OnClickButton(button))">@button.Name</button>
         }
       </div>
     </div>
@@ -31,10 +31,16 @@
   public RenderFragment ChildContent { get; set; }
 
   [Parameter]
-  public ICollection<ModalButtonModel> Buttons { get; set; } = new List<ModalButtonModel>();
+  public List<ModalButtonModel> Buttons { get; set; } = new List<ModalButtonModel>();
 
-  private void OnClickButton()
+  private void CloseModal()
   {
     
+  }
+  
+  private void OnClickButton(ModalButtonModel button)
+  {
+    var onClickTask = button.OnClick?.InvokeAsync();
+    onClickTask?.Wait();
   }
 }

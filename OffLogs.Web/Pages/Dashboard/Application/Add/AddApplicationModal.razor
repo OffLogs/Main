@@ -1,0 +1,49 @@
+﻿@using OffLogs.Web.Services.Http
+@using OffLogs.Business.Common.Models.Api.Request
+@using OffLogs.Web.Core.Models.Modal
+@using OffLogs.Web.Shared.Modal
+@inject IApiService _apiService
+
+<h1>Your application</h1>
+
+<ModalWindow Buttons="_modalButtons">
+    @ChildContent
+</ModalWindow>
+
+@code
+{
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    
+    private List<ModalButtonModel> _modalButtons = new ();
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        var saveBtnModel = new ModalButtonModel(
+            "Add",
+            new EventCallbackFactory().Create(this, OnAddAction),
+            "primary"
+        );
+        saveBtnModel.IsCloseAfterAction = false;
+        _modalButtons.Add(saveBtnModel);
+        _modalButtons.Add(new (
+            "Cancel",
+            null,
+            "default"
+            ));
+        
+        var applications = await _apiService.GetApplications(new PaginatedRequestModel()
+        {
+            Page = 1
+        });
+        
+        Console.WriteLine(applications);
+    }
+
+    private void OnAddAction()
+    {
+        Console.WriteLine("OnAddAction");
+    }
+}

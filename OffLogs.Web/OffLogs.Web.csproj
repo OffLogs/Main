@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Content Include="Pages\Dashboard\Application\Add\AddApplicationModal.razor.less" />
       <Content Include="Pages\Dashboard\Application\Index.razor.less" />
     </ItemGroup>
 
