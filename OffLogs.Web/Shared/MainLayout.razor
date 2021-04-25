@@ -2,6 +2,7 @@
 @inject NavigationManager _navigationManager
 @using OffLogs.Web.Core.Extensions
 @using OffLogs.Web.Core.Constants
+@using OffLogs.Web.Shared.Ui.Toast
 @inherits LayoutComponentBase
 
 <div class="page">
@@ -32,6 +33,7 @@
         <div class="content px-4">
             @Body
         </div>
+        <ToastMessageContainer/>
     </div>
 </div>
 

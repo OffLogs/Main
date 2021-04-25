@@ -1,0 +1,41 @@
+﻿@using OffLogs.Web.Core.Models.Toast
+@using System.Timers
+@inject ToastService _toastService
+
+<div class="toast">
+  <div class="toast-header">
+    <img src="..." class="rounded me-2" alt="...">
+    <strong class="me-auto">Bootstrap</strong>
+    <small>11 mins ago</small>
+    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+  <div class="toast-body">
+    Hello, world! This is a toast message.
+  </div>
+</div>
+
+@code {
+
+  [Parameter]
+  public ToastMessageModel Message { get; set; }
+
+  protected override void OnInitialized()
+  {
+    base.OnInitialized(); 
+    _toastService.OnRemoveMessage += OnRemoveMessage;
+  }
+  
+  public void Dispose()
+  {
+    _toastService.OnRemoveMessage -= OnRemoveMessage;
+  }
+  
+  private void OnRemoveMessage(ToastMessageModel removedMessage)
+  {
+    Console.WriteLine("On remove message");
+    if (Message.Key == removedMessage.Key)
+    {
+      
+    }
+  }
+}

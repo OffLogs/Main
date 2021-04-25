@@ -1,0 +1,35 @@
+﻿@using OffLogs.Web.Shared.Ui.Toast
+@using OffLogs.Web.Core.Models.Toast
+@inject ToastService _toastService
+
+<div class="w-toast-container">
+  @foreach (var message in Messages)
+  {
+    @message.Title
+    <ToastMessage Message="message"></ToastMessage>
+  }
+</div>
+
+@code {
+
+  public List<ToastMessageModel> Messages { get; set; }
+    
+  protected override void OnInitialized()
+  {
+    base.OnInitialized();
+    Messages = _toastService.Messages;
+    _toastService.OnListUpdated += OnChangedToastsList;
+  }
+  
+  public void Dispose()
+  {
+    _toastService.OnListUpdated -= OnChangedToastsList;
+  }
+  
+  private void OnChangedToastsList()
+  {
+    Messages = _toastService.Messages;
+    StateHasChanged();
+    Console.WriteLine("MessagesCount: " + Messages.Count);
+  }
+}
