@@ -1,9 +1,11 @@
-﻿<button type="button" class="btn btn-@Type" @onclick="@OnClick">
+﻿<button class="btn btn-@Type" @onclick="@OnClick" type="@(IsSubmit ? @"submit" : "button")">
   @ChildContent
 </button>
 
 @code {
-
+  [Parameter]
+  public bool IsSubmit { get; set; } = false;
+  
   [Parameter]
   public string Type { get; set; } = "primary";
   
