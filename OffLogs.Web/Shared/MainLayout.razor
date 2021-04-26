@@ -61,6 +61,7 @@
             _navigationManager.NavigateTo("/login");
         }
         _isShowMainMenu = _isLoggedIn && _navigationManager.GetPath().StartsWith(SiteUrl.Dashboard);
+        StateHasChanged();
     }
 
     private async Task OnLogout()

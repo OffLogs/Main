@@ -1,8 +1,18 @@
-﻿<button class="btn btn-@Type" @onclick="@OnClick" type="@(IsSubmit ? @"submit" : "button")">
+﻿@using OffLogs.Web.Core.Helpers
+@inject IJSRuntime _js;
+
+<button 
+  id="@IdString"
+  class="btn btn-@Type" 
+  @onclick="@OnClick" 
+  type="@(IsSubmit ? @"submit" : "button")">
   @ChildContent
 </button>
 
 @code {
+  [Parameter]
+  public bool IsHidden { get; set; } = false;
+  
   [Parameter]
   public bool IsSubmit { get; set; } = false;
   
@@ -14,4 +24,12 @@
 
   [Parameter]
   public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+  private int _id = Randomizer.GetNumber();
+  private string IdString => $"js-my-button-{_id}";
+
+  public void Click()
+  {
+    _js.InvokeVoidAsync("clickOnElement", IdString);
+  }
 }

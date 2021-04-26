@@ -2,8 +2,13 @@
 @using OffLogs.Business.Common.Models.Api.Request
 @using OffLogs.Web.Core.Models.Modal
 @using Microsoft.AspNetCore.Components.Web
+@using OffLogs.Business.Common.Models.Api.Request.User
+@using OffLogs.Web.Core.Components.Form
 @using OffLogs.Web.Core.Constants
 @using OffLogs.Web.Shared.Modal
+@using OffLogs.Web.Shared.Ui
+@using Microsoft.AspNetCore.Components
+@using OffLogs.Business.Common.Models.Api.Request.Board
 @inject IApiService _apiService
 @inject ToastService _toastService
 
@@ -13,13 +18,26 @@
     Buttons="_modalButtons"
     OnClose="@(async () => { await Task.Yield(); _isShowAddModal = false; })"
     >
-    Wow this is body
+    <EditForm Model="@_model" OnValidSubmit="@HandleSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        
+        <p>
+            <CustomInputText Label="Name:" @bind-Value="_model.Name" />
+        </p>
+        <MyButton IsSubmit="true" IsHidden="true" @ref="_btnSubmit"></MyButton>
+    </EditForm>
+
 </ModalWindow>
 
 @code
 {
     [Parameter]
     public RenderFragment ChildContent { get; set; }
+    
+    private ApplicationAddModel _model = new();
+    private EditContext _editContext;
+    private MyButton _btnSubmit;
     
     private bool _isShowAddModal = false;
     
@@ -29,6 +47,8 @@
     {
         await base.OnInitializedAsync();
 
+        _editContext = new EditContext(_model);
+        
         var saveBtnModel = new ModalButtonModel(
             "Add",
             OnAddAction,
@@ -48,9 +68,25 @@
         });
     }
     
+    private async Task HandleSubmit()
+    {
+        var isValid = _editContext.Validate();
+        if (isValid)
+        {
+            try
+            {
+                _toastService.AddMessage(ToastMessageType.Error, "Test error");
+            }
+            catch (Exception e)
+            {
+                
+                Console.WriteLine(e.Message);
+            }
+        }
+    }
+    
     private void OnAddAction()
     {
-        Console.WriteLine("OnAddAction");
-        _toastService.AddMessage(ToastMessageType.Error, "Test error");
+        _btnSubmit.Click();
     }
 }
