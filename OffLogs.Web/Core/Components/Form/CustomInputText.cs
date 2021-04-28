@@ -16,6 +16,9 @@ namespace OffLogs.Web.Core.Components.Form
         
         [Parameter] 
         public string? ParentClass { get; set; }
+        
+        [Parameter] 
+        public string? ErrorMessage { get; set; }
 
         /// <inheritdoc />
         protected override void BuildRenderTree(RenderTreeBuilder builder)
@@ -52,6 +55,14 @@ namespace OffLogs.Web.Core.Components.Form
                 builder.AddAttribute(sequence++, "value", BindConverter.FormatValue(CurrentValue));
                 builder.AddAttribute(sequence++, "onchange", EventCallback.Factory.CreateBinder<string?>(this, __value => CurrentValueAsString = __value, CurrentValueAsString));
                 builder.CloseElement();
+
+                if (!string.IsNullOrEmpty(ErrorMessage))
+                {
+                    builder.OpenElement(sequence++, "div");
+                    builder.AddAttribute(sequence++, "class", "invalid-feedback");
+                    builder.AddContent(sequence++, ErrorMessage);
+                    builder.CloseElement();
+                }
             }
             builder.CloseElement();
         }
