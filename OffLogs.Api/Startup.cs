@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using OffLogs.Api.Middleware;
 using OffLogs.Business.Extensions;
@@ -66,6 +67,7 @@ namespace OffLogs.Api
                     // This is fix for the Headers. This resolver fix
                     // a bug when "authorization" header is not equals "Authorization" 
                     options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    options.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Include;
                 })
                 .AddJsonOptions(options => {
                     // Ignore Null values in response models

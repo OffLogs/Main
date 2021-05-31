@@ -39,7 +39,7 @@ namespace OffLogs.Web.Services.Http
             // add authorization header
             if (!string.IsNullOrEmpty(jwtToken))
             {
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);    
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
             }
             // send request
             HttpResponseMessage response = await _httpClient.SendAsync(request);
@@ -61,7 +61,7 @@ namespace OffLogs.Web.Services.Http
         {
             return await RequestAsync<T>(
                 requestUri, 
-                await _localStorage.GetItemAsStringAsync(AuthorizationService.AuthKey), 
+                await _localStorage.GetItemAsync<string>(AuthorizationService.AuthKey), 
                 data, 
                 HttpMethod.Post
             );
