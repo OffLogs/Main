@@ -51,14 +51,7 @@
             CheckIsLoggedInAndRedirect();    
         };
 
-        try
-        {
-            await _authService.CheckIsLoggedInAsync();
-        }
-        catch (Exception e)
-        {
-            _toastService.AddErrorMessage("Server error");
-        }
+        await _authService.CheckIsLoggedInAsync();
         CheckIsLoggedInAndRedirect();
     }
 
