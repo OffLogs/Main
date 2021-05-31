@@ -56,7 +56,14 @@ namespace OffLogs.Web.Services
         {
             if (await IsHasJwtAsync())
             {
-                _isLoggedIn = await _apiService.CheckIsLoggedInAsync(await GetJwtAsync());
+                try
+                {
+                    _isLoggedIn = await _apiService.CheckIsLoggedInAsync(await GetJwtAsync());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(@"CheckIsLoggedIn returned: false");
+                }
             }
             else
             {

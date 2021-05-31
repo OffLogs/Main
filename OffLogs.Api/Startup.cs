@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Serialization;
 using OffLogs.Api.Middleware;
 using OffLogs.Business.Extensions;
 using Serilog;
@@ -61,6 +62,10 @@ namespace OffLogs.Api
                 {
                     // Remove nullable fields from response Json
                     // options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                    
+                    // This is fix for the Headers. This resolver fix
+                    // a bug when "authorization" header is not equals "Authorization" 
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 })
                 .AddJsonOptions(options => {
                     // Ignore Null values in response models
@@ -84,12 +89,12 @@ namespace OffLogs.Api
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        ValidateIssuer = false,
-                        ValidateAudience = false,   
+                        ValidateIssuer = true,
+                        ValidateAudience = true,   
                         ValidIssuer = Configuration.GetValue<string>("App:Auth:Issuer"),
                         ValidAudience = Configuration.GetValue<string>("App:Auth:Audience"), 
                         IssuerSigningKey = jwtSecurityKey,
-                        ValidateLifetime = false,
+                        ValidateLifetime = true,
                         ClockSkew = System.TimeSpan.FromMinutes(30000)
                     };
                 });

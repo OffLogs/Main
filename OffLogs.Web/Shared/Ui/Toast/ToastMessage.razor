@@ -1,8 +1,9 @@
 ﻿@using OffLogs.Web.Core.Models.Toast
 @using System.Timers
+@using OffLogs.Web.Core.Constants
 @inject ToastService _toastService
 
-<div class="toast align-items-center showing w-toast-message-fade">
+<div class="toast align-items-center showing w-toast-message-fade @_toastClass">
   <div class="d-flex">
     <div class="toast-body">
       @Message.Title
@@ -19,6 +20,18 @@
 
   [Parameter]
   public ToastMessageModel Message { get; set; }
+
+  private string _toastClass
+  {
+    get
+    {
+      if (Message.Type == ToastMessageType.Error)
+      {
+        return "bg-danger text-white";
+      }
+      return "bg-primary text-white";
+    }
+  }
 
   protected override void OnInitialized()
   {

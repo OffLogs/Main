@@ -1,8 +1,13 @@
 ﻿@page "/login"
+@using Microsoft.AspNetCore.Components.Forms
 @using OffLogs.Business.Common.Models.Api.Request.User
 @using OffLogs.Web.Core.Constants
+@using OffLogs.Web.Core.Components.Form
+@using OffLogs.Web.Services
+@using OffLogs.Web.Shared.Ui
 @inject IAuthorizationService _authorizationService
 @inject NavigationManager _navigationManager
+@inject ToastService _toastService
 
 <h1>Please login</h1>
 
@@ -11,34 +16,55 @@
     <ValidationSummary />
 
     <p>
-        <label>
-            Login:
-            <InputText @bind-Value="model.UserName" />
-        </label>
+        @UserNameError
+        <CustomInputText
+            Label="Login:"
+            @bind-Value="model.UserName"
+            ErrorMessage="@UserNameError"/>
     </p>
     <p>
-        <label>
-            Passowrd:
-            <InputText @bind-Value="model.Password" type="password" />
-        </label>
+        @PasswordError
+        <CustomInputText
+            Label="Password:"
+            @bind-Value="model.Password"
+            type="password"
+            ErrorMessage="@PasswordError"/>
     </p>
-    
-    <button type="submit">Submit</button>
+    <MyButton IsSubmit="true">Login</MyButton>
 </EditForm>
 
 @code
 {
     private LoginRequestModel model = new();
-    private EditContext editContext;
+    private EditContext _editContext;
+
+    private string? UserNameError
+    {
+        get
+        {
+            var messages = _editContext.GetValidationMessages(() => model.UserName);
+            return messages.FirstOrDefault();
+        }
+    }
+    
+    private string? PasswordError
+    {
+        get
+        {
+            var messages = _editContext.GetValidationMessages(() => model.Password);
+            return messages.FirstOrDefault();
+        }
+    }
 
     protected override void OnInitialized()
     {
-        editContext = new EditContext(model);
+        _editContext = new EditContext(model);
     }
-    
+
     private async Task HandleSubmit()
     {
-        var isValid = editContext.Validate();
+        var isValid = _editContext.Validate();
+        
         if (isValid)
         {
             try
@@ -47,15 +73,14 @@
                 if (isLoggedIn)
                 {
                     _navigationManager.NavigateTo(SiteUrl.Dashboard);
+                    return;
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                _toastService.AddErrorMessage("Login or password is incorrect");
             }
         }
-        else
-        {
-        }
+        StateHasChanged();
     }
 }

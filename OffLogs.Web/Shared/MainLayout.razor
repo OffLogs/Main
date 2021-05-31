@@ -1,8 +1,10 @@
-﻿@inject IAuthorizationService _authService
-@inject NavigationManager _navigationManager
-@using OffLogs.Web.Core.Extensions
+﻿@using OffLogs.Web.Core.Extensions
 @using OffLogs.Web.Core.Constants
+@using OffLogs.Web.Services
 @using OffLogs.Web.Shared.Ui.Toast
+@inject IAuthorizationService _authService
+@inject NavigationManager _navigationManager
+@inject ToastService _toastService
 @inherits LayoutComponentBase
 
 <div class="page">
@@ -61,6 +63,7 @@
             _navigationManager.NavigateTo("/login");
         }
         _isShowMainMenu = _isLoggedIn && _navigationManager.GetPath().StartsWith(SiteUrl.Dashboard);
+        StateHasChanged();
     }
 
     private async Task OnLogout()
