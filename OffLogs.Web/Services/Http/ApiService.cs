@@ -39,7 +39,7 @@ namespace OffLogs.Web.Services.Http
             // add authorization header
             if (!string.IsNullOrEmpty(jwtToken))
             {
-                request.Headers.Authorization = new AuthenticationHeaderValue("bearer", jwtToken);    
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);    
             }
             // send request
             HttpResponseMessage response = await _httpClient.SendAsync(request);
