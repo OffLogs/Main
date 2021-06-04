@@ -1,10 +1,15 @@
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using NHibernate;
+using NHibernate.Cfg;
 using Npgsql;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.Dapper;
@@ -17,6 +22,7 @@ namespace OffLogs.Business.Db.Dao
         private static ConcurrentDictionary<string, string> _queryFilesCache = new();
 
         private OrmLiteConnectionFactory _connectionFactory;
+        private static readonly ISessionFactory _sessionFactory;
         
         protected IDbConnection Connection
         {
@@ -29,12 +35,30 @@ namespace OffLogs.Business.Db.Dao
 
         private IDbConnection _connection;
 
+        static BaseDao()
+        {
+            var properties = new Dictionary<string, string>()
+            {
+                { "connection.connection_string", "" },
+                { "dialect", "" },
+            };
+#if DEBUG
+            properties.Add("show_sql", "true");            
+            properties.Add("format_sql", "true");
+#endif
+            _sessionFactory =
+                new Configuration()
+                    .Configure(Assembly.GetExecutingAssembly(), "OffLogs.Business.Db.hibernate.cfg.xml")
+                    .SetProperties(properties)
+                    .BuildSessionFactory();    
+        }
+
         #region CommonMethods
 
         public BaseDao(string connString, ILogger<BaseDao> logger)
         {
             Logger = logger;
-            _connectionFactory= new OrmLiteConnectionFactory(connString, PostgreSqlDialect.Provider);
+            _connectionFactory = new OrmLiteConnectionFactory(connString, PostgreSqlDialect.Provider);
         }
 
         public void OpenConnection()

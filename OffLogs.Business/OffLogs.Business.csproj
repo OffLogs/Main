@@ -15,6 +15,7 @@
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
       <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.7.1" />
       <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+      <PackageReference Include="NHibernate" Version="5.3.8" />
       <PackageReference Include="Npgsql" Version="5.0.4" />
       <PackageReference Include="System.Data.SqlClient" Version="4.4.3" />
       <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
@@ -33,6 +34,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Db\Mapping" />
       <Folder Include="Models" />
       <Folder Include="Test" />
     </ItemGroup>
@@ -46,6 +48,8 @@
       <EmbeddedResource Include="Db\Queries\log_get_list.sql">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </EmbeddedResource>
+      <None Remove="Db\hibernate.cfg.xml" />
+      <EmbeddedResource Include="Db\hibernate.cfg.xml" />
     </ItemGroup>
 
     <ItemGroup>
