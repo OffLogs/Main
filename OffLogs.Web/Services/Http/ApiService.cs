@@ -8,6 +8,7 @@ using Blazored.LocalStorage;
 using Newtonsoft.Json;
 using OffLogs.Business.Common.Exceptions;
 using OffLogs.Business.Common.Models.Api.Request;
+using OffLogs.Business.Common.Models.Api.Request.Board;
 using OffLogs.Business.Common.Models.Api.Request.User;
 using OffLogs.Business.Common.Models.Api.Response;
 using OffLogs.Business.Common.Models.Api.Response.Board;
@@ -39,7 +40,7 @@ namespace OffLogs.Web.Services.Http
             // add authorization header
             if (!string.IsNullOrEmpty(jwtToken))
             {
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);    
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
             }
             // send request
             HttpResponseMessage response = await _httpClient.SendAsync(request);
@@ -61,7 +62,7 @@ namespace OffLogs.Web.Services.Http
         {
             return await RequestAsync<T>(
                 requestUri, 
-                await _localStorage.GetItemAsStringAsync(AuthorizationService.AuthKey), 
+                await _localStorage.GetItemAsync<string>(AuthorizationService.AuthKey), 
                 data, 
                 HttpMethod.Post
             );
@@ -102,6 +103,22 @@ namespace OffLogs.Web.Services.Http
         public async Task<PaginatedResponseModel<ApplicationResponseModel>> GetApplications(PaginatedRequestModel request)
         {
             var response = await PostAuthorizedAsync<PaginatedResponseModel<ApplicationResponseModel>>(ApiUrl.ApplicationList, request);
+            if (response == null)
+            {
+                throw new ServerErrorException();
+            }
+
+            if (!response.IsSuccess)
+            {
+                throw new Exception(response.Message);
+            }
+
+            return response?.Data;
+        }
+
+        public async Task<PaginatedResponseModel<LogResponseModel>> GetLogs(LogListRequestModel request)
+        {
+            var response = await PostAuthorizedAsync<PaginatedResponseModel<LogResponseModel>>(ApiUrl.LogList, request);
             if (response == null)
             {
                 throw new ServerErrorException();

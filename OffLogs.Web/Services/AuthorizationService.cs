@@ -58,7 +58,8 @@ namespace OffLogs.Web.Services
             {
                 try
                 {
-                    _isLoggedIn = await _apiService.CheckIsLoggedInAsync(await GetJwtAsync());
+                    var token = await GetJwtAsync();
+                    _isLoggedIn = await _apiService.CheckIsLoggedInAsync(token);
                 }
                 catch (Exception e)
                 {
@@ -74,7 +75,7 @@ namespace OffLogs.Web.Services
 
         public async Task<string> GetJwtAsync()
         {
-            return await _localStorage.GetItemAsStringAsync(AuthKey);
+            return await _localStorage.GetItemAsync<string>(AuthKey);
         }
     }
 }
