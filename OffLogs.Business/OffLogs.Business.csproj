@@ -34,8 +34,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Db\Mapping" />
-      <Folder Include="Models" />
       <Folder Include="Test" />
     </ItemGroup>
 
@@ -45,11 +43,16 @@
         <LastGenOutput>RG.Designer.cs</LastGenOutput>
       </EmbeddedResource>
       <None Remove="Db\Queries\log_get_list.sql" />
+      <EmbeddedResource Include="Db\Mapping\Application.hbm.xml" />
+      <EmbeddedResource Include="Db\Mapping\LogProperty.hbm.xml" />
+      <EmbeddedResource Include="Db\Mapping\LogTrace.hbm.xml" />
+      <EmbeddedResource Include="Db\Mapping\User.hbm.xml" />
       <EmbeddedResource Include="Db\Queries\log_get_list.sql">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </EmbeddedResource>
       <None Remove="Db\hibernate.cfg.xml" />
       <EmbeddedResource Include="Db\hibernate.cfg.xml" />
+      <None Remove="Db\Mapping\Cat.hbm.xml" />
     </ItemGroup>
 
     <ItemGroup>
@@ -62,7 +65,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\OffLogs.Business.Common\OffLogs.Business.Common.csproj" />
-      <ProjectReference Include="..\ServiceStack.OrmLite\src\ServiceStack.OrmLite.PostgreSQL\ServiceStack.OrmLite.PostgreSQL.csproj" />
     </ItemGroup>
 
 </Project>

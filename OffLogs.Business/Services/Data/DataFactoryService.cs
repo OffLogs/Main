@@ -44,7 +44,7 @@ namespace OffLogs.Business.Services.Data
                     (faker) => faker.Internet.DomainName()
                 )
                 .RuleFor(
-                    entity => entity.UserId,
+                    entity => entity.User.Id,
                     () => userId
                 )
                 .RuleFor(
@@ -65,7 +65,7 @@ namespace OffLogs.Business.Services.Data
         {
             return new Faker<LogEntity>()
                 .RuleFor(
-                    entity => entity.ApplicationId,
+                    entity => entity.Application.Id,
                     () => applicationId
                 )
                 .RuleFor(
@@ -90,7 +90,7 @@ namespace OffLogs.Business.Services.Data
         {
             return new Faker<LogTraceEntity>()
                 .RuleFor(
-                    entity => entity.LogId,
+                    entity => entity.Log.Id,
                     () => logId
                 )
                 .RuleFor(
@@ -107,7 +107,7 @@ namespace OffLogs.Business.Services.Data
         {
             return new Faker<LogPropertyEntity>()
                 .RuleFor(
-                    entity => entity.LogId,
+                    entity => entity.Log.Id,
                     () => logId
                 )
                 .RuleFor(

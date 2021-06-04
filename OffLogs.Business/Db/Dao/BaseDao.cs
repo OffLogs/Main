@@ -10,10 +10,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NHibernate;
 using NHibernate.Cfg;
-using Npgsql;
-using ServiceStack.OrmLite;
-using ServiceStack.OrmLite.Dapper;
-
 namespace OffLogs.Business.Db.Dao
 {
     public class BaseDao: IDisposable
@@ -40,7 +36,6 @@ namespace OffLogs.Business.Db.Dao
             var properties = new Dictionary<string, string>()
             {
                 { "connection.connection_string", "" },
-                { "dialect", "" },
             };
 #if DEBUG
             properties.Add("show_sql", "true");            
@@ -58,7 +53,6 @@ namespace OffLogs.Business.Db.Dao
         public BaseDao(string connString, ILogger<BaseDao> logger)
         {
             Logger = logger;
-            _connectionFactory = new OrmLiteConnectionFactory(connString, PostgreSqlDialect.Provider);
         }
 
         public void OpenConnection()

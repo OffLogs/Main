@@ -3,47 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using OffLogs.Business.Common.Models.Api.Response.Board;
 using OffLogs.Business.Constants;
-using ServiceStack.DataAnnotations;
 
 namespace OffLogs.Business.Db.Entity
 {
-    [Alias("logs")]
     public class LogEntity
     {
-        [PrimaryKey]
-        [AutoIncrement]
-        [Alias("id")]
         public long Id { get; set; }
-        
-        [Alias("application_id")]
-        [References(typeof(ApplicationEntity))]
-        public long ApplicationId { get; set; }
-        
-        [Alias("level")]
-        public LogLevel Level { get; set; }
-        
-        [Alias("is_favorite")]
-        public bool IsFavorite { get; set; }
-        
-        [Alias("message")]
-        public string Message { get; set; }
-        
-        [Alias("log_time")]
-        public DateTime LogTime { get; set; }
-        
-        [Alias("create_time")]
-        public DateTime CreateTime { get; set; }
-        
-        [Reference]
         public ApplicationEntity Application { get; set; }
-        
-        [Reference]
+        public string LevelId { get; set; }
+
+        public LogLevel Level
+        {
+            get => new LogLevel().FromString(LevelId); 
+            set => LevelId = value.GetValue();
+        }
+        public bool IsFavorite { get; set; }
+        public string Message { get; set; }
+        public DateTime LogTime { get; set; }
+        public DateTime CreateTime { get; set; }
         public List<LogTraceEntity> Traces { get; set; } = new();
-
-        [Reference] 
         public List<LogPropertyEntity> Properties { get; set; } = new();
-
-        [Ignore]
+        
         public LogResponseModel ResponseModel
         {
             get
@@ -51,7 +31,7 @@ namespace OffLogs.Business.Db.Entity
                 var model = new LogResponseModel()
                 {
                     Id = Id,
-                    ApplicationId = ApplicationId,
+                    ApplicationId = Application.Id,
                     Level = Level.GetValue(),
                     Message = Message,
                     LogTime = LogTime,
