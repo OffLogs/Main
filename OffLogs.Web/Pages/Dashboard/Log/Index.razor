@@ -1,15 +1,10 @@
-﻿@page "/dashboard/applications"
+﻿@page "/dashboard/logs"
 @using OffLogs.Web.Services.Http
-@using OffLogs.Business.Common.Models.Api.Request
+@using OffLogs.Business.Common.Models.Api.Request.Board
 @using OffLogs.Business.Common.Models.Api.Response.Board
-@using OffLogs.Web.Pages.Dashboard.Application.Add
 @inject IApiService _apiService
 
-<h1>Your application</h1>
-
-<AddApplicationModal>
-    bbbb
-</AddApplicationModal>
+<h1>Logs</h1>
 
 <table class="table table-hover w-table">
     <thead>
@@ -18,10 +13,10 @@
         </tr>
     </thead>
     <tbody>
-    @foreach (var applcation in _applications)
+    @foreach (var log in _logs)
     {
         <tr>
-            <td @onclick="OnClickRowAsync">@applcation.Name</td>
+            <td @onclick="OnClickRowAsync">@log.Message</td>
         </tr>    
     }
     </tbody>
@@ -29,8 +24,9 @@
 
 @code
 {
-    private List<ApplicationResponseModel> _applications = new();
+    private List<LogResponseModel> _logs = new();
     private int _currentPage = 1;
+    private int _selectedApplicationId = 1;
     
     protected override async Task OnInitializedAsync()
     {
@@ -44,11 +40,12 @@
         {
             _currentPage++;
         }
-        var response = await _apiService.GetApplications(new PaginatedRequestModel()
+        var response = await _apiService.GetLogs(new LogListRequestModel()
         {
+            ApplicationId = _selectedApplicationId,
             Page = _currentPage
         });
-        _applications = response.Items.ToList();
+        _logs = response.Items.ToList();
         StateHasChanged();
     }
 

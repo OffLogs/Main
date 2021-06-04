@@ -14,7 +14,7 @@
 @inject IApiService _apiService
 @inject ToastService _toastService
 
-<button @onclick="() => _isShowAddModal = true">Add Application</button>
+<MyButton @onclick="() => _isShowAddModal = true">Add Application</MyButton>
 <ModalWindow
     IsShow="_isShowAddModal"
     Buttons="_modalButtons"
@@ -23,7 +23,6 @@
     <EditForm Model="@_model" OnValidSubmit="@HandleSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
-        
         <p>
             <CustomInputText Label="Name:" @bind-Value="_model.Name" />
         </p>
