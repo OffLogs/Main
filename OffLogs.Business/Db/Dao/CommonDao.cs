@@ -12,10 +12,5 @@ namespace OffLogs.Business.Db.Dao
         )
         {
         }
-        
-        public IDbConnection GetConnection()
-        {
-            return base.GetConnection();
-        }
     }
 }

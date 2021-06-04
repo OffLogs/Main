@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using NHibernate.Linq;
 using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Services.Jwt;
 using ServiceStack.OrmLite;
@@ -27,42 +28,50 @@ namespace OffLogs.Business.Db.Dao
             this._jwtService = jwtService;
         }
 
-        public async Task<ApplicationEntity> CreateNewApplication(long userId,  string name)
+        public async Task<ApplicationEntity> CreateNewApplication(UserEntity user,  string name)
         {   
             var application = new ApplicationEntity()
             {
-                UserId = userId,
+                User = user,
                 Name = name,
                 ApiToken = "tempToken",
                 CreateTime = DateTime.Now,
                 UpdateTime = DateTime.Now
             };
-            application.Id = await Connection.InsertAsync(application, selectIdentity: true);
-            application.ApiToken = _jwtService.BuildJwt(application.Id);
-            await Connection.UpdateAsync(application);
-            return application;
+            using (var session = Session)
+            using (var transaction = session.BeginTransaction())
+            {
+                
+                application.Id = (long)await session.SaveAsync(application);
+                application.ApiToken = _jwtService.BuildJwt(application.Id);
+                await session.UpdateAsync(application);
+                await transaction.CommitAsync();
+                return application;
+            }
         }
         
         public async Task<ApplicationEntity> UpdateApplication(long applicationId, string name)
         {
-            var application = GetConnection().SingleById<ApplicationEntity>(applicationId);
-            application.Name = name;
-            application.UpdateTime = DateTime.Now;
-            await Connection.UpdateAsync(application);
-            return application;
+            var application = await GetOneAsync<ApplicationEntity>(applicationId);
+            using (var session = Session)
+            using (var transaction = session.BeginTransaction())
+            {
+                application.Name = name;
+                application.UpdateTime = DateTime.Now;
+                await session.UpdateAsync(application);
+                await transaction.CommitAsync();
+                return application;
+            }   
         }
         
         public async Task<bool> IsOwner(long userId, long applicationId)
         {
-            var inputParams = new
+            using (var session = Session)
             {
-                UserId = userId, 
-                ApplicationId = applicationId
-            };
-            var isExists = await Connection.ExistsAsync<ApplicationEntity>(
-                application => application.Id == applicationId && application.UserId == userId
-            );
-            return isExists;
+                return await session.Query<ApplicationEntity>().Where(
+                    application => application.Id == applicationId && application.User.Id == userId
+                ).AnyAsync();
+            }
         }
         
         public async Task<(ICollection<ApplicationEntity>, long)> GetList(long userId, int page, int pageSize = 30)
