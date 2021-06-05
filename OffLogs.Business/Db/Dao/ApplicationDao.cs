@@ -7,8 +7,6 @@ using Microsoft.Extensions.Logging;
 using NHibernate.Linq;
 using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Services.Jwt;
-using ServiceStack.OrmLite;
-using ServiceStack.OrmLite.Dapper;
 
 namespace OffLogs.Business.Db.Dao
 {
