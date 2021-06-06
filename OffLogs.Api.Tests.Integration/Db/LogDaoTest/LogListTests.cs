@@ -56,7 +56,7 @@ namespace OffLogs.Api.Tests.Integration.Db.LogDaoTest
         private async Task<LogEntity> CreateLog(ApplicationEntity application, LogLevel level)
         {
             return await LogDao.AddAsync(
-                application.Id, 
+                application, 
                 "SomeMessage", 
                 level, 
                 DateTime.Now,

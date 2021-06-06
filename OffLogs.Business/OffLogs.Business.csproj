@@ -42,6 +42,15 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>RG.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Include="Db\Queries\HQL\getLogWithData.xml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="Db\Queries\named_query_example.xml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="Db\Queries\named_sql_query_example.xml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
       <None Remove="Db\Queries\log_get_list.sql" />
       <EmbeddedResource Include="Db\Mapping\Application.hbm.xml" />
       <EmbeddedResource Include="Db\Mapping\LogProperty.hbm.xml" />

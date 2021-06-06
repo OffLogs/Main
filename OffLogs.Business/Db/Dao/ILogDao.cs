@@ -10,7 +10,7 @@ namespace OffLogs.Business.Db.Dao
     public interface ILogDao: ICommonDao
     {
         Task<LogEntity> AddAsync(
-            long applicationId,  
+            ApplicationEntity application,  
             string message,
             LogLevel level,
             DateTime timestamp,
