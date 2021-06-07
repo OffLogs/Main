@@ -5,12 +5,12 @@ namespace OffLogs.Business.Db.Entity
 {
     public class LogTraceEntity
     {
-        public long Id { get; set; }
-        public LogEntity Log { get; set; }
-        public string Trace { get; set; }
-        public DateTime CreateTime { get; set; }
+        public virtual long Id { get; set; }
+        public virtual LogEntity Log { get; set; }
+        public virtual string Trace { get; set; }
+        public virtual DateTime CreateTime { get; set; }
         
-        public LogTraceResponseModel ResponseModel
+        public virtual LogTraceResponseModel ResponseModel
         {
             get
             {

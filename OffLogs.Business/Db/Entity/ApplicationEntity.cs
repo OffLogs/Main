@@ -5,14 +5,14 @@ namespace OffLogs.Business.Db.Entity
 {
     public class ApplicationEntity
     {
-        public long Id { get; set; }
-        public UserEntity User { get; set; }
-        public string Name { get; set; }
-        public string ApiToken { get; set; }
-        public DateTime CreateTime { get; set; }
-        public DateTime UpdateTime { get; set; }
+        public virtual long Id { get; set; }
+        public virtual UserEntity User { get; set; }
+        public virtual string Name { get; set; }
+        public virtual string ApiToken { get; set; }
+        public virtual DateTime CreateTime { get; set; }
+        public virtual DateTime UpdateTime { get; set; }
         
-        public ApplicationResponseModel ResponseModel
+        public virtual ApplicationResponseModel ResponseModel
         {
             get
             {

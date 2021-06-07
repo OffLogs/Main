@@ -4,14 +4,14 @@ namespace OffLogs.Business.Db.Entity
 {
     public class UserEntity
     {
-        public long Id { get; set; }
-        public string UserName { get; set; }
-        public string Email { get; set; }
-        public byte[] PasswordHash { get; set; }
-        public byte[] PasswordSalt { get; set; }
-        public DateTime CreateTime { get; set; }
-        public DateTime UpdateTime { get; set; }
+        public virtual long Id { get; set; }
+        public virtual string UserName { get; set; }
+        public virtual string Email { get; set; }
+        public virtual byte[] PasswordHash { get; set; }
+        public virtual byte[] PasswordSalt { get; set; }
+        public virtual DateTime CreateTime { get; set; }
+        public virtual DateTime UpdateTime { get; set; }
         
-        public string Password { get; set; }
+        public virtual string Password { get; set; }
     }
 }

@@ -30,7 +30,8 @@ namespace OffLogs.Business.Db.Dao
             {
                 var properties = new Dictionary<string, string>()
                 {
-                    { "connection.connection_string", "" },
+                    { "connection.connection_string", connString },
+                    { "dialect", "NHibernate.Dialect.PostgreSQL83Dialect" }
                 };
 #if DEBUG
                 properties.Add("show_sql", "true");            

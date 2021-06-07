@@ -8,23 +8,23 @@ namespace OffLogs.Business.Db.Entity
 {
     public class LogEntity
     {
-        public long Id { get; set; }
-        public ApplicationEntity Application { get; set; }
-        public string LevelId { get; set; }
+        public virtual long Id { get; set; }
+        public virtual ApplicationEntity Application { get; set; }
+        public virtual string LevelId { get; set; }
 
-        public LogLevel Level
+        public virtual LogLevel Level
         {
             get => new LogLevel().FromString(LevelId); 
             set => LevelId = value.GetValue();
         }
-        public bool IsFavorite { get; set; }
-        public string Message { get; set; }
-        public DateTime LogTime { get; set; }
-        public DateTime CreateTime { get; set; }
-        public List<LogTraceEntity> Traces { get; set; } = new();
-        public List<LogPropertyEntity> Properties { get; set; } = new();
+        public virtual bool IsFavorite { get; set; }
+        public virtual string Message { get; set; }
+        public virtual DateTime LogTime { get; set; }
+        public virtual DateTime CreateTime { get; set; }
+        public virtual List<LogTraceEntity> Traces { get; set; } = new();
+        public virtual List<LogPropertyEntity> Properties { get; set; } = new();
         
-        public LogResponseModel ResponseModel
+        public virtual LogResponseModel ResponseModel
         {
             get
             {

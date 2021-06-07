@@ -7,13 +7,13 @@ namespace OffLogs.Business.Db.Entity
 {
     public class LogPropertyEntity
     {
-        public long Id { get; set; }
-        public LogEntity Log { get; set; }
-        public string Key { get; set; }
-        public string Value { get; set; }
-        public DateTime CreateTime { get; set; }
+        public virtual long Id { get; set; }
+        public virtual LogEntity Log { get; set; }
+        public virtual string Key { get; set; }
+        public virtual string Value { get; set; }
+        public virtual DateTime CreateTime { get; set; }
         
-        public LogPropertyResponseModel ResponseModel
+        public virtual LogPropertyResponseModel ResponseModel
         {
             get
             {

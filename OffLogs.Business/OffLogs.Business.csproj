@@ -62,6 +62,8 @@
       <None Remove="Db\hibernate.cfg.xml" />
       <EmbeddedResource Include="Db\hibernate.cfg.xml" />
       <None Remove="Db\Mapping\Cat.hbm.xml" />
+      <None Remove="Db\Mapping\Log.hbm.xml" />
+      <EmbeddedResource Include="Db\Mapping\Log.hbm.xml" />
     </ItemGroup>
 
     <ItemGroup>

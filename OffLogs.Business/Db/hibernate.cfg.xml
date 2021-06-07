@@ -11,10 +11,10 @@
 
         <!-- mapping files -->
         <mapping resource="OffLogs.Business.Db.Mapping.User.hbm.xml" assembly="OffLogs.Business" />
-        <mapping resource="OffLogs.Business.Db.Mapping.Application.hbm.xml" assembly="OffLogs.Business" />
-        <mapping resource="OffLogs.Business.Db.Mapping.Log.hbm.xml" assembly="OffLogs.Business" />
         <mapping resource="OffLogs.Business.Db.Mapping.LogProperty.hbm.xml" assembly="OffLogs.Business" />
         <mapping resource="OffLogs.Business.Db.Mapping.LogTrace.hbm.xml" assembly="OffLogs.Business" />
+        <mapping resource="OffLogs.Business.Db.Mapping.Log.hbm.xml" assembly="OffLogs.Business" />
+        <mapping resource="OffLogs.Business.Db.Mapping.Application.hbm.xml" assembly="OffLogs.Business" />
 
     </session-factory>
 
