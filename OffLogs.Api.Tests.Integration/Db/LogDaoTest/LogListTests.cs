@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Db.Entity;
-using ServiceStack.OrmLite;
 using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Db.LogDaoTest
@@ -28,9 +27,9 @@ namespace OffLogs.Api.Tests.Integration.Db.LogDaoTest
             Assert.NotEmpty(log.Traces);
             Assert.True(log.Traces.First().Id > 0);
             
-            var logFromDb = Dao.GetConnection().LoadSingleById<LogEntity>(log.Id);
+            var logFromDb = await LogDao.GetLogAsync(log.Id);
             Assert.Equal(LogLevel.Error, logFromDb.Level);
-            Assert.Equal(application.Id, logFromDb.ApplicationId);
+            Assert.Equal(application.Id, logFromDb.Application.Id);
         }
         
         [Fact]

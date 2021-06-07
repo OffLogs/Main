@@ -7,7 +7,6 @@ using OffLogs.Business.Db.Dao;
 using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Services.Data;
 using OffLogs.Business.Services.Jwt;
-using ServiceStack.OrmLite;
 
 namespace OffLogs.Api.Tests.Integration.Core.Service
 {
@@ -70,7 +69,7 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
                     {
                         log.Properties.Add(item);
                     });
-                await _logDao.GetConnection().SaveAsync(log, true);
+                await _logDao.UpdateAsync(log);
             }
 
             return result;
@@ -84,7 +83,7 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
             {
                 var application = facotory.Generate();
                 result.Add(application);
-                application.Id = await _logDao.GetConnection().InsertAsync(application, true);
+                application.Id = (long)await _applicationDao.InsertAsync(application);
             }
             return result;
         }
