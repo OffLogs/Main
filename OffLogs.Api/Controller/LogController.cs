@@ -20,15 +20,18 @@ namespace OffLogs.Api.Controller
     {
         private readonly IJwtApplicationService _jwtService;
         private readonly ILogDao _logDao;
-        
+        private readonly IApplicationDao _applicationDao;
+
         public LogController(
             ILogger<LogController> logger, 
             IConfiguration configuration,
             ILogDao logDao,
+            IApplicationDao applicationDao,
             IJwtApplicationService jwtService
         ) : base(logger, configuration)
         {
             _logDao = logDao;
+            _applicationDao = applicationDao;
             _jwtService = jwtService;
         }
         
@@ -43,6 +46,12 @@ namespace OffLogs.Api.Controller
             try
             {
                 var applicationId = _jwtService.GetApplicationId().Value;
+                var application = await _applicationDao.GetAsync(applicationId);
+                if (application == null)
+                {
+                    return JsonError();
+                }
+
                 foreach (var log in model.Logs)
                 {
                     var properties = log.Properties.Select(
@@ -52,7 +61,7 @@ namespace OffLogs.Api.Controller
                         trace => new LogTraceEntity(trace)
                     ).ToArray();
                     await _logDao.AddAsync(
-                        applicationId,
+                        application,
                         log.Message,
                         log.LogLevel,
                         log.Timestamp,
@@ -80,6 +89,11 @@ namespace OffLogs.Api.Controller
             try
             {
                 var applicationId = _jwtService.GetApplicationId().Value;
+                var application = await _applicationDao.GetAsync(applicationId);
+                if (application == null)
+                {
+                    return JsonError();
+                }
                 foreach (var log in model.Events)
                 {
                     var properties = log.Properties.Select(
@@ -89,7 +103,7 @@ namespace OffLogs.Api.Controller
                         trace => new LogTraceEntity(trace)
                     ).ToArray();
                     await _logDao.AddAsync(
-                        applicationId,
+                        application,
                         log.RenderedMessage,
                         log.LogLevel.ToLogLevel(),
                         log.Timestamp,

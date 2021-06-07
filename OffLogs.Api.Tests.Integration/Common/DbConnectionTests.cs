@@ -11,7 +11,7 @@ namespace OffLogs.Api.Tests.Integration.Common
         [Fact]
         public void ShouldTestDbConnection()
         {
-            Assert.True(Dao.GetConnection().State == ConnectionState.Open);
+            Assert.True(Dao.IsConnectionSuccessful());
         }
     }
 }

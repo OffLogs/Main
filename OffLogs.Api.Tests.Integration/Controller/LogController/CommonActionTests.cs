@@ -18,7 +18,7 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
     public class CommonActionTests: MyIntegrationTest
     {
         public CommonActionTests(CustomWebApplicationFactory factory) : base(factory) {}
-        
+
         [Theory]
         [InlineData("/log/add")]
         public async Task ShouldAddWarningLog(string url)
