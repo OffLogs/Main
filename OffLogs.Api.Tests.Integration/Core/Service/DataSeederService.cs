@@ -38,7 +38,7 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
                 await _userDao.CreateNewUser(fakeUser.UserName, fakeUser.Email)    
             );
             var fakeApplication = _factory.ApplicationFactory(user.Id).Generate();
-            var application = await _applicationDao.CreateNewApplication(fakeApplication.User, fakeApplication.Name);
+            var application = await _applicationDao.CreateNewApplication(user, fakeApplication.Name);
             user.Applications.Add(
                 application
             );

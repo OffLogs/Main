@@ -21,8 +21,8 @@ namespace OffLogs.Business.Db.Entity
         public virtual string Message { get; set; }
         public virtual DateTime LogTime { get; set; }
         public virtual DateTime CreateTime { get; set; }
-        public virtual List<LogTraceEntity> Traces { get; set; } = new();
-        public virtual List<LogPropertyEntity> Properties { get; set; } = new();
+        public virtual ICollection<LogTraceEntity> Traces { get; set; } = new List<LogTraceEntity>();
+        public virtual ICollection<LogPropertyEntity> Properties { get; set; } = new List<LogPropertyEntity>();
         
         public virtual LogResponseModel ResponseModel
         {
@@ -52,6 +52,18 @@ namespace OffLogs.Business.Db.Entity
 
                 return model;
             }
+        }
+
+        public virtual void AddTrace(LogTraceEntity entity)
+        {
+            entity.Log = this;
+            Traces.Add(entity);
+        }
+        
+        public virtual void AddProperty(LogPropertyEntity entity)
+        {
+            entity.Log = this;
+            Properties.Add(entity);
         }
     }
 }

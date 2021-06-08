@@ -42,10 +42,23 @@ namespace OffLogs.Business.Db.Dao
                 Application = application,
                 Message = message,
                 Level = level,
-                LogTime = timestamp,
-                Properties = properties?.ToList(),
-                Traces = traces?.ToList(),
+                LogTime = timestamp
             };
+            if (properties != null)
+            {
+                foreach (var logPropertyEntity in properties)
+                {
+                    log.AddProperty(logPropertyEntity);
+                }
+            }
+            if (traces != null)
+            {
+                foreach (var logTraceEntity in traces)
+                {
+                    log.AddTrace(logTraceEntity);
+                }
+            }
+
             using (var session = Session)
             using(var transaction = session.BeginTransaction())
             {

@@ -44,10 +44,6 @@ namespace OffLogs.Business.Services.Data
                     (faker) => faker.Internet.DomainName()
                 )
                 .RuleFor(
-                    entity => entity.User.Id,
-                    () => userId
-                )
-                .RuleFor(
                     entity => entity.ApiToken,
                     (faker) => faker.Random.String2(100)
                 )

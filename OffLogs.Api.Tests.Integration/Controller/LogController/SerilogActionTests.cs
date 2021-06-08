@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using NHibernate.Util;
 using OffLogs.Api.Models.Response;
 using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Db.Dao;
