@@ -5,8 +5,8 @@
         assembly="OffLogs.Business">
 
     <query name="getLogWithData"><![CDATA[
-        select log
         from LogEntity as log
+            inner join fetch log.Application
             where log.Application.Id = :applicationId
     ]]></query>
 </hibernate-mapping>

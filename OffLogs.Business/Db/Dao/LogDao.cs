@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using NHibernate;
 using NHibernate.Linq;
 using OffLogs.Business.Db.Entity;
 using LogLevel = OffLogs.Business.Constants.LogLevel;
@@ -74,33 +75,15 @@ namespace OffLogs.Business.Db.Dao
             var offset = (page <= 0 ? 0 : page) * pageSize;
 
             using var session = Session;
-            var result = await session.GetNamedQuery("getLogWithData")
+            var list = await session.GetNamedQuery("getLogWithData")
                 .SetInt64("applicationId", applicationId)
                 .SetFirstResult(offset)
                 .SetMaxResults(pageSize)
                 .ListAsync<LogEntity>();
-            
-            // foreach (var (log, property, trace) in selectResult)
-            // {
-            //     var existsLog = result.FirstOrDefault(innerLog => innerLog.Id == log.Id);
-            //     if (existsLog == null)
-            //     {
-            //         existsLog = log;
-            //         result.Add(existsLog);
-            //     }
-            //
-            //     var isPropertyExists = existsLog.Properties.Exists(innerProp => innerProp.Id == property?.Id);
-            //     if (property != null && !isPropertyExists && property.Id > 0)
-            //     {
-            //         existsLog.Properties.Add(property);    
-            //     }
-            //     var isTraceExists = existsLog.Traces.Exists(innerTrace => innerTrace.Id == trace.Id);
-            //     if (trace != null && !isTraceExists && trace.Id > 0)
-            //     {
-            //         existsLog.Traces.Add(trace);    
-            //     }
-            // }
-            return (result, 0);
+            var countQuery = await session.Query<LogEntity>()
+                .Where(record => record.Application.Id == applicationId)
+                .CountAsync();
+            return (list, countQuery);
         }
         
         public async Task<bool> IsOwner(long userId, long logId)
