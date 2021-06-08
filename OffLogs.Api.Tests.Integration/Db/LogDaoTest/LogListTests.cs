@@ -46,10 +46,6 @@ namespace OffLogs.Api.Tests.Integration.Db.LogDaoTest
             
             Assert.Contains(list, item => item.Level == LogLevel.Error);
             Assert.Contains(list, item => item.Level == LogLevel.Information);
-
-            var firstLog = list.First();
-            Assert.Single(firstLog.Properties);
-            Assert.Single(firstLog.Traces);
         }
 
         private async Task<LogEntity> CreateLog(ApplicationEntity application, LogLevel level)

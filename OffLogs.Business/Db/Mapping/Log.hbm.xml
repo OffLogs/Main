@@ -18,18 +18,20 @@
         />
         <bag 
             name="Properties"
-            lazy="false"
+            lazy="true"
             inverse="true"
             cascade="all-delete-orphan"
+            fetch="subselect"
         >
             <key column="log_id"/>
             <one-to-many class="LogPropertyEntity"/>
         </bag>
         <bag
                 name="Traces"
-                lazy="false"
+                lazy="true"
                 inverse="true"
                 cascade="all-delete-orphan"
+                fetch="subselect"
         >
             <key column="log_id"/>
             <one-to-many class="LogTraceEntity"/>
