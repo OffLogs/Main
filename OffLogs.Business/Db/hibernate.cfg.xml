@@ -3,19 +3,11 @@
 
     <!-- an ISessionFactory instance -->
     <session-factory>
-
         <!-- properties -->
-        <property name="show_sql">false</property>
         <property name="dialect">NHibernate.Dialect.PostgreSQL83Dialect</property>
         <property name="query.substitutions">true=1, false=0</property>
 
         <!-- mapping files -->
-        <mapping resource="OffLogs.Business.Db.Mapping.User.hbm.xml" assembly="OffLogs.Business" />
-        <mapping resource="OffLogs.Business.Db.Mapping.LogProperty.hbm.xml" assembly="OffLogs.Business" />
-        <mapping resource="OffLogs.Business.Db.Mapping.LogTrace.hbm.xml" assembly="OffLogs.Business" />
-        <mapping resource="OffLogs.Business.Db.Mapping.Log.hbm.xml" assembly="OffLogs.Business" />
-        <mapping resource="OffLogs.Business.Db.Mapping.Application.hbm.xml" assembly="OffLogs.Business" />
-
+        <mapping assembly="OffLogs.Business" />
     </session-factory>
-
 </hibernate-configuration>

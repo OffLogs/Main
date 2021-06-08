@@ -51,5 +51,4 @@
             <column name="create_time" sql-type="datetime" not-null="true" />
         </property>
     </class>
-
 </hibernate-mapping>

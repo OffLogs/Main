@@ -13,7 +13,7 @@ namespace OffLogs.Business.Db.Dao
         )
         {
         }
-        
+
         public bool IsConnectionSuccessful()
         {
             using (var session = Session)

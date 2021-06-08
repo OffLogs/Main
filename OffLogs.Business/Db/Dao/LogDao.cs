@@ -75,8 +75,9 @@ namespace OffLogs.Business.Db.Dao
 
             using var session = Session;
             var result = await session.GetNamedQuery("getLogWithData")
-                .SetInt32("limit", pageSize)
-                .SetInt32("offset", offset)
+                .SetInt64("applicationId", applicationId)
+                .SetFirstResult(offset)
+                .SetMaxResults(pageSize)
                 .ListAsync<LogEntity>();
             
             // foreach (var (log, property, trace) in selectResult)

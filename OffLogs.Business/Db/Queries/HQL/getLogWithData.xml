@@ -1,6 +1,0 @@
-﻿<query name="HQL.getLogWithData"><![CDATA[
-    select log.*
-    from Eg.DomesticCat as log
-        where cat.Name = ?
-        and cat.Weight > ?
-]]></query>
