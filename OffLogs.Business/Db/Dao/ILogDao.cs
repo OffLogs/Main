@@ -17,7 +17,7 @@ namespace OffLogs.Business.Db.Dao
             ICollection<LogPropertyEntity> properties = null,
             ICollection<LogTraceEntity> traces = null
         );
-
+        Task<LogEntity> AddAsync(LogEntity log);
         Task<(IEnumerable<LogEntity>, long)> GetList(long applicationId, int page, int pageSize = 30);
         Task<bool> IsOwner(long userId, long logId);
         Task<bool> SetIsFavoriteAsync(long logId, bool isFavorite);

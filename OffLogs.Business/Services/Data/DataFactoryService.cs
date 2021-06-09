@@ -61,13 +61,9 @@ namespace OffLogs.Business.Services.Data
                 );
         }
         
-        public Faker<LogEntity> LogFactory(long applicationId, LogLevel level)
+        public Faker<LogEntity> LogFactory(LogLevel level)
         {
             return new Faker<LogEntity>()
-                .RuleFor(
-                    entity => entity.Application.Id,
-                    () => applicationId
-                )
                 .RuleFor(
                     entity => entity.Message,
                     (faker) => faker.Lorem.Sentence()
@@ -86,13 +82,9 @@ namespace OffLogs.Business.Services.Data
                 );
         }
 
-        public Faker<LogTraceEntity> LogTraceFactory(long logId)
+        public Faker<LogTraceEntity> LogTraceFactory()
         {
             return new Faker<LogTraceEntity>()
-                .RuleFor(
-                    entity => entity.Log.Id,
-                    () => logId
-                )
                 .RuleFor(
                     entity => entity.Trace,
                     (faker) => faker.Lorem.Sentence()
@@ -103,13 +95,9 @@ namespace OffLogs.Business.Services.Data
                 );
         }
         
-        public Faker<LogPropertyEntity> LogPropertyFactory(long logId)
+        public Faker<LogPropertyEntity> LogPropertyFactory()
         {
             return new Faker<LogPropertyEntity>()
-                .RuleFor(
-                    entity => entity.Log.Id,
-                    () => logId
-                )
                 .RuleFor(
                     entity => entity.Key,
                     (faker) => faker.Random.Word()

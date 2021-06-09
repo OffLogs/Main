@@ -9,6 +9,7 @@ using NHibernate;
 using NHibernate.Linq;
 using NHibernate.Multi;
 using OffLogs.Business.Db.Entity;
+using OffLogs.Business.Extensions;
 using LogLevel = OffLogs.Business.Constants.LogLevel;
 
 namespace OffLogs.Business.Db.Dao
@@ -31,24 +32,49 @@ namespace OffLogs.Business.Db.Dao
             {
                 var logQuery = session.Query<LogEntity>()
                     .Where(record => record.Id == logId)
-                    .Fetch(record => record.Application)
-                    .FetchMany(record => record.Properties);
+                    .Fetch(record => record.Application);
                 var tracesQuery = session.Query<LogTraceEntity>()
+                    .Where(record => record.Log.Id == logId);
+                var propertiesQuery = session.Query<LogPropertyEntity>()
                     .Where(record => record.Log.Id == logId);
 
                 var queries = session.CreateQueryBatch()
                     .Add("log", logQuery)
-                    .Add("traces", tracesQuery);
+                    .Add("traces", tracesQuery)
+                    .Add("properties", propertiesQuery);
 
                 var log = queries.GetResult<LogEntity>("log").SingleOrDefault();
                 if (log != null)
                 {
                     log.Traces = queries.GetResult<LogTraceEntity>("traces").ToList();
+                    log.Properties = queries.GetResult<LogPropertyEntity>("properties").ToList();
                 }
                 return log;    
             }
         }
 
+        public async Task<LogEntity> AddAsync(LogEntity log)
+        {
+            using (var session = Session)
+            using(var transaction = session.BeginTransaction())
+            {
+                // Clear bags
+                var properties = log.Properties.ToList();
+                log.Properties = new List<LogPropertyEntity>();
+                var traces = log.Traces.ToList();
+                log.Traces = new List<LogTraceEntity>();
+                
+                log.Id = (long)await session.SaveAsync(log);
+
+                properties.ForEach(log.AddProperty);
+                traces.ForEach(log.AddTrace);
+                
+                await session.UpdateAsync(log);
+                await transaction.CommitAsync();
+            }
+            return log;
+        }
+        
         public async Task<LogEntity> AddAsync(
             ApplicationEntity application,  
             string message,

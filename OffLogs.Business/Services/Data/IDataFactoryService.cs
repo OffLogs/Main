@@ -8,8 +8,8 @@ namespace OffLogs.Business.Services.Data
     {
         Faker<UserEntity> UserFactory();
         Faker<ApplicationEntity> ApplicationFactory(UserEntity user);
-        Faker<LogEntity> LogFactory(long applicationId, LogLevel level);
-        Faker<LogTraceEntity> LogTraceFactory(long logId);
-        Faker<LogPropertyEntity> LogPropertyFactory(long logId);
+        Faker<LogEntity> LogFactory(LogLevel level);
+        Faker<LogTraceEntity> LogTraceFactory();
+        Faker<LogPropertyEntity> LogPropertyFactory();
     }
 }

@@ -18,7 +18,7 @@
         />
         <bag 
             name="Properties"
-            lazy="true"
+            lazy="false"
             inverse="true"
             cascade="all-delete-orphan"
             fetch="subselect"
@@ -28,7 +28,7 @@
         </bag>
         <bag
                 name="Traces"
-                lazy="true"
+                lazy="false"
                 inverse="true"
                 cascade="all-delete-orphan"
                 fetch="subselect"

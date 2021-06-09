@@ -45,34 +45,41 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
             user.ApiToken = _jwtAuthService.BuildJwt(user.Id);
             return user;
         }
-        
-        public async Task<List<LogEntity>> CreateLogsAsync(long applicationId, LogLevel level, int counter = 1)
+
+        public async Task<List<LogEntity>> CreateLogsAsync(ApplicationEntity application, LogLevel level, int counter = 1)
         {
-            var logFactory = _factory.LogFactory(applicationId, level);
+            var logFactory = _factory.LogFactory(level);
             var result = new List<LogEntity>();
             for (int i = 1; i <= counter; i++)
             {
                 var log = logFactory.Generate();
+                log.Application = application;
                 result.Add(log);
                 
-                var logTraceFactory = _factory.LogTraceFactory(log.Id);
+                var logTraceFactory = _factory.LogTraceFactory();
                 logTraceFactory.GenerateLazy(4)
                     .ToList()
                     .ForEach(item =>
-                    {
+                    {   
                         log.Traces.Add(item);
                     });
-                var logPropertyFactory = _factory.LogPropertyFactory(log.Id);
+                var logPropertyFactory = _factory.LogPropertyFactory();
                 logPropertyFactory.GenerateLazy(3)
                     .ToList()
                     .ForEach(item =>
                     {
                         log.Properties.Add(item);
                     });
-                await _logDao.UpdateAsync(log);
+                await _logDao.AddAsync(log);
             }
 
             return result;
+        }
+
+        public async Task<List<LogEntity>> CreateLogsAsync(long applicationId, LogLevel level, int counter = 1)
+        {
+            var application = await _applicationDao.GetAsync(applicationId);
+            return await CreateLogsAsync(application, level, counter);
         }
 
         public async Task<List<ApplicationEntity>> CreateApplicationsAsync(UserEntity user, int counter = 1)
