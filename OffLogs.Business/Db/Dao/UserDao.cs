@@ -1,10 +1,12 @@
 using System;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NHibernate.Linq;
+using Npgsql;
 using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Helpers;
 
@@ -34,35 +36,39 @@ namespace OffLogs.Business.Db.Dao
                 CreateTime = DateTime.Now,
                 UpdateTime = DateTime.Now
             };
-            using (var session = Session)
-            using(var transaction = session.BeginTransaction())
+            using var session = Session;
+            using var transaction = session.BeginTransaction();
+            try
             {
                 user.Id = (long)await session.SaveAsync(user);
                 await transaction.CommitAsync();
+            }
+            catch (Exception e)
+            {
+                await transaction.RollbackAsync();
+                Logger.LogError(e.Message, e);
+                throw new PostgresException(e.Message, e.StackTrace, "", "");
             }
             return user;
         }
         
         public async Task DeleteByUserName(string userName)
         {
-            using (var session = Session)
-            using(var transaction = session.BeginTransaction())
-            {
-                await session.Query<UserEntity>()
-                    .Where(user => user.UserName == FormatUtil.ClearUserName(userName))
-                    .DeleteAsync();
-                await transaction.CommitAsync();
-            }
+            using var session = Session;
+            using var transaction = session.BeginTransaction();
+            await session.Query<UserEntity>()
+                .Where(user => user.UserName == FormatUtil.ClearUserName(userName))
+                .DeleteAsync();
+            await transaction.CommitAsync();
         }
         
         public async Task<UserEntity> GetByUserName(string userName)
         {
-            using (var session = Session)
-            {
-                return await session.Query<UserEntity>()
-                    .Where(user => user.UserName == FormatUtil.ClearUserName(userName))
-                    .SingleAsync();
-            }
+            using var session = Session;
+            var entity = await session.Query<UserEntity>()
+                .Where(user => user.UserName == FormatUtil.ClearUserName(userName))
+                .SingleOrDefaultAsync();
+            return entity;
         }
     }
 }

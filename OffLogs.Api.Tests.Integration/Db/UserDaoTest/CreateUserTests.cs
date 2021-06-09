@@ -1,11 +1,6 @@
-﻿using System.Data.Common;
-using System.Data.SqlClient;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using OffLogs.Api.Models.Response;
+﻿using System.Threading.Tasks;
+using Npgsql;
 using OffLogs.Api.Tests.Integration.Core;
-using OffLogs.Business.Services.Jwt;
-using OffLogs.Business.Test.Extensions;
 using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Db.UserDaoTest
@@ -38,7 +33,7 @@ namespace OffLogs.Api.Tests.Integration.Db.UserDaoTest
             await UserDao.DeleteByUserName(expectedUserName);
             
             await UserDao.CreateNewUser(expectedUserName, email1);
-            await Assert.ThrowsAsync<Npgsql.PostgresException>(() => UserDao.CreateNewUser(expectedUserName, email2));
+            await Assert.ThrowsAsync<PostgresException>(() => UserDao.CreateNewUser(expectedUserName, email2));
         }
         
         [Theory]
@@ -49,7 +44,7 @@ namespace OffLogs.Api.Tests.Integration.Db.UserDaoTest
             await UserDao.DeleteByUserName(userName);
             
             await UserDao.CreateNewUser(userName, expectedEmail);
-            await Assert.ThrowsAsync<Npgsql.PostgresException>(async () =>
+            await Assert.ThrowsAsync<PostgresException>(async () =>
             {
                 await UserDao.CreateNewUser(userName2, expectedEmail);
             });

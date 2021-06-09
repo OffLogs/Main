@@ -57,7 +57,7 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
             response.EnsureSuccessStatusCode();
             var (actualLogs, actualLogsCounter) = await LogDao.GetList(user.Applications.First().Id, 1);
             Assert.Equal(1, actualLogsCounter);
-            var actualLog = actualLogs.First();
+            var actualLog = await LogDao.GetLogAsync(actualLogs.First().Id);
             Assert.NotEmpty(actualLog.Message);
             Assert.NotNull(actualLog.Level);
             Assert.True(actualLog.Properties.Count  > 0);
@@ -101,7 +101,7 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
             response.EnsureSuccessStatusCode();
             var (actualLogs, actualLogsCounter) = await LogDao.GetList(user.Applications.First().Id, 1);
             Assert.Equal(1, actualLogsCounter);
-            var actualLog = actualLogs.First();
+            var actualLog = await LogDao.GetLogAsync(actualLogs.First().Id);
             Assert.NotEmpty(actualLog.Message);
             Assert.NotNull(actualLog.Level);
             Assert.True(actualLog.Properties.Count  > 0);
@@ -162,7 +162,7 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
             response.EnsureSuccessStatusCode();
             var (actualLogs, actualLogsCounter) = await LogDao.GetList(user.Applications.First().Id, 1);
             Assert.Equal(2, actualLogsCounter);
-            var actualLog = actualLogs.First();
+            var actualLog = await LogDao.GetLogAsync(actualLogs.First().Id);
             Assert.NotEmpty(actualLog.Message);
             Assert.NotNull(actualLog.Level);
             Assert.True(actualLog.Properties.Count  > 0);
@@ -207,7 +207,7 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
             response.EnsureSuccessStatusCode();
             var (actualLogs, actualLogsCounter) = await LogDao.GetList(user.Applications.First().Id, 1);
             Assert.Equal(1, actualLogsCounter);
-            var actualLog = actualLogs.First();
+            var actualLog = await LogDao.GetLogAsync(actualLogs.First().Id);
             Assert.NotEmpty(actualLog.Message);
             Assert.NotNull(actualLog.Level);
             Assert.True(actualLog.Properties.Count == 9);
@@ -282,7 +282,7 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
             response.EnsureSuccessStatusCode();
             var (actualLogs, actualLogsCounter) = await LogDao.GetList(user.Applications.First().Id, 1);
             Assert.Equal(1, actualLogsCounter);
-            var actualLog = actualLogs.First();
+            var actualLog = await LogDao.GetLogAsync(actualLogs.First().Id);
             Assert.NotEmpty(actualLog.Message);
             Assert.NotNull(actualLog.Level);
             Assert.True(actualLog.Properties.Count == 2);

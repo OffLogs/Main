@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NHibernate;
 using NHibernate.Linq;
+using NHibernate.Multi;
 using OffLogs.Business.Db.Entity;
 using LogLevel = OffLogs.Business.Constants.LogLevel;
 
@@ -26,7 +27,26 @@ namespace OffLogs.Business.Db.Dao
 
         public async Task<LogEntity> GetLogAsync(long logId)
         {
-            return await GetOneAsync<LogEntity>(logId);
+            using (var session = Session)
+            {
+                var logQuery = session.Query<LogEntity>()
+                    .Where(record => record.Id == logId)
+                    .Fetch(record => record.Application)
+                    .FetchMany(record => record.Properties);
+                var tracesQuery = session.Query<LogTraceEntity>()
+                    .Where(record => record.Log.Id == logId);
+
+                var queries = session.CreateQueryBatch()
+                    .Add("log", logQuery)
+                    .Add("traces", tracesQuery);
+
+                var log = queries.GetResult<LogEntity>("log").SingleOrDefault();
+                if (log != null)
+                {
+                    log.Traces = queries.GetResult<LogTraceEntity>("traces").ToList();
+                }
+                return log;    
+            }
         }
 
         public async Task<LogEntity> AddAsync(
@@ -69,7 +89,11 @@ namespace OffLogs.Business.Db.Dao
             return log;
         }
         
-        public async Task<(IEnumerable<LogEntity>, long)> GetList(long applicationId, int page, int pageSize = 30)
+        public async Task<(IEnumerable<LogEntity>, long)> GetList(
+            long applicationId, 
+            int page, 
+            int pageSize = 30
+        )
         {
             page = page - 1;
             var offset = (page <= 0 ? 0 : page) * pageSize;

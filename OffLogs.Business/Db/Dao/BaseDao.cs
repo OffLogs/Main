@@ -46,10 +46,8 @@ namespace OffLogs.Business.Db.Dao
 
         public async Task<T> GetOneAsync<T>(object id)
         {
-            using (var session = Session)
-            {
-                return await session.GetAsync<T>(id);
-            }
+            using var session = Session;
+            return await session.GetAsync<T>(id);
         }
     }
 }
