@@ -37,7 +37,7 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
             var user = new UserTestModel(
                 await _userDao.CreateNewUser(fakeUser.UserName, fakeUser.Email)    
             );
-            var fakeApplication = _factory.ApplicationFactory(user.Id).Generate();
+            var fakeApplication = _factory.ApplicationFactory(user).Generate();
             var application = await _applicationDao.CreateNewApplication(user, fakeApplication.Name);
             user.Applications.Add(
                 application
@@ -74,14 +74,14 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
 
             return result;
         }
-        
-        public async Task<List<ApplicationEntity>> CreateApplicationsAsync(long userId, int counter = 1)
+
+        public async Task<List<ApplicationEntity>> CreateApplicationsAsync(UserEntity user, int counter = 1)
         {
-            var facotory = _factory.ApplicationFactory(userId);
+            var factory = _factory.ApplicationFactory(user);
             var result = new List<ApplicationEntity>();
             for (int i = 1; i <= counter; i++)
             {
-                var application = facotory.Generate();
+                var application = factory.Generate();
                 result.Add(application);
                 application.Id = (long)await _applicationDao.InsertAsync(application);
             }

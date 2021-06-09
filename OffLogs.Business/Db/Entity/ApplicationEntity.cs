@@ -26,5 +26,7 @@ namespace OffLogs.Business.Db.Entity
                 return model;
             }
         }
+        
+        public ApplicationEntity() {}
     }
 }

@@ -7,6 +7,6 @@ namespace OffLogs.Business.Db.Dao
     {
         bool IsConnectionSuccessful();
         Task<bool> UpdateAsync(object entity);
-        Task<object> InsertAsync(object entity);
+        Task<long> InsertAsync(object entity);
     }
 }

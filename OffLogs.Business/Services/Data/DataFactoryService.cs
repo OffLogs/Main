@@ -36,7 +36,7 @@ namespace OffLogs.Business.Services.Data
                 );
         }
         
-        public Faker<ApplicationEntity> ApplicationFactory(long userId)
+        public Faker<ApplicationEntity> ApplicationFactory(UserEntity user)
         {
             return new Faker<ApplicationEntity>()
                 .RuleFor(
@@ -54,6 +54,10 @@ namespace OffLogs.Business.Services.Data
                 .RuleFor(
                     entity => entity.UpdateTime,
                     (faker) => faker.Date.Past()
+                )
+                .RuleFor(
+                    entity => entity.User,
+                    (_) => user
                 );
         }
         

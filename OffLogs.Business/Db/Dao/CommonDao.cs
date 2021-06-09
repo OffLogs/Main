@@ -33,14 +33,14 @@ namespace OffLogs.Business.Db.Dao
             }
         }
         
-        public async Task<object> InsertAsync(object entity)
+        public async Task<long> InsertAsync(object entity)
         {
             using (var session = Session)
             using(var transaction = session.BeginTransaction())
             {
-                await session.SaveAsync(entity);
+                var id = await session.SaveAsync(entity);
                 await transaction.CommitAsync();
-                return true;
+                return (long?) id ?? 0;
             }
         }
     }

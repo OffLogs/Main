@@ -93,16 +93,15 @@ namespace OffLogs.Business.Db.Dao
 
             using var session = Session;
             var query = session.Query<ApplicationEntity>()
-                .Where(record => record.User.Id == userId)
-                .OrderBy(log => log.CreateTime);
-            
-            var queries = session.CreateQueryBatch()
-                .Add("list", query)
-                .Add("count", query);
-            
-            var sumCounter = queries.GetResult<int>("count").Single();
-            var items = queries.GetResult<ApplicationEntity>("list");
-            return (items, sumCounter);
+                .Where(record => record.User.Id == userId);
+            var listQuery = query
+                .Skip(offset)
+                .Take(pageSize)
+                .OrderBy(log => log.CreateTime)
+                .ToFuture();
+            var count = await query.CountAsync();
+            var list = await listQuery.GetEnumerableAsync();
+            return (list.ToList(), count);
         }
     }
 }
