@@ -1,0 +1,8 @@
+﻿<sql-query name="persons">
+    <return alias="person" class="eg.Person"/>
+    SELECT person.NAME AS {person.Name},
+    person.AGE AS {person.Age},
+    person.SEX AS {person.Sex}
+    FROM PERSON person
+    WHERE person.NAME LIKE :namePattern
+</sql-query>

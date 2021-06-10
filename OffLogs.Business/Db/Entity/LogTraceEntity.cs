@@ -1,29 +1,16 @@
 using System;
 using OffLogs.Business.Common.Models.Api.Response.Board;
-using ServiceStack.DataAnnotations;
 
 namespace OffLogs.Business.Db.Entity
 {
-    [Alias("log_traces")]
     public class LogTraceEntity
     {
-        [PrimaryKey]
-        [AutoIncrement]
-        [Alias("id")]
-        public long Id { get; set; }
+        public virtual long Id { get; set; }
+        public virtual LogEntity Log { get; set; }
+        public virtual string Trace { get; set; }
+        public virtual DateTime CreateTime { get; set; }
         
-        [Alias("log_id")]
-        [References(typeof(LogEntity))]
-        public long LogId { get; set; }
-        
-        [Alias("trace")]
-        public string Trace { get; set; }
-        
-        [Alias("create_time")]
-        public DateTime CreateTime { get; set; }
-
-        [Ignore]
-        public LogTraceResponseModel ResponseModel
+        public virtual LogTraceResponseModel ResponseModel
         {
             get
             {

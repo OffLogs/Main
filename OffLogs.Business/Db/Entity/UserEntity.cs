@@ -1,35 +1,17 @@
 using System;
-using ServiceStack.DataAnnotations;
 
 namespace OffLogs.Business.Db.Entity
 {
-    [Alias("users")]
     public class UserEntity
     {
-        [PrimaryKey]
-        [AutoIncrement]
-        [Alias("id")]
-        public long Id { get; set; }
+        public virtual long Id { get; set; }
+        public virtual string UserName { get; set; }
+        public virtual string Email { get; set; }
+        public virtual byte[] PasswordHash { get; set; }
+        public virtual byte[] PasswordSalt { get; set; }
+        public virtual DateTime CreateTime { get; set; }
+        public virtual DateTime UpdateTime { get; set; }
         
-        [Alias("user_name")]
-        public string UserName { get; set; }
-        
-        [Alias("email")]
-        public string Email { get; set; }
-        
-        [Alias("password_hash")]
-        public byte[] PasswordHash { get; set; }
-        
-        [Alias("password_salt")]
-        public byte[] PasswordSalt { get; set; }
-        
-        [Alias("create_time")]
-        public DateTime CreateTime { get; set; }
-        
-        [Alias("update_time")]
-        public DateTime UpdateTime { get; set; }
-        
-        [Ignore]
-        public string Password { get; set; }
+        public virtual string Password { get; set; }
     }
 }

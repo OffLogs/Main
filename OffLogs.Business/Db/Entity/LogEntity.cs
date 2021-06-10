@@ -3,66 +3,47 @@ using System.Collections.Generic;
 using System.Linq;
 using OffLogs.Business.Common.Models.Api.Response.Board;
 using OffLogs.Business.Constants;
-using ServiceStack.DataAnnotations;
+using OffLogs.Business.Extensions;
 
 namespace OffLogs.Business.Db.Entity
 {
-    [Alias("logs")]
     public class LogEntity
     {
-        [PrimaryKey]
-        [AutoIncrement]
-        [Alias("id")]
-        public long Id { get; set; }
-        
-        [Alias("application_id")]
-        [References(typeof(ApplicationEntity))]
-        public long ApplicationId { get; set; }
-        
-        [Alias("level")]
-        public LogLevel Level { get; set; }
-        
-        [Alias("is_favorite")]
-        public bool IsFavorite { get; set; }
-        
-        [Alias("message")]
-        public string Message { get; set; }
-        
-        [Alias("log_time")]
-        public DateTime LogTime { get; set; }
-        
-        [Alias("create_time")]
-        public DateTime CreateTime { get; set; }
-        
-        [Reference]
-        public ApplicationEntity Application { get; set; }
-        
-        [Reference]
-        public List<LogTraceEntity> Traces { get; set; } = new();
+        public virtual long Id { get; set; }
+        public virtual ApplicationEntity Application { get; set; }
+        public virtual string LevelId { get; set; }
 
-        [Reference] 
-        public List<LogPropertyEntity> Properties { get; set; } = new();
-
-        [Ignore]
-        public LogResponseModel ResponseModel
+        public virtual LogLevel Level
+        {
+            get => new LogLevel().FromString(LevelId); 
+            set => LevelId = value.GetValue();
+        }
+        public virtual bool IsFavorite { get; set; }
+        public virtual string Message { get; set; }
+        public virtual DateTime LogTime { get; set; }
+        public virtual DateTime CreateTime { get; set; }
+        public virtual ICollection<LogTraceEntity> Traces { get; set; } = new List<LogTraceEntity>();
+        public virtual ICollection<LogPropertyEntity> Properties { get; set; } = new List<LogPropertyEntity>();
+        
+        public virtual LogResponseModel ResponseModel
         {
             get
             {
                 var model = new LogResponseModel()
                 {
                     Id = Id,
-                    ApplicationId = ApplicationId,
+                    ApplicationId = Application.Id,
                     Level = Level.GetValue(),
                     Message = Message,
                     LogTime = LogTime,
                     CreateTime = CreateTime,
                 };
                 
-                if (Traces != null)
+                if (Traces != null && !Traces.IsHibernateLazy())
                 {
                     model.Traces = Traces.Select(item => item.Trace).ToList();
                 }
-                if (Properties != null)
+                if (Properties != null && !Properties.IsHibernateLazy())
                 {
                     model.Properties = Properties.ToDictionary(
                         item => item.Key, 
@@ -72,6 +53,18 @@ namespace OffLogs.Business.Db.Entity
 
                 return model;
             }
+        }
+
+        public virtual void AddTrace(LogTraceEntity entity)
+        {
+            entity.Log = this;
+            Traces.Add(entity);
+        }
+        
+        public virtual void AddProperty(LogPropertyEntity entity)
+        {
+            entity.Log = this;
+            Properties.Add(entity);
         }
     }
 }

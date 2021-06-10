@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Data;
 using OffLogs.Business.Common.Mvc.Attribute.Constant;
-using ServiceStack.OrmLite.Converters;
 
 namespace OffLogs.Business.Constants
 {
-    public abstract class AConstant<T> : StringConverter, IValidationAttribute
+    public abstract class AConstant<T> : IValidationAttribute
     {
         protected readonly string _Name;
         protected readonly string _Value;
@@ -38,30 +37,6 @@ namespace OffLogs.Business.Constants
         {
             return _Value.GetHashCode();
         }
-
-        #region OrmLite Converter
-
-        public override void InitDbParam(IDbDataParameter p, Type fieldType)
-        {
-            p.DbType = DbType.String;
-        }
-
-        public override object ToDbValue(Type fieldType, object value)
-        {
-            var constantValue = (LogLevel)value;
-            var stringValue = constantValue?.GetValue();
-            return stringValue;
-        }
-        
-        public override object FromDbValue(Type fieldType, object value)
-        {
-            var strValue = value as string; 
-            return strValue != null
-                ? new LogLevel().FromString($"{value}")
-                : base.FromDbValue(fieldType, value);
-        }
-
-        #endregion
         
         public abstract bool IsValid(string Value);
         public abstract T FromString(string Value);

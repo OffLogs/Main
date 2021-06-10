@@ -57,10 +57,10 @@ namespace OffLogs.Api.Tests.Integration.Controller.Board.ApplicationController
         public async Task ShouldReceiveLogsList(string url)
         {
             var user = await DataSeeder.CreateNewUser();
-            await DataSeeder.CreateApplicationsAsync(user.Id, 3);
+            await DataSeeder.CreateApplicationsAsync(user, 3);
             
             var user2 = await DataSeeder.CreateNewUser();
-            await DataSeeder.CreateApplicationsAsync(user2.Id, 2);
+            await DataSeeder.CreateApplicationsAsync(user2, 2);
             
             // Act
             var response = await PostRequestAsync(url, user.ApiToken, new PaginatedRequestModel()
@@ -79,7 +79,7 @@ namespace OffLogs.Api.Tests.Integration.Controller.Board.ApplicationController
         public async Task ShouldReceiveMoreThanOnePages(string url)
         {
             var user = await DataSeeder.CreateNewUser();
-            await DataSeeder.CreateApplicationsAsync(user.Id, 25);
+            await DataSeeder.CreateApplicationsAsync(user, 25);
             
             // Act
             var response = await PostRequestAsync(url, user.ApiToken, new PaginatedRequestModel()

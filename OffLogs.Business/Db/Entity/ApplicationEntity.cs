@@ -1,47 +1,32 @@
 using System;
 using OffLogs.Business.Common.Models.Api.Response.Board;
-using ServiceStack.DataAnnotations;
 
 namespace OffLogs.Business.Db.Entity
 {
-    [Alias("applications")]
     public class ApplicationEntity
     {
-        [PrimaryKey]
-        [AutoIncrement]
-        [Alias("id")]
-        public long Id { get; set; }
+        public virtual long Id { get; set; }
+        public virtual UserEntity User { get; set; }
+        public virtual string Name { get; set; }
+        public virtual string ApiToken { get; set; }
+        public virtual DateTime CreateTime { get; set; }
+        public virtual DateTime UpdateTime { get; set; }
         
-        [Alias("user_id")]
-        [ForeignKey(typeof(UserEntity))]
-        public long UserId { get; set; }
-        
-        [Alias("name")]
-        public string Name { get; set; }
-        
-        [Alias("api_token")]
-        public string ApiToken { get; set; }
-        
-        [Alias("create_time")]
-        public DateTime CreateTime { get; set; }
-        
-        [Alias("update_time")]
-        public DateTime UpdateTime { get; set; }
-
-        [Ignore]
-        public ApplicationResponseModel ResponseModel
+        public virtual ApplicationResponseModel ResponseModel
         {
             get
             {
                 var model = new ApplicationResponseModel()
                 {
                     Id = Id,
-                    UserId = UserId,
+                    UserId = User.Id,
                     Name = Name,
                     CreateTime = CreateTime,
                 };
                 return model;
             }
         }
+        
+        public ApplicationEntity() {}
     }
 }

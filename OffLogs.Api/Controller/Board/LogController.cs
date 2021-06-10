@@ -11,12 +11,9 @@ using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Models.Api.Request.Board;
 using OffLogs.Business.Common.Models.Api.Response;
 using OffLogs.Business.Common.Models.Api.Response.Board;
-using OffLogs.Business.Constants;
 using OffLogs.Business.Db.Dao;
-using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Mvc.Controller;
 using OffLogs.Business.Services.Jwt;
-using ServiceStack.OrmLite;
 
 namespace OffLogs.Api.Controller.Board
 {
@@ -79,10 +76,7 @@ namespace OffLogs.Api.Controller.Board
                 {
                     return JsonError(HttpStatusCode.Forbidden);
                 }
-
-                var log = _logDao.GetConnection().SingleById<LogEntity>(model.LogId);
-                log.IsFavorite = model.IsFavorite;
-                await _logDao.GetConnection().SaveAsync(log);
+                await _logDao.SetIsFavoriteAsync(model.LogId, model.IsFavorite);
                 return JsonSuccess();
             }
             catch (Exception e)
