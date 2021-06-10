@@ -71,9 +71,6 @@ namespace OffLogs.Api.Tests.Integration.Controller.Board.LogController
             var responseData = await response.GetJsonDataAsync<PaginatedResponseModel<LogResponseModel>>();
             Assert.Equal(1, responseData.Data.TotalPages);
             Assert.Equal(3, responseData.Data.Items.Count);
-            
-            Assert.Equal(4, responseData.Data.Items.First().Traces.Count);
-            Assert.Equal(3, responseData.Data.Items.First().Properties.Count);
         }
         
         [Theory]

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OffLogs.Business.Common.Models.Api.Response.Board;
 using OffLogs.Business.Constants;
+using OffLogs.Business.Extensions;
 
 namespace OffLogs.Business.Db.Entity
 {
@@ -38,11 +39,11 @@ namespace OffLogs.Business.Db.Entity
                     CreateTime = CreateTime,
                 };
                 
-                if (Traces != null)
+                if (Traces != null && !Traces.IsHibernateLazy())
                 {
                     model.Traces = Traces.Select(item => item.Trace).ToList();
                 }
-                if (Properties != null)
+                if (Properties != null && !Properties.IsHibernateLazy())
                 {
                     model.Properties = Properties.ToDictionary(
                         item => item.Key, 

@@ -21,7 +21,6 @@
             lazy="false"
             inverse="true"
             cascade="all-delete-orphan"
-            fetch="subselect"
         >
             <key column="log_id"/>
             <one-to-many class="LogPropertyEntity"/>
@@ -31,7 +30,6 @@
                 lazy="false"
                 inverse="true"
                 cascade="all-delete-orphan"
-                fetch="subselect"
         >
             <key column="log_id"/>
             <one-to-many class="LogTraceEntity"/>

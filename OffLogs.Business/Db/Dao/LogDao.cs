@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NHibernate;
+using NHibernate.Criterion;
 using NHibernate.Linq;
 using NHibernate.Multi;
+using NHibernate.Proxy;
 using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Extensions;
 using LogLevel = OffLogs.Business.Constants.LogLevel;
@@ -125,15 +128,18 @@ namespace OffLogs.Business.Db.Dao
             var offset = (page <= 0 ? 0 : page) * pageSize;
 
             using var session = Session;
-            var list = await session.GetNamedQuery("getLogWithData")
-                .SetInt64("applicationId", applicationId)
-                .SetFirstResult(offset)
-                .SetMaxResults(pageSize)
-                .ListAsync<LogEntity>();
-            var countQuery = await session.Query<LogEntity>()
+            var listQuery = session.Query<LogEntity>()
                 .Where(record => record.Application.Id == applicationId)
-                .CountAsync();
-            return (list, countQuery);
+                .Fetch(record => record.Application)
+                .Skip(offset)
+                .Take(pageSize)
+                .ToFuture();
+            var countQuery = session.Query<LogEntity>()
+                .Where(record => record.Application.Id == applicationId)
+                .ToFutureValue(query => query.Count());
+            var list = await listQuery.GetEnumerableAsync();
+            var count = await countQuery.GetValueAsync();
+            return (list, count);
         }
         
         public async Task<bool> IsOwner(long userId, long logId)
