@@ -1,0 +1,73 @@
+﻿@using OffLogs.Web.Core.Models.Toast
+@using System.Timers
+@using OffLogs.Web.Core.Constants
+@using System.Collections
+@inject ToastService _toastService
+
+<div class="w-custom-input-select">
+  <div class="btn-group">
+    <button type="button" class="btn btn-danger dropdown-toggle">
+      Action
+    </button>
+    <div class="dropdown-menu show">
+      @foreach (var item in Items)
+      {
+        <a class="dropdown-item @(item.IsSelected ? "active" : "")"
+           href="#"
+           @onclick="@(async () => await OnClickSelectItemAsync(item))"
+           @onclick:preventDefault="true">
+          @item.Label
+        </a>
+      }
+    </div>
+  </div>
+</div>
+
+@code {
+
+  [Parameter]
+  public ToastMessageModel Message { get; set; }
+
+  [Parameter]
+  public ICollection<DropDownListItem> Items { get; set; }
+
+  [Parameter]
+  public EventCallback<DropDownListItem> OnChanged { get; set; }
+  
+  public DropDownListItem SelectedItem;
+
+  protected override void OnInitialized()
+  {
+    base.OnInitialized();
+  }
+  
+  public void Dispose()
+  {
+  }
+
+  public void SetSelectedItem(DropDownListItem item)
+  {
+    SetSelectedItemId(item?.Id);
+  }
+  
+  public void SetSelectedItemId(string id)
+  {
+    SelectedItem = Items.FirstOrDefault(record => record.Id == id);
+    Items = Items.Select(record =>
+    {
+      record.IsSelected = record == SelectedItem;
+      return record;
+    }).ToList();
+    StateHasChanged();
+    if (OnChanged.HasDelegate)
+    {
+      OnChanged.InvokeAsync(SelectedItem).Wait();
+    }
+  }
+
+  private Task OnClickSelectItemAsync(DropDownListItem item)
+  {
+    SetSelectedItem(item);
+    return Task.CompletedTask;
+  }
+}

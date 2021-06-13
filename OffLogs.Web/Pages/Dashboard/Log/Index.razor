@@ -2,9 +2,12 @@
 @using OffLogs.Web.Services.Http
 @using OffLogs.Business.Common.Models.Api.Request.Board
 @using OffLogs.Business.Common.Models.Api.Response.Board
+@using OffLogs.Web.Shared.Ui.Form.CustomDropDown
 @inject IApiService _apiService
 
 <h1>Logs</h1>
+
+<CustomDropDown Items="@_listItems" @ref="_selectApplications" OnChanged="@OnSelectedApplication"/>
 
 <table class="table table-hover w-table">
     <thead>
@@ -27,11 +30,43 @@
     private List<LogResponseModel> _logs = new();
     private int _currentPage = 1;
     private int _selectedApplicationId = 1;
+
+    private CustomDropDown _selectApplications { get; set; }
+    
+    private List<DropDownListItem> _listItems = new()
+    {
+        new ()
+        {
+            Id = "1",
+            Label = "111",
+            Description = "11111"
+        },
+        new ()
+        {
+            Id = "2",
+            Label = "222",
+            Description = "222"
+        },
+        new ()
+        {
+            Id = "3",
+            Label = "3333",
+            Description = "3333"
+        },
+        new ()
+        {
+            Id = "4",
+            Label = "4444",
+            Description = "44444"
+        }
+    };
     
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         await LoadListAsync(false);
+        
+        _selectApplications.SetSelectedItemId("2");
     }
 
     private async Task LoadListAsync(bool isLoadNextPage = true)
@@ -52,5 +87,10 @@
     private async Task OnClickRowAsync()
     {
         Console.WriteLine("asdads");
+    }
+
+    private void OnSelectedApplication(DropDownListItem selectListItem)
+    {
+        Console.WriteLine(selectListItem?.Id);
     }
 }
