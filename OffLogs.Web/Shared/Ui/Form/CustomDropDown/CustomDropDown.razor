@@ -1,0 +1,130 @@
+﻿@using OffLogs.Web.Core.Models.Toast
+@using System.Timers
+@using OffLogs.Web.Core.Constants
+@using System.Collections
+@inject ToastService _toastService
+
+<div class="w-custom-input-select">
+    <div class="btn-group">
+        <button
+            type="button"
+            class="btn btn-@BtnType dropdown-toggle"
+            @onclick="@(() => ShowDropDown(!_isOpened))">
+            @_selectedItemTitle
+        </button>
+        <div class="dropdown-menu @(_isOpened ? "show" : "")">
+            @foreach (var item in Items)
+            {
+                <a class="dropdown-item @(item.IsSelected ? "active" : "")"
+                   href="#"
+                   @onclick="@(async () => await OnClickSelectItemAsync(item))"
+                   @onclick:preventDefault="true">
+                    @item.Label
+                </a>
+            }
+            @if (!Items.Any())
+            {
+                <a class="dropdown-item"
+                   href="#"
+                   @onclick:preventDefault="true">
+                    Items not found
+                </a>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string NonSelectedLabel { get; set; } = "Select item";
+
+    [Parameter]
+    public ToastMessageModel Message { get; set; }
+
+    [Parameter]
+    public ICollection<DropDownListItem> Items { get; set; } = new List<DropDownListItem>();
+
+    [Parameter]
+    public string BtnType { get; set; } = "primary";
+
+    [Parameter]
+    public EventCallback<DropDownListItem> OnChanged { get; set; }
+
+    public DropDownListItem SelectedItem = null;
+
+    protected bool _isOpened { get; set; } = false;
+
+    protected string _selectedItemTitle
+    {
+        get
+        {
+            if (SelectedItem != null)
+            {
+                return SelectedItem.Label;
+            }
+            return NonSelectedLabel;
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    public void Dispose()
+    {
+    }
+
+    public void AddItem(DropDownListItem item)
+    {
+        Items.Add(item);
+        StateHasChanged();
+    }
+
+    public void AddItems(ICollection<DropDownListItem> items)
+    {
+        Items = Items.Union(items).ToList();
+        StateHasChanged();
+    }
+
+    public void SetSelectedItem(DropDownListItem item)
+    {
+        SetSelectedItemId(item?.Id);
+    }
+
+    public void SetSelectedItemId(string id)
+    {
+        SelectedItem = Items.FirstOrDefault(record => record.Id == id);
+        Items = Items.Select(record =>
+        {
+            record.IsSelected = record == SelectedItem;
+            return record;
+        }).ToList();
+        StateHasChanged();
+        if (OnChanged.HasDelegate)
+        {
+            OnChanged.InvokeAsync(SelectedItem).Wait();
+        }
+    }
+
+    public void Clear()
+    {
+        Items.Clear();
+        StateHasChanged();
+    }
+
+    protected Task OnClickSelectItemAsync(DropDownListItem item)
+    {
+        _isOpened = false;
+        SetSelectedItem(item);
+        return Task.CompletedTask;
+    }
+
+    protected void ShowDropDown(bool isShow)
+    {
+        _isOpened = isShow;
+        StateHasChanged();
+    }
+
+}

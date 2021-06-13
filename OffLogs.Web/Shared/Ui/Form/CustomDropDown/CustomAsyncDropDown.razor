@@ -1,0 +1,78 @@
+﻿@using OffLogs.Web.Core.Models.Toast
+@using System.Timers
+@using OffLogs.Web.Core.Constants
+@using System.Collections
+@inject ToastService _toastService
+@inherits CustomDropDown
+
+<div class="w-custom-input-select">
+    <div class="btn-group">
+        <button
+            type="button"
+            class="btn btn-@BtnType dropdown-toggle"
+            @onclick="@(() => ShowDropDown(!_isOpened))">
+            @if (_isLoading)
+            {
+                <Icon IconType="reload"/>
+            }
+            else
+            {
+                @_selectedItemTitle    
+            }
+        </button>
+        <div class="dropdown-menu @(_isOpened ? "show" : "")">
+            @foreach (var item in Items)
+            {
+                <a class="dropdown-item @(item.IsSelected ? "active" : "")"
+                   href="#"
+                   @onclick="@(async () => await OnClickSelectItemAsync(item))"
+                   @onclick:preventDefault="true">
+                    @item.Label
+                </a>
+            }
+            @if (!Items.Any())
+            {
+                <a class="dropdown-item"
+                   href="#"
+                   @onclick:preventDefault="true">
+                    Items not found
+                </a>    
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public Func<Task<ICollection<DropDownListItem>>> OnLoad { get; set; }
+
+    private bool _isLoading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await LoadItemsAsync();
+    }
+
+    private async Task LoadItemsAsync()
+    {
+        SetIsLoading(true);
+        try
+        {
+            var loadedItems = await OnLoad();
+            AddItems(loadedItems);
+            SetIsLoading(false);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+    }
+    
+    private void SetIsLoading(bool isLoading)
+    {
+        _isLoading = isLoading;
+        StateHasChanged();
+    }
+}

@@ -2,9 +2,23 @@
 @using OffLogs.Web.Services.Http
 @using OffLogs.Business.Common.Models.Api.Request.Board
 @using OffLogs.Business.Common.Models.Api.Response.Board
+@using OffLogs.Web.Shared.Ui.Form.CustomDropDown
+@using System.Collections
 @inject IApiService _apiService
 
 <h1>Logs</h1>
+
+<CustomDropDown 
+    Items="@_listItems" 
+    @ref="_selectApplications" 
+    OnChanged="OnSelectedApplication"
+    NonSelectedLabel="Select your application"
+/>
+
+<CustomAsyncDropDown
+    NonSelectedLabel="Select your application"
+    OnLoad="@(async () => await OnLoadApplicationsAsync())"
+/>
 
 <table class="table table-hover w-table">
     <thead>
@@ -27,6 +41,13 @@
     private List<LogResponseModel> _logs = new();
     private int _currentPage = 1;
     private int _selectedApplicationId = 1;
+
+    private CustomDropDown _selectApplications { get; set; }
+    
+    private List<DropDownListItem> _listItems = new()
+    {
+        
+    };
     
     protected override async Task OnInitializedAsync()
     {
@@ -52,5 +73,20 @@
     private async Task OnClickRowAsync()
     {
         Console.WriteLine("asdads");
+    }
+
+    private void OnSelectedApplication(DropDownListItem selectListItem)
+    {
+        Console.WriteLine(selectListItem?.Id);
+    }
+    
+    private async Task<ICollection<DropDownListItem>> OnLoadApplicationsAsync()
+    {
+        var applications = await _apiService.GetApplications();
+        return applications.Items.Select(record => new DropDownListItem()
+        {
+            Id = $"{record.Id}",
+            Label = record.Name
+        }).ToList();
     }
 }
