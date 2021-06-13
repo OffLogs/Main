@@ -7,7 +7,12 @@
 
 <h1>Logs</h1>
 
-<CustomDropDown Items="@_listItems" @ref="_selectApplications" OnChanged="@OnSelectedApplication"/>
+<CustomDropDown 
+    Items="@_listItems" 
+    @ref="_selectApplications" 
+    OnChanged="OnSelectedApplication"
+    NonSelectedLabel="Select your application"
+/>
 
 <table class="table table-hover w-table">
     <thead>
@@ -65,8 +70,6 @@
     {
         await base.OnInitializedAsync();
         await LoadListAsync(false);
-        
-        _selectApplications.SetSelectedItemId("2");
     }
 
     private async Task LoadListAsync(bool isLoadNextPage = true)

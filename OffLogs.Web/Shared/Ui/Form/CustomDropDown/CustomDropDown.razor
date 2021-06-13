@@ -6,10 +6,14 @@
 
 <div class="w-custom-input-select">
   <div class="btn-group">
-    <button type="button" class="btn btn-danger dropdown-toggle">
-      Action
+    <button 
+      type="button" 
+      class="btn btn-@BtnType dropdown-toggle"
+      @onclick="@(() => ShowDropDown(!_isOpened))"
+    >
+      @_selectedItemTitle
     </button>
-    <div class="dropdown-menu show">
+    <div class="dropdown-menu @(_isOpened ? "show" : "")">
       @foreach (var item in Items)
       {
         <a class="dropdown-item @(item.IsSelected ? "active" : "")"
@@ -26,16 +30,34 @@
 @code {
 
   [Parameter]
+  public string NonSelectedLabel { get; set; } = "Select item";
+  
+  [Parameter]
   public ToastMessageModel Message { get; set; }
 
   [Parameter]
   public ICollection<DropDownListItem> Items { get; set; }
 
   [Parameter]
+  public string BtnType { get; set; } = "primary";
+  
+  [Parameter]
   public EventCallback<DropDownListItem> OnChanged { get; set; }
   
   public DropDownListItem SelectedItem;
 
+  private bool _isOpened { get; set; } = false;
+  private string _selectedItemTitle {
+    get
+    {
+      if (SelectedItem != null)
+      {
+        return SelectedItem.Label;
+      }
+      return NonSelectedLabel;
+    }
+  }
+  
   protected override void OnInitialized()
   {
     base.OnInitialized();
@@ -67,7 +89,14 @@
 
   private Task OnClickSelectItemAsync(DropDownListItem item)
   {
+    _isOpened = false;
     SetSelectedItem(item);
     return Task.CompletedTask;
+  }
+  
+  private void ShowDropDown(bool isShow)
+  {
+    _isOpened = isShow;
+    StateHasChanged();
   }
 }
