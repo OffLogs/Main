@@ -11,7 +11,7 @@ namespace OffLogs.Web.Services.Http
     {
         Task<LoginResponseModel> LoginAsync(LoginRequestModel model);
         Task<bool> CheckIsLoggedInAsync(string token);
-        Task<PaginatedResponseModel<ApplicationResponseModel>> GetApplications(PaginatedRequestModel request);
+        Task<PaginatedResponseModel<ApplicationResponseModel>> GetApplications(PaginatedRequestModel request = null);
         Task<PaginatedResponseModel<LogResponseModel>> GetLogs(LogListRequestModel request);
     }
 }

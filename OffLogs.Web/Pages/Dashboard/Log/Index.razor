@@ -3,6 +3,7 @@
 @using OffLogs.Business.Common.Models.Api.Request.Board
 @using OffLogs.Business.Common.Models.Api.Response.Board
 @using OffLogs.Web.Shared.Ui.Form.CustomDropDown
+@using System.Collections
 @inject IApiService _apiService
 
 <h1>Logs</h1>
@@ -12,6 +13,11 @@
     @ref="_selectApplications" 
     OnChanged="OnSelectedApplication"
     NonSelectedLabel="Select your application"
+/>
+
+<CustomAsyncDropDown
+    NonSelectedLabel="Select your application"
+    OnLoad="@(async () => await OnLoadApplicationsAsync())"
 />
 
 <table class="table table-hover w-table">
@@ -40,30 +46,7 @@
     
     private List<DropDownListItem> _listItems = new()
     {
-        new ()
-        {
-            Id = "1",
-            Label = "111",
-            Description = "11111"
-        },
-        new ()
-        {
-            Id = "2",
-            Label = "222",
-            Description = "222"
-        },
-        new ()
-        {
-            Id = "3",
-            Label = "3333",
-            Description = "3333"
-        },
-        new ()
-        {
-            Id = "4",
-            Label = "4444",
-            Description = "44444"
-        }
+        
     };
     
     protected override async Task OnInitializedAsync()
@@ -95,5 +78,15 @@
     private void OnSelectedApplication(DropDownListItem selectListItem)
     {
         Console.WriteLine(selectListItem?.Id);
+    }
+    
+    private async Task<ICollection<DropDownListItem>> OnLoadApplicationsAsync()
+    {
+        var applications = await _apiService.GetApplications();
+        return applications.Items.Select(record => new DropDownListItem()
+        {
+            Id = $"{record.Id}",
+            Label = record.Name
+        }).ToList();
     }
 }

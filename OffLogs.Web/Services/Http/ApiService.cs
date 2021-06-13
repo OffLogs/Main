@@ -100,8 +100,15 @@ namespace OffLogs.Web.Services.Http
             return response.IsSuccess;
         }
         
-        public async Task<PaginatedResponseModel<ApplicationResponseModel>> GetApplications(PaginatedRequestModel request)
+        public async Task<PaginatedResponseModel<ApplicationResponseModel>> GetApplications(PaginatedRequestModel request = null)
         {
+            if (request == null)
+            {
+                request = new PaginatedRequestModel()
+                {
+                    Page = 1
+                };
+            }
             var response = await PostAuthorizedAsync<PaginatedResponseModel<ApplicationResponseModel>>(ApiUrl.ApplicationList, request);
             if (response == null)
             {
