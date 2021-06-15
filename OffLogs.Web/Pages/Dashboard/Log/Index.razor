@@ -3,10 +3,13 @@
 @using OffLogs.Business.Common.Models.Api.Request.Board
 @using OffLogs.Business.Common.Models.Api.Response.Board
 @using OffLogs.Web.Shared.Ui.Form.CustomDropDown
+@using OffLogs.Web.Shared.Ui
 @using System.Collections
 @inject IApiService _apiService
 
 <h1>Logs</h1>
+
+<Preloader/>
 
 <CustomAsyncDropDown
     @ref="_dropDownApplications"

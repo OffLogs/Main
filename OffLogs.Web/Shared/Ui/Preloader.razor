@@ -1,0 +1,13 @@
+﻿@if (IsShow)
+{
+    <div class="w-preloader">
+        <img alt="Loading..." src="/img/preloader/1.gif"/>
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public bool IsShow { get; set; } = true;
+    
+}
