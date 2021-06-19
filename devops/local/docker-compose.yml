@@ -7,7 +7,7 @@ volumes:
 services:
   postgres:
     container_name: offlogs-local-postgres
-    image: postgres:13.2
+    image: postgres:13.3
     restart: always
     environment:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -15,3 +15,11 @@ services:
       - 5432:5432
     volumes:
       - postgre-volume:/var/lib/postgresql/data
+  hazelcast:
+    container_name: offlogs-local-hazelcast
+    image: hazelcast/hazelcast:latest
+    restart: always
+    environment:
+      JAVA_OPTS: "-Xms512M -Xmx1024M"
+    volumes:
+      - ./:/opt/hazelcast/config_ext
