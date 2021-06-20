@@ -18,7 +18,6 @@ services:
       - postgre-volume:/var/lib/postgresql/data
   zookeeper:
     container_name: offlogs-local-zookeeper
-#    image: wurstmeister/zookeeper
     build:
       context: ./
       dockerfile: zookeeper/Dockerfile

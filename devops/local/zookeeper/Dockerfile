@@ -1,6 +1,8 @@
 ﻿FROM ubuntu:focal
 
 WORKDIR /app
+ENV KAFKA_HOME /app
+ENV PATH ${PATH}:${KAFKA_HOME}/bin
 
 # Change timezone to local time
 ENV TZ=UTC
@@ -12,4 +14,4 @@ RUN apt-get install -y default-jre
 COPY ./binable/kafka /app
 
 COPY ./zookeeper/boot.sh /usr/local/bin/app_boot
-CMD ["/usr/local/bin/app_boot"]
+CMD ["bash", "/usr/local/bin/app_boot"]
