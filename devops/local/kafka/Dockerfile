@@ -11,7 +11,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN apt-get update
 RUN apt-get install -y default-jre
 
-COPY ./binable/kafka_2.13-2.8.0 /app
+COPY ./binable/kafka /app
 
 COPY ./kafka/boot.sh /usr/local/bin/app_boot
-CMD ["sh", "/usr/local/bin/app_boot"]
+CMD ["bash", "/usr/local/bin/app_boot"]
