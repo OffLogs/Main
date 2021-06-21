@@ -6,6 +6,6 @@ namespace OffLogs.Business.Services.Communication
 {
     public interface IKafkaConsumerService
     {
-        Task<long> ProcessLogsAsync(CancellationToken cancellationToken = default);
+        Task<long> ProcessLogsAsync(int? millisecondsTimeout = null, CancellationToken cancellationToken = default);
     }
 }

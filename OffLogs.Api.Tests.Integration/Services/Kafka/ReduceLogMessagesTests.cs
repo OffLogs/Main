@@ -35,8 +35,16 @@ namespace OffLogs.Api.Tests.Integration.Services.Kafka
             var application = userModel.Applications.First();
 
             var log = await DataSeeder.MakeLogAsync(application, LogLevel.Error);
+            
+            // Push 2 messages
             await KafkaProducerService.ProduceLogMessageAsync(log);
-            await KafkaConsumerService.ProcessLogsAsync();
+            await KafkaProducerService.ProduceLogMessageAsync(log);
+            
+            // Receive 2 messages
+            var processedRecords = await KafkaConsumerService.ProcessLogsAsync(2000);
+            Assert.Equal(1, processedRecords);
+            processedRecords = await KafkaConsumerService.ProcessLogsAsync(2000);
+            Assert.Equal(1, processedRecords);
         }
     }
 }

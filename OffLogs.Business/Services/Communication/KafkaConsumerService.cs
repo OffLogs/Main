@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Confluent.Kafka;
 using Microsoft.Extensions.Configuration;
@@ -33,21 +34,23 @@ namespace OffLogs.Business.Services.Communication
                 GroupId = _groupName,
                 AutoOffsetReset = AutoOffsetReset.Earliest,
                 EnableAutoCommit = true, // (the default)
-                EnableAutoOffsetStore = false
+                EnableAutoOffsetStore = false,
+                AutoCommitIntervalMs = 5000
             };
         }
 
-        public async Task<long> ProcessLogsAsync(CancellationToken cancellationToken = default)
+        public async Task<long> ProcessLogsAsync(int? millisecondsTimeout = null, CancellationToken cancellationToken = default)
         {
             var processedRecords = 0;
-            var commitPeriod = 10;
             using (var consumer = GetBuilder<LogEntity>().Build())
             {
-                consumer.Subscribe(_logsTopicName); 
-                
+                consumer.Subscribe(_logsTopicName);
+
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    var consumeResult = consumer.Consume(cancellationToken);
+                    var consumeResult = millisecondsTimeout.HasValue 
+                        ? consumer.Consume(millisecondsTimeout.Value)
+                        : consumer.Consume(cancellationToken);
 
                     var aaa = 123;
 
