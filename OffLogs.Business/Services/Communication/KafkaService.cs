@@ -49,7 +49,7 @@ namespace OffLogs.Business.Services.Communication
             _producerConfig = new ProducerConfig
             {
                 BootstrapServers = kafkaServers,
-                ClientId = Dns.GetHostName(), 
+                ClientId = _producerId, 
                 Acks = Acks.All,
                 MessageSendMaxRetries = 2000,
                 SecurityProtocol = SecurityProtocol.Plaintext
@@ -64,8 +64,6 @@ namespace OffLogs.Business.Services.Communication
 
         public async Task ProduceLogMessageAsync(LogEntity logEntity)
         {
-            _producerConfig.ClientId = _producerId;
-
             await Producer.ProduceAsync(_logsTopic, new Message<Null, object>
             {
                 Value = logEntity
