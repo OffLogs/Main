@@ -3,6 +3,7 @@ version: "3.8"
 volumes:
   postgre-volume: {}
   kafka-volume: {}
+  kafka-2-volume: {}
   zookeeper-volume: {}
 
 services:
@@ -50,3 +51,22 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
     volumes:
       - kafka-volume:/app/kafka-logs
+  kafka-2:
+    build:
+      context: ./
+      dockerfile: kafka/Dockerfile
+      args:
+        BUILD_COMMAND: build
+    restart: always
+    depends_on:
+      - zookeeper
+    ports:
+      - 29093:29092
+    environment:
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: INSIDE://:9092,OUTSIDE://:9094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+    volumes:
+      - kafka-2-volume:/app/kafka-logs
