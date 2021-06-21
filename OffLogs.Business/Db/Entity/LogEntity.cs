@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using OffLogs.Business.Common.Models.Api.Response.Board;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Extensions;
@@ -10,9 +11,12 @@ namespace OffLogs.Business.Db.Entity
     public class LogEntity
     {
         public virtual long Id { get; set; }
+        
+        [JsonIgnore]
         public virtual ApplicationEntity Application { get; set; }
         public virtual string LevelId { get; set; }
 
+        [JsonIgnore]
         public virtual LogLevel Level
         {
             get => new LogLevel().FromString(LevelId); 
@@ -25,6 +29,7 @@ namespace OffLogs.Business.Db.Entity
         public virtual ICollection<LogTraceEntity> Traces { get; set; } = new List<LogTraceEntity>();
         public virtual ICollection<LogPropertyEntity> Properties { get; set; } = new List<LogPropertyEntity>();
         
+        [JsonIgnore]
         public virtual LogResponseModel ResponseModel
         {
             get

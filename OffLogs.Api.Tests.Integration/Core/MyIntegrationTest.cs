@@ -4,6 +4,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using OffLogs.Api.Tests.Integration.Core.Service;
 using OffLogs.Business.Db.Dao;
+using OffLogs.Business.Services.Communication;
 using OffLogs.Business.Services.Data;
 using OffLogs.Business.Services.Jwt;
 using Xunit;
@@ -21,6 +22,7 @@ namespace OffLogs.Api.Tests.Integration.Core
         protected readonly IJwtAuthService JwtAuthService;
         protected readonly IDataFactoryService DataFactory;
         protected readonly IDataSeederService DataSeeder;
+        protected readonly IKafkaService KafkaService;
         
         public MyIntegrationTest(CustomWebApplicationFactory factory)
         {
@@ -32,6 +34,7 @@ namespace OffLogs.Api.Tests.Integration.Core
             DataFactory = _factory.Services.GetService(typeof(IDataFactoryService)) as IDataFactoryService;
             DataSeeder = _factory.Services.GetService(typeof(IDataSeederService)) as IDataSeederService;
             JwtAuthService = _factory.Services.GetService(typeof(IJwtAuthService)) as IJwtAuthService;
+            KafkaService = _factory.Services.GetService(typeof(IKafkaService)) as IKafkaService;
         }
 
         public async Task<HttpResponseMessage> PostRequestAsAnonymousAsync(string url, object data = null)

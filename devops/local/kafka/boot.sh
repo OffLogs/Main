@@ -1,21 +1,5 @@
 #!/bin/bash -e
 
-# Try and configure minimal settings or exit with error if there isn't enough information
-if [[ -z "$KAFKA_ADVERTISED_HOST_NAME$KAFKA_LISTENERS" ]]; then
-  if [[ -n "$KAFKA_ADVERTISED_LISTENERS" ]]; then
-    echo "ERROR: Missing environment variable KAFKA_LISTENERS. Must be specified when using KAFKA_ADVERTISED_LISTENERS"
-    exit 1
-  elif [[ -z "$HOSTNAME_VALUE" ]]; then
-    echo "ERROR: No listener or advertised hostname configuration provided in environment."
-    echo "       Please define KAFKA_LISTENERS / (deprecated) KAFKA_ADVERTISED_HOST_NAME"
-    exit 1
-  fi
-
-  # Maintain existing behaviour
-  # If HOSTNAME_COMMAND is provided, set that to the advertised.host.name value if listeners are not defined.
-  export KAFKA_ADVERTISED_HOST_NAME="$HOSTNAME_VALUE"
-fi
-
 #Issue newline to config file in case there is not one already
 echo "" >>"$KAFKA_HOME/config/server.properties"
 

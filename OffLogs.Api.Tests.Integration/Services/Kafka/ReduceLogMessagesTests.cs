@@ -15,19 +15,18 @@ namespace OffLogs.Api.Tests.Integration.Services.Kafka
         public LogListTests(CustomWebApplicationFactory factory) : base(factory) {}
 
         [Fact]
-        public async Task ShouldReceiveLogsList()
+        public async Task ShouldSendSeveralMessagesToKafka()
         {
             var userModel = await DataSeeder.CreateNewUser();
             var application = userModel.Applications.First();
 
-            await CreateLog(application, LogLevel.Error);
-            await CreateLog(application, LogLevel.Information);
-            
-            var (list, counter) = await LogDao.GetList(application.Id, 1, 30);
-            Assert.Equal(2, counter);
-            
-            Assert.Contains(list, item => item.Level == LogLevel.Error);
-            Assert.Contains(list, item => item.Level == LogLevel.Information);
+            var log = await CreateLog(application, LogLevel.Error);
+            for (int i = 0; i < 10; i++)
+            {
+                await KafkaService.ProduceLogMessageAsync(log);
+            }
+
+            var aaa = 123;
         }
 
         private async Task<LogEntity> CreateLog(ApplicationEntity application, LogLevel level)
