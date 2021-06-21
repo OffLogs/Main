@@ -18,7 +18,10 @@ namespace OffLogs.Business.Extensions
             services.AddScoped<IDataFactoryService, DataFactoryService>();
             services.AddScoped<IJwtAuthService, JwtAuthService>();
             services.AddScoped<IJwtApplicationService, JwtApplicationService>();
-            services.AddScoped<IKafkaService, KafkaService>();
+            
+            // Kafka
+            services.AddScoped<IKafkaProducerService, KafkaProducerProducerService>();
+            services.AddScoped<IKafkaConsumerService, KafkaConsumerService>();
             
             // DAO
             services.AddScoped<ICommonDao, CommonDao>();

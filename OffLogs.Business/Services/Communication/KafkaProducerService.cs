@@ -8,13 +8,13 @@ using OffLogs.Business.Services.Communication.Serializers;
 
 namespace OffLogs.Business.Services.Communication
 {
-    public class KafkaService: IKafkaService
+    public class KafkaProducerProducerService: IKafkaProducerService
     {
         private readonly IConfiguration _configuration;
-        private readonly ILogger<IKafkaService> _logger;
+        private readonly ILogger<IKafkaProducerService> _logger;
         private readonly ProducerConfig _producerConfig;
         private readonly string _producerId;
-        private readonly string _logsTopic;
+        private readonly string _logsTopicName;
         
         private IProducer<Null, object> _producer;
         private IProducer<Null, object> Producer
@@ -36,14 +36,14 @@ namespace OffLogs.Business.Services.Communication
             }
         }
 
-        public KafkaService(IConfiguration configuration, ILogger<IKafkaService> logger)
+        public KafkaProducerProducerService(IConfiguration configuration, ILogger<IKafkaProducerService> logger)
         {
             _configuration = configuration;
             _logger = logger;
 
             var kafkaSection = configuration.GetSection("Kafka");
             _producerId = kafkaSection.GetValue<string>("ProducerId");
-            _logsTopic = kafkaSection.GetValue<string>("Topic:Logs");
+            _logsTopicName = kafkaSection.GetValue<string>("Topic:Logs");
             var kafkaServers = kafkaSection.GetValue<string>("Servers");
             
             _producerConfig = new ProducerConfig
@@ -56,7 +56,7 @@ namespace OffLogs.Business.Services.Communication
             };
         }
 
-        ~KafkaService()
+        ~KafkaProducerProducerService()
         {
             _producer?.Dispose();
             _producer = null;
@@ -64,7 +64,7 @@ namespace OffLogs.Business.Services.Communication
 
         public async Task ProduceLogMessageAsync(LogEntity logEntity)
         {
-            await Producer.ProduceAsync(_logsTopic, new Message<Null, object>
+            await Producer.ProduceAsync(_logsTopicName, new Message<Null, object>
             {
                 Value = logEntity
             });

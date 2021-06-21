@@ -3,7 +3,7 @@ using OffLogs.Business.Db.Entity;
 
 namespace OffLogs.Business.Services.Communication
 {
-    public interface IKafkaService
+    public interface IKafkaProducerService
     {
         Task ProduceLogMessageAsync(LogEntity logEntity);
     }

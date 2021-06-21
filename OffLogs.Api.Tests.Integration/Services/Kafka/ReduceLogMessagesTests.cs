@@ -24,7 +24,7 @@ namespace OffLogs.Api.Tests.Integration.Services.Kafka
             var log = await DataSeeder.MakeLogAsync(application, LogLevel.Error);
             for (int i = 0; i < 10; i++)
             {
-                await KafkaService.ProduceLogMessageAsync(log);
+                await KafkaProducerService.ProduceLogMessageAsync(log);
             }
         }
         
@@ -35,7 +35,8 @@ namespace OffLogs.Api.Tests.Integration.Services.Kafka
             var application = userModel.Applications.First();
 
             var log = await DataSeeder.MakeLogAsync(application, LogLevel.Error);
-            await KafkaService.ProduceLogMessageAsync(log);
+            await KafkaProducerService.ProduceLogMessageAsync(log);
+            await KafkaConsumerService.ProcessLogsAsync();
         }
     }
 }
