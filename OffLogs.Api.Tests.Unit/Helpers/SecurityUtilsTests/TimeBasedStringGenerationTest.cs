@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,28 +13,42 @@ namespace OffLogs.Api.Tests.Unit.Helpers.SecurityUtilsTests
     public class TimeBasedStringGenerationTest
     {
         [Fact]
-        public void ShouldGenerateHash()
+        public void ShouldGenerateToken()
         {
-            var randomString = SecurityUtil.GetTimeBasedRandomString();
-            Assert.NotEmpty(randomString);
-            Assert.Equal(44, randomString.Length);
+            var token = SecurityUtil.GetTimeBasedToken();
+            Assert.True(!string.IsNullOrEmpty(token));
+            Assert.True(token.Length >= 10);
         }
-        
+
         [Fact]
-        public void ShouldGenerateUniqHashes()
+        public void GeneratedTokensShouldBeUniq()
         {
-            var hashes = new List<string>();
-            Parallel.For(0, 10000, index =>
+            var concurrentBag = new ConcurrentBag<string>();
+            var bagAddTasks = new List<Task>();
+            for (int i = 0; i < 1000000; i++)
             {
-                hashes.Add(
-                    SecurityUtil.GetTimeBasedRandomString()   
-                ); 
-            });
-            var count1 = hashes.Distinct().Count();
-            var count2 = hashes.Count();
-            Assert.True(
-                hashes.Distinct().Count() == hashes.Count()  
-            );
+                var numberToAdd = i;
+                bagAddTasks.Add(Task.Run(
+                    () => concurrentBag.Add(SecurityUtil.GetTimeBasedToken())
+                ));
+            }
+
+            // Wait for all tasks to complete
+            Task.WaitAll(bagAddTasks.ToArray());
+
+            Assert.Equal(concurrentBag.Count(), concurrentBag.Distinct().Count());
+        }
+
+        [Fact]
+        public void BigArrayGenerationShouldNotBeLongerThan3Seconds()
+        {
+            var start = DateTime.Now;
+            for (int i = 0; i < 1000000; i++)
+            {
+                SecurityUtil.GetTimeBasedToken();
+            }
+            var end = DateTime.Now;
+            Assert.True(end - start < TimeSpan.FromSeconds(3));
         }
     }
 }

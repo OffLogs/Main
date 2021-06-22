@@ -21,7 +21,7 @@ namespace OffLogs.Business.Db.Entity
             {
                 if (string.IsNullOrEmpty(_token))
                 {
-                    _token = SecurityUtil.GetTimeBasedRandomString();
+                    _token = SecurityUtil.GetTimeBasedToken();
                 }
 
                 return _token;

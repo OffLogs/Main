@@ -1,5 +1,6 @@
 using System;
 using System.Buffers.Text;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -84,15 +85,16 @@ namespace OffLogs.Business.Helpers
             return randomString;
         }
         
-        public static string GetTimeBasedRandomString()
+        public static string GetTimeBasedToken()
         {
-            // We should guarantee that this string will unique
             lock (_TimeBasedRandomizerLock)
             {
-                var tickBytes = BitConverter.GetBytes(DateTime.Now.Ticks);
-                return System.Convert.ToBase64String(
-                    SHA256.HashData(tickBytes)
-                );  
+                var ticks = DateTime.Now.Ticks;
+                var ticksBytes = BitConverter.GetBytes(ticks);
+                var guidBytes = Guid.NewGuid().ToByteArray();
+                return Convert.ToBase64String(
+                    ticksBytes.Concat(guidBytes).ToArray()
+                ); 
             }
         }
     }
