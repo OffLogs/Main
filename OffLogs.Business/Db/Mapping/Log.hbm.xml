@@ -34,7 +34,10 @@
             <key column="log_id"/>
             <one-to-many class="LogTraceEntity"/>
         </bag>
-        
+
+        <property name="Token">
+            <column name="token" length="40" not-null="false" />
+        </property>
         <property name="LevelId">
             <column name="level" length="10" not-null="true" />
         </property>

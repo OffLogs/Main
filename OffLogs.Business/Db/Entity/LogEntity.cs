@@ -5,12 +5,29 @@ using Newtonsoft.Json;
 using OffLogs.Business.Common.Models.Api.Response.Board;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Extensions;
+using OffLogs.Business.Helpers;
 
 namespace OffLogs.Business.Db.Entity
 {
     public class LogEntity
     {
         public virtual long Id { get; set; }
+        
+        private string _token { get; set; }
+
+        public virtual string Token
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_token))
+                {
+                    _token = SecurityUtil.GetTimeBasedRandomString();
+                }
+
+                return _token;
+            }
+            set => _token = value;
+        }
         
         [JsonIgnore]
         public virtual ApplicationEntity Application { get; set; }

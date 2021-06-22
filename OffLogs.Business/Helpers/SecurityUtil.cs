@@ -1,6 +1,8 @@
 using System;
+using System.Buffers.Text;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 
 namespace OffLogs.Business.Helpers
 {
@@ -13,6 +15,8 @@ namespace OffLogs.Business.Helpers
         private static readonly int PASSWORD_SIZE = 12;
         private static readonly int HASH_SIZE = 1023;
         private static readonly int HASH_ITERATIONS = 300;
+        
+        private static readonly object _TimeBasedRandomizerLock = new {};
 
         public static byte[] GenerateSalt(int? size = null)
         {
@@ -78,6 +82,18 @@ namespace OffLogs.Business.Helpers
                 }
             }
             return randomString;
+        }
+        
+        public static string GetTimeBasedRandomString()
+        {
+            // We should guarantee that this string will unique
+            lock (_TimeBasedRandomizerLock)
+            {
+                var tickBytes = BitConverter.GetBytes(DateTime.Now.Ticks);
+                return System.Convert.ToBase64String(
+                    SHA256.HashData(tickBytes)
+                );  
+            }
         }
     }
 }
