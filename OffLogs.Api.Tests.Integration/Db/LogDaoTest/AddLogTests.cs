@@ -39,11 +39,7 @@ namespace OffLogs.Api.Tests.Integration.Db.LogDaoTest
             var userModel = await DataSeeder.CreateNewUser();
             var application = userModel.Applications.First();
 
-            var logs = new List<LogEntity>();
-            Parallel.For(0, 100, async (index) =>
-            {
-                await DataSeeder.CreateLogsAsync(application, LogLevel.Error);
-            });
+            var logs = await DataSeeder.CreateLogsAsync(application.Id, LogLevel.Error, 10);
             Assert.True(
                 logs.DistinctBy(log => log.Token).Count() == logs.Count()  
             );

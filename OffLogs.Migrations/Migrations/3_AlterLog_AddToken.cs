@@ -9,7 +9,7 @@ namespace OffLogs.Migrations.Migrations
         public override void Up()
         {
             Alter.Table("logs")
-                .AddColumn("token").AsString(40).Nullable().Unique();
+                .AddColumn("token").AsString(50).Nullable().Unique();
             base.Up();
         }
     }

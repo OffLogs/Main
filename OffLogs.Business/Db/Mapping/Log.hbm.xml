@@ -36,7 +36,7 @@
         </bag>
 
         <property name="Token">
-            <column name="token" length="40" not-null="false" />
+            <column name="token" length="50" not-null="false" />
         </property>
         <property name="LevelId">
             <column name="level" length="10" not-null="true" />
