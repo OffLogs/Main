@@ -34,17 +34,21 @@ namespace OffLogs.Api.Tests.Integration.Services.Kafka
             var userModel = await DataSeeder.CreateNewUser();
             var application = userModel.Applications.First();
 
-            var log = await DataSeeder.MakeLogAsync(application, LogLevel.Error);
+            var log1 = await DataSeeder.MakeLogAsync(application, LogLevel.Error);
+            var log2 = await DataSeeder.MakeLogAsync(application, LogLevel.Error);
             
             // Push 2 messages
-            await KafkaProducerService.ProduceLogMessageAsync(log);
-            await KafkaProducerService.ProduceLogMessageAsync(log);
+            await KafkaProducerService.ProduceLogMessageAsync(log1);
+            await KafkaProducerService.ProduceLogMessageAsync(log2);
             
             // Receive 2 messages
-            var processedRecords = await KafkaConsumerService.ProcessLogsAsync(2000);
+            var processedRecords = await KafkaConsumerService.ProcessLogsAsync(false);
             Assert.Equal(1, processedRecords);
-            processedRecords = await KafkaConsumerService.ProcessLogsAsync(2000);
+            processedRecords = await KafkaConsumerService.ProcessLogsAsync(false);
             Assert.Equal(1, processedRecords);
+            
+            Assert.True(await LogDao.IsLogExists(log1.Token));
+            Assert.True(await LogDao.IsLogExists(log2.Token));
         }
     }
 }

@@ -13,6 +13,7 @@ namespace OffLogs.Business.Db.Entity
     {
         public virtual long Id { get; set; }
         
+        [JsonIgnore]
         private string _token { get; set; }
 
         public virtual string Token

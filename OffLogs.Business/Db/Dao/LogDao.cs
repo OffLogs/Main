@@ -167,5 +167,13 @@ namespace OffLogs.Business.Db.Dao
                 return true;
             }
         }
+        
+        public async Task<bool> IsLogExists(string token)
+        {
+            using var session = Session;
+            return await session.Query<LogEntity>()
+                .Where(log => log.Token == token)
+                .AnyAsync();
+        }
     }
 }

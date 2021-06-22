@@ -27,7 +27,6 @@ namespace OffLogs.Api.Tests.Unit.Helpers.SecurityUtilsTests
             var bagAddTasks = new List<Task>();
             for (int i = 0; i < 1000000; i++)
             {
-                var numberToAdd = i;
                 bagAddTasks.Add(Task.Run(
                     () => concurrentBag.Add(SecurityUtil.GetTimeBasedToken())
                 ));

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Confluent.Kafka;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using OffLogs.Business.Db.Dao;
 using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Services.Communication.Deserializers;
 using OffLogs.Business.Services.Communication.Serializers;
@@ -12,16 +13,24 @@ namespace OffLogs.Business.Services.Communication
 {
     public class KafkaConsumerService: IKafkaConsumerService
     {
+        private readonly int _defaultWaitTimeout = 5000;
+        
         private readonly IConfiguration _configuration;
         private readonly string _groupName;
         private readonly ILogger<IKafkaProducerService> _logger;
+        private readonly ILogDao _logDao;
         private readonly ConsumerConfig _config;
         private readonly string _logsTopicName;
 
-        public KafkaConsumerService(IConfiguration configuration, ILogger<IKafkaProducerService> logger)
+        public KafkaConsumerService(
+            IConfiguration configuration, 
+            ILogger<IKafkaProducerService> logger,
+            ILogDao logDao
+        )
         {
             _configuration = configuration;
             _logger = logger;
+            _logDao = logDao;
 
             var kafkaSection = configuration.GetSection("Kafka");
             _groupName = kafkaSection.GetValue<string>("ConsumerGroup");
@@ -39,26 +48,58 @@ namespace OffLogs.Business.Services.Communication
             };
         }
 
-        public async Task<long> ProcessLogsAsync(int? millisecondsTimeout = null, CancellationToken cancellationToken = default)
+        public async Task<long> ProcessLogsAsync(bool isInfiniteLoop = true, CancellationToken cancellationToken = default)
         {
             var processedRecords = 0;
             using (var consumer = GetBuilder<LogEntity>().Build())
             {
                 consumer.Subscribe(_logsTopicName);
 
-                while (!cancellationToken.IsCancellationRequested)
+                if (isInfiniteLoop)
                 {
-                    var consumeResult = millisecondsTimeout.HasValue 
-                        ? consumer.Consume(millisecondsTimeout.Value)
-                        : consumer.Consume(cancellationToken);
-
-                    var aaa = 123;
-
-                    consumer.StoreOffset(consumeResult);
-                    processedRecords++;
+                    while (!cancellationToken.IsCancellationRequested)
+                    {
+                        var consumeResult = consumer.Consume(cancellationToken);
+                        if (consumeResult != null)
+                        {
+                            consumer.StoreOffset(consumeResult);
+                            processedRecords++;    
+                        }
+                    }
+                }
+                else
+                {
+                    var consumeResult = consumer.Consume(_defaultWaitTimeout);
+                    if (consumeResult != null)
+                    {
+                        consumer.StoreOffset(consumeResult);
+                        processedRecords++;    
+                    }
                 }
             }
 
+            async Task ConsumeAsync(IConsumer<Null, LogEntity> innerConsumer)
+            {
+                var consumeResult = innerConsumer.Consume(cancellationToken);
+
+                try
+                {
+                    var log = consumeResult.Message.Value;
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e.Message, e);
+                }
+
+                if (consumeResult != null)
+                {
+                    innerConsumer.StoreOffset(consumeResult);
+                    processedRecords++;    
+                }
+
+                await Task.CompletedTask;
+            }
+            
             return await Task.FromResult(processedRecords);
         }
 
