@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 using OffLogs.Business.Db.Entity;
 
-namespace OffLogs.Business.Services.Communication
+namespace OffLogs.Business.Services.Kafka
 {
     public interface IKafkaProducerService
     {
-        Task ProduceLogMessageAsync(LogEntity logEntity);
+        Task ProduceLogMessageAsync(string applicationJwt, LogEntity logEntity);
     }
 }

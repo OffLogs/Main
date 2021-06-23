@@ -1,12 +1,12 @@
-﻿using System.Net;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Confluent.Kafka;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OffLogs.Business.Db.Entity;
-using OffLogs.Business.Services.Communication.Serializers;
+using OffLogs.Business.Services.Kafka.Models;
+using OffLogs.Business.Services.Kafka.Serializers;
 
-namespace OffLogs.Business.Services.Communication
+namespace OffLogs.Business.Services.Kafka
 {
     public class KafkaProducerProducerService: IKafkaProducerService
     {
@@ -16,15 +16,16 @@ namespace OffLogs.Business.Services.Communication
         private readonly string _producerId;
         private readonly string _logsTopicName;
         
-        private IProducer<Null, object> _producer;
-        private IProducer<Null, object> Producer
+        private IProducer<string, object> _producer;
+        private IProducer<string, object> Producer
         {
             get
             {
                 if (_producer == null)
                 {
-                    var builder = new ProducerBuilder<Null, object>(_producerConfig);
-                    builder.SetValueSerializer(new JsonSerializer<object>());
+                    var builder = new ProducerBuilder<string, object>(_producerConfig);
+                    builder.SetValueSerializer(new ValueSerializer<object>());
+                    builder.SetKeySerializer(new ValueSerializer<string>());
                     builder.SetErrorHandler((producer, error) =>
                     {
                         _logger.LogError($"Kafka producer error: Code: {error.Code}, IsBroker: {error.IsBrokerError}, Reason: {error.Reason}");
@@ -62,11 +63,13 @@ namespace OffLogs.Business.Services.Communication
             _producer = null;
         }
 
-        public async Task ProduceLogMessageAsync(LogEntity logEntity)
+        public async Task ProduceLogMessageAsync(string applicationJwt, LogEntity logEntity)
         {
-            await Producer.ProduceAsync(_logsTopicName, new Message<Null, object>
+            var modelToSend = new LogMessageModel(applicationJwt, logEntity);
+            await Producer.ProduceAsync(_logsTopicName, new Message<string, object>
             {
-                Value = logEntity
+                Key = modelToSend.Token,
+                Value = modelToSend
             });
         }
     }

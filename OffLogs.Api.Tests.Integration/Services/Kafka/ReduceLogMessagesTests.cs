@@ -24,7 +24,7 @@ namespace OffLogs.Api.Tests.Integration.Services.Kafka
             var log = await DataSeeder.MakeLogAsync(application, LogLevel.Error);
             for (int i = 0; i < 10; i++)
             {
-                await KafkaProducerService.ProduceLogMessageAsync(log);
+                await KafkaProducerService.ProduceLogMessageAsync(userModel.ApplicationApiToken, log);
             }
         }
         
@@ -38,8 +38,8 @@ namespace OffLogs.Api.Tests.Integration.Services.Kafka
             var log2 = await DataSeeder.MakeLogAsync(application, LogLevel.Error);
             
             // Push 2 messages
-            await KafkaProducerService.ProduceLogMessageAsync(log1);
-            await KafkaProducerService.ProduceLogMessageAsync(log2);
+            await KafkaProducerService.ProduceLogMessageAsync(userModel.ApplicationApiToken, log1);
+            await KafkaProducerService.ProduceLogMessageAsync(userModel.ApplicationApiToken, log2);
             
             // Receive 2 messages
             var processedRecords = await KafkaConsumerService.ProcessLogsAsync(false);
