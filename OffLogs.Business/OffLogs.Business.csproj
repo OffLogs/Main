@@ -43,6 +43,7 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>RG.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Include="Db\Mapping\RequestLog.hbm.xml" />
       <EmbeddedResource Include="Db\Queries\example\log_get_list.sql">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </EmbeddedResource>

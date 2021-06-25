@@ -28,6 +28,7 @@ namespace OffLogs.Business.Extensions
             services.AddScoped<IUserDao, UserDao>();
             services.AddScoped<IApplicationDao, ApplicationDao>();
             services.AddScoped<ILogDao, LogDao>();
+            services.AddScoped<IRequestLogDao, RequestLogDao>();
             return services;
         }
     }
