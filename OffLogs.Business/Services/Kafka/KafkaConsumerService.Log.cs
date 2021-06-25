@@ -27,12 +27,13 @@ namespace OffLogs.Business.Services.Kafka
                         var consumeResult = consumer.Consume(cancellationToken);
                         if (consumeResult != null)
                         {
+                            if (consumeResult.Message.Value != null)
+                            {
+                                await ProcessLogAsync(consumeResult.Message.Value);
+                            }
+                            
                             consumer.StoreOffset(consumeResult);
                             processedRecords++;    
-                        }
-                        if (consumeResult.Message.Value != null)
-                        {
-                            await ProcessLogAsync(consumeResult.Message.Value);
                         }
                     }
                 }
@@ -41,13 +42,12 @@ namespace OffLogs.Business.Services.Kafka
                     var consumeResult = consumer.Consume(_defaultWaitTimeout);
                     if (consumeResult != null)
                     {
+                        if (consumeResult.Message.Value != null)
+                        {
+                            await ProcessLogAsync(consumeResult.Message.Value);
+                        }
                         consumer.StoreOffset(consumeResult);
                         processedRecords++;    
-                    }
-
-                    if (consumeResult.Message.Value != null)
-                    {
-                        await ProcessLogAsync(consumeResult.Message.Value);
                     }
                 }
             }
@@ -56,6 +56,15 @@ namespace OffLogs.Business.Services.Kafka
 
         async Task ProcessLogAsync(LogMessageModel innerConsumer)
         {
+            try
+            {
+                var entity = innerConsumer.GetEntity();
+            }
+            catch (Exception e)
+            {
+                
+                _logger.LogError(e.Message, e);
+            }
             await Task.CompletedTask;
         }
     }

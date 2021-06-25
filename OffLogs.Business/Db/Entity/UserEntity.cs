@@ -1,10 +1,12 @@
 using System;
+using OffLogs.Business.Constants;
 
 namespace OffLogs.Business.Db.Entity
 {
     public class UserEntity
     {
         public virtual long Id { get; set; }
+        public virtual CityCode City { get; set; }
         public virtual string UserName { get; set; }
         public virtual string Email { get; set; }
         public virtual byte[] PasswordHash { get; set; }

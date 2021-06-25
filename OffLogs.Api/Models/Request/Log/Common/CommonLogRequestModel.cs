@@ -27,7 +27,31 @@ namespace OffLogs.Api.Models.Request.Log.Common
         [JsonIgnore]
         public LogLevel LogLevel
         {
-            get => new LogLevel().FromString(Level);
+            get
+            {
+                var level = Level.ToUpper();
+                if (level == "E")
+                {
+                    return LogLevel.Error;
+                }
+                if (level == "W")
+                {
+                    return LogLevel.Warning;
+                }
+                if (level == "F")
+                {
+                    return LogLevel.Fatal;
+                }
+                if (level == "I")
+                {
+                    return LogLevel.Information;
+                }
+                if (level == "D")
+                {
+                    return LogLevel.Debug;
+                }
+                return default;
+            }
         }
     }
 }

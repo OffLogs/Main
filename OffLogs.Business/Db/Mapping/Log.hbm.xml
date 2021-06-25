@@ -38,8 +38,8 @@
         <property name="Token">
             <column name="token" length="50" not-null="false" />
         </property>
-        <property name="LevelId">
-            <column name="level" length="10" not-null="true" />
+        <property name="Level" type="OffLogs.Business.Db.Types.LogLevelConstantType,OffLogs.Business">
+            <column name="level" length="4" not-null="true" />
         </property>
         <property name="IsFavorite">
             <column name="is_favorite" sql-type="boolean" not-null="true" />

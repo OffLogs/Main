@@ -11,8 +11,8 @@ using NHibernate.Criterion;
 using NHibernate.Linq;
 using NHibernate.Multi;
 using NHibernate.Proxy;
+using OffLogs.Business.Constants;
 using OffLogs.Business.Db.Entity;
-using OffLogs.Business.Extensions;
 using LogLevel = OffLogs.Business.Constants.LogLevel;
 
 namespace OffLogs.Business.Db.Dao
@@ -52,7 +52,7 @@ namespace OffLogs.Business.Db.Dao
                     log.Traces = queries.GetResult<LogTraceEntity>("traces").ToList();
                     log.Properties = queries.GetResult<LogPropertyEntity>("properties").ToList();
                 }
-                return log;    
+                return await Task.FromResult(log);    
             }
         }
 

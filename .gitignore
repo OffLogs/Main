@@ -220,3 +220,6 @@ appsettings.Local.json
 
 #Log dirs
 **/logs/*
+.fake
+.ionide
+.vscode

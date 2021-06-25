@@ -18,7 +18,10 @@ namespace OffLogs.Web.Services
 
         private bool _isLoggedIn = false;
 
-        public AuthorizationService(IApiService apiService, ILocalStorageService localStorage)
+        public AuthorizationService(
+            IApiService apiService, 
+            ILocalStorageService localStorage
+        )
         {
             _apiService = apiService;
             _localStorage = localStorage;
@@ -61,7 +64,7 @@ namespace OffLogs.Web.Services
                     var token = await GetJwtAsync();
                     _isLoggedIn = await _apiService.CheckIsLoggedInAsync(token);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     Console.WriteLine(@"CheckIsLoggedIn returned: false");
                 }

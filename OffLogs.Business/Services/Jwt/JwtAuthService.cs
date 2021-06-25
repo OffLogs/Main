@@ -109,7 +109,7 @@ namespace OffLogs.Business.Services.Jwt
                     out SecurityToken validatedToken
                 );
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }

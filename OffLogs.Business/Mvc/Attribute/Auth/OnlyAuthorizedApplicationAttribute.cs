@@ -28,7 +28,10 @@ namespace OffLogs.Business.Mvc.Attribute.Auth
             {
                 context.Result = new ObjectResult(new {
                     Status = HttpResponseStatus.Fail.GetValue()
-                }) { StatusCode = (int)HttpStatusCode.Unauthorized };
+                }) 
+                { 
+                    StatusCode = (int)HttpStatusCode.Unauthorized 
+                };
             }
         }
     }

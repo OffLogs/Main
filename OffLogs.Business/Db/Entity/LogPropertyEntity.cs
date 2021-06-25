@@ -50,7 +50,7 @@ namespace OffLogs.Business.Db.Entity
             {
                 Value = JsonConvert.SerializeObject(value);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Value = "";
             }

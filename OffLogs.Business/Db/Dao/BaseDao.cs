@@ -37,6 +37,7 @@ namespace OffLogs.Business.Db.Dao
                 properties.Add("show_sql", "true");            
                 properties.Add("format_sql", "true");
 #endif
+                
                 _sessionFactory = new Configuration()
                     .Configure(Assembly.GetExecutingAssembly(), "OffLogs.Business.Db.hibernate.cfg.xml")
                     .SetProperties(properties)

@@ -32,14 +32,8 @@ namespace OffLogs.Business.Db.Entity
         
         [JsonIgnore]
         public virtual ApplicationEntity Application { get; set; }
-        public virtual string LevelId { get; set; }
-
-        [JsonIgnore]
-        public virtual LogLevel Level
-        {
-            get => new LogLevel().FromString(LevelId); 
-            set => LevelId = value.GetValue();
-        }
+        public virtual LogLevel Level { get; set; }
+        
         public virtual bool IsFavorite { get; set; }
         public virtual string Message { get; set; }
         public virtual DateTime LogTime { get; set; }

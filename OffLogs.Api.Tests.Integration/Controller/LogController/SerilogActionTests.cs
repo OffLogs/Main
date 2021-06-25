@@ -286,12 +286,12 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
             Assert.NotEmpty(actualLog.Message);
             Assert.NotNull(actualLog.Level);
             Assert.True(actualLog.Properties.Count == 2);
-            actualLog.Properties.ForEach(property =>
+            foreach (var property in actualLog.Properties)
             {
                 var isFirstTrue = "\"{\\\"Id\\\": 50, \\\"Name\\\": \\\"UsingInMemoryRepository\\\"}\"" == property.Value;
                 var isSecondTrue = @"{""id"":50,""name"":""UsingInMemoryRepository""}" == property.Value;
                 Assert.True(isFirstTrue || isSecondTrue);
-            });
+            }
         }
     }
 }

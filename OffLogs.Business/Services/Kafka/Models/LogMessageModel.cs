@@ -24,7 +24,7 @@ namespace OffLogs.Business.Services.Kafka.Models
         {
             ApplicationJwtToken = applicationJwt;
             Token = logEntity.Token;
-            LogLevel = logEntity.LevelId;
+            LogLevel = logEntity.Level.GetValue();
             Message = logEntity.Message;
             LogTime = logEntity.LogTime;
             Traces = logEntity.Traces;
