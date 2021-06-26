@@ -6,7 +6,7 @@ using Xunit;
 namespace OffLogs.Api.Tests.Integration.Api.Main.Db.UserDaoTest
 {
     [Collection("UserDaoTest.CreateUserTests")]
-    public class CreateUserTests: MyIntegrationTest
+    public class CreateUserTests: MyApiIntegrationTest
     {
         public CreateUserTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
         

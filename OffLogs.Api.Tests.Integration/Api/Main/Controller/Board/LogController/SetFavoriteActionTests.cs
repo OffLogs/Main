@@ -8,7 +8,7 @@ using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
 {
-    public class SetFavoriteActionTests: MyIntegrationTest
+    public class SetFavoriteActionTests: MyApiIntegrationTest
     {
         public SetFavoriteActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
         

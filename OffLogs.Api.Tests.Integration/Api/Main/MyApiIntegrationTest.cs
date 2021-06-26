@@ -2,7 +2,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using OffLogs.Api.Tests.Integration.Api.Main;
 using OffLogs.Api.Tests.Integration.Core.Service;
 using OffLogs.Business.Db.Dao;
 using OffLogs.Business.Services.Data;
@@ -10,10 +9,10 @@ using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Kafka;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Core
+namespace OffLogs.Api.Tests.Integration.Api.Main
 {
     [Collection("Default collection")]
-    public class MyIntegrationTest:IClassFixture<ApiCustomWebApplicationFactory>
+    public class MyApiIntegrationTest: IClassFixture<ApiCustomWebApplicationFactory>
     {
         protected readonly ApiCustomWebApplicationFactory _factory;
 
@@ -27,7 +26,7 @@ namespace OffLogs.Api.Tests.Integration.Core
         protected readonly IKafkaProducerService KafkaProducerService;
         protected readonly IKafkaConsumerService KafkaConsumerService;
         
-        public MyIntegrationTest(ApiCustomWebApplicationFactory factory)
+        public MyApiIntegrationTest(ApiCustomWebApplicationFactory factory)
         {
             _factory = factory;
             // jwtService = _factory.Services.GetService(typeof(IJwtService)) as IJwtService;

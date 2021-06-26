@@ -10,7 +10,7 @@ using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationController
 {
-    public class GetListActionTests: MyIntegrationTest
+    public class GetListActionTests: MyApiIntegrationTest
     {
         public GetListActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
         

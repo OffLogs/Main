@@ -9,7 +9,7 @@ using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationController
 {
-    public class UpdateActionTests: MyIntegrationTest
+    public class UpdateActionTests: MyApiIntegrationTest
     {
         private const string Url = "/board/application/update";
         

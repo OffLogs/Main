@@ -2,13 +2,12 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Constants;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.LogController
+namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
 {
-    public class CommonActionTests: MyApiIntegrationTest
+    public class CommonActionTests: MyApiFrontendIntegrationTest
     {
         public CommonActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
 

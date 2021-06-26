@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OffLogs.Api.Tests.Integration.Core.Service;
+using OffLogs.Business.Extensions;
 using OffLogs.Business.Helpers;
 using Serilog;
 
@@ -15,17 +16,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
         {
             builder.ConfigureServices(services =>
             {
-                // var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IViberCommunicationService));
-                // services.Remove(descriptor);
-                // services.AddSingleton<IViberCommunicationService, TestViberCommunicationService>();
-
-                // Remove hosted services
-                
-                var sp = services.BuildServiceProvider();
-                using (var scope = sp.CreateScope())
-                {
-                    // Vizit.Migration.Program.Migrate(configuration);                    
-                }
+                // We can further customize our application setup here.
             });
         }
 
@@ -43,6 +34,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
                         .ConfigureTestServices(services => 
                         {
                             services.AddHttpContextAccessor();
+                            services.InitDbServices();
                             services.AddScoped<IDataSeederService, DataSeederService>();
                             // We can further customize our application setup here.
                         })

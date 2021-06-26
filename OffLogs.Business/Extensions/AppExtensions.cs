@@ -14,6 +14,12 @@ namespace OffLogs.Business.Extensions
         public static IServiceCollection InitAllServices(this IServiceCollection services)
         {
             services.InitBaseServices();
+            services.InitDbServices();
+            return services;
+        }
+        
+        public static IServiceCollection InitDbServices(this IServiceCollection services)
+        {
             // DAO
             services.AddScoped<ICommonDao, CommonDao>();
             services.AddScoped<IUserDao, UserDao>();

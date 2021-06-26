@@ -7,7 +7,7 @@ using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.UserController
 {
-    public class LoginActionTests: MyIntegrationTest
+    public class LoginActionTests: MyApiIntegrationTest
     {
         public LoginActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
         

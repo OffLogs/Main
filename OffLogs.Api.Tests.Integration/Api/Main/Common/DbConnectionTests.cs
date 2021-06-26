@@ -3,7 +3,7 @@ using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main.Common
 {
-    public class DbConnectionTests: MyIntegrationTest
+    public class DbConnectionTests: MyApiIntegrationTest
     {
         public DbConnectionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
         

@@ -10,7 +10,7 @@ using Xunit;
 namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
 {
     [Collection("LogDaoTest.LogListTests")]
-    public class LogListTests: MyIntegrationTest
+    public class LogListTests: MyApiIntegrationTest
     {
         public LogListTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
 

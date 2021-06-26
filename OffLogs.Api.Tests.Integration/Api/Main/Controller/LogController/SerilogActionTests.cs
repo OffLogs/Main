@@ -7,7 +7,7 @@ using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.LogController
 {
-    public class SerilogActionTests: MyIntegrationTest
+    public class SerilogActionTests: MyApiIntegrationTest
     {
         public SerilogActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
         

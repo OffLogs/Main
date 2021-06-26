@@ -6,7 +6,7 @@ using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main.Db.RequestLogDaoTest
 {
-    public class GetByTokenTests: MyIntegrationTest
+    public class GetByTokenTests: MyApiIntegrationTest
     {
         public GetByTokenTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
         
