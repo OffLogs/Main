@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using OffLogs.Api.Tests.Integration.Core;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Api.Site.Controller.LogController
+namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.LogController
 {
     public class SerilogActionTests: MyIntegrationTest
     {
-        public SerilogActionTests(CustomWebApplicationFactory factory) : base(factory) {}
+        public SerilogActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
         
         [Theory]
         [InlineData("/log/add/serilog")]

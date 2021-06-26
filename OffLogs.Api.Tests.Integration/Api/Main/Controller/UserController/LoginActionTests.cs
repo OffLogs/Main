@@ -5,11 +5,11 @@ using OffLogs.Business.Common.Models.Api.Request.User;
 using OffLogs.Business.Test.Extensions;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Api.Site.Controller.UserController
+namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.UserController
 {
     public class LoginActionTests: MyIntegrationTest
     {
-        public LoginActionTests(CustomWebApplicationFactory factory) : base(factory) {}
+        public LoginActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
         
         [Theory]
         [InlineData("/user/login")]

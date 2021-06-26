@@ -1,11 +1,11 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace OffLogs.Api.Tests.Integration
+namespace OffLogs.Api.Tests.Integration.Api.Frontend
 {
-    public class TestStartup: Startup
+    public class ApiFrontendTestStartup: OffLogs.Api.Frontend.Startup
     {
-        public TestStartup(IConfiguration configuration) : base(configuration)
+        public ApiFrontendTestStartup(IConfiguration configuration) : base(configuration)
         {
         }
         

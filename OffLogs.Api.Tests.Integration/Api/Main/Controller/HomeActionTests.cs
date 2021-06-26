@@ -6,11 +6,11 @@ using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Test.Extensions;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Api.Site.Controller
+namespace OffLogs.Api.Tests.Integration.Api.Main.Controller
 {
     public class HomeActionTests: MyIntegrationTest
     {
-        public HomeActionTests(CustomWebApplicationFactory factory) : base(factory) {}
+        public HomeActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
         
         [Theory]
         [InlineData("/ping")]

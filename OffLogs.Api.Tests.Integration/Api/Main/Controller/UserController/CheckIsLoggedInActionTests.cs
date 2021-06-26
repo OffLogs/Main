@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 using OffLogs.Api.Tests.Integration.Core;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Api.Site.Controller.UserController
+namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.UserController
 {
     public class CheckIsLoggedInActionTests: MyIntegrationTest
     {
-        public CheckIsLoggedInActionTests(CustomWebApplicationFactory factory) : base(factory) {}
+        public CheckIsLoggedInActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
         
         [Theory]
         [InlineData("/user/checkIsLoggedIn")]

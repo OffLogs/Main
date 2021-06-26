@@ -21,6 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\OffLogs.Api.Frontend\OffLogs.Api.Frontend.csproj" />
       <ProjectReference Include="..\OffLogs.Api\OffLogs.Api.csproj" />
     </ItemGroup>
 
@@ -41,10 +42,6 @@
       <None Update="xunit.runner.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Api\Api.Frontend" />
     </ItemGroup>
 
 </Project>

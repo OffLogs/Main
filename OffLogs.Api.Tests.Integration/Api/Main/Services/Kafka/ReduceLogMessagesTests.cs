@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Helpers;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Services.Kafka
+namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
 {
     [Collection("LogDaoTest.LogListTests")]
     public class LogListTests: MyIntegrationTest
     {
-        public LogListTests(CustomWebApplicationFactory factory) : base(factory) {}
+        public LogListTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
 
         [Fact]
         public async Task ShouldSendSeveralMessagesToKafka()

@@ -10,11 +10,11 @@ using OffLogs.Business.Constants;
 using OffLogs.Business.Test.Extensions;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Api.Site.Controller.Board.LogController
+namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
 {
     public class GetListActionTests: MyIntegrationTest
     {
-        public GetListActionTests(CustomWebApplicationFactory factory) : base(factory) {}
+        public GetListActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
         
         [Theory]
         [InlineData("/board/log/list")]

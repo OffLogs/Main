@@ -1,19 +1,13 @@
-﻿using System.Data.Common;
-using System.Data.SqlClient;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using OffLogs.Api.Models.Response;
+﻿using System.Threading.Tasks;
 using OffLogs.Api.Tests.Integration.Core;
-using OffLogs.Business.Services.Jwt;
-using OffLogs.Business.Test.Extensions;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Db.UserDaoTest
+namespace OffLogs.Api.Tests.Integration.Api.Main.Db.UserDaoTest
 {
     [Collection("UserDaoTest.GetUserTests")]
     public class GetUserTests: MyIntegrationTest
     {
-        public GetUserTests(CustomWebApplicationFactory factory) : base(factory) {}
+        public GetUserTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
         
         [Theory]
         [InlineData("some-get-user", "user-get@email.com")]

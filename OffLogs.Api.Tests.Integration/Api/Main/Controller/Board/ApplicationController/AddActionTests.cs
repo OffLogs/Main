@@ -7,13 +7,13 @@ using OffLogs.Business.Common.Models.Api.Response.Board;
 using OffLogs.Business.Test.Extensions;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Api.Site.Controller.Board.ApplicationController
+namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationController
 {
     public class AddActionTests: MyIntegrationTest
     {
         private const string Url = "/board/application/add";
         
-        public AddActionTests(CustomWebApplicationFactory factory) : base(factory) {}
+        public AddActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
         
         [Theory]
         [InlineData(Url)]

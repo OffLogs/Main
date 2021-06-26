@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using OffLogs.Api.Tests.Integration.Core;
@@ -8,12 +7,12 @@ using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Extensions;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Db.LogDaoTest
+namespace OffLogs.Api.Tests.Integration.Api.Main.Db.LogDaoTest
 {
     [Collection("LogDaoTest.AddLogTests")]
     public class AddLogTests: MyIntegrationTest
     {
-        public AddLogTests(CustomWebApplicationFactory factory) : base(factory) {}
+        public AddLogTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
         
         [Fact]
         public async Task ShouldAddNewLogsWithUniqToken()

@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Db.Entity;
-using OffLogs.Business.Extensions;
 using OffLogs.Business.Helpers;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Db.RequestLogDaoTest
+namespace OffLogs.Api.Tests.Integration.Api.Main.Db.RequestLogDaoTest
 {
     public class GetByTokenTests: MyIntegrationTest
     {
-        public GetByTokenTests(CustomWebApplicationFactory factory) : base(factory) {}
+        public GetByTokenTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
         
         [Fact]
         public async Task ShouldGetByToken()

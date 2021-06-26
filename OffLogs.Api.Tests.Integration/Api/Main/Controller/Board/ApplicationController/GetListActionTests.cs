@@ -8,11 +8,11 @@ using OffLogs.Business.Common.Models.Api.Response.Board;
 using OffLogs.Business.Test.Extensions;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Api.Site.Controller.Board.ApplicationController
+namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationController
 {
     public class GetListActionTests: MyIntegrationTest
     {
-        public GetListActionTests(CustomWebApplicationFactory factory) : base(factory) {}
+        public GetListActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
         
         [Theory]
         [InlineData("/board/application/list")]

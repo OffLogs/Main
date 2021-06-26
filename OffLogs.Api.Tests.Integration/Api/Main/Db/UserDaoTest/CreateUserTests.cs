@@ -3,12 +3,12 @@ using Npgsql;
 using OffLogs.Api.Tests.Integration.Core;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Db.UserDaoTest
+namespace OffLogs.Api.Tests.Integration.Api.Main.Db.UserDaoTest
 {
     [Collection("UserDaoTest.CreateUserTests")]
     public class CreateUserTests: MyIntegrationTest
     {
-        public CreateUserTests(CustomWebApplicationFactory factory) : base(factory) {}
+        public CreateUserTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
         
         [Theory]
         [InlineData("some-user", "user@email.com")]

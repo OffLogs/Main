@@ -7,12 +7,12 @@ using OffLogs.Business.Constants;
 using OffLogs.Business.Db.Entity;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Db.LogDaoTest
+namespace OffLogs.Api.Tests.Integration.Api.Main.Db.LogDaoTest
 {
     [Collection("LogDaoTest.LogListTests")]
     public class LogListTests: MyIntegrationTest
     {
-        public LogListTests(CustomWebApplicationFactory factory) : base(factory) {}
+        public LogListTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
         
         [Fact]
         public async Task ShouldAddNewErrorLog()

@@ -6,11 +6,11 @@ using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Constants;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Api.Site.Controller.LogController
+namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.LogController
 {
     public class CommonActionTests: MyIntegrationTest
     {
-        public CommonActionTests(CustomWebApplicationFactory factory) : base(factory) {}
+        public CommonActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
 
         [Theory]
         [InlineData("/log/add")]
