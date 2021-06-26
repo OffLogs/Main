@@ -1,26 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
-using NHibernate.Util;
-using OffLogs.Api.Models.Response;
-using OffLogs.Api.Tests.Integration.Core;
+using OffLogs.Api.Tests.Integration.Frontend.Core;
+using OffLogs.Business.Constants;
 using OffLogs.Business.Db.Dao;
-using OffLogs.Business.Services.Jwt;
-using OffLogs.Business.Test.Extensions;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Controller.LogController
+namespace OffLogs.Api.Tests.Integration.Frontend.Controller.LogController
 {
-    public class SerilogActionTests: MyIntegrationTest
+    public class CommonActionTests: MyIntegrationTest
     {
-        public SerilogActionTests(CustomWebApplicationFactory factory) : base(factory) {}
-        
+        public CommonActionTests(CustomWebApplicationFactory factory) : base(factory) {}
+
         [Theory]
-        [InlineData("/log/add/serilog")]
+        [InlineData("/log/add")]
         public async Task ShouldAddWarningLog(string url)
         {
             // Arrange
@@ -31,14 +25,13 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
             // Act
             var response = await PostRequestAsync(url, user.ApplicationApiToken, new
             {
-                events = new List<object>()
+                logs = new List<object>()
                 {
                     new
                     {
                         Timestamp = "2021-03-01T21:50:42.1422383+02:00",
-                        Level = "Warning",
-                        MessageTemplate = "This is Warning message",
-                        RenderedMessage = "This is Warning message",
+                        Level = LogLevel.Warning.GetValue(),
+                        Message = "This is Warning message",
                         Properties = new {
                             SourceContext = "OffLogs.Api.Controller.HomeController",
                             ActionId = "a8564f16-ca80-41c6-9f92-393fd3051dd2",
@@ -65,7 +58,7 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
         }
         
         [Theory]
-        [InlineData("/log/add/serilog")]
+        [InlineData("/log/add")]
         public async Task ShouldAddFatalLog(string url)
         {
             // Arrange
@@ -76,13 +69,12 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
             // Act
             var response = await PostRequestAsync(url, user.ApplicationApiToken, new
             {
-                events = new List<object>()
+                logs = new List<object>()
                 {
                     new {
                         Timestamp = "2021-03-01T21:50:42.1437253+02:00",
-                        Level = "Fatal",
-                        MessageTemplate = "This is Critical message",
-                        RenderedMessage = "This is Critical message",
+                        Level = LogLevel.Fatal.GetValue(),
+                        Message = "This is Critical message",
                         Properties = new {
                             SourceContext = "OffLogs.Api.Controller.HomeController",
                             ActionId = "a8564f16-ca80-41c6-9f92-393fd3051dd2",
@@ -109,7 +101,7 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
         }
         
         [Theory]
-        [InlineData("/log/add/serilog")]
+        [InlineData("/log/add")]
         public async Task ShouldAddInformationLog(string url)
         {
             // Arrange
@@ -120,13 +112,12 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
             // Act
             var response = await PostRequestAsync(url, user.ApplicationApiToken, new
             {
-                events = new List<object>()
+                logs = new List<object>()
                 {
                     new {
                         Timestamp = "2021-03-01T21:50:42.1440609+02:00",
-                        Level = "Information",
-                        MessageTemplate = "This is Information message",
-                        RenderedMessage = "This is Information message",
+                        Level = LogLevel.Information.GetValue(),
+                        Message = "This is Information message",
                         Properties = new {
                             SourceContext = "OffLogs.Api.Controller.HomeController",
                             ActionId = "a8564f16-ca80-41c6-9f92-393fd3051dd2",
@@ -141,9 +132,8 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
                     },
                     new {
                         Timestamp = "2021-03-01T21:50:42.1440609+02:00",
-                        Level = "Information",
-                        MessageTemplate = "This is Information message",
-                        RenderedMessage = "This is Information message",
+                        Level = LogLevel.Information.GetValue(),
+                        Message = "This is Information message",
                         Properties = new {
                             SourceContext = "OffLogs.Api.Controller.HomeController",
                             ActionId = "a8564f16-ca80-41c6-9f92-393fd3051dd2",
@@ -170,7 +160,7 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
         }
         
         [Theory]
-        [InlineData("/log/add/serilog")]
+        [InlineData("/log/add")]
         public async Task ShouldAddErrorLog(string url)
         {
             // Arrange
@@ -181,14 +171,22 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
             // Act
             var response = await PostRequestAsync(url, user.ApplicationApiToken, new
             {
-                events = new List<object>()
+                logs = new List<object>()
                 {
                     new  {
                         Timestamp = "2021-03-01T21:50:42.1443263+02:00",
-                        Level = "Error",
-                        MessageTemplate = "The method or operation is not implemented.",
-                        RenderedMessage = "The method or operation is not implemented.",
-                        Exception = "System.NotImplementedException: The method or operation is not implemented.\n at OffLogs.Api.Controller.HomeController.Func41() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 58\n   at OffLogs.Api.Controller.HomeController.Func4() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 53\n   at OffLogs.Api.Controller.HomeController.Func3() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 48\n at OffLogs.Api.Controller.HomeController.Func2() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 43\n   at OffLogs.Api.Controller.HomeController.Func1() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 38\n at OffLogs.Api.Controller.HomeController.Ping() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 22",
+                        Level = LogLevel.Error.GetValue(),
+                        Message = "The method or operation is not implemented.",
+                        Traces = new List<string>()
+                        {
+                            "System.NotImplementedException: The method or operation is not implemented.", 
+                            " at OffLogs.Api.Controller.HomeController.Func41() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 58", 
+                            "   at OffLogs.Api.Controller.HomeController.Func4() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 53", 
+                            "   at OffLogs.Api.Controller.HomeController.Func3() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 48", 
+                            " at OffLogs.Api.Controller.HomeController.Func2() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 43", 
+                            "   at OffLogs.Api.Controller.HomeController.Func1() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 38", 
+                            " at OffLogs.Api.Controller.HomeController.Ping() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 22"
+                        },
                         Properties = new {
                             SourceContext = "OffLogs.Api.Controller.HomeController",
                             ActionId = "a8564f16-ca80-41c6-9f92-393fd3051dd2",
@@ -215,22 +213,20 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
         }
         
         [Theory]
-        [InlineData("/log/add/serilog")]
+        [InlineData("/log/add")]
         public async Task ShouldNotContainLotOfItems(string url)
         {
             // Arrange
             var user = await DataSeeder.CreateNewUser();
 
             // Act
-            var events = new List<object>();
-            for (int i = 0; i < 102; i++)
+            var logs = new List<object>();
+            for (int i = 0; i < 104; i++)
             {
-                events.Add(new
-                {
-                    Timestamp = "2021-03-01T21:50:42.1422383+02:00",
-                    Level = "Warning",
-                    MessageTemplate = "This is Warning message",
-                    RenderedMessage = "This is Warning message",
+                logs.Add(new {
+                    Timestamp = "2021-03-01T21:50:42.1440609+02:00",
+                    Level = LogLevel.Information.GetValue(),
+                    Message = "This is Information message",
                     Properties = new {
                         SourceContext = "OffLogs.Api.Controller.HomeController",
                         ActionId = "a8564f16-ca80-41c6-9f92-393fd3051dd2",
@@ -244,54 +240,9 @@ namespace OffLogs.Api.Tests.Integration.Controller.LogController
                     }
                 });
             }
-            var response = await PostRequestAsync(url, user.ApplicationApiToken, new { events });
+            var response = await PostRequestAsync(url, user.ApplicationApiToken, new { logs });
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        }
-        
-        [Theory]
-        [InlineData("/log/add/serilog")]
-        public async Task ShouldAddLogsIfPropertiesIsObjects(string url)
-        {
-            // Arrange
-            var property1 = @"{""Id"": 50, ""Name"": ""UsingInMemoryRepository""}";
-            var property2 = new { Id = 50, Name = "UsingInMemoryRepository" };
-            var user = await DataSeeder.CreateNewUser();
-
-            var (_, logsCounter) = await LogDao.GetList(user.Applications.First().Id, 1);
-            Assert.Equal(0, logsCounter);
-            // Act
-            var response = await PostRequestAsync(url, user.ApplicationApiToken, new
-            {
-                events = new List<object>()
-                {
-                    new  {
-                        Timestamp = "2021-03-01T21:50:42.1443263+02:00",
-                        Level = "Error",
-                        MessageTemplate = "The method or operation is not implemented.",
-                        RenderedMessage = "The method or operation is not implemented.",
-                        Exception = "System.NotImplementedException: The method or operation is not implemented.\n at OffLogs.Api.Controller.HomeController.Func41() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 58\n   at OffLogs.Api.Controller.HomeController.Func4() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 53\n   at OffLogs.Api.Controller.HomeController.Func3() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 48\n at OffLogs.Api.Controller.HomeController.Func2() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 43\n   at OffLogs.Api.Controller.HomeController.Func1() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 38\n at OffLogs.Api.Controller.HomeController.Ping() in /home/lampego/work/net/OffLogs/OffLogs.Api/Controller/HomeController.cs:line 22",
-                        Properties = new {
-                            SourceContext = property1,
-                            EventId = property2
-                        }
-                    },
-                }
-            });
-            // Assert
-            response.EnsureSuccessStatusCode();
-            var (actualLogs, actualLogsCounter) = await LogDao.GetList(user.Applications.First().Id, 1);
-            Assert.Equal(1, actualLogsCounter);
-            var actualLog = await LogDao.GetLogAsync(actualLogs.First().Id);
-            Assert.NotEmpty(actualLog.Message);
-            Assert.NotNull(actualLog.Level);
-            Assert.True(actualLog.Properties.Count == 2);
-            foreach (var property in actualLog.Properties)
-            {
-                var isFirstTrue = "\"{\\\"Id\\\": 50, \\\"Name\\\": \\\"UsingInMemoryRepository\\\"}\"" == property.Value;
-                var isSecondTrue = @"{""id"":50,""name"":""UsingInMemoryRepository""}" == property.Value;
-                Assert.True(isFirstTrue || isSecondTrue);
-            }
         }
     }
 }

@@ -1,7 +1,6 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using OffLogs.Api.Models.Response;
 using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Models.Api.Request.Board;
@@ -11,7 +10,7 @@ using OffLogs.Business.Constants;
 using OffLogs.Business.Test.Extensions;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Controller.Board.LogController
+namespace OffLogs.Api.Tests.Integration.Api.Site.Controller.Board.LogController
 {
     public class GetListActionTests: MyIntegrationTest
     {

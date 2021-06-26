@@ -6,7 +6,7 @@ using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Test.Extensions;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Controller
+namespace OffLogs.Api.Tests.Integration.Api.Site.Controller
 {
     public class HomeActionTests: MyIntegrationTest
     {

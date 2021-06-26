@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
-using OffLogs.Api.Models.Response;
 using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Db.Dao;
-using OffLogs.Business.Services.Jwt;
-using OffLogs.Business.Test.Extensions;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Controller.LogController
+namespace OffLogs.Api.Tests.Integration.Api.Site.Controller.LogController
 {
     public class CommonActionTests: MyIntegrationTest
     {

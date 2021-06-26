@@ -1,19 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using OffLogs.Api.Models.Request;
-using OffLogs.Api.Models.Response;
 using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Common.Models.Api.Request;
 using OffLogs.Business.Common.Models.Api.Request.Board;
 using OffLogs.Business.Common.Models.Api.Response.Board;
-using OffLogs.Business.Constants;
 using OffLogs.Business.Test.Extensions;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Controller.Board.ApplicationController
+namespace OffLogs.Api.Tests.Integration.Api.Site.Controller.Board.ApplicationController
 {
     public class AddActionTests: MyIntegrationTest
     {

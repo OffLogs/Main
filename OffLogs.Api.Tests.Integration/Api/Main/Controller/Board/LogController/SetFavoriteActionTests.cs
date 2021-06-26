@@ -6,7 +6,7 @@ using OffLogs.Business.Common.Models.Api.Request.Board;
 using OffLogs.Business.Constants;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Controller.Board.LogController
+namespace OffLogs.Api.Tests.Integration.Api.Site.Controller.Board.LogController
 {
     public class SetFavoriteActionTests: MyIntegrationTest
     {
