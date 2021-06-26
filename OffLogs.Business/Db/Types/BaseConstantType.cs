@@ -11,20 +11,30 @@ namespace OffLogs.Business.Db.Types
 {
     public abstract class BaseConstantType<T>: IUserType
     {
-        new public bool Equals(object x, object y)
+        public object DeepCopy(object value) => value;
+
+        public object Replace(object original, object target, object owner) => original;
+
+        public object Assemble(object cached, object owner) => cached;
+
+        public object Disassemble(object value) => value;
+
+        public SqlType[] SqlTypes
         {
-            return object.Equals(x, y);
+            get => new[] { NHibernateUtil.String.SqlType }
         }
 
-        public int GetHashCode(object x)
-        {
-            return x.GetHashCode();
-        }
+        public Type ReturnedType => typeof(AConstant<T>);
+
+        public bool IsMutable => false;
+
+        new public bool Equals(object x, object y) => object.Equals(x, y);
+
+        public int GetHashCode(object x) => x.GetHashCode();
 
         public object NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object owner)
         {
-            object r = rs[names[0]];
-            var value = (string) r;
+            var value = (string) rs[names[0]];
 
             if (string.IsNullOrEmpty(value))
                 throw new Exception("Invalid value from DB");
@@ -38,47 +48,6 @@ namespace OffLogs.Business.Db.Types
             parameter.Value = (value as AConstant<T>)?.GetValue();
         }
 
-        public object DeepCopy(object value)
-        {
-            return value;
-        }
-
-        public object Replace(object original, object target, object owner)
-        {
-            return original;
-        }
-
-        public object Assemble(object cached, object owner)
-        {
-            return cached;
-        }
-
-        public object Disassemble(object value)
-        {
-            return value;
-        }
-
-        public SqlType[] SqlTypes
-        {
-            get
-            {
-                return new SqlType[]
-                {
-                    SqlTypeFactory.GetString(10)
-                };
-            }
-        }
-
-        public Type ReturnedType
-        {
-            get { return typeof(CityCode); }
-        }
-
-        public bool IsMutable
-        {
-            get { return false; }
-        }
-        
-        public abstract T FromString(string Value);
+        public abstract T FromString(string value);
     }
 }

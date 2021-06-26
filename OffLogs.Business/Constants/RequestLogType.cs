@@ -5,8 +5,8 @@ namespace OffLogs.Business.Constants
 {
     public class RequestLogType : AConstant<RequestLogType>
     {
-        public static readonly RequestLogType Log = new RequestLogType("L", "Log");
-        public static readonly RequestLogType Request = new RequestLogType("R", "Request");
+        public static readonly RequestLogType Log = new("L", "Log");
+        public static readonly RequestLogType Request = new("R", "Request");
         
         public RequestLogType() { }
         
