@@ -9,6 +9,7 @@ namespace OffLogs.Business.Services.Kafka.Models
     {
         public string Token { get; set; }
         public string ApplicationJwtToken { get; set; }
+        public string ClientIp { get; set; }
         
         public string LogLevel { get; set; }
         
@@ -19,6 +20,8 @@ namespace OffLogs.Business.Services.Kafka.Models
         public ICollection<LogTraceEntity> Traces { get; set; } = new List<LogTraceEntity>();
         
         public ICollection<LogPropertyEntity> Properties { get; set; } = new List<LogPropertyEntity>();
+
+        public LogMessageModel() {}
 
         public LogMessageModel(string applicationJwt, LogEntity logEntity)
         {

@@ -13,7 +13,7 @@ namespace OffLogs.Business.Services.Kafka.Serializers
             {
                 if (context.Component == MessageComponentType.Key)
                 {
-                    if (data.GetType().IsPrimitive)
+                    if (data is string or int or long or decimal or float)
                     {
                         var stringKey = $"{data}";
                         if (!string.IsNullOrEmpty(stringKey))

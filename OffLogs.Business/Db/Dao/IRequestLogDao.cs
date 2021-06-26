@@ -13,5 +13,10 @@ namespace OffLogs.Business.Db.Dao
             string clientIp,  
             string data
         );
+        Task<RequestLogEntity> AddAsync(
+            RequestLogType type,
+            string clientIp,  
+            object data
+        );
     }
 }

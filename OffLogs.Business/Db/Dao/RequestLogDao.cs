@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Linq;
@@ -21,6 +22,11 @@ namespace OffLogs.Business.Db.Dao
     {
         public RequestLogDao(IConfiguration configuration, ILogger<CommonDao> logger) : base(configuration, logger)
         {
+        }
+
+        public async Task<RequestLogEntity> AddAsync(RequestLogType type, string clientIp, object data)
+        {
+            return await AddAsync(type, clientIp, JsonConvert.SerializeObject(data));
         }
 
         public async Task<RequestLogEntity> AddAsync(RequestLogType type, string clientIp, string data)

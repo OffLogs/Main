@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OffLogs.Business.Db.Dao;
 using OffLogs.Business.Db.Entity;
+using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Kafka.Deserializers;
 using OffLogs.Business.Services.Kafka.Models;
 
@@ -13,24 +14,33 @@ namespace OffLogs.Business.Services.Kafka
 {
     public partial class KafkaConsumerService: IKafkaConsumerService
     {
-        private readonly int _defaultWaitTimeout = 5000;
+        private readonly TimeSpan _defaultWaitTimeout = TimeSpan.FromSeconds(5);
         
         private readonly IConfiguration _configuration;
         private readonly string _groupName;
         private readonly ILogger<IKafkaProducerService> _logger;
         private readonly ILogDao _logDao;
+        private readonly IRequestLogDao _requestLogDao;
+        private readonly IApplicationDao _applicationDao;
+        private readonly IJwtApplicationService _jwtApplicationService;
         private readonly ConsumerConfig _config;
         private readonly string _logsTopicName;
 
         public KafkaConsumerService(
             IConfiguration configuration, 
             ILogger<IKafkaProducerService> logger,
-            ILogDao logDao
+            ILogDao logDao,
+            IRequestLogDao requestLogDao,
+            IApplicationDao applicationDao,
+            IJwtApplicationService jwtApplicationService
         )
         {
             _configuration = configuration;
             _logger = logger;
             _logDao = logDao;
+            _requestLogDao = requestLogDao;
+            _applicationDao = applicationDao;
+            _jwtApplicationService = jwtApplicationService;
 
             var kafkaSection = configuration.GetSection("Kafka");
             _groupName = kafkaSection.GetValue<string>("ConsumerGroup");
@@ -42,9 +52,9 @@ namespace OffLogs.Business.Services.Kafka
                 BootstrapServers = kafkaServers,
                 GroupId = _groupName,
                 AutoOffsetReset = AutoOffsetReset.Earliest,
-                EnableAutoCommit = true, // (the default)
+                EnableAutoCommit = false, // (the default)
                 EnableAutoOffsetStore = false,
-                AutoCommitIntervalMs = 5000
+                AllowAutoCreateTopics = false,
             };
         }
 

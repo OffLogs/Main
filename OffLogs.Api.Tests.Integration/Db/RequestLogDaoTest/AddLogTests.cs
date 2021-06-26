@@ -22,9 +22,23 @@ namespace OffLogs.Api.Tests.Integration.Db.RequestLogDaoTest
         }
         
         [Fact]
+        public async Task ShouldAddNewRequestLogWithLogTypeAndObjectData()
+        {
+            var log = await RequestLogDao.AddAsync(RequestLogType.Log, "127.0.0.1", new { someData = 1123 });
+            Assert.True(log.Id > 0);
+        }
+        
+        [Fact]
         public async Task ShouldAddNewRequestLogWithRequestType()
         {
             var log = await RequestLogDao.AddAsync(RequestLogType.Request, "127.0.0.1", "{some data}");
+            Assert.True(log.Id > 0);
+        }
+        
+        [Fact]
+        public async Task ShouldAddNewRequestLogWithRequestTypeAndObjectData()
+        {
+            var log = await RequestLogDao.AddAsync(RequestLogType.Request, "127.0.0.1", new { someData = 321 });
             Assert.True(log.Id > 0);
         }
     }

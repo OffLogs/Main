@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using OffLogs.Api.Tests.Integration.Core;
@@ -35,20 +36,13 @@ namespace OffLogs.Api.Tests.Integration.Services.Kafka
             var application = userModel.Applications.First();
 
             var log1 = await DataSeeder.MakeLogAsync(application, LogLevel.Error);
-            var log2 = await DataSeeder.MakeLogAsync(application, LogLevel.Error);
             
             // Push 2 messages
             await KafkaProducerService.ProduceLogMessageAsync(userModel.ApplicationApiToken, log1);
-            await KafkaProducerService.ProduceLogMessageAsync(userModel.ApplicationApiToken, log2);
             
             // Receive 2 messages
             var processedRecords = await KafkaConsumerService.ProcessLogsAsync(false);
-            Assert.Equal(1, processedRecords);
-            processedRecords = await KafkaConsumerService.ProcessLogsAsync(false);
-            Assert.Equal(1, processedRecords);
-            
             Assert.True(await LogDao.IsLogExists(log1.Token));
-            Assert.True(await LogDao.IsLogExists(log2.Token));
         }
     }
 }
