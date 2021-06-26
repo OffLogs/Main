@@ -29,6 +29,33 @@ namespace OffLogs.Business.Db.Dao
         {
         }
 
+        public async Task<LogEntity> GetLogAsync(string token)
+        {
+            using (var session = Session)
+            {
+                var log = await session.Query<LogEntity>()
+                    .Fetch(record => record.Application)
+                    .Where(e => e.Token == token)
+                    .FirstOrDefaultAsync();
+                if (log != null)
+                {
+                    var tracesQuery = session.Query<LogTraceEntity>()
+                        .Where(record => record.Log.Id == log.Id);
+                    var propertiesQuery = session.Query<LogPropertyEntity>()
+                        .Where(record => record.Log.Id == log.Id);
+
+                    var queries = session.CreateQueryBatch()
+                        .Add("traces", tracesQuery)
+                        .Add("properties", propertiesQuery);
+
+                    log.Traces = queries.GetResult<LogTraceEntity>("traces").ToList();
+                    log.Properties = queries.GetResult<LogPropertyEntity>("properties").ToList();
+                }
+                
+                return await Task.FromResult(log);    
+            }
+        }
+        
         public async Task<LogEntity> GetLogAsync(long logId)
         {
             using (var session = Session)

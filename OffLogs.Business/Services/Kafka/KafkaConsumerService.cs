@@ -18,6 +18,7 @@ namespace OffLogs.Business.Services.Kafka
         
         private readonly IConfiguration _configuration;
         private readonly string _groupName;
+        private readonly string _clientId;
         private readonly ILogger<IKafkaProducerService> _logger;
         private readonly ILogDao _logDao;
         private readonly IRequestLogDao _requestLogDao;
@@ -44,6 +45,7 @@ namespace OffLogs.Business.Services.Kafka
 
             var kafkaSection = configuration.GetSection("Kafka");
             _groupName = kafkaSection.GetValue<string>("ConsumerGroup");
+            _clientId = kafkaSection.GetValue<string>("ConsumerClientId");
             _logsTopicName = kafkaSection.GetValue<string>("Topic:Logs");
             var kafkaServers = kafkaSection.GetValue<string>("Servers");
             
@@ -51,6 +53,7 @@ namespace OffLogs.Business.Services.Kafka
             {
                 BootstrapServers = kafkaServers,
                 GroupId = _groupName,
+                ClientId = _clientId,
                 AutoOffsetReset = AutoOffsetReset.Earliest,
                 EnableAutoCommit = false, // (the default)
                 EnableAutoOffsetStore = false,

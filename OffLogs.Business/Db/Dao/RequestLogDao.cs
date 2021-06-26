@@ -24,12 +24,22 @@ namespace OffLogs.Business.Db.Dao
         {
         }
 
-        public async Task<RequestLogEntity> AddAsync(RequestLogType type, string clientIp, object data)
+        public async Task<RequestLogEntity> AddAsync(RequestLogType type, string clientIp, object data, string token = null)
         {
-            return await AddAsync(type, clientIp, JsonConvert.SerializeObject(data));
+            return await AddAsync(type, clientIp, JsonConvert.SerializeObject(data), token);
         }
 
-        public async Task<RequestLogEntity> AddAsync(RequestLogType type, string clientIp, string data)
+        public async Task<RequestLogEntity> GetByTokenAsync(string token)
+        {
+            using (var session = Session)
+            {
+                return await session.Query<RequestLogEntity>()
+                    .Where(e => e.Token == token)
+                    .FirstOrDefaultAsync();
+            }
+        }
+
+        public async Task<RequestLogEntity> AddAsync(RequestLogType type, string clientIp, string data, string token = null)
         {
             using (var session = Session)
             using(var transaction = session.BeginTransaction())
@@ -39,9 +49,10 @@ namespace OffLogs.Business.Db.Dao
                 {
                     Type = type,
                     ClientIp = clientIp,
-                    Data = data
+                    Data = data,
+                    Token = token,
+                    CreateTime = DateTime.Now
                 };
-                
                 log.Id = (long)await session.SaveAsync(log);
                 await transaction.CommitAsync();
                 return log;

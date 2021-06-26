@@ -9,6 +9,7 @@ namespace OffLogs.Business.Db.Dao
     public interface ILogDao: ICommonDao
     {
         Task<LogEntity> GetLogAsync(long logId);
+        Task<LogEntity> GetLogAsync(string token);
         Task<LogEntity> AddAsync(
             ApplicationEntity application,  
             string message,

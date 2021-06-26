@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Confluent.Kafka;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Db.Dao;
 using OffLogs.Business.Db.Entity;
-using OffLogs.Business.Services.Kafka.Deserializers;
 using OffLogs.Business.Services.Kafka.Models;
 
 namespace OffLogs.Business.Services.Kafka
@@ -56,7 +52,7 @@ namespace OffLogs.Business.Services.Kafka
                     catch (OperationCanceledException e)
                     {
                         consumer.Close();
-                        // Cancelation token was canceled
+                        // Cancellation token was canceled
                         break;
                     }
                     catch (Exception e)
@@ -108,7 +104,8 @@ namespace OffLogs.Business.Services.Kafka
             await _requestLogDao.AddAsync(
                 RequestLogType.Log,
                 messageModel.ClientIp,
-                messageModel
+                messageModel,
+                messageModel.ApplicationJwtToken
             );
             _logger.LogError(logMessage);
         }

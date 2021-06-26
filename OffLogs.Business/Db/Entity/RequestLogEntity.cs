@@ -15,6 +15,8 @@ namespace OffLogs.Business.Db.Entity
 
         public virtual RequestLogType Type { get; set; }
         
+        public virtual string Token { get; set; }
+        
         public virtual string ClientIp { get; set; }
         
         public virtual string Data { get; set; }

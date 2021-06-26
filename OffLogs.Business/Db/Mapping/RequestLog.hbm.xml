@@ -13,7 +13,10 @@
             <column name="type" length="4" not-null="true" />
         </property>
         <property name="ClientIp">
-            <column name="client_ip" length="50" not-null="true" />
+            <column name="client_ip" length="200" not-null="false" />
+        </property>
+        <property name="Token">
+            <column name="token" length="512" not-null="false" />
         </property>
         <property name="Data">
             <column name="data" not-null="true" />
