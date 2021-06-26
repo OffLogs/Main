@@ -21,7 +21,7 @@ namespace OffLogs.Business.Db.Types
 
         public SqlType[] SqlTypes
         {
-            get => new[] { NHibernateUtil.String.SqlType }
+            get => new[] {NHibernateUtil.String.SqlType};
         }
 
         public Type ReturnedType => typeof(AConstant<T>);
