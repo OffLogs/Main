@@ -11,7 +11,19 @@ namespace OffLogs.Business.Extensions
 {
     public static class AppExtensions
     {
-        public static IServiceCollection InitCommonServices(this IServiceCollection services)
+        public static IServiceCollection InitAllServices(this IServiceCollection services)
+        {
+            services.InitBaseServices();
+            // DAO
+            services.AddScoped<ICommonDao, CommonDao>();
+            services.AddScoped<IUserDao, UserDao>();
+            services.AddScoped<IApplicationDao, ApplicationDao>();
+            services.AddScoped<ILogDao, LogDao>();
+            services.AddScoped<IRequestLogDao, RequestLogDao>();
+            return services;
+        }
+        
+        public static IServiceCollection InitBaseServices(this IServiceCollection services)
         {
             // System
             services.AddHttpContextAccessor();
@@ -22,13 +34,6 @@ namespace OffLogs.Business.Extensions
             // Kafka
             services.AddScoped<IKafkaProducerService, KafkaProducerProducerService>();
             services.AddScoped<IKafkaConsumerService, KafkaConsumerService>();
-            
-            // DAO
-            services.AddScoped<ICommonDao, CommonDao>();
-            services.AddScoped<IUserDao, UserDao>();
-            services.AddScoped<IApplicationDao, ApplicationDao>();
-            services.AddScoped<ILogDao, LogDao>();
-            services.AddScoped<IRequestLogDao, RequestLogDao>();
             return services;
         }
     }

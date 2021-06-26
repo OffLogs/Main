@@ -1,43 +1,41 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using OffLogs.Api.Middleware;
 using OffLogs.Business.Extensions;
 using Serilog;
 
-namespace OffLogs.Api
+namespace OffLogs.Api.Frontend
 {
     public class Startup
     {
-        private readonly bool _isRequestResponseLoggingEnabled;
-        
-        public IConfiguration Configuration { get; }
-        
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            _isRequestResponseLoggingEnabled = configuration.GetValue("App:EnableRequestResponseLogging", false);
         }
-        
+
+        public IConfiguration Configuration { get; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public virtual void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
-            EnableSwaggerIntegration(services);
-            services.InitAllServices();
+            services.InitBaseServices();
             services.AddCors();
+            services.AddControllers();
             services.AddControllers()
                 .ConfigureApiBehaviorOptions(options =>
                 {
@@ -100,10 +98,14 @@ namespace OffLogs.Api
                         ClockSkew = System.TimeSpan.FromMinutes(30000)
                     };
                 });
+            // services.AddSwaggerGen(c =>
+            // {
+            //     c.SwaggerDoc("v1", new OpenApiInfo {Title = "OffLogs.Api.Frontend", Version = "v1"});
+            // });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -111,14 +113,7 @@ namespace OffLogs.Api
                 app.UseSerilogRequestLogging();
             }
 
-            if (_isRequestResponseLoggingEnabled)
-            {
-                app.UseMiddleware<RequestResponseLoggerMiddleware>();
-            }
-
             app.UseAuthentication();
-            app.UseSwagger();
-            app.UseSwaggerUI();
             app.UseRouting();
             app.UseCors(x => x
                 .AllowAnyMethod()
@@ -128,35 +123,6 @@ namespace OffLogs.Api
             );
             app.UseAuthorization();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-        }
-        
-        private void EnableSwaggerIntegration(IServiceCollection services)
-        {
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Version = "v1",
-                    Title = "OffLogs API",
-                });
-                c.TagActionsBy(api =>
-                {
-                    if (api.GroupName != null)
-                    {
-                        return new[] { api.GroupName };
-                    }
-
-                    var controllerActionDescriptor = api.ActionDescriptor as ControllerActionDescriptor;
-                    if (controllerActionDescriptor != null)
-                    {
-                        return new[] { controllerActionDescriptor.ControllerName };
-                    }
-                    throw new InvalidOperationException("Unable to determine tag for endpoint.");
-                });
-                c.DocInclusionPredicate((name, api) => true);
-                c.CustomSchemaIds(x => x.FullName);
-            });
-            services.AddSwaggerGenNewtonsoftSupport(); // explicit opt-in - needs to be placed after AddSwaggerGen()
         }
     }
 }
