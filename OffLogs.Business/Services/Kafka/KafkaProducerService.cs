@@ -63,9 +63,12 @@ namespace OffLogs.Business.Services.Kafka
             _producer = null;
         }
 
-        public async Task ProduceLogMessageAsync(string applicationJwt, LogEntity logEntity)
+        public async Task ProduceLogMessageAsync(string applicationJwt, LogEntity logEntity, string clientIp = null)
         {
-            var modelToSend = new LogMessageModel(applicationJwt, logEntity);
+            var modelToSend = new LogMessageModel(applicationJwt, logEntity)
+            {
+                ClientIp = clientIp
+            };
             await Producer.ProduceAsync(_logsTopicName, new Message<string, object>
             {
                 Key = modelToSend.Token,

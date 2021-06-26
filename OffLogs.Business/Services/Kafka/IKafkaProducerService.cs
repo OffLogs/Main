@@ -5,6 +5,6 @@ namespace OffLogs.Business.Services.Kafka
 {
     public interface IKafkaProducerService
     {
-        Task ProduceLogMessageAsync(string applicationJwt, LogEntity logEntity);
+        Task ProduceLogMessageAsync(string applicationJwt, LogEntity logEntity, string clientIp = null);
     }
 }
