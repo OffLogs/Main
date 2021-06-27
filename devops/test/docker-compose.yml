@@ -18,7 +18,6 @@ services:
   database:
     container_name: offlogs-local-postgres
     image: postgres:13.2
-    restart: always
     environment:
       POSTGRES_PASSWORD: "P@ssW0rd!"
   zookeeper:
@@ -37,7 +36,6 @@ services:
       dockerfile: kafka/Dockerfile
       args:
         BUILD_COMMAND: build
-    restart: always
     depends_on:
       - zookeeper
     environment:
