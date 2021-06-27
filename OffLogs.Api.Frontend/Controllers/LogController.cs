@@ -9,6 +9,7 @@ using OffLogs.Business.Mvc.Controller;
 using OffLogs.Business.Services.Kafka;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
+using OffLogs.Api.Frontend.Models.Request.Log.Serilog;
 using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Kafka.Models;
@@ -72,6 +73,53 @@ namespace OffLogs.Api.Frontend.Controllers
                         }
                     }
                     await _kafkaProducerService.ProduceLogMessageAsync(token, logEntity, clientIp);
+                }
+                return JsonSuccess();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, e.Message);
+                return JsonError();
+            }
+        }
+        
+        [OnlyAuthorizedApplication]
+        [HttpPost("add/serilog")]
+        public async Task<IActionResult> LogSerilogAction([FromBody]AddSerilogLogsRequestModel model)
+        {
+            if (!model.Events.Any())
+            {
+                return JsonSuccess();
+            }
+            try
+            {
+                var token = _jwtApplicationService.GetToken();
+                var clientIp = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
+                foreach (var log in model.Events)
+                {
+                    var logEntity = new LogEntity()
+                    {
+                        Message = log.RenderedMessage,
+                        Level = log.LogLevel.ToLogLevel(),
+                        LogTime = log.Timestamp
+                    };
+                    if (log.Properties != null)
+                    {
+                        foreach (var property in log.Properties)
+                        {
+                            logEntity.AddProperty(new LogPropertyEntity(property.Key, property.Value));
+                        }
+                    }
+
+                    var traces = log.Exception?.Split("\n");
+                    if (traces != null)
+                    {
+                        foreach (var trace in traces)
+                        {
+                            logEntity.AddTrace(new LogTraceEntity(trace));
+                        }
+                    }
+                    await _kafkaProducerService.ProduceLogMessageAsync(token, logEntity, clientIp); 
                 }
                 return JsonSuccess();
             }

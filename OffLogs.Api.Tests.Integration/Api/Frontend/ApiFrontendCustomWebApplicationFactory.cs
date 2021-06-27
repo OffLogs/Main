@@ -30,7 +30,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
             var builder = Host.CreateDefaultBuilder()
                 .ConfigureWebHostDefaults(builder =>
                 {
-                    builder.UseStartup<Startup>()
+                    builder.UseStartup<OffLogs.Api.Frontend.Startup>()
                         .ConfigureTestServices(services => 
                         {
                             services.AddHttpContextAccessor();
