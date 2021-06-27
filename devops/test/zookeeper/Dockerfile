@@ -12,9 +12,9 @@ RUN apt-get update
 RUN apt-get install -y default-jre
 
 RUN echo "Files to copy: "
-RUN ls COPY ./binable/kafka
+RUN ls ./binable/kafka
 COPY ./binable/kafka /app
-RUN chmod -R 700 /app/bin
+RUN chmod -R 700 $KAFKA_HOME
 
 COPY ./zookeeper/boot.sh /usr/local/bin/app_boot
 CMD ["bash", "/usr/local/bin/app_boot"]
