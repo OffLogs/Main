@@ -44,5 +44,4 @@ if [[ -n "$CUSTOM_INIT_SCRIPT" ]]; then
   eval "$CUSTOM_INIT_SCRIPT"
 fi
 
-chmod -R 700 $KAFKA_HOME/bin/
 exec $KAFKA_HOME/bin/zookeeper-server-start.sh $KAFKA_HOME/config/zookeeper.properties
