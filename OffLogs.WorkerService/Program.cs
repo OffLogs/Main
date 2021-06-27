@@ -41,7 +41,7 @@ namespace OffLogs.WorkerService
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.InitAllServices();
-                    services.AddHostedService<Worker>();
+                    services.AddHostedService<LogProcessingWorker>();
                 });
     }
 }

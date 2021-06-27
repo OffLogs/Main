@@ -23,6 +23,8 @@ namespace OffLogs.Business.Services.Kafka
             {
                 if (_producer == null)
                 {
+                    LogDebug("Build new instance");
+                    
                     var builder = new ProducerBuilder<string, object>(_producerConfig);
                     builder.SetValueSerializer(new ValueSerializer<object>());
                     builder.SetKeySerializer(new ValueSerializer<string>());
@@ -55,6 +57,8 @@ namespace OffLogs.Business.Services.Kafka
                 MessageSendMaxRetries = 2000,
                 SecurityProtocol = SecurityProtocol.Plaintext
             };
+            
+            LogDebug("Init service");
         }
 
         ~KafkaProducerProducerService()
@@ -74,6 +78,11 @@ namespace OffLogs.Business.Services.Kafka
                 Key = modelToSend.Token,
                 Value = modelToSend
             });
+        }
+        
+        private void LogDebug(string message)
+        {
+            _logger.LogDebug($"Kafka Producer: {message}");
         }
     }
 }

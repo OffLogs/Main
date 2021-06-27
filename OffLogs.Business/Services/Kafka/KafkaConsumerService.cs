@@ -63,6 +63,7 @@ namespace OffLogs.Business.Services.Kafka
 
         private ConsumerBuilder<string, T> GetBuilder<T>()
         {
+            LogDebug("Build new instance");
             var builder = new ConsumerBuilder<string, T>(_config);
             builder.SetValueDeserializer(new JsonValueDeserializer<T>(_logger));
             builder.SetKeyDeserializer(new KeyDeserializer());
@@ -71,6 +72,11 @@ namespace OffLogs.Business.Services.Kafka
                 _logger.LogError($"Kafka consumer error: Code: {error.Code}, IsBroker: {error.IsBrokerError}, Reason: {error.Reason}");
             });
             return builder;
+        }
+
+        private void LogDebug(string message)
+        {
+            _logger.LogDebug($"Kafka Consumer: {message}");
         }
     }
 }

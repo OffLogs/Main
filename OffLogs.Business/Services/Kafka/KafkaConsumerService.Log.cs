@@ -10,33 +10,51 @@ namespace OffLogs.Business.Services.Kafka
 {
     public partial class KafkaConsumerService
     {
-        public async Task<long> ProcessLogsAsync(bool isInfiniteLoop = true)
+        public async Task<long> ProcessLogsAsync(CancellationToken cancellationToken)
         {
-            var source = new CancellationTokenSource();
+            return await ProcessLogsAsync(true, cancellationToken);
+        }
+
+        public async Task<long> ProcessLogsAsync(bool isInfiniteLoop = true, CancellationToken? cancellationToken = null)
+        {
+            CancellationTokenSource cancellationTokenSource;
+            if (cancellationToken.HasValue)
+            {
+                cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken.Value);
+            }
+            else
+            {
+                cancellationTokenSource = new CancellationTokenSource();
+            }
             var processedRecords = 0;
+            _logger.LogDebug("Kafka");
             using (var consumer = GetBuilder<LogMessageModel>().Build())
             {
+                LogDebug($"Subscribe to {_logsTopicName}");
                 consumer.Subscribe(_logsTopicName);
 
                 var startTime = DateTime.Now;
-                var task = Task.Run(() =>
+                if (!isInfiniteLoop)
                 {
-                    while (true)
+                    var task = Task.Run(() =>
                     {
-                        Thread.Sleep(100);
-                        var difference = DateTime.Now - startTime;
-                        if (difference >= _defaultWaitTimeout)
+                        while (true)
                         {
-                            source.Cancel();
-                            break;
+                            Thread.Sleep(100);
+                            var difference = DateTime.Now - startTime;
+                            if (difference >= _defaultWaitTimeout)
+                            {
+                                cancellationTokenSource.Cancel();
+                                break;
+                            }
                         }
-                    }
-                }, source.Token);
-                while (!source.IsCancellationRequested)
+                    }, cancellationTokenSource.Token);    
+                }
+                while (!cancellationTokenSource.IsCancellationRequested)
                 {
                     try
                     {
-                        var consumeResult = consumer.Consume(source.Token);
+                        var consumeResult = consumer.Consume(cancellationTokenSource.Token);
                         if (consumeResult != null)
                         {
                             if (consumeResult.Message.Value != null)
@@ -51,6 +69,7 @@ namespace OffLogs.Business.Services.Kafka
                     }
                     catch (OperationCanceledException e)
                     {
+                        LogDebug($"Operation was cancelled via cancellation token");
                         consumer.Close();
                         // Cancellation token was canceled
                         break;
