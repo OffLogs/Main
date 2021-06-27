@@ -49,4 +49,5 @@ if [[ -n "$CUSTOM_INIT_SCRIPT" ]]; then
   eval "$CUSTOM_INIT_SCRIPT"
 fi
 
+chmod -R 700 $KAFKA_HOME/bin/
 exec $KAFKA_HOME/bin/kafka-server-start.sh $KAFKA_HOME/config/server.properties
