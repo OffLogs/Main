@@ -15,4 +15,5 @@ COPY ./binable/kafka /app
 RUN chmod -R 700 /app/bin
 
 COPY ./kafka/boot.sh /usr/local/bin/app_boot
+
 CMD ["bash", "/usr/local/bin/app_boot"]
