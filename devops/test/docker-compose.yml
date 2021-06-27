@@ -4,14 +4,16 @@ services:
   tests:
     build:
       context: ./../../
-      dockerfile: devops/test/Dockerfile
+      dockerfile: devops/test/test/Dockerfile
     environment:
       ConnectionStrings__DefaultConnection: 'User ID=postgres;Password=P@ssW0rd!;Host=database;Port=5432;Database=postgres;Pooling=true;'
-      Kafka_Servers: 'kafka:29092'
+      Kafka_Servers: 'kafka:9094'
     volumes:
       - /opt/vsts/work/_temp:/var/temp
     depends_on:
       - database
+      - zookeeper
+      - kafka
     
   database:
     container_name: offlogs-local-postgres
@@ -26,12 +28,9 @@ services:
       dockerfile: zookeeper/Dockerfile
       args:
         BUILD_COMMAND: build
-    restart: always
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-    ports:
-      - 22181:2181
   kafka:
     build:
       context: ./
@@ -41,8 +40,6 @@ services:
     restart: always
     depends_on:
       - zookeeper
-    ports:
-      - 29092:9094
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
