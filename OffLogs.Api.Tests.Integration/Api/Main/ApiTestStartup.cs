@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main
 {
-    public class ApiTestStartup: Startup
+    public class ApiTestStartup: OffLogs.Api.Startup
     {
         public ApiTestStartup(IConfiguration configuration) : base(configuration)
         {

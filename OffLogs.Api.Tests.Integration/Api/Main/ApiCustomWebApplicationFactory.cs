@@ -15,10 +15,6 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         {
             builder.ConfigureServices(services =>
             {
-                // var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IViberCommunicationService));
-                // services.Remove(descriptor);
-                // services.AddSingleton<IViberCommunicationService, TestViberCommunicationService>();
-
                 // Remove hosted services
                 
                 var sp = services.BuildServiceProvider();

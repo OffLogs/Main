@@ -16,14 +16,14 @@ namespace OffLogs.Api.Controller
 {
     [Route("/[controller]")]
     [ApiController]
-    public class LogController : BaseApiController
+    public class Log2Controller : BaseApiController
     {
         private readonly IJwtApplicationService _jwtService;
         private readonly ILogDao _logDao;
         private readonly IApplicationDao _applicationDao;
 
-        public LogController(
-            ILogger<LogController> logger, 
+        public Log2Controller(
+            ILogger<Log2Controller> logger, 
             IConfiguration configuration,
             ILogDao logDao,
             IApplicationDao applicationDao,

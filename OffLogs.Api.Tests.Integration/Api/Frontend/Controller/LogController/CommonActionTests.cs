@@ -9,7 +9,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
 {
     public class CommonActionTests: MyApiFrontendIntegrationTest
     {
-        public CommonActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
+        public CommonActionTests(ApiFrontendCustomWebApplicationFactory factory) : base(factory) {}
 
         [Theory]
         [InlineData("/log/add")]

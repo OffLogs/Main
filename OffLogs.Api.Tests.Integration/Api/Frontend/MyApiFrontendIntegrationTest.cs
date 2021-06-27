@@ -11,10 +11,10 @@ using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Frontend
 {
-    [Collection("Default collection")]
-    public class MyApiFrontendIntegrationTest: IClassFixture<ApiCustomWebApplicationFactory>
+    [Collection("Api.Frontend")]
+    public class MyApiFrontendIntegrationTest: IClassFixture<ApiFrontendCustomWebApplicationFactory>
     {
-        protected readonly ApiCustomWebApplicationFactory _factory;
+        protected readonly ApiFrontendCustomWebApplicationFactory _factory;
 
         protected readonly ICommonDao Dao;
         protected readonly IUserDao UserDao;
@@ -26,10 +26,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
         protected readonly IKafkaProducerService KafkaProducerService;
         protected readonly IKafkaConsumerService KafkaConsumerService;
         
-        public MyApiFrontendIntegrationTest(ApiCustomWebApplicationFactory factory)
+        public MyApiFrontendIntegrationTest(ApiFrontendCustomWebApplicationFactory factory)
         {
             _factory = factory;
-            // jwtService = _factory.Services.GetService(typeof(IJwtService)) as IJwtService;
             Dao = _factory.Services.GetService(typeof(ICommonDao)) as ICommonDao;
             UserDao = _factory.Services.GetService(typeof(IUserDao)) as IUserDao;
             LogDao = _factory.Services.GetService(typeof(ILogDao)) as ILogDao;

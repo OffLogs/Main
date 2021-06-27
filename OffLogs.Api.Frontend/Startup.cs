@@ -35,7 +35,6 @@ namespace OffLogs.Api.Frontend
         {
             services.InitBaseServices();
             services.AddCors();
-            services.AddControllers();
             services.AddControllers()
                 .ConfigureApiBehaviorOptions(options =>
                 {
@@ -98,10 +97,6 @@ namespace OffLogs.Api.Frontend
                         ClockSkew = System.TimeSpan.FromMinutes(30000)
                     };
                 });
-            // services.AddSwaggerGen(c =>
-            // {
-            //     c.SwaggerDoc("v1", new OpenApiInfo {Title = "OffLogs.Api.Frontend", Version = "v1"});
-            // });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

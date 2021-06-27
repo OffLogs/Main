@@ -10,7 +10,7 @@ using Serilog;
 
 namespace OffLogs.Api.Tests.Integration.Api.Frontend
 {
-    public class ApiCustomWebApplicationFactory: WebApplicationFactory<ApiFrontendTestStartup>
+    public class ApiFrontendCustomWebApplicationFactory: WebApplicationFactory<ApiFrontendTestStartup>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
