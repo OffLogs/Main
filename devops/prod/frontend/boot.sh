@@ -1,5 +1,4 @@
 #!/bin/bash
 
-echo "Start application"
-ls
+echo "Start application.."
 dotnet run --no-launch-profile

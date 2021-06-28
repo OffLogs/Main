@@ -38,8 +38,8 @@ namespace OffLogs.Business.Extensions
             services.AddScoped<IJwtApplicationService, JwtApplicationService>();
             
             // Kafka
-            services.AddScoped<IKafkaProducerService, KafkaProducerProducerService>();
-            services.AddScoped<IKafkaConsumerService, KafkaConsumerService>();
+            services.AddSingleton<IKafkaProducerService, KafkaProducerProducerService>();
+            services.AddSingleton<IKafkaConsumerService, KafkaConsumerService>();
             return services;
         }
     }
