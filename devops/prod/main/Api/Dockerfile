@@ -20,6 +20,6 @@ RUN echo "{}" > appsettings.Local.json
 RUN ["dotnet", "restore"]
 RUN ["dotnet", "build"]
 
-COPY ./prod/Api/boot.sh /usr/local/bin/php_boot
+COPY ./devops/prod/Api/boot.sh /usr/local/bin/php_boot
 
 CMD ["sh", "/usr/local/bin/php_boot"]
