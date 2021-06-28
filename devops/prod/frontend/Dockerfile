@@ -4,7 +4,7 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0
 ENV TZ=UTC
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-COPY ./../ /app
+COPY ./ /app
 RUN ls /app
 WORKDIR /app/OffLogs.Api.Frontend
 
