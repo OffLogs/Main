@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NHibernate;
 using NHibernate.Cfg;
@@ -23,22 +24,23 @@ namespace OffLogs.Business.Db.Dao
             }
         }
 
-        public BaseDao(string connString, ILogger<BaseDao> logger)
+        public BaseDao(IConfiguration configuration, ILogger<BaseDao> logger)
         {
             Logger = logger;
             if (_sessionFactory == null)
             {
-                var properties = new Dictionary<string, string>()
+                var connectionString = configuration.GetConnectionString("DefaultConnection");
+                var properties = new Dictionary<string, string>
                 {
-                    { "connection.connection_string", connString },
+                    { "connection.connection_string", connectionString },
                     { "dialect", "NHibernate.Dialect.PostgreSQL83Dialect" }
                 };
-                
-#if DEBUG
-                // properties.Add("show_sql", "true");            
-                // properties.Add("format_sql", "true");
-#endif
-                
+                var isShowSql = configuration.GetValue<bool>("Hibernate:IsShowSql", false);
+                if (isShowSql)
+                {
+                    properties.Add("show_sql", "true");            
+                    properties.Add("format_sql", "true");
+                }
                 _sessionFactory = new Configuration()
                     .Configure(Assembly.GetExecutingAssembly(), "OffLogs.Business.Db.hibernate.cfg.xml")
                     .SetProperties(properties)
