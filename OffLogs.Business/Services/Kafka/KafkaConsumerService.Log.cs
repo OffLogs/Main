@@ -56,7 +56,6 @@ namespace OffLogs.Business.Services.Kafka
                         var consumeResult = consumer.Consume(cancellationTokenSource.Token);
                         if (consumeResult != null)
                         {
-                            LogDebug($"Got new message. Offset: {consumeResult.Offset.Value}");
                             if (consumeResult.Message.Value != null)
                             {
                                 _logger.LogDebug("Got new message");
