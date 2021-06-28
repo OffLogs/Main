@@ -20,7 +20,7 @@ services:
   zookeeper:
     container_name: offlogs-local-zookeeper
     build:
-      context: ./
+      context: ./../common/
       dockerfile: zookeeper/Dockerfile
       args:
         BUILD_COMMAND: build
@@ -34,7 +34,7 @@ services:
       - kafka-volume:/app/zookeeper-data
   kafka:
     build:
-      context: ./
+      context: ./../common/
       dockerfile: kafka/Dockerfile
       args:
         BUILD_COMMAND: build
@@ -50,12 +50,11 @@ services:
       KAFKA_ADVERTISED_LISTENERS: INSIDE://:9092,OUTSIDE://${ADVERTISED_HOST_NAME}:29092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
-#      KAFKA_ADVERTISED_HOST_NAME: ${KAFKA_ADVERTISED_HOST_NAME}
     volumes:
       - kafka-volume:/app/kafka-logs
   kafka-2:
     build:
-      context: ./
+      context: ./../common/
       dockerfile: kafka/Dockerfile
       args:
         BUILD_COMMAND: build
@@ -71,6 +70,5 @@ services:
       KAFKA_ADVERTISED_LISTENERS: INSIDE://:9092,OUTSIDE://${ADVERTISED_HOST_NAME}:29093
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
-#      KAFKA_ADVERTISED_HOST_NAME: ${KAFKA_ADVERTISED_HOST_NAME}
     volumes:
       - kafka-2-volume:/app/kafka-logs
