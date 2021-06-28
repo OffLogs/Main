@@ -13,11 +13,11 @@ services:
       - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
       - App__Auth__SymmetricSecurityKey=${JWT_USER_KEY}
       - App__Application__SymmetricSecurityKey=${JWT_APPLICATION_KEY}
-      - Kafka_Servers=${KAFKA_SERVERS}
-      - Kafka_ProducerId=${KAFKA_PRODUCER_ID}
-      - Kafka_Topic_Logs=${KAFKA_TOPIC_LOGS}
-      - Kafka_Topic_Notification=${KAFKA_TOPIC_NOTIFICATION}
-      - Kafka_ConsumerClientId=${KAFKA_CONSUMER_CLIENT_ID}
+      - Kafka__Servers=${KAFKA_SERVERS}
+      - Kafka__ProducerId=${KAFKA_PRODUCER_ID}
+      - Kafka__Topic_Logs=${KAFKA_TOPIC_LOGS}
+      - Kafka__Topic_Notification=${KAFKA_TOPIC_NOTIFICATION}
+      - Kafka__ConsumerClientId=${KAFKA_CONSUMER_CLIENT_ID}
     ports:
       - 5051:80
   worker:
@@ -32,11 +32,11 @@ services:
       - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
       - App__Auth__SymmetricSecurityKey=${JWT_USER_KEY}
       - App__Application__SymmetricSecurityKey=${JWT_APPLICATION_KEY}
-      - Kafka_Servers=${KAFKA_SERVERS}
-      - Kafka_ProducerId=${KAFKA_PRODUCER_ID}
-      - Kafka_Topic_Logs=${KAFKA_TOPIC_LOGS}
-      - Kafka_Topic_Notification=${KAFKA_TOPIC_NOTIFICATION}
-      - Kafka_ConsumerClientId=${KAFKA_CONSUMER_CLIENT_ID}
+      - Kafka__Servers=${KAFKA_SERVERS}
+      - Kafka__ProducerId=${KAFKA_PRODUCER_ID}
+      - Kafka__Topic_Logs=${KAFKA_TOPIC_LOGS}
+      - Kafka__Topic_Notification=${KAFKA_TOPIC_NOTIFICATION}
+      - Kafka__ConsumerClientId=${KAFKA_CONSUMER_CLIENT_ID}
     depends_on:
       - api
   web:
