@@ -14,6 +14,7 @@ namespace OffLogs.Business.Services.Kafka
         private readonly ILogger<IKafkaProducerService> _logger;
         private readonly ProducerConfig _producerConfig;
         private readonly string _producerId;
+        private readonly string _kafkaServers;
         private readonly string _logsTopicName;
         
         private IProducer<string, object> _producer;
@@ -47,18 +48,18 @@ namespace OffLogs.Business.Services.Kafka
             var kafkaSection = configuration.GetSection("Kafka");
             _producerId = kafkaSection.GetValue<string>("ProducerId");
             _logsTopicName = kafkaSection.GetValue<string>("Topic:Logs");
-            var kafkaServers = kafkaSection.GetValue<string>("Servers");
+            _kafkaServers = kafkaSection.GetValue<string>("Servers");
             
             _producerConfig = new ProducerConfig
             {
-                BootstrapServers = kafkaServers,
+                BootstrapServers = _kafkaServers,
                 ClientId = _producerId, 
                 Acks = Acks.All,
                 MessageSendMaxRetries = 2000,
                 SecurityProtocol = SecurityProtocol.Plaintext
             };
             
-            LogDebug("Init service");
+            LogDebug($"Init service: {_kafkaServers}");
         }
 
         ~KafkaProducerProducerService()

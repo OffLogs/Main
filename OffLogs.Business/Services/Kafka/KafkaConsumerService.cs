@@ -19,6 +19,7 @@ namespace OffLogs.Business.Services.Kafka
         private readonly IConfiguration _configuration;
         private readonly string _groupName;
         private readonly string _clientId;
+        private readonly string _kafkaServers;
         private readonly ILogger<IKafkaProducerService> _logger;
         private readonly ILogDao _logDao;
         private readonly IRequestLogDao _requestLogDao;
@@ -47,11 +48,11 @@ namespace OffLogs.Business.Services.Kafka
             _groupName = kafkaSection.GetValue<string>("ConsumerGroup");
             _clientId = kafkaSection.GetValue<string>("ConsumerClientId");
             _logsTopicName = kafkaSection.GetValue<string>("Topic:Logs");
-            var kafkaServers = kafkaSection.GetValue<string>("Servers");
+            _kafkaServers = kafkaSection.GetValue<string>("Servers");
             
             _config = new ConsumerConfig
             {
-                BootstrapServers = kafkaServers,
+                BootstrapServers = _kafkaServers,
                 GroupId = _groupName,
                 ClientId = _clientId,
                 AutoOffsetReset = AutoOffsetReset.Earliest,
@@ -63,7 +64,7 @@ namespace OffLogs.Business.Services.Kafka
 
         private ConsumerBuilder<string, T> GetBuilder<T>()
         {
-            LogDebug("Build new instance");
+            LogDebug($"Build new instance: {_kafkaServers}");
             var builder = new ConsumerBuilder<string, T>(_config);
             builder.SetValueDeserializer(new JsonValueDeserializer<T>(_logger));
             builder.SetKeyDeserializer(new KeyDeserializer());
