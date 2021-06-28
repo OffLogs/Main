@@ -24,6 +24,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             
             // Push 2 messages
             await KafkaProducerService.ProduceLogMessageAsync(userModel.ApplicationApiToken, log1);
+            KafkaProducerService.Flush();
             
             // Receive 2 messages
             var processedRecords = await KafkaConsumerService.ProcessLogsAsync(false);
@@ -48,6 +49,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             
             // Push 2 messages
             await KafkaProducerService.ProduceLogMessageAsync(userModel.ApplicationApiToken, log1);
+            KafkaProducerService.Flush();
             
             // Receive 2 messages
             var cancellationToken = new CancellationToken();
@@ -73,6 +75,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
                 logs.Add(log);
                 await KafkaProducerService.ProduceLogMessageAsync(userModel.ApplicationApiToken, log);
             }
+            KafkaProducerService.Flush();
 
             // Receive 2 messages
             var processedRecords = await KafkaConsumerService.ProcessLogsAsync(false);
@@ -94,6 +97,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             var fakeJwt = SecurityUtil.GetTimeBasedToken();
             // Push 2 messages
             await KafkaProducerService.ProduceLogMessageAsync(fakeJwt, log1);
+            KafkaProducerService.Flush();
             
             // Receive 2 messages
             var processedRecords = await KafkaConsumerService.ProcessLogsAsync(false);

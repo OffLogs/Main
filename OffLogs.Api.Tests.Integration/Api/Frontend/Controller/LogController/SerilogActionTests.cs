@@ -49,6 +49,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             response.EnsureSuccessStatusCode();
             
             // Process messages from Kafka
+            KafkaProducerService.Flush();
             await KafkaConsumerService.ProcessLogsAsync(false);
             
             var (actualLogs, actualLogsCounter) = await LogDao.GetList(user.Applications.First().Id, 1);
@@ -97,6 +98,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             response.EnsureSuccessStatusCode();
             
             // Process messages from Kafka
+            KafkaProducerService.Flush();
             await KafkaConsumerService.ProcessLogsAsync(false);
             
             var (actualLogs, actualLogsCounter) = await LogDao.GetList(user.Applications.First().Id, 1);
@@ -162,6 +164,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             response.EnsureSuccessStatusCode();
             
             // Process messages from Kafka
+            KafkaProducerService.Flush();
             await KafkaConsumerService.ProcessLogsAsync(false);
             
             var (actualLogs, actualLogsCounter) = await LogDao.GetList(user.Applications.First().Id, 1);
@@ -211,6 +214,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             response.EnsureSuccessStatusCode();
             
             // Process messages from Kafka
+            KafkaProducerService.Flush();
             await KafkaConsumerService.ProcessLogsAsync(false);
             
             var (actualLogs, actualLogsCounter) = await LogDao.GetList(user.Applications.First().Id, 1);
@@ -290,6 +294,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             response.EnsureSuccessStatusCode();
             
             // Process messages from Kafka
+            KafkaProducerService.Flush();
             await KafkaConsumerService.ProcessLogsAsync(false);
             
             var (actualLogs, actualLogsCounter) = await LogDao.GetList(user.Applications.First().Id, 1);

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Confluent.Kafka;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -79,6 +80,11 @@ namespace OffLogs.Business.Services.Kafka
                 Key = modelToSend.Token,
                 Value = modelToSend
             });
+        }
+        
+        public void Flush(CancellationToken cancellationToken = default)
+        {
+            Producer.Flush(cancellationToken);
         }
         
         private void LogDebug(string message)
