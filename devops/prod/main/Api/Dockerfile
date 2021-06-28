@@ -23,6 +23,6 @@ RUN echo "{}" > ./OffLogs.Console/appsettings.Local.json
 RUN ["dotnet", "restore"]
 RUN ["dotnet", "build"]
 
-COPY ./devops/prod/Api/boot.sh /usr/local/bin/php_boot
+COPY ./devops/prod/main/Api/boot.sh /usr/local/bin/php_boot
 
 CMD ["sh", "/usr/local/bin/php_boot"]
