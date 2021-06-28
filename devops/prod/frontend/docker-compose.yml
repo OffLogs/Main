@@ -14,8 +14,8 @@ services:
       - App__Application__SymmetricSecurityKey=${JWT_APPLICATION_KEY}
       - Kafka__Servers=${KAFKA_SERVERS}
       - Kafka__ProducerId=${KAFKA_PRODUCER_ID}
-      - Kafka__Topic_Logs=${KAFKA_TOPIC_LOGS}
-      - Kafka__Topic_Notification=${KAFKA_TOPIC_NOTIFICATION}
+      - Kafka__Topic__Logs=${KAFKA_TOPIC_LOGS}
+      - Kafka__Topic__Notification=${KAFKA_TOPIC_NOTIFICATION}
       - Kafka__ConsumerClientId=${KAFKA_CONSUMER_CLIENT_ID}
     ports:
       - 6033:80
