@@ -32,7 +32,46 @@
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">{&quot;Timestamp&quot;:&quot;2021-02-28T14:12:29.7945730+02:00&quot;,&quot;Level&quot;:&quot;Error&quot;,&quot;MessageTemplate&quot;:&quot;The method or operation is not implemented.&quot;,&quot;Properties&quot;:{&quot;SourceContext&quot;:&quot;OffLogs.Api.Controller.HomeController&quot;,&quot;ActionId&quot;:&quot;5ea366e2-957e-42dc-9cd5-a59e132a2939&quot;,&quot;ActionName&quot;:&quot;OffLogs.Api.Controller.HomeController.Ping (OffLogs.Api)&quot;,&quot;RequestId&quot;:&quot;0HM6RS870K8CC:00000007&quot;,&quot;RequestPath&quot;:&quot;/ping&quot;,&quot;ConnectionId&quot;:&quot;0HM6RS870K8CC&quot;,&quot;MachineName&quot;:&quot;lampego-mint&quot;,&quot;ProcessId&quot;:12394,&quot;ThreadId&quot;:20}}</stringProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;Events&quot;: [&#xd;
+    {&#xd;
+      &quot;Timestamp&quot;: &quot;2021-02-28T14:12:29.7945730+02:00&quot;,&#xd;
+      &quot;Level&quot;: &quot;Error&quot;,&#xd;
+      &quot;MessageTemplate&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;RenderedMessage&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;Properties&quot;: {&#xd;
+        &quot;SourceContext&quot;: &quot;OffLogs.Api.Controller.HomeController&quot;,&#xd;
+        &quot;ActionId&quot;: &quot;5ea366e2-957e-42dc-9cd5-a59e132a2939&quot;,&#xd;
+        &quot;ActionName&quot;: &quot;OffLogs.Api.Controller.HomeController.Ping (OffLogs.Api)&quot;,&#xd;
+        &quot;RequestId&quot;: &quot;0HM6RS870K8CC:00000007&quot;,&#xd;
+        &quot;RequestPath&quot;: &quot;/ping&quot;,&#xd;
+        &quot;ConnectionId&quot;: &quot;0HM6RS870K8CC&quot;,&#xd;
+        &quot;MachineName&quot;: &quot;lampego-mint&quot;,&#xd;
+        &quot;ProcessId&quot;: 12394,&#xd;
+        &quot;ThreadId&quot;: 20&#xd;
+      },&#xd;
+      &quot;Traces&quot;: []&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Timestamp&quot;: &quot;2021-02-28T14:12:29.7945730+02:00&quot;,&#xd;
+      &quot;Level&quot;: &quot;Error&quot;,&#xd;
+      &quot;MessageTemplate&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;RenderedMessage&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;Properties&quot;: {&#xd;
+        &quot;SourceContext&quot;: &quot;OffLogs.Api.Controller.HomeController&quot;,&#xd;
+        &quot;ActionId&quot;: &quot;5ea366e2-957e-42dc-9cd5-a59e132a2939&quot;,&#xd;
+        &quot;ActionName&quot;: &quot;OffLogs.Api.Controller.HomeController.Ping (OffLogs.Api)&quot;,&#xd;
+        &quot;RequestId&quot;: &quot;0HM6RS870K8CC:00000007&quot;,&#xd;
+        &quot;RequestPath&quot;: &quot;/ping&quot;,&#xd;
+        &quot;ConnectionId&quot;: &quot;0HM6RS870K8CC&quot;,&#xd;
+        &quot;MachineName&quot;: &quot;lampego-mint&quot;,&#xd;
+        &quot;ProcessId&quot;: 12394,&#xd;
+        &quot;ThreadId&quot;: 20&#xd;
+      },&#xd;
+      &quot;Traces&quot;: []&#xd;
+    }&#xd;
+  ]&#xd;
+}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
             </collectionProp>
@@ -56,7 +95,7 @@
           <collectionProp name="HeaderManager.headers">
             <elementProp name="" elementType="Header">
               <stringProp name="Header.name">Authorization</stringProp>
-              <stringProp name="Header.value">Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zeXN0ZW0iOiJBcHBsaWNhdGlvbiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiOCIsImlzcyI6Ik9mZkxvZ3MgQXBwbGljYXRpb24gQVBJIiwiYXVkIjoiT2ZmTG9ncyBBcHBsaWNhdGlvbiBBUEkifQ.3nQW7q7LsxsUthqq3L6lM1IdVrvbqKqOPbHq3U1_jPM</stringProp>
+              <stringProp name="Header.value">Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zeXN0ZW0iOiJBcHBsaWNhdGlvbiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiMTAiLCJpc3MiOiJPZmZMb2dzIEFwcGxpY2F0aW9uIEFQSSIsImF1ZCI6Ik9mZkxvZ3MgQXBwbGljYXRpb24gQVBJIn0.TlfT6CSQ1srYi4Z7IGuLstz_9BUZOKZAP770fNRTvtw</stringProp>
             </elementProp>
             <elementProp name="" elementType="Header">
               <stringProp name="Header.name">Content-Type</stringProp>
