@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using Microsoft.Extensions.Logging;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Db.Entity;
@@ -62,8 +63,12 @@ namespace OffLogs.Business.Services.Kafka
                                 await ProcessLogAsync(consumeResult.Message.Value);
                             }
 
+                            // Increase global counter
+                            IncreaseProcessedMessagesCounter();
                             consumer.StoreOffset(consumeResult);
                             consumer.Commit();
+                            
+                            // Increase local counter
                             processedRecords++;
                         }
                     }

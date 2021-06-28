@@ -8,7 +8,8 @@ using OffLogs.Business.Db.Dao;
 using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Kafka.Deserializers;
-using OffLogs.Business.Services.Kafka.Models;
+using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace OffLogs.Business.Services.Kafka
 {
@@ -27,6 +28,8 @@ namespace OffLogs.Business.Services.Kafka
         private readonly IJwtApplicationService _jwtApplicationService;
         private readonly ConsumerConfig _config;
         private readonly string _logsTopicName;
+        private readonly Timer _timerProcessedCounter;
+        private long _processedLogsCounter;
 
         public KafkaConsumerService(
             IConfiguration configuration, 
@@ -60,6 +63,15 @@ namespace OffLogs.Business.Services.Kafka
                 EnableAutoOffsetStore = false,
                 AllowAutoCreateTopics = false,
             };
+
+            _timerProcessedCounter = new Timer(1000);
+            _timerProcessedCounter.Elapsed += OnProcessedCounterTimerTick;
+            _timerProcessedCounter.Start();
+        }
+
+        ~KafkaConsumerService()
+        {
+            _timerProcessedCounter.Stop();
         }
 
         private ConsumerBuilder<string, T> GetBuilder<T>()
@@ -78,6 +90,22 @@ namespace OffLogs.Business.Services.Kafka
         private void LogDebug(string message)
         {
             _logger.LogDebug($"Kafka Consumer: {message}");
+        }
+        
+        private void OnProcessedCounterTimerTick(object sender, ElapsedEventArgs e)
+        {
+            if (_processedLogsCounter > 0)
+            {
+                // We don't want wait until log message will be written
+                var counter = _processedLogsCounter;
+                _processedLogsCounter = 0;
+                LogDebug($"Processed messages counter: {counter}");
+            }
+        }
+        
+        private void IncreaseProcessedMessagesCounter()
+        {
+            _processedLogsCounter++;
         }
     }
 }
