@@ -27,7 +27,6 @@ namespace OffLogs.Business.Services.Kafka
                 cancellationTokenSource = new CancellationTokenSource();
             }
             var processedRecords = 0;
-            _logger.LogDebug("Kafka");
             using (var consumer = GetBuilder<LogMessageModel>().Build())
             {
                 LogDebug($"Subscribe to {_logsTopicName}");
@@ -57,8 +56,10 @@ namespace OffLogs.Business.Services.Kafka
                         var consumeResult = consumer.Consume(cancellationTokenSource.Token);
                         if (consumeResult != null)
                         {
+                            LogDebug($"Got new message. Offset: {consumeResult.Offset.Value}");
                             if (consumeResult.Message.Value != null)
                             {
+                                _logger.LogDebug("Got new message");
                                 await ProcessLogAsync(consumeResult.Message.Value);
                             }
 
