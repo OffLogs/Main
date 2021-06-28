@@ -59,7 +59,6 @@ namespace OffLogs.Business.Services.Kafka
                         {
                             if (consumeResult.Message.Value != null)
                             {
-                                _logger.LogDebug("Got new message");
                                 await ProcessLogAsync(consumeResult.Message.Value);
                             }
 
