@@ -35,8 +35,8 @@ namespace OffLogs.Business.Db.Dao
                 };
                 
 #if DEBUG
-                properties.Add("show_sql", "true");            
-                properties.Add("format_sql", "true");
+                // properties.Add("show_sql", "true");            
+                // properties.Add("format_sql", "true");
 #endif
                 
                 _sessionFactory = new Configuration()
