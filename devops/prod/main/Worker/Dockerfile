@@ -6,7 +6,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 COPY . /app
 RUN ls /app
-WORKDIR /app/OffLogs.Worker
+WORKDIR /app/OffLogs.WorkerService
 
 ENV ASPNETCORE_ENVIRONMENT=Development
 ENV DOTNET_USE_POLLING_FILE_WATCHER=true  
