@@ -40,7 +40,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
         }
         
         [Fact]
-        public async Task ShouldSendMessageAndReceiveItWithCancelationToken()
+        public async Task ShouldSendMessageAndReceiveItWithCancellationToken()
         {
             var userModel = await DataSeeder.CreateNewUser();
             var application = userModel.Applications.First();
