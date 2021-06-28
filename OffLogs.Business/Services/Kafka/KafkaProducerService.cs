@@ -75,6 +75,7 @@ namespace OffLogs.Business.Services.Kafka
             {
                 ClientIp = clientIp
             };
+            LogDebug($"Send message. Token: {modelToSend.Token}");
             await Producer.ProduceAsync(_logsTopicName, new Message<string, object>
             {
                 Key = modelToSend.Token,
