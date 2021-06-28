@@ -105,7 +105,7 @@ namespace OffLogs.Api.Frontend
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSerilogRequestLogging();
+                // app.UseSerilogRequestLogging();
             }
 
             app.UseAuthentication();
