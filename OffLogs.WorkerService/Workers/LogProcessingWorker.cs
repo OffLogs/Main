@@ -29,6 +29,8 @@ namespace OffLogs.WorkerService.Workers
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
                 await _kafkaConsumerService.ProcessLogsAsync(stoppingToken);
             }
+            // Wait 1 sec before connect again
+            Thread.Sleep(1000);
         }
     }
 }
