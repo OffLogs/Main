@@ -6,12 +6,10 @@ namespace OffLogs.Business.Common.Exceptions
     public class HttpResponseStatusException: Exception
     {
         public HttpStatusCode StatusCode { get; }
-        public string Message { get; }
 
-        public HttpResponseStatusException(HttpStatusCode code, string message)
+        public HttpResponseStatusException(HttpStatusCode code, string message): base(message)
         {
             StatusCode = code;
-            Message = message;
         }
     }
 }

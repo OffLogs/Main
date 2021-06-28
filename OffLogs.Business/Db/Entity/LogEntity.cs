@@ -1,23 +1,38 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using OffLogs.Business.Common.Models.Api.Response.Board;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Extensions;
+using OffLogs.Business.Helpers;
 
 namespace OffLogs.Business.Db.Entity
 {
     public class LogEntity
     {
         public virtual long Id { get; set; }
-        public virtual ApplicationEntity Application { get; set; }
-        public virtual string LevelId { get; set; }
+        
+        [JsonIgnore]
+        private string _token { get; set; }
 
-        public virtual LogLevel Level
+        public virtual string Token
         {
-            get => new LogLevel().FromString(LevelId); 
-            set => LevelId = value.GetValue();
+            get
+            {
+                if (string.IsNullOrEmpty(_token))
+                {
+                    _token = SecurityUtil.GetTimeBasedToken();
+                }
+
+                return _token;
+            }
+            set => _token = value;
         }
+        
+        [JsonIgnore]
+        public virtual ApplicationEntity Application { get; set; }
+        public virtual LogLevel Level { get; set; }
         public virtual bool IsFavorite { get; set; }
         public virtual string Message { get; set; }
         public virtual DateTime LogTime { get; set; }
@@ -25,6 +40,7 @@ namespace OffLogs.Business.Db.Entity
         public virtual ICollection<LogTraceEntity> Traces { get; set; } = new List<LogTraceEntity>();
         public virtual ICollection<LogPropertyEntity> Properties { get; set; } = new List<LogPropertyEntity>();
         
+        [JsonIgnore]
         public virtual LogResponseModel ResponseModel
         {
             get

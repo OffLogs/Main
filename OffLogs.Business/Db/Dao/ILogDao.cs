@@ -9,6 +9,7 @@ namespace OffLogs.Business.Db.Dao
     public interface ILogDao: ICommonDao
     {
         Task<LogEntity> GetLogAsync(long logId);
+        Task<LogEntity> GetLogAsync(string token);
         Task<LogEntity> AddAsync(
             ApplicationEntity application,  
             string message,
@@ -21,5 +22,6 @@ namespace OffLogs.Business.Db.Dao
         Task<(IEnumerable<LogEntity>, long)> GetList(long applicationId, int page, int pageSize = 30);
         Task<bool> IsOwner(long userId, long logId);
         Task<bool> SetIsFavoriteAsync(long logId, bool isFavorite);
+        Task<bool> IsLogExists(string token);
     }
 }

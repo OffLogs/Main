@@ -36,7 +36,7 @@ namespace OffLogs.Api
         public virtual void ConfigureServices(IServiceCollection services)
         {
             EnableSwaggerIntegration(services);
-            services.InitCommonServices();
+            services.InitAllServices();
             services.AddCors();
             services.AddControllers()
                 .ConfigureApiBehaviorOptions(options =>
@@ -108,6 +108,7 @@ namespace OffLogs.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSerilogRequestLogging();
             }
 
             if (_isRequestResponseLoggingEnabled)
@@ -116,7 +117,6 @@ namespace OffLogs.Api
             }
 
             app.UseAuthentication();
-            app.UseSerilogRequestLogging();
             app.UseSwagger();
             app.UseSwaggerUI();
             app.UseRouting();

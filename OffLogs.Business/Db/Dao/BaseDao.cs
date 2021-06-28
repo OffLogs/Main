@@ -33,10 +33,12 @@ namespace OffLogs.Business.Db.Dao
                     { "connection.connection_string", connString },
                     { "dialect", "NHibernate.Dialect.PostgreSQL83Dialect" }
                 };
+                
 #if DEBUG
-                properties.Add("show_sql", "true");            
-                properties.Add("format_sql", "true");
+                // properties.Add("show_sql", "true");            
+                // properties.Add("format_sql", "true");
 #endif
+                
                 _sessionFactory = new Configuration()
                     .Configure(Assembly.GetExecutingAssembly(), "OffLogs.Business.Db.hibernate.cfg.xml")
                     .SetProperties(properties)

@@ -8,11 +8,17 @@ namespace OffLogs.Business.Db.Entity
     public class LogPropertyEntity
     {
         public virtual long Id { get; set; }
+        
+        [JsonIgnore]
         public virtual LogEntity Log { get; set; }
+        
         public virtual string Key { get; set; }
+        
         public virtual string Value { get; set; }
+        
         public virtual DateTime CreateTime { get; set; }
         
+        [JsonIgnore]
         public virtual LogPropertyResponseModel ResponseModel
         {
             get
@@ -44,7 +50,7 @@ namespace OffLogs.Business.Db.Entity
             {
                 Value = JsonConvert.SerializeObject(value);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Value = "";
             }

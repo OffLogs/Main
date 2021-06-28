@@ -11,16 +11,16 @@
 *.userprefs
 
 # Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-x64/
-x86/
-build/
-bld/
-[Bb]in/
-[Oo]bj/
+Offlogs.*/[Dd]ebug/
+Offlogs.*/[Dd]ebugPublic/
+Offlogs.*/[Rr]elease/
+Offlogs.*/[Rr]eleases/
+Offlogs.*/x64/
+Offlogs.*/x86/
+Offlogs.*/build/
+Offlogs.*/bld/
+Offlogs.*/[Bb]in/
+Offlogs.*/[Oo]bj/
 
 # Visual Studio 2015 cache/options directory
 .vs/
@@ -220,3 +220,6 @@ appsettings.Local.json
 
 #Log dirs
 **/logs/*
+.fake
+.ionide
+.vscode

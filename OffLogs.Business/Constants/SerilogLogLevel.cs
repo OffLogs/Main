@@ -41,17 +41,17 @@ namespace OffLogs.Business.Constants
         
         public LogLevel ToLogLevel()
         {
-            if (Error == this)
+            if (Equals(Error, this))
                 return LogLevel.Error;
-            if (Warning == this)
+            if (Equals(Warning, this))
                 return LogLevel.Warning;
-            if (Fatal == this)
+            if (Equals(Fatal, this))
                 return LogLevel.Fatal;
-            if (Information == this)
+            if (Equals(Information, this))
                 return LogLevel.Information;
-            if (Debug == this)
+            if (Equals(Debug, this))
                 return LogLevel.Debug;
-            return null;
+            return default;
         }
     }
 }

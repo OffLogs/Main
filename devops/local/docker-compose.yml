@@ -2,12 +2,14 @@ version: "3.8"
 
 volumes:
   postgre-volume: {}
-  
+  kafka-volume: {}
+  kafka-2-volume: {}
+  zookeeper-volume: {}
 
 services:
   postgres:
     container_name: offlogs-local-postgres
-    image: postgres:13.2
+    image: postgres:13.3
     restart: always
     environment:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -15,3 +17,58 @@ services:
       - 5432:5432
     volumes:
       - postgre-volume:/var/lib/postgresql/data
+  zookeeper:
+    container_name: offlogs-local-zookeeper
+    build:
+      context: ./../common/
+      dockerfile: zookeeper/Dockerfile
+      args:
+        BUILD_COMMAND: build
+    restart: always
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+        - 22181:2181
+    volumes:
+      - kafka-volume:/app/zookeeper-data
+  kafka:
+    build:
+      context: ./../common/
+      dockerfile: kafka/Dockerfile
+      args:
+        BUILD_COMMAND: build
+    restart: always
+    depends_on:
+      - zookeeper
+    ports:
+      - 29092:9094
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: INSIDE://:9092,OUTSIDE://:9094
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9092,OUTSIDE://${ADVERTISED_HOST_NAME}:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+    volumes:
+      - kafka-volume:/app/kafka-logs
+  kafka-2:
+    build:
+      context: ./../common/
+      dockerfile: kafka/Dockerfile
+      args:
+        BUILD_COMMAND: build
+    restart: always
+    depends_on:
+      - zookeeper
+    ports:
+      - 29093:9094
+    environment:
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: INSIDE://:9092,OUTSIDE://:9094
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9092,OUTSIDE://${ADVERTISED_HOST_NAME}:29093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+    volumes:
+      - kafka-2-volume:/app/kafka-logs
