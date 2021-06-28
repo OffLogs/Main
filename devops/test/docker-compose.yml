@@ -7,7 +7,7 @@ services:
       dockerfile: devops/test/test/Dockerfile
     environment:
       ConnectionStrings__DefaultConnection: 'User ID=postgres;Password=P@ssW0rd!;Host=database;Port=5432;Database=postgres;Pooling=true;'
-      Kafka_Servers: 'kafka:9094'
+      Kafka__Servers: 'kafka:9094'
     volumes:
       - /opt/vsts/work/_temp:/var/temp
     depends_on:
