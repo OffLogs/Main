@@ -39,7 +39,7 @@ namespace OffLogs.Business.Extensions
             
             // Kafka
             services.AddSingleton<IKafkaProducerService, KafkaProducerProducerService>();
-            services.AddSingleton<IKafkaConsumerService, KafkaConsumerService>();
+            services.AddScoped<IKafkaConsumerService, KafkaConsumerService>();
             return services;
         }
     }
