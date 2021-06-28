@@ -26,7 +26,7 @@ namespace OffLogs.Console
             Log.Logger = log;
             
             var serviceBuilder = new ServiceCollection()
-                .InitAllServices()
+                .InitServices()
                 .AddSingleton<IConfiguration>(configuration)
                 .AddScoped<ICreateUserService, CreateUserService>()
                 .AddScoped<ICreateApplicationService, CreateApplicationService>();

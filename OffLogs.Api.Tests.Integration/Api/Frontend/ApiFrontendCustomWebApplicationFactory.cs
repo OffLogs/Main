@@ -34,7 +34,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
                         .ConfigureTestServices(services => 
                         {
                             services.AddHttpContextAccessor();
-                            services.InitDbServices();
+                            services.InitServices();
                             services.AddScoped<IDataSeederService, DataSeederService>();
                             // We can further customize our application setup here.
                         })

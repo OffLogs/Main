@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Hosting;
 using OffLogs.Business.Extensions;
 using OffLogs.Business.Helpers;
-using OffLogs.WorkerService.Workers;
 using Serilog;
 
 namespace OffLogs.WorkerService
@@ -38,10 +38,11 @@ namespace OffLogs.WorkerService
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureServices((hostContext, services) =>
+                .UseSerilog()
+                .ConfigureAppConfiguration(config =>
                 {
-                    services.InitAllServices();
-                    services.AddHostedService<LogProcessingWorker>();
-                });
+                    config.ConfigureConfigurationProvider();
+                })
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }
