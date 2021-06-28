@@ -11,14 +11,14 @@ namespace OffLogs.Business.Extensions
 {
     public static class AppExtensions
     {
-        public static IServiceCollection InitAllServices(this IServiceCollection services)
+        public static IServiceCollection InitServices(this IServiceCollection services)
         {
             services.InitBaseServices();
             services.InitDbServices();
             return services;
         }
         
-        public static IServiceCollection InitDbServices(this IServiceCollection services)
+        private static IServiceCollection InitDbServices(this IServiceCollection services)
         {
             // DAO
             services.AddScoped<ICommonDao, CommonDao>();
@@ -29,7 +29,7 @@ namespace OffLogs.Business.Extensions
             return services;
         }
         
-        public static IServiceCollection InitBaseServices(this IServiceCollection services)
+        private static IServiceCollection InitBaseServices(this IServiceCollection services, bool isWorker = false)
         {
             // System
             services.AddHttpContextAccessor();

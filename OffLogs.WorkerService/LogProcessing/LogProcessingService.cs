@@ -1,26 +1,25 @@
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using OffLogs.Business.Services.Kafka;
 
-namespace OffLogs.WorkerService.Workers
+namespace OffLogs.WorkerService.LogProcessing
 {
-    public class LogProcessingWorker : BackgroundService
+    public class LogProcessingService: ILogProcessingService
     {
-        private readonly ILogger<LogProcessingWorker> _logger;
+        private readonly ILogger<LogProcessingService> _logger;
         private readonly IKafkaConsumerService _kafkaConsumerService;
 
-        public LogProcessingWorker(ILogger<LogProcessingWorker> logger, IKafkaConsumerService kafkaConsumerService)
+        public LogProcessingService(ILogger<LogProcessingService> logger, IKafkaConsumerService kafkaConsumerService)
         {
             _logger = logger;
             _kafkaConsumerService = kafkaConsumerService;
 
-            _logger.LogDebug("Init LogProcessingWorker...");
+            _logger.LogDebug("Init LogProcessingService...");
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        public async Task DoWork(CancellationToken stoppingToken)
         {
             _logger.LogDebug("Start execution...");
             
