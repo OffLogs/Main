@@ -64,7 +64,7 @@ namespace OffLogs.Business.Services.Kafka
                 AllowAutoCreateTopics = false,
             };
 
-            _timerProcessedCounter = new Timer(1000);
+            _timerProcessedCounter = new Timer(5000);
             _timerProcessedCounter.Elapsed += OnProcessedCounterTimerTick;
             _timerProcessedCounter.Start();
         }
@@ -99,7 +99,7 @@ namespace OffLogs.Business.Services.Kafka
                 // We don't want wait until log message will be written
                 var counter = _processedLogsCounter;
                 _processedLogsCounter = 0;
-                LogDebug($"Processed messages counter: {counter}/sec");
+                LogDebug($"Processed messages counter: {counter}/{_timerProcessedCounter.Interval / 1000} sec");
             }
         }
         
