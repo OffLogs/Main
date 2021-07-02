@@ -8,16 +8,10 @@
 
 <h1>Logs</h1>
 
-<CustomDropDown 
-    Items="@_listItems" 
-    @ref="_selectApplications" 
-    OnChanged="OnSelectedApplication"
-    NonSelectedLabel="Select your application"
-/>
-
 <CustomAsyncDropDown
     NonSelectedLabel="Select your application"
     OnLoad="@(async () => await OnLoadApplicationsAsync())"
+    OnChanged="OnSelectedApplicationAsync"
 />
 
 <table class="table table-hover w-table">
@@ -43,12 +37,9 @@
     private int _selectedApplicationId = 1;
 
     private CustomDropDown _selectApplications { get; set; }
-    
-    private List<DropDownListItem> _listItems = new()
-    {
-        
-    };
-    
+
+    private List<DropDownListItem> _listItems = new() {};
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -75,11 +66,16 @@
         Console.WriteLine("asdads");
     }
 
-    private void OnSelectedApplication(DropDownListItem selectListItem)
+    private async Task OnSelectedApplicationAsync(DropDownListItem selectListItem)
     {
-        Console.WriteLine(selectListItem?.Id);
+        if (selectListItem != null)
+        {
+            _selectedApplicationId = selectListItem.IdAsInt;
+            _currentPage = 1;
+            LoadListAsync();
+        }
     }
-    
+
     private async Task<ICollection<DropDownListItem>> OnLoadApplicationsAsync()
     {
         var applications = await _apiService.GetApplications();
