@@ -2,14 +2,15 @@
 @using System.Timers
 @using OffLogs.Web.Core.Constants
 @using System.Collections
+@using OffLogs.Web.Services.Events
 @inject ToastService _toastService
 
 <div class="w-custom-input-select">
     <div class="btn-group">
-        <button
-            type="button"
-            class="btn btn-@BtnType dropdown-toggle"
-            @onclick="@(() => ShowDropDown(!_isOpened))">
+        <button type="button"
+                class="btn btn-@BtnType dropdown-toggle"
+                @onclick="@(() => { ShowDropDown(!_isOpened); Console.WriteLine("aaa");  })"
+                @onclick:stopPropagation>
             @_selectedItemTitle
         </button>
         <div class="dropdown-menu @(_isOpened ? "show" : "")">
@@ -18,7 +19,8 @@
                 <a class="dropdown-item @(item.IsSelected ? "active" : "")"
                    href="#"
                    @onclick="@(async () => await OnClickSelectItemAsync(item))"
-                   @onclick:preventDefault="true">
+                   @onclick:preventDefault="true"
+                   @onclick:stopPropagation>
                     @item.Label
                 </a>
             }
@@ -126,5 +128,4 @@
         _isOpened = isShow;
         StateHasChanged();
     }
-
 }

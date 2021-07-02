@@ -1,19 +1,21 @@
 ﻿@using OffLogs.Web.Core.Extensions
 @using OffLogs.Web.Core.Constants
 @using OffLogs.Web.Services
+@using OffLogs.Web.Services.Events
 @using OffLogs.Web.Shared.Ui.Toast
 @inject IAuthorizationService _authService
 @inject NavigationManager _navigationManager
 @inject ToastService _toastService
+@inject IGlobalEventsService _eventsService
 @inherits LayoutComponentBase
 
-<div class="page">
-    
+<div class="page" @onclick="OnClickDocument">
+
     @if (_isShowMainMenu)
     {
         <div class="sidebar">
-            <NavMenu/>
-        </div>    
+            <NavMenu />
+        </div>
     }
 
     @if (_isInitialized)
@@ -22,27 +24,25 @@
             @if (_isShowMainMenu)
             {
                 <div class="top-row px-4">
-                    <a 
-                        @onClick="OnLogout"
-                        href="#"
-                        class="ml-md-auto"
-                    >
+                    <a @onClick="OnLogout"
+                       href="#"
+                       class="ml-md-auto">
                         Logout
                     </a>
-                </div>  
+                </div>
             }
 
             <div class="content px-4">
                 @Body
             </div>
-            <ToastMessageContainer/>
-        </div>    
+            <ToastMessageContainer />
+        </div>
     }
 </div>
 
 @code {
     private bool _isInitialized = false;
-    
+
     private bool _isLoggedIn = false;
 
     private bool _isShowMainMenu = false;
@@ -53,7 +53,7 @@
 
         _navigationManager.LocationChanged += (sender, args) =>
         {
-            CheckIsLoggedInAndRedirect();    
+            CheckIsLoggedInAndRedirect();
         };
 
         await _authService.CheckIsLoggedInAsync();
@@ -79,4 +79,8 @@
         _navigationManager.NavigateTo("/");
     }
 
+    private void OnClickDocument()
+    {
+        _eventsService.InvokeOnClickDocumentAsync();
+    }
 }
