@@ -1,26 +1,29 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffLogs.Api", "OffLogs.Api\OffLogs.Api.csproj", "{05E3F529-E1BE-4B16-817F-686062F6C00A}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffLogs.Api", "OffLogs.Api\OffLogs.Api.csproj", "{05E3F529-E1BE-4B16-817F-686062F6C00A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffLogs.Business", "OffLogs.Business\OffLogs.Business.csproj", "{1749ED7D-8525-4FF3-A13D-CC0C2A7E3CA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffLogs.Business", "OffLogs.Business\OffLogs.Business.csproj", "{1749ED7D-8525-4FF3-A13D-CC0C2A7E3CA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffLogs.Migrations", "OffLogs.Migrations\OffLogs.Migrations.csproj", "{0CE72F2A-24B6-48DB-B556-18F382EA835E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffLogs.Migrations", "OffLogs.Migrations\OffLogs.Migrations.csproj", "{0CE72F2A-24B6-48DB-B556-18F382EA835E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffLogs.Api.Tests.Integration", "OffLogs.Api.Tests.Integration\OffLogs.Api.Tests.Integration.csproj", "{234E3909-391C-4E02-937B-382E105A4BB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffLogs.Api.Tests.Integration", "OffLogs.Api.Tests.Integration\OffLogs.Api.Tests.Integration.csproj", "{234E3909-391C-4E02-937B-382E105A4BB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffLogs.Api.Tests.Unit", "OffLogs.Api.Tests.Unit\OffLogs.Api.Tests.Unit.csproj", "{BAC75AD4-940E-4E6F-853D-5A01D916F3BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffLogs.Api.Tests.Unit", "OffLogs.Api.Tests.Unit\OffLogs.Api.Tests.Unit.csproj", "{BAC75AD4-940E-4E6F-853D-5A01D916F3BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffLogs.Console", "OffLogs.Console\OffLogs.Console.csproj", "{3E1C6EA9-AF48-43CD-8BDA-D5D39A8CB1E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffLogs.Console", "OffLogs.Console\OffLogs.Console.csproj", "{3E1C6EA9-AF48-43CD-8BDA-D5D39A8CB1E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffLogs.Web", "OffLogs.Web\OffLogs.Web.csproj", "{198917B0-A634-4F0D-A496-36161600DAFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffLogs.Web", "OffLogs.Web\OffLogs.Web.csproj", "{198917B0-A634-4F0D-A496-36161600DAFF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{94C8D1CA-2DF9-4F3E-B08A-E7F49E9E050F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffLogs.Business.Common", "OffLogs.Business.Common\OffLogs.Business.Common.csproj", "{DCFBCCA3-C783-4DB6-B1CC-C09593A242B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffLogs.Business.Common", "OffLogs.Business.Common\OffLogs.Business.Common.csproj", "{DCFBCCA3-C783-4DB6-B1CC-C09593A242B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffLogs.Api.Frontend", "OffLogs.Api.Frontend\OffLogs.Api.Frontend.csproj", "{55DCD9CE-7649-42D3-915E-9F52B05EEBE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffLogs.Api.Frontend", "OffLogs.Api.Frontend\OffLogs.Api.Frontend.csproj", "{55DCD9CE-7649-42D3-915E-9F52B05EEBE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffLogs.WorkerService", "OffLogs.WorkerService\OffLogs.WorkerService.csproj", "{0BD5353C-13FC-4CC6-9C79-29E77DBDA749}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffLogs.WorkerService", "OffLogs.WorkerService\OffLogs.WorkerService.csproj", "{0BD5353C-13FC-4CC6-9C79-29E77DBDA749}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,8 +72,15 @@ Global
 		{0BD5353C-13FC-4CC6-9C79-29E77DBDA749}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BD5353C-13FC-4CC6-9C79-29E77DBDA749}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{234E3909-391C-4E02-937B-382E105A4BB2} = {94C8D1CA-2DF9-4F3E-B08A-E7F49E9E050F}
 		{BAC75AD4-940E-4E6F-853D-5A01D916F3BB} = {94C8D1CA-2DF9-4F3E-B08A-E7F49E9E050F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		LessCompiler = 198917b0-a634-4f0d-a496-36161600daff
+		SolutionGuid = {63E75E79-B233-4DE6-B7BA-50C825A8C820}
 	EndGlobalSection
 EndGlobal
