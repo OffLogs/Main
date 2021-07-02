@@ -26,12 +26,33 @@
       <Content Include="Pages\Dashboard\Log\Index.razor.less" />
       <Content Include="Shared\Ui\Form\CustomDropDown\CustomDropDown.razor.less" />
       <Content Include="Shared\Ui\MyButton.razor.less" />
+      <Content Include="Shared\Ui\Preloader.razor.less" />
       <Content Include="Shared\Ui\Toast\ToastMessage.razor.less" />
       <Content Include="Shared\Ui\Toast\ToastMessageContainer.razor.less" />
     </ItemGroup>
 
     <ItemGroup>
       <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\MaterialIcons-Regular.codepoints" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\MaterialIcons-Regular.ttf" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\MaterialIconsOutlined-Regular.codepoints" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\MaterialIconsOutlined-Regular.otf" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\MaterialIconsRound-Regular.codepoints" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\MaterialIconsRound-Regular.otf" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\MaterialIconsSharp-Regular.codepoints" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\MaterialIconsSharp-Regular.otf" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\MaterialIconsTwoTone-Regular.codepoints" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\MaterialIconsTwoTone-Regular.otf" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\README.md" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\FONT-LICENSE" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\css\open-iconic-bootstrap.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.eot" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.otf" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.ttf" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.woff" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\ICON-LICENSE" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\README.md" />
     </ItemGroup>
 
 </Project>

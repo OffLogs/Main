@@ -6,5 +6,14 @@ namespace OffLogs.Web.Shared.Ui.Form.CustomDropDown
         public string Label { get; set; }
         public string Description { get; set; }
         public bool IsSelected { get; set; }
+
+        public long IdAsLong
+        {
+            get
+            {
+                long.TryParse(Id, out long value);
+                return value;
+            }
+        }
     }
 }

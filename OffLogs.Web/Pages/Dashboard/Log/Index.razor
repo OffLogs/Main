@@ -3,34 +3,36 @@
 @using OffLogs.Business.Common.Models.Api.Request.Board
 @using OffLogs.Business.Common.Models.Api.Response.Board
 @using OffLogs.Web.Shared.Ui.Form.CustomDropDown
+@using OffLogs.Web.Shared.Ui
 @using System.Collections
 @inject IApiService _apiService
 
 <h1>Logs</h1>
 
-<CustomDropDown 
-    Items="@_listItems" 
-    @ref="_selectApplications" 
-    OnChanged="OnSelectedApplication"
-    NonSelectedLabel="Select your application"
-/>
+<Preloader/>
 
 <CustomAsyncDropDown
+    @ref="_dropDownApplications"
     NonSelectedLabel="Select your application"
     OnLoad="@(async () => await OnLoadApplicationsAsync())"
+    OnChanged="@(async (item) => await OnSelectedApplication(item))"
 />
 
 <table class="table table-hover w-table">
     <thead>
         <tr>
-           <th>Name</th> 
+            <th>Message</th> 
+            <th>Log time</th>
+            <th>Create time</th>
         </tr>
     </thead>
     <tbody>
     @foreach (var log in _logs)
     {
-        <tr>
-            <td @onclick="OnClickRowAsync">@log.Message</td>
+        <tr @onclick="OnClickRowAsync">
+            <td>@log.Message</td>
+            <td>@log.LogTime</td>
+            <td>@log.CreateTime</td>
         </tr>    
     }
     </tbody>
@@ -38,32 +40,34 @@
 
 @code
 {
+    private CustomAsyncDropDown _dropDownApplications;
     private List<LogResponseModel> _logs = new();
     private int _currentPage = 1;
-    private int _selectedApplicationId = 1;
+    private long? _selectedApplicationId;
 
-    private CustomDropDown _selectApplications { get; set; }
-    
-    private List<DropDownListItem> _listItems = new()
-    {
-        
-    };
-    
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        await LoadListAsync(false);
+        //_dropDownApplications.SetSelectedItemId($"{_selectedApplicationId}");
     }
 
     private async Task LoadListAsync(bool isLoadNextPage = true)
     {
+        if (!_selectedApplicationId.HasValue)
+        {
+            return;
+        }
         if (isLoadNextPage)
         {
             _currentPage++;
         }
+        else
+        {
+            _currentPage = 1;
+        }
         var response = await _apiService.GetLogs(new LogListRequestModel()
         {
-            ApplicationId = _selectedApplicationId,
+            ApplicationId = _selectedApplicationId.Value,
             Page = _currentPage
         });
         _logs = response.Items.ToList();
@@ -75,15 +79,16 @@
         Console.WriteLine("asdads");
     }
 
-    private void OnSelectedApplication(DropDownListItem selectListItem)
+    private async Task OnSelectedApplication(DropDownListItem selectListItem)
     {
-        Console.WriteLine(selectListItem?.Id);
+        _selectedApplicationId = selectListItem.IdAsLong;
+        await LoadListAsync(false);
     }
     
     private async Task<ICollection<DropDownListItem>> OnLoadApplicationsAsync()
     {
-        var applications = await _apiService.GetApplications();
-        return applications.Items.Select(record => new DropDownListItem()
+        var response = await _apiService.GetApplications();
+        return response.Items.Select(record => new DropDownListItem()
         {
             Id = $"{record.Id}",
             Label = record.Name
