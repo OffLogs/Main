@@ -31,8 +31,7 @@ namespace OffLogs.Business.Db.Entities
                 {
                     _token = SecurityUtil.GetTimeBasedToken();
                 }
-
-                return "";
+                return _token;
             }
             set => _token = value;
         }
