@@ -1,18 +1,32 @@
 using System;
 using Newtonsoft.Json;
+using NHibernate.Mapping.Attributes;
 using OffLogs.Business.Common.Models.Api.Response.Board;
 
 namespace OffLogs.Business.Db.Entity
 {
+    [Class(Table = "log_traces")]
     public class LogTraceEntity
     {
+        [Id(Name = "Id", Generator = "native")]
+        [Column(Name = "id", SqlType = "INT", NotNull = true)]
         public virtual long Id { get; set; }
         
         [JsonIgnore]
+        [ManyToOne(
+            ClassType = typeof(LogEntity), 
+            Column = "log_id", 
+            Lazy = Laziness.False,
+            Cascade = "save-update"
+        )]
         public virtual LogEntity Log { get; set; }
         
+        [Property(NotNull = true)]
+        [Column(Name = "trace", Length = 2048, NotNull = true)]
         public virtual string Trace { get; set; }
         
+        [Property(NotNull = true)]
+        [Column(Name = "create_time", SqlType = "datetime", NotNull = true)]
         public virtual DateTime CreateTime { get; set; }
         
         [JsonIgnore]
