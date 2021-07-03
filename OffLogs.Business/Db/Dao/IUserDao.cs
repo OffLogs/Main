@@ -1,6 +1,6 @@
 using System.Data.SqlClient;
 using System.Threading.Tasks;
-using OffLogs.Business.Db.Entity;
+using OffLogs.Business.Db.Entities;
 
 namespace OffLogs.Business.Db.Dao
 {

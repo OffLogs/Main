@@ -17,6 +17,7 @@
       <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.7.1" />
       <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
       <PackageReference Include="NHibernate" Version="5.3.8" />
+      <PackageReference Include="NHibernate.Mapping.Attributes" Version="5.1.0" />
       <PackageReference Include="Npgsql" Version="5.0.4" />
       <PackageReference Include="System.Data.SqlClient" Version="4.4.3" />
       <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
@@ -43,24 +44,16 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>RG.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Include="Db\hibernate.hbm.xml" />
       <EmbeddedResource Include="Db\Mapping\RequestLog.hbm.xml" />
-      <EmbeddedResource Include="Db\Queries\example\log_get_list.sql">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </EmbeddedResource>
-      <EmbeddedResource Include="Db\Queries\example\named_query_example.xml">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </EmbeddedResource>
-      <EmbeddedResource Include="Db\Queries\example\named_sql_query_example.xml">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </EmbeddedResource>
       <EmbeddedResource Include="Db\Queries\getLogWithData.hbm.xml" />
+      <None Remove="Db\hibernate.hbm.xml" />
       <None Remove="Db\Queries\log_get_list.sql" />
       <EmbeddedResource Include="Db\Mapping\Application.hbm.xml" />
       <EmbeddedResource Include="Db\Mapping\LogProperty.hbm.xml" />
       <EmbeddedResource Include="Db\Mapping\LogTrace.hbm.xml" />
       <EmbeddedResource Include="Db\Mapping\User.hbm.xml" />
       <None Remove="Db\hibernate.cfg.xml" />
-      <EmbeddedResource Include="Db\hibernate.cfg.xml" />
       <None Remove="Db\Mapping\Cat.hbm.xml" />
       <None Remove="Db\Mapping\Log.hbm.xml" />
       <EmbeddedResource Include="Db\Mapping\Log.hbm.xml" />

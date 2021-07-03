@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Db.Entity;
+using OffLogs.Business.Db.Entities;
 
 namespace OffLogs.Business.Db.Dao
 {

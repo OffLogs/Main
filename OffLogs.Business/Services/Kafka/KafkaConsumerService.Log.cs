@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using Microsoft.Extensions.Logging;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Db.Entity;
+using OffLogs.Business.Db.Entities;
 using OffLogs.Business.Services.Kafka.Models;
 
 namespace OffLogs.Business.Services.Kafka

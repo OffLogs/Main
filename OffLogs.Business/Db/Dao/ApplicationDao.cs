@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using NHibernate;
 using NHibernate.Linq;
 using NHibernate.Multi;
-using OffLogs.Business.Db.Entity;
+using OffLogs.Business.Db.Entities;
 using OffLogs.Business.Services.Jwt;
 
 namespace OffLogs.Business.Db.Dao

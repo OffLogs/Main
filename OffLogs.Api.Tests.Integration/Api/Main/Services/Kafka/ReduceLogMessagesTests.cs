@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Helpers;
 using Xunit;
 

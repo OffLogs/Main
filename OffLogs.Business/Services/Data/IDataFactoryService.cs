@@ -1,6 +1,6 @@
 using Bogus;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Db.Entity;
+using OffLogs.Business.Db.Entities;
 
 namespace OffLogs.Business.Services.Data
 {

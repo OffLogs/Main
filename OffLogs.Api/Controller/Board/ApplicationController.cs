@@ -13,7 +13,6 @@ using OffLogs.Business.Common.Models.Api.Request.Board;
 using OffLogs.Business.Common.Models.Api.Response;
 using OffLogs.Business.Common.Models.Api.Response.Board;
 using OffLogs.Business.Db.Dao;
-using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Mvc.Controller;
 using OffLogs.Business.Services.Jwt;
 

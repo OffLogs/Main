@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Db.Entity;
+using OffLogs.Business.Db.Entities;
 using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main.Db.LogDaoTest

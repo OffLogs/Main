@@ -1,8 +1,7 @@
 using System;
 using NHibernate.Mapping.Attributes;
-using OffLogs.Business.Constants;
 
-namespace OffLogs.Business.Db.Entity
+namespace OffLogs.Business.Db.Entities
 {
     [Class(Table = "users")]
     public class UserEntity

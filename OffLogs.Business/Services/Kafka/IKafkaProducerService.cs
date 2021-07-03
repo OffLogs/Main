@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using OffLogs.Business.Db.Entity;
+using OffLogs.Business.Db.Entities;
 
 namespace OffLogs.Business.Services.Kafka
 {

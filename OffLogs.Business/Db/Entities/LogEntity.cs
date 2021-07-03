@@ -9,9 +9,9 @@ using OffLogs.Business.Db.Types;
 using OffLogs.Business.Extensions;
 using OffLogs.Business.Helpers;
 
-namespace OffLogs.Business.Db.Entity
+namespace OffLogs.Business.Db.Entities
 {
-    [Class(Table = "logs")]
+    [Class(Table = "logs", NameType = typeof(LogEntity))]
     public class LogEntity
     {
         [Id(Name = "Id", Generator = "native")]
@@ -32,7 +32,7 @@ namespace OffLogs.Business.Db.Entity
                     _token = SecurityUtil.GetTimeBasedToken();
                 }
 
-                return _token;
+                return "";
             }
             set => _token = value;
         }
@@ -40,11 +40,11 @@ namespace OffLogs.Business.Db.Entity
         [JsonIgnore]
         [ManyToOne(
             ClassType = typeof(ApplicationEntity), 
-            Column = "employee_id", 
+            Column = "application_id", 
             Lazy = Laziness.False
         )]
         public virtual ApplicationEntity Application { get; set; }
-        
+
         [Property(TypeType = typeof(LogLevelConstantType), NotNull = true)]
         [Column(Name = "level", Length = 4, NotNull = true)]
         public virtual LogLevel Level { get; set; }
@@ -62,7 +62,7 @@ namespace OffLogs.Business.Db.Entity
         public virtual DateTime LogTime { get; set; }
         
         [Property(NotNull = true)]
-        [Column(Name = "create_time", SqlType = "datetime")]
+        [Column(Name = "create_time", SqlType = "datetime", NotNull = false)]
         public virtual DateTime CreateTime { get; set; }
         
         [Bag(Inverse = true, Lazy = CollectionLazy.False, Cascade = "all-delete-orphan")]
@@ -74,37 +74,6 @@ namespace OffLogs.Business.Db.Entity
         [Key(Column = "log_id")]
         [OneToMany(ClassType = typeof(LogPropertyEntity))]
         public virtual ICollection<LogPropertyEntity> Properties { get; set; } = new List<LogPropertyEntity>();
-        
-        [JsonIgnore]
-        public virtual LogResponseModel ResponseModel
-        {
-            get
-            {
-                var model = new LogResponseModel()
-                {
-                    Id = Id,
-                    ApplicationId = Application.Id,
-                    Level = Level.GetValue(),
-                    Message = Message,
-                    LogTime = LogTime,
-                    CreateTime = CreateTime,
-                };
-                
-                if (Traces != null && !Traces.IsHibernateLazy())
-                {
-                    model.Traces = Traces.Select(item => item.Trace).ToList();
-                }
-                if (Properties != null && !Properties.IsHibernateLazy())
-                {
-                    model.Properties = Properties.ToDictionary(
-                        item => item.Key, 
-                        item => item.Value
-                    );
-                }
-
-                return model;
-            }
-        }
 
         public virtual void AddTrace(LogTraceEntity entity)
         {
@@ -116,6 +85,33 @@ namespace OffLogs.Business.Db.Entity
         {
             entity.Log = this;
             Properties.Add(entity);
+        }
+
+        public virtual LogResponseModel GetResponseModel()
+        {
+            var model = new LogResponseModel()
+            {
+                Id = Id,
+                ApplicationId = Application.Id,
+                Level = Level.GetValue(),
+                Message = Message,
+                LogTime = LogTime,
+                CreateTime = CreateTime,
+            };
+
+            if (Traces != null && !Traces.IsHibernateLazy())
+            {
+                model.Traces = Traces.Select(item => item.Trace).ToList();
+            }
+            if (Properties != null && !Properties.IsHibernateLazy())
+            {
+                model.Properties = Properties.ToDictionary(
+                    item => item.Key,
+                    item => item.Value
+                );
+            }
+
+            return model;
         }
     }
 }

@@ -1,14 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json;
 using NHibernate.Mapping.Attributes;
-using OffLogs.Business.Common.Models.Api.Response.Board;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Extensions;
-using OffLogs.Business.Helpers;
+using OffLogs.Business.Db.Types;
 
-namespace OffLogs.Business.Db.Entity
+namespace OffLogs.Business.Db.Entities
 {
     [Class(Table = "request_logs")]
     public class RequestLogEntity
@@ -17,7 +12,7 @@ namespace OffLogs.Business.Db.Entity
         [Column(Name = "id", SqlType = "INT", NotNull = true)]
         public virtual long Id { get; set; }
 
-        [Property(TypeType = typeof(RequestLogType), NotNull = true)]
+        [Property(TypeType = typeof(RequestLogTypeConstantType), NotNull = true)]
         [Column(Name = "type", Length = 4, NotNull = true)]
         public virtual RequestLogType Type { get; set; }
         

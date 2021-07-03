@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Db.Entity;
+using OffLogs.Business.Db.Entities;
 
 namespace OffLogs.Business.Services.Kafka.Models
 {

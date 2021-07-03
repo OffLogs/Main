@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using NHibernate.Mapping.Attributes;
 using OffLogs.Business.Common.Models.Api.Response.Board;
 
-namespace OffLogs.Business.Db.Entity
+namespace OffLogs.Business.Db.Entities
 {
     [Class(Table = "log_traces")]
     public class LogTraceEntity
