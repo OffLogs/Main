@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using NHibernate.Linq;
 using Npgsql;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Db.Entity;
+using OffLogs.Business.Db.Entities;
 using OffLogs.Business.Helpers;
 
 namespace OffLogs.Business.Db.Dao

@@ -54,7 +54,7 @@ namespace OffLogs.Api.Controller.Board
                     model.Page,
                     GlobalConstants.ListPageSize
                 );
-                var responseList = list.Select(item => item.ResponseModel).ToList();
+                var responseList = list.Select(item => item.GetResponseModel()).ToList();
                 return JsonSuccess(
                     new PaginatedResponseModel<LogResponseModel>(responseList, totalItems)
                 );

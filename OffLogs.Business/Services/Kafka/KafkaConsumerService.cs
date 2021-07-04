@@ -5,7 +5,6 @@ using Confluent.Kafka;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OffLogs.Business.Db.Dao;
-using OffLogs.Business.Db.Entity;
 using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Kafka.Deserializers;
 using System.Timers;

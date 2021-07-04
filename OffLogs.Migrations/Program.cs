@@ -44,7 +44,9 @@ namespace OffLogs.Migrations
         {
             var migrationClasses = (
                 from t in Assembly.GetExecutingAssembly().GetTypes()
-                where t.IsClass && t.Namespace.Contains("OffLogs.Migrations")
+                where t.IsClass 
+                    && t.Namespace != null 
+                    && t.Namespace.Contains("OffLogs.Migrations")
                 select t.Assembly
             );
 

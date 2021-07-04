@@ -13,8 +13,7 @@ using NHibernate.Linq;
 using NHibernate.Multi;
 using NHibernate.Proxy;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Db.Entity;
-using LogLevel = OffLogs.Business.Constants.LogLevel;
+using OffLogs.Business.Db.Entities;
 
 namespace OffLogs.Business.Db.Dao
 {

@@ -1,21 +1,36 @@
 using System;
-using Bogus.DataSets;
 using Newtonsoft.Json;
+using NHibernate.Mapping.Attributes;
 using OffLogs.Business.Common.Models.Api.Response.Board;
 
-namespace OffLogs.Business.Db.Entity
+namespace OffLogs.Business.Db.Entities
 {
+    [Class(Table = "log_properties")]
     public class LogPropertyEntity
     {
+        [Id(Name = "Id", Generator = "native")]
+        [Column(Name = "id", SqlType = "bigint", NotNull = true)]
         public virtual long Id { get; set; }
         
         [JsonIgnore]
+        [ManyToOne(
+            ClassType = typeof(LogEntity), 
+            Column = "log_id", 
+            Lazy = Laziness.False,
+            Cascade = "save-update"
+        )]
         public virtual LogEntity Log { get; set; }
         
+        [Property(NotNull = true)]
+        [Column(Name = "key", Length = 200, NotNull = true)]
         public virtual string Key { get; set; }
         
+        [Property(NotNull = true)]
+        [Column(Name = "value", Length = 2048, NotNull = true)]
         public virtual string Value { get; set; }
         
+        [Property(NotNull = true)]
+        [Column(Name = "create_time", SqlType = "datetime", NotNull = true)]
         public virtual DateTime CreateTime { get; set; }
         
         [JsonIgnore]

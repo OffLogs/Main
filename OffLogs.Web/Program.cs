@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OffLogs.Web.Services;
+using OffLogs.Web.Services.Events;
 using OffLogs.Web.Services.Http;
 
 namespace OffLogs.Web
@@ -27,8 +28,9 @@ namespace OffLogs.Web
                 }
             );
             builder.Services.AddBlazoredLocalStorage();
-       
+
             // Custom services
+            builder.Services.AddScoped<IGlobalEventsService, GlobalEventsService>();
             builder.Services.AddScoped<IApiService, ApiService>();
             builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
             builder.Services.AddSingleton<ToastService>();

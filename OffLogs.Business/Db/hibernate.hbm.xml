@@ -8,6 +8,6 @@
         <property name="query.substitutions">true=1, false=0</property>
 
         <!-- mapping files -->
-        <mapping assembly="OffLogs.Business" />
+      <!-- <mapping assembly="OffLogs.Business" /> -->
     </session-factory>
 </hibernate-configuration>

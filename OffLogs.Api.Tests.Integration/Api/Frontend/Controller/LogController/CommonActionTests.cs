@@ -28,7 +28,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
                     new
                     {
                         Timestamp = "2021-03-01T21:50:42.1422383+02:00",
-                        Level = LogLevel.Warning.GetValue(),
+                        Level = SiteLogLevel.Warning.GetValue(),
                         Message = "This is Warning message",
                         Properties = new {
                             SourceContext = "OffLogs.Api.Controller.HomeController",
@@ -76,7 +76,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
                 {
                     new {
                         Timestamp = "2021-03-01T21:50:42.1437253+02:00",
-                        Level = LogLevel.Fatal.GetValue(),
+                        Level = SiteLogLevel.Fatal.GetValue(),
                         Message = "This is Critical message",
                         Properties = new {
                             SourceContext = "OffLogs.Api.Controller.HomeController",
@@ -124,7 +124,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
                 {
                     new {
                         Timestamp = "2021-03-01T21:50:42.1440609+02:00",
-                        Level = LogLevel.Information.GetValue(),
+                        Level = SiteLogLevel.Information.GetValue(),
                         Message = "This is Information message",
                         Properties = new {
                             SourceContext = "OffLogs.Api.Controller.HomeController",
@@ -140,7 +140,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
                     },
                     new {
                         Timestamp = "2021-03-01T21:50:42.1440609+02:00",
-                        Level = LogLevel.Information.GetValue(),
+                        Level = SiteLogLevel.Information.GetValue(),
                         Message = "This is Information message",
                         Properties = new {
                             SourceContext = "OffLogs.Api.Controller.HomeController",
@@ -188,7 +188,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
                 {
                     new  {
                         Timestamp = "2021-03-01T21:50:42.1443263+02:00",
-                        Level = LogLevel.Error.GetValue(),
+                        Level = SiteLogLevel.Error.GetValue(),
                         Message = "The method or operation is not implemented.",
                         Traces = new List<string>()
                         {
@@ -243,7 +243,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             {
                 logs.Add(new {
                     Timestamp = "2021-03-01T21:50:42.1440609+02:00",
-                    Level = LogLevel.Information.GetValue(),
+                    Level = SiteLogLevel.Information.GetValue(),
                     Message = "This is Information message",
                     Properties = new {
                         SourceContext = "OffLogs.Api.Controller.HomeController",

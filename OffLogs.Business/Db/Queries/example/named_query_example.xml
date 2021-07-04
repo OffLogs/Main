@@ -1,5 +1,0 @@
-﻿<query name="Eg.DomesticCat.by.name.and.minimum.weight"><![CDATA[
-    from Eg.DomesticCat as cat
-        where cat.Name = ?
-        and cat.Weight > ?
-]]></query>

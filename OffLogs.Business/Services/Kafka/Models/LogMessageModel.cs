@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Db.Entity;
+using OffLogs.Business.Db.Entities;
 
 namespace OffLogs.Business.Services.Kafka.Models
 {
@@ -11,7 +12,7 @@ namespace OffLogs.Business.Services.Kafka.Models
         public string ApplicationJwtToken { get; set; }
         public string ClientIp { get; set; }
         
-        public string LogLevel { get; set; }
+        public LogLevel LogLevel { get; set; }
         
         public string Message { get; set; }
         
@@ -27,7 +28,7 @@ namespace OffLogs.Business.Services.Kafka.Models
         {
             ApplicationJwtToken = applicationJwt;
             Token = logEntity.Token;
-            LogLevel = logEntity.Level.GetValue();
+            LogLevel = logEntity.Level;
             Message = logEntity.Message;
             LogTime = logEntity.LogTime;
             Traces = logEntity.Traces;
@@ -39,7 +40,7 @@ namespace OffLogs.Business.Services.Kafka.Models
             return new()
             {
                 Token = Token,
-                Level = new LogLevel().FromString(LogLevel),
+                Level = LogLevel,
                 Message = Message,
                 LogTime = LogTime,
                 Traces = Traces,

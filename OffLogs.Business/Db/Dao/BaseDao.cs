@@ -2,18 +2,24 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NHibernate;
 using NHibernate.Cfg;
+using NHibernate.Mapping.Attributes;
+using OffLogs.Business.Utils;
+
 namespace OffLogs.Business.Db.Dao
 {
     public class BaseDao
     {
-        protected ILogger<BaseDao> Logger;
+        private readonly string _dbNamespace = "OffLogs.Business.Db";
         
+        protected ILogger<BaseDao> Logger;
         private static ISessionFactory _sessionFactory;
         
         protected ISession Session
@@ -29,6 +35,7 @@ namespace OffLogs.Business.Db.Dao
             Logger = logger;
             if (_sessionFactory == null)
             {
+                var currentAssembly = Assembly.GetExecutingAssembly();
                 var connectionString = configuration.GetConnectionString("DefaultConnection");
                 var properties = new Dictionary<string, string>
                 {
@@ -41,10 +48,29 @@ namespace OffLogs.Business.Db.Dao
                     properties.Add("show_sql", "true");            
                     properties.Add("format_sql", "true");
                 }
-                _sessionFactory = new Configuration()
-                    .Configure(Assembly.GetExecutingAssembly(), "OffLogs.Business.Db.hibernate.cfg.xml")
-                    .SetProperties(properties)
-                    .BuildSessionFactory();
+
+                var hibernateConfiguration = new Configuration()
+                    .AddProperties(properties)
+                    .Configure(currentAssembly, $"{_dbNamespace}.hibernate.hbm.xml");
+
+                // Enable validation (optional)
+                HbmSerializer.Default.Validate = true;
+
+                // Import all entities and queries
+                hibernateConfiguration.AddInputStream(HbmSerializer.Default.Serialize(currentAssembly));
+                // Import all mapping files
+                currentAssembly.GetManifestResourceNames().Where(resourceName => {
+                    return resourceName.StartsWith($"{_dbNamespace}.Queries");
+                    // TODO: Delete files and revert it
+                    //|| resourceName.StartsWith($"{_dbNamespace}.Mapping")
+                })
+                .Select(resourceName => {
+                    var filePath = IoUtils.GetResourcePath(currentAssembly, resourceName);
+                    hibernateConfiguration.AddInputStream(currentAssembly.GetManifestResourceStream(filePath));
+                    return resourceName;
+                }).ToArray();
+
+                _sessionFactory = hibernateConfiguration.BuildSessionFactory();
             }
         }
 
