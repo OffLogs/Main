@@ -10,6 +10,9 @@
   justify-content: center;
   text-align: center;
 }
+::deep tbody {
+  background-color: #0a53be;
+}
 ::deep tbody tr {
   cursor: pointer;
 }
