@@ -1,16 +1,20 @@
+.w-custom-table {
+  background-color: #0a53be;
+}
 .w-custom-table table thead tr th {
   font-weight: bold;
-}
-.w-custom-table table tbody tr {
-  cursor: pointer;
-}
-.w-custom-table table tbody tr td {
-  font-size: 12px;
 }
 .w-custom-table table .w-centered {
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+}
+::deep tbody tr {
+  cursor: pointer;
+}
+::deep tbody tr td {
+  font-size: 12px;
+  word-break: break-word;
 }
 /*# sourceMappingURL=CustomTable.razor.css.map */

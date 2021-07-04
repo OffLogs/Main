@@ -1,1 +1,1 @@
-{"version":3,"sources":["CustomTable.razor.less"],"names":[],"mappings":"AAAA,eACE,MACE,MACE,GACE;EACE,iBAAA;;AALV,eACE,MASE,MACE;EACE,eAAA;;AAZR,eACE,MASE,MACE,GAGE;EACE,eAAA;;AAfV,eACE,MAmBE;EACE,aAAA;EACA,mBAAA;EACA,uBAAA;EACA,kBAAA","file":"CustomTable.razor.css"}
+{"version":3,"sources":["CustomTable.razor.less"],"names":[],"mappings":"AAAA;EACE,yBAAA;;AADF,eAGE,MACE,MACE,GACE;EACE,iBAAA;;AAPV,eAGE,MASE;EACE,aAAA;EACA,mBAAA;EACA,uBAAA;EACA,kBAAA;;AAKN,MAAO,MACL;EACE,eAAA;;AAFJ,MAAO,MACL,GAGE;EACE,eAAA;EACA,sBAAA","file":"CustomTable.razor.css"}

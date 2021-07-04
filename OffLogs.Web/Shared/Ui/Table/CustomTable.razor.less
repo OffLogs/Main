@@ -1,20 +1,12 @@
 ﻿.w-custom-table {
+  background-color: #0a53be;
+  
   table {
     thead {
       tr {
         th {
           font-weight: bold;
         }
-      }
-    }
-
-    tbody {
-      tr {
-        cursor: pointer;
-        
-        td {
-          font-size: 12px;
-        }  
       }
     }
 
@@ -25,4 +17,15 @@
       text-align: center;
     }
   }  
+}
+
+::deep tbody {
+  tr {
+    cursor: pointer;
+
+    td {
+      font-size: 12px;
+      word-break: break-word;
+    }
+  }
 }
