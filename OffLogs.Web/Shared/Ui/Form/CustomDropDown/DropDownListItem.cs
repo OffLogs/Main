@@ -14,5 +14,14 @@ namespace OffLogs.Web.Shared.Ui.Form.CustomDropDown
                 return parsedValue;
             }
         }
+
+        public long IdAsLong
+        {
+            get
+            {
+                long.TryParse(Id, out long value);
+                return value;
+            }
+        }
     }
 }

@@ -42,6 +42,7 @@ namespace OffLogs.Web.Services.Http
             {
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
             }
+
             // send request
             HttpResponseMessage response = await _httpClient.SendAsync(request);
             var responseString = await response.Content.ReadAsStringAsync();

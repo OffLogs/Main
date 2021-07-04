@@ -106,7 +106,7 @@
         StateHasChanged();
         if (OnChanged.HasDelegate)
         {
-            OnChanged.InvokeAsync(SelectedItem).Wait();
+            OnChanged.InvokeAsync(SelectedItem);
         }
     }
 
