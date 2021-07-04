@@ -1,7 +1,10 @@
 .w-custom-table table thead tr th {
   font-weight: bold;
 }
-.w-custom-table table tbody td {
+.w-custom-table table tbody tr {
+  cursor: pointer;
+}
+.w-custom-table table tbody tr td {
   font-size: 12px;
 }
 .w-custom-table table .w-centered {

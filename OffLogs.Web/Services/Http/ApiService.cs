@@ -139,5 +139,25 @@ namespace OffLogs.Web.Services.Http
 
             return response?.Data;
         }
+
+        public async Task<LogResponseModel> GetLog(long logId)
+        {
+            var response = await PostAuthorizedAsync<LogResponseModel>(
+                ApiUrl.LogGet, 
+                new LogGetOneRequestModel() { 
+                    Id = logId    
+                }
+            );
+            if (response == null)
+            {
+                throw new ServerErrorException();
+            }
+
+            if (!response.IsSuccess)
+            {
+                throw new Exception(response.Message);
+            }
+            return response?.Data;
+        }
     }
 }
