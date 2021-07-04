@@ -1,0 +1,46 @@
+﻿@using OffLogs.Web.Resources
+<table class="table">
+    <thead>
+    <tr>
+        @foreach (var col in Cols)
+        {
+            <th scope="col">@col.Name</th>    
+        }
+    </tr>
+    </thead>
+    <tbody>
+    @ChildContent
+    @if (IsLoading)
+    {
+        <tr class="w-preloader">
+            <td colspan="@Cols.Count">
+                <Preloader/>
+            </td>
+        </tr>    
+    }
+    @if (IsShowNotFound)
+    {
+        <tr>
+            <td colspan="@Cols.Count">
+                <div class="w-not-found">
+                    @Common.TableItemsNotFound
+                </div>
+            </td>
+        </tr>    
+    }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public bool IsLoading { get; set; } = false;
+    
+    [Parameter]
+    public bool IsShowNotFound { get; set; } = false;
+
+    [Parameter]
+    public ICollection<CustomTableRowModel> Cols { get; set; } = new List<CustomTableRowModel>();
+}

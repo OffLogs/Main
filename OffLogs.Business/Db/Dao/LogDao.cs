@@ -154,18 +154,15 @@ namespace OffLogs.Business.Db.Dao
             var offset = (page <= 0 ? 0 : page) * pageSize;
 
             using var session = Session;
-            var listQuery = session.Query<LogEntity>()
+            var logs = await session.GetNamedQuery("Log.getList")
+                .SetParameter("applicationId", applicationId)
+                .SetFirstResult(offset)
+                .SetMaxResults(pageSize)
+                .ListAsync<LogEntity>();
+            var count = await session.Query<LogEntity>()
                 .Where(record => record.Application.Id == applicationId)
-                .Fetch(record => record.Application)
-                .Skip(offset)
-                .Take(pageSize)
-                .ToFuture();
-            var countQuery = session.Query<LogEntity>()
-                .Where(record => record.Application.Id == applicationId)
-                .ToFutureValue(query => query.Count());
-            var list = await listQuery.GetEnumerableAsync();
-            var count = await countQuery.GetValueAsync();
-            return (list, count);
+                .LongCountAsync();
+            return (logs, count);
         }
         
         public async Task<bool> IsOwner(long userId, long logId)

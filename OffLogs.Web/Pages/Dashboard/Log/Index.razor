@@ -2,14 +2,12 @@
 @using OffLogs.Web.Services.Http
 @using OffLogs.Business.Common.Models.Api.Request.Board
 @using OffLogs.Business.Common.Models.Api.Response.Board
-@using OffLogs.Web.Shared.Ui.Form.CustomDropDown
-@using OffLogs.Web.Shared.Ui
 @using System.Collections
+@using Bunit.Extensions
 @inject IApiService _apiService
+@inject ToastService _toastService
 
 <h1>Logs</h1>
-
-<Preloader/>
 
 <CustomAsyncDropDown
     @ref="_dropDownApplications"
@@ -18,15 +16,11 @@
     OnChanged="@(async (item) => await OnSelectedApplication(item))"
 />
 
-<table class="table table-hover w-table">
-    <thead>
-        <tr>
-            <th>Message</th> 
-            <th>Log time</th>
-            <th>Create time</th>
-        </tr>
-    </thead>
-    <tbody>
+<CustomTable 
+    Cols="@_tableCols" 
+    IsLoading="@_isLoading"
+    IsShowNotFound="@(_tableCols.Count == 0)"
+    >
     @foreach (var log in _logs)
     {
         <tr @onclick="OnClickRowAsync">
@@ -35,8 +29,7 @@
             <td>@log.CreateTime</td>
         </tr>    
     }
-    </tbody>
-</table>
+</CustomTable>
 
 @code
 {
@@ -45,10 +38,19 @@
     private int _currentPage = 1;
     private long? _selectedApplicationId;
 
+    private bool _isLoading = false;
+
+    private ICollection<CustomTableRowModel> _tableCols = new List<CustomTableRowModel>()
+    {
+        new(){ Name = "Message" },
+        new(){ Name = "Log time" },
+        new(){ Name = "Create time" }
+    };
+    
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        //_dropDownApplications.SetSelectedItemId($"{_selectedApplicationId}");
+        // _dropDownApplications.SetSelectedItemId($"{_selectedApplicationId}");
     }
 
     private async Task LoadListAsync(bool isLoadNextPage = true)
@@ -57,20 +59,34 @@
         {
             return;
         }
+        _isLoading = true;
         if (isLoadNextPage)
         {
             _currentPage++;
         }
         else
         {
+            _logs.Clear();
             _currentPage = 1;
         }
-        var response = await _apiService.GetLogs(new LogListRequestModel()
+        try
         {
-            ApplicationId = _selectedApplicationId.Value,
-            Page = _currentPage
-        });
-        _logs = response.Items.ToList();
+            var response = await _apiService.GetLogs(new LogListRequestModel()
+            {
+                ApplicationId = _selectedApplicationId.Value,
+                Page = _currentPage
+            });
+            _logs = _logs.Concat(response.Items).ToList();
+        }
+        catch (Exception e)
+        {
+            _toastService.AddServerErrorMessage();
+            Console.WriteLine(e.Message, e);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
         StateHasChanged();
     }
 
@@ -87,11 +103,25 @@
     
     private async Task<ICollection<DropDownListItem>> OnLoadApplicationsAsync()
     {
-        var response = await _apiService.GetApplications();
-        return response.Items.Select(record => new DropDownListItem()
+        _isLoading = true;
+        try
         {
-            Id = $"{record.Id}",
-            Label = record.Name
-        }).ToList();
+            var response = await _apiService.GetApplications();
+            return response.Items.Select(record => new DropDownListItem()
+            {
+                Id = $"{record.Id}",
+                Label = record.Name
+            }).ToList();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message, e);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+        StateHasChanged();
+        return default;
     }
 }

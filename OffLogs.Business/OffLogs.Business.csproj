@@ -47,6 +47,7 @@
       <EmbeddedResource Include="Db\hibernate.hbm.xml" />
       <EmbeddedResource Include="Db\Mapping\RequestLog.hbm.xml" />
       <EmbeddedResource Include="Db\Queries\getLogWithData.hbm.xml" />
+      <EmbeddedResource Include="Db\Queries\Log\getList.hbm.xml" />
       <None Remove="Db\hibernate.hbm.xml" />
       <None Remove="Db\Queries\log_get_list.sql" />
       <EmbeddedResource Include="Db\Mapping\Application.hbm.xml" />

@@ -41,7 +41,8 @@ namespace OffLogs.Business.Db.Entities
         [ManyToOne(
             ClassType = typeof(ApplicationEntity), 
             Column = "application_id", 
-            Lazy = Laziness.False
+            Lazy = Laziness.False,
+            Fetch = FetchMode.Join
         )]
         public virtual ApplicationEntity Application { get; set; }
 
@@ -65,12 +66,12 @@ namespace OffLogs.Business.Db.Entities
         [Column(Name = "create_time", SqlType = "datetime", NotNull = false)]
         public virtual DateTime CreateTime { get; set; }
         
-        [Bag(Inverse = true, Lazy = CollectionLazy.False, Cascade = "all-delete-orphan")]
+        [Bag(Inverse = true, Lazy = CollectionLazy.Extra, Cascade = "all-delete-orphan")]
         [Key(Column = "log_id")]
         [OneToMany(ClassType = typeof(LogTraceEntity))]
         public virtual ICollection<LogTraceEntity> Traces { get; set; } = new List<LogTraceEntity>();
         
-        [Bag(Inverse = true, Lazy = CollectionLazy.False, Cascade = "all-delete-orphan")]
+        [Bag(Inverse = true, Lazy = CollectionLazy.Extra, Cascade = "all-delete-orphan")]
         [Key(Column = "log_id")]
         [OneToMany(ClassType = typeof(LogPropertyEntity))]
         public virtual ICollection<LogPropertyEntity> Properties { get; set; } = new List<LogPropertyEntity>();
