@@ -85,7 +85,12 @@ namespace OffLogs.Business.Db.Dao
                 application => application.Id == applicationId && application.User.Id == userId
             ).AnyAsync();
         }
-        
+
+        public async Task<bool> IsOwner(long userId, ApplicationEntity application)
+        {
+            return await Task.FromResult(application.User.Id == userId);
+        }
+
         public async Task<(ICollection<ApplicationEntity>, long)> GetList(long userId, int page, int pageSize = 30)
         {
             page = page - 1;

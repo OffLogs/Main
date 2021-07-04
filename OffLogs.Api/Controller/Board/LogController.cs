@@ -66,6 +66,30 @@ namespace OffLogs.Api.Controller.Board
             }
         }
         
+        [HttpPost("get")]
+        public async Task<IActionResult> GetOne([FromBody]LogGetOneRequestModel model)
+        {
+            try
+            {
+                var userId = _jwtService.GetUserId();
+                var log = await _logDao.GetLogAsync(model.Id);
+                if (log == null)
+                {
+                    return JsonError(HttpStatusCode.NotFound);
+                }
+                if (!(await _applicationDao.IsOwner(userId, log.Application)))
+                {
+                    return JsonError(HttpStatusCode.Forbidden);
+                }
+                return JsonSuccess(log.GetResponseModel());
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, e.Message);
+                return JsonError();
+            }
+        }
+        
         [HttpPost("setFavorite")]
         public async Task<IActionResult> SetIsFavorite([FromBody]LogSetFavoriteRequestModel model)
         {

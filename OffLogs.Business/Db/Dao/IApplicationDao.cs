@@ -12,6 +12,7 @@ namespace OffLogs.Business.Db.Dao
         Task<ApplicationEntity> CreateNewApplication(UserEntity user, string name);
         Task<ApplicationEntity> UpdateApplication(long applicationId, string name);
         Task<bool> IsOwner(long userId, long applicationId);
+        Task<bool> IsOwner(long userId, ApplicationEntity application);
         Task<(ICollection<ApplicationEntity>, long)> GetList(long userId, int page, int pageSize = 30);
     }
 }
