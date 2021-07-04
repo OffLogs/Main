@@ -6,11 +6,11 @@ namespace OffLogs.Business.Constants
 {
     public class SiteLogLevel : AConstant<SiteLogLevel>
     {
-        public static readonly SiteLogLevel Error = new SiteLogLevel("E", "Error");
-        public static readonly SiteLogLevel Warning = new SiteLogLevel("W", "Warning");
-        public static readonly SiteLogLevel Fatal = new SiteLogLevel("F", "Fatal");
-        public static readonly SiteLogLevel Information = new SiteLogLevel("I", "Information");
-        public static readonly SiteLogLevel Debug = new SiteLogLevel("D", "Debug");
+        public static readonly SiteLogLevel Error = new("E", "Error");
+        public static readonly SiteLogLevel Warning = new("W", "Warning");
+        public static readonly SiteLogLevel Fatal = new("F", "Fatal");
+        public static readonly SiteLogLevel Information = new("I", "Information");
+        public static readonly SiteLogLevel Debug = new("D", "Debug");
         
         public SiteLogLevel() { }
         
