@@ -28,16 +28,6 @@ namespace OffLogs.Migrations.Migrations
                 .FromTable("logs").ForeignColumn("log_level")
                 .ToTable("log_levels").PrimaryColumn("id");
 
-            Execute.Sql("UPDATE logs SET log_level = 1 WHERE level = 'E';");
-            Execute.Sql("UPDATE logs SET log_level = 2 WHERE level = 'W';");
-            Execute.Sql("UPDATE logs SET log_level = 3 WHERE level = 'F';");
-            Execute.Sql("UPDATE logs SET log_level = 4 WHERE level = 'I';");
-            Execute.Sql("UPDATE logs SET log_level = 5 WHERE level = 'D';");
-
-            Delete.Column("level").FromTable("logs");
-
-            Rename.Column("log_level").OnTable("logs").To("level");
-
             // request_logs
             Create.Table("request_log_types")
                .WithColumn("id").AsInt64().PrimaryKey()
@@ -53,13 +43,6 @@ namespace OffLogs.Migrations.Migrations
             Create.ForeignKey()
                 .FromTable("request_logs").ForeignColumn("log_type")
                 .ToTable("request_log_types").PrimaryColumn("id");
-
-            Execute.Sql("UPDATE request_logs SET log_type = 1 WHERE type = 'L';");
-            Execute.Sql("UPDATE request_logs SET log_type = 2 WHERE type = 'R';");
-
-            Delete.Column("type").FromTable("request_logs");
-
-            Rename.Column("log_type").OnTable("request_logs").To("type");
 
             base.Up();
         }
