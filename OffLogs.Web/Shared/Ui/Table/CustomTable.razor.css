@@ -1,0 +1,6 @@
+table tr.w-preloader td {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/*# sourceMappingURL=CustomTable.razor.css.map */

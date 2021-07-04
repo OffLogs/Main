@@ -1,0 +1,32 @@
+﻿<table class="table">
+    <thead>
+    <tr>
+        @foreach (var col in Cols)
+        {
+            <th scope="col">@col.Name</th>    
+        }
+    </tr>
+    </thead>
+    <tbody>
+    @ChildContent
+    @if (IsLoading)
+    {
+        <tr class="w-preloader">
+            <td colspan="@Cols.Count">
+                <Preloader/>
+            </td>
+        </tr>    
+    }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public bool IsLoading { get; set; } = true;
+
+    [Parameter]
+    public ICollection<CustomTableRowModel> Cols { get; set; } = new List<CustomTableRowModel>();
+}

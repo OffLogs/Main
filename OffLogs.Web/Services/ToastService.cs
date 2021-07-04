@@ -30,6 +30,11 @@ namespace OffLogs.Web.Services
             _timer.Start();
         }
 
+        public void AddServerErrorMessage(string text = null)
+        {
+            AddErrorMessage("Server error", text);
+        }
+        
         public void AddErrorMessage(string title, string text = null)
         {
             AddMessage(ToastMessageType.Error, title, text);

@@ -1,0 +1,9 @@
+.w-preloader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.w-preloader img {
+  width: 64px;
+}
+/*# sourceMappingURL=Preloader.razor.css.map */
