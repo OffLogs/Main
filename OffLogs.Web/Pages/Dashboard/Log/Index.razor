@@ -3,6 +3,7 @@
 @using OffLogs.Business.Common.Models.Api.Request.Board
 @using OffLogs.Business.Common.Models.Api.Response.Board
 @using System.Collections
+@using Bunit.Extensions
 @inject IApiService _apiService
 @inject ToastService _toastService
 
@@ -15,7 +16,11 @@
     OnChanged="@(async (item) => await OnSelectedApplication(item))"
 />
 
-<CustomTable Cols="@_tableCols" IsLoading="@_isLoading">
+<CustomTable 
+    Cols="@_tableCols" 
+    IsLoading="@_isLoading"
+    IsShowNotFound="@(_tableCols.Count == 0)"
+    >
     @foreach (var log in _logs)
     {
         <tr @onclick="OnClickRowAsync">
@@ -61,6 +66,7 @@
         }
         else
         {
+            _logs.Clear();
             _currentPage = 1;
         }
         try
@@ -70,7 +76,7 @@
                 ApplicationId = _selectedApplicationId.Value,
                 Page = _currentPage
             });
-            _logs = response.Items.ToList();
+            _logs = _logs.Concat(response.Items).ToList();
         }
         catch (Exception e)
         {

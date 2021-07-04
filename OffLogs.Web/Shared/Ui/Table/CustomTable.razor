@@ -1,4 +1,5 @@
-﻿<table class="table">
+﻿@using OffLogs.Web.Resources
+<table class="table">
     <thead>
     <tr>
         @foreach (var col in Cols)
@@ -17,6 +18,16 @@
             </td>
         </tr>    
     }
+    @if (IsShowNotFound)
+    {
+        <tr>
+            <td colspan="@Cols.Count">
+                <div class="w-not-found">
+                    @Common.TableItemsNotFound
+                </div>
+            </td>
+        </tr>    
+    }
     </tbody>
 </table>
 
@@ -25,7 +36,10 @@
     public RenderFragment ChildContent { get; set; }
 
     [Parameter]
-    public bool IsLoading { get; set; } = true;
+    public bool IsLoading { get; set; } = false;
+    
+    [Parameter]
+    public bool IsShowNotFound { get; set; } = false;
 
     [Parameter]
     public ICollection<CustomTableRowModel> Cols { get; set; } = new List<CustomTableRowModel>();
