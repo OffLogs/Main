@@ -9,9 +9,13 @@ namespace OffLogs.Migrations.Migrations
         public override void Up()
         {
             // logs
-            Create.Index("ix_logs_application_id")
-                .OnTable("logs")
-                .OnColumn("application_id");
+            Create.Index("ix_log_properties_log_id")
+                .OnTable("log_properties")
+                .OnColumn("log_id");
+            
+            Create.Index("ix_log_traces_log_id")
+                .OnTable("log_traces")
+                .OnColumn("log_id");
 
             base.Up();
         }
