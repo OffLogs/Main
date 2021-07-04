@@ -67,7 +67,7 @@ namespace OffLogs.Api.Controller.Board
         }
         
         [HttpPost("setFavorite")]
-        public async Task<IActionResult> GetList([FromBody]LogSetFavoriteRequestModel model)
+        public async Task<IActionResult> SetIsFavorite([FromBody]LogSetFavoriteRequestModel model)
         {
             try
             {
