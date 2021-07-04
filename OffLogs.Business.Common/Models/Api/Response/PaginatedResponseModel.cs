@@ -16,6 +16,12 @@ namespace OffLogs.Business.Common.Models.Api.Response
         [JsonPropertyName("pageSize")]
         public int PageSize { get; set; }
 
+        [JsonPropertyName("isHasMore")]
+        public bool IsHasMore
+        {
+            get => PageSize <= Items.Count;
+        }
+
         public PaginatedResponseModel()
         {
         }

@@ -4,6 +4,7 @@
 @using OffLogs.Business.Common.Models.Api.Response.Board
 @using System.Collections
 @using Bunit.Extensions
+@using OffLogs.Business.Common.Extensions
 @inject IApiService _apiService
 @inject ToastService _toastService
 
@@ -19,14 +20,16 @@
 <CustomTable 
     Cols="@_tableCols" 
     IsLoading="@_isLoading"
-    IsShowNotFound="@(_tableCols.Count == 0)"
+    IsShowNotFound="@(!_logs.Any())"
+    IsShowMoreBtn="_isHasMore"
+    OnClickMoreBtn="OnMoreAsyncAsync"
     >
     @foreach (var log in _logs)
     {
         <tr @onclick="OnClickRowAsync">
-            <td>@log.Message</td>
-            <td>@log.LogTime</td>
-            <td>@log.CreateTime</td>
+            <td>@log.Message.Truncate(128)</td>
+            <td>@log.LogTime.ToShortDateString() @log.LogTime.ToLongTimeString()</td>
+            <td>@log.CreateTime.ToShortDateString() @log.CreateTime.ToLongTimeString()</td>
         </tr>    
     }
 </CustomTable>
@@ -36,6 +39,7 @@
     private CustomAsyncDropDown _dropDownApplications;
     private List<LogResponseModel> _logs = new();
     private int _currentPage = 1;
+    private bool _isHasMore = false;
     private long? _selectedApplicationId;
 
     private bool _isLoading = false;
@@ -77,6 +81,7 @@
                 Page = _currentPage
             });
             _logs = _logs.Concat(response.Items).ToList();
+            _isHasMore = response.IsHasMore;
         }
         catch (Exception e)
         {
@@ -95,6 +100,11 @@
         Console.WriteLine("asdads");
     }
 
+    private async Task OnMoreAsyncAsync()
+    {
+        await LoadListAsync();
+    }
+    
     private async Task OnSelectedApplication(DropDownListItem selectListItem)
     {
         _selectedApplicationId = selectListItem.IdAsLong;
