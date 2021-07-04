@@ -10,5 +10,6 @@ namespace OffLogs.Web.Core.Constants
         public static readonly string ApplicationUpdate = "board/application/update";
         
         public static readonly string LogList = "board/log/list";
+        public static readonly string LogGet = "board/log/get";
     }
 }

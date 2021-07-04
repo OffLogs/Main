@@ -21,4 +21,7 @@
     <data name="TableItemsNotFound" xml:space="preserve">
         <value>Empty...</value>
     </data>
+    <data name="Error_LogNotFound" xml:space="preserve">
+        <value>Log not found!</value>
+    </data>
 </root>

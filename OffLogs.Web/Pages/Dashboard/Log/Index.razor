@@ -35,7 +35,7 @@
     }
 </CustomTable>
 
-<LogInfoModal IsShowAddModal="@(_selectedLog != null)"/>
+<LogInfoModal IsShowAddModal="@(_selectedLog != null)" LogId="@_selectedLog?.Id"/>
 
 @code
 {

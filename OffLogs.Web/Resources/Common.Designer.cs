@@ -61,7 +61,16 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not found....
+        ///   Looks up a localized string similar to Log not found!.
+        /// </summary>
+        internal static string Error_LogNotFound {
+            get {
+                return ResourceManager.GetString("Error_LogNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Empty....
         /// </summary>
         internal static string TableItemsNotFound {
             get {
