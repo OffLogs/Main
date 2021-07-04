@@ -1,6 +1,13 @@
-table .w-not-found {
+.w-custom-table table thead tr th {
+  font-weight: bold;
+}
+.w-custom-table table tbody td {
+  font-size: 12px;
+}
+.w-custom-table table .w-centered {
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
 }
 /*# sourceMappingURL=CustomTable.razor.css.map */

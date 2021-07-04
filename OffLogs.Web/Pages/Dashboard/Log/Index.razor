@@ -1,9 +1,11 @@
 ﻿@page "/dashboard/logs"
 @using OffLogs.Web.Services.Http
+@using OffLogs.Web.Pages.Dashboard.Log.Info
 @using OffLogs.Business.Common.Models.Api.Request.Board
 @using OffLogs.Business.Common.Models.Api.Response.Board
 @using System.Collections
 @using Bunit.Extensions
+@using OffLogs.Business.Common.Extensions
 @inject IApiService _apiService
 @inject ToastService _toastService
 
@@ -19,24 +21,30 @@
 <CustomTable 
     Cols="@_tableCols" 
     IsLoading="@_isLoading"
-    IsShowNotFound="@(_tableCols.Count == 0)"
+    IsShowNotFound="@(!_logs.Any())"
+    IsShowMoreBtn="_isHasMore"
+    OnClickMoreBtn="OnMoreAsyncAsync"
     >
     @foreach (var log in _logs)
     {
-        <tr @onclick="OnClickRowAsync">
-            <td>@log.Message</td>
-            <td>@log.LogTime</td>
-            <td>@log.CreateTime</td>
+        <tr @onclick="@(async (item) => await OnClickRowAsync(log))">
+            <td>@log.Message.Truncate(128)</td>
+            <td>@log.LogTime.ToShortDateString() @log.LogTime.ToLongTimeString()</td>
+            <td>@log.CreateTime.ToShortDateString() @log.CreateTime.ToLongTimeString()</td>
         </tr>    
     }
 </CustomTable>
+
+<LogInfoModal IsShowAddModal="@(_selectedLog != null)"/>
 
 @code
 {
     private CustomAsyncDropDown _dropDownApplications;
     private List<LogResponseModel> _logs = new();
     private int _currentPage = 1;
+    private bool _isHasMore = false;
     private long? _selectedApplicationId;
+    private LogResponseModel _selectedLog = null;
 
     private bool _isLoading = false;
 
@@ -77,6 +85,7 @@
                 Page = _currentPage
             });
             _logs = _logs.Concat(response.Items).ToList();
+            _isHasMore = response.IsHasMore;
         }
         catch (Exception e)
         {
@@ -90,11 +99,17 @@
         StateHasChanged();
     }
 
-    private async Task OnClickRowAsync()
+    private async Task OnClickRowAsync(LogResponseModel log)
     {
-        Console.WriteLine("asdads");
+        _selectedLog = log;
+        StateHasChanged();
     }
 
+    private async Task OnMoreAsyncAsync()
+    {
+        await LoadListAsync();
+    }
+    
     private async Task OnSelectedApplication(DropDownListItem selectListItem)
     {
         _selectedApplicationId = selectListItem.IdAsLong;
