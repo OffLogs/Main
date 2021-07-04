@@ -9,11 +9,11 @@ namespace OffLogs.Business.Db.Entities
     public class RequestLogEntity
     {
         [Id(Name = "Id", Generator = "native")]
-        [Column(Name = "id", SqlType = "INT", NotNull = true)]
+        [Column(Name = "id", SqlType = "bigint", NotNull = true)]
         public virtual long Id { get; set; }
 
-        [Property(TypeType = typeof(RequestLogTypeConstantType), NotNull = true)]
-        [Column(Name = "type", Length = 4, NotNull = true)]
+        [Property(TypeType = typeof(RequestLogType), NotNull = true)]
+        [Column(Name = "type", SqlType = "int", NotNull = true)]
         public virtual RequestLogType Type { get; set; }
         
         [Property(NotNull = false)]

@@ -8,7 +8,7 @@ namespace OffLogs.Business.Db.Entities
     public class ApplicationEntity
     {
         [Id(Name = "Id", Generator = "native")]
-        [Column(Name = "id", SqlType = "INT", NotNull = true)]
+        [Column(Name = "id", SqlType = "bigint", NotNull = true)]
         public virtual long Id { get; set; }
         
         [ManyToOne(

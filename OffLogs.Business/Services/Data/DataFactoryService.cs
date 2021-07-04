@@ -1,5 +1,6 @@
 using System;
 using Bogus;
+using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Db.Entities;
 

@@ -14,7 +14,6 @@ using NHibernate.Multi;
 using NHibernate.Proxy;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Db.Entities;
-using LogLevel = OffLogs.Business.Constants.LogLevel;
 
 namespace OffLogs.Business.Db.Dao
 {

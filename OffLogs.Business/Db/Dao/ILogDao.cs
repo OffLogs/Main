@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Db.Entities;
 

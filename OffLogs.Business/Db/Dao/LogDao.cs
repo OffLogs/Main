@@ -5,15 +5,14 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Linq;
 using NHibernate.Multi;
 using NHibernate.Proxy;
+using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Db.Entities;
-using LogLevel = OffLogs.Business.Constants.LogLevel;
 
 namespace OffLogs.Business.Db.Dao
 {
@@ -21,7 +20,7 @@ namespace OffLogs.Business.Db.Dao
     {
         public LogDao(
             IConfiguration configuration, 
-            ILogger<LogDao> logger
+            Microsoft.Extensions.Logging.ILogger<LogDao> logger
         ) : base(
             configuration,
             logger

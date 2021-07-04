@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using NHibernate.Mapping.Attributes;
+using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Models.Api.Response.Board;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Db.Types;
@@ -15,7 +16,7 @@ namespace OffLogs.Business.Db.Entities
     public class LogEntity
     {
         [Id(Name = "Id", Generator = "native")]
-        [Column(Name = "id", SqlType = "INT", NotNull = true)]
+        [Column(Name = "id", SqlType = "bigint", NotNull = true)]
         public virtual long Id { get; set; }
         
         [JsonIgnore]
@@ -44,8 +45,8 @@ namespace OffLogs.Business.Db.Entities
         )]
         public virtual ApplicationEntity Application { get; set; }
 
-        [Property(TypeType = typeof(LogLevelConstantType), NotNull = true)]
-        [Column(Name = "level", Length = 4, NotNull = true)]
+        [Property(TypeType = typeof(LogLevel), NotNull = true)]
+        [Column(Name = "level", SqlType = "int", NotNull = true)]
         public virtual LogLevel Level { get; set; }
         
         [Property(NotNull = true)]
@@ -92,7 +93,7 @@ namespace OffLogs.Business.Db.Entities
             {
                 Id = Id,
                 ApplicationId = Application.Id,
-                Level = Level.GetValue(),
+                Level = Level,
                 Message = Message,
                 LogTime = LogTime,
                 CreateTime = CreateTime,

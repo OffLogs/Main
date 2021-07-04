@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
+using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Mvc.Attribute.Constant;
 using OffLogs.Business.Common.Mvc.Attribute.Validation;
 using OffLogs.Business.Constants;
@@ -13,7 +14,7 @@ namespace OffLogs.Api.Models.Request.Log.Common
         public DateTime Timestamp { get; set; }
         
         [StringLength(100)]
-        [IsValidConstant(typeof(LogLevel))]
+        [IsValidConstant(typeof(SiteLogLevel))]
         public string Level { get; set; }
         
         [StringLength(1024)]
