@@ -1,0 +1,64 @@
+﻿@using OffLogs.Business.Common.Models.Api.Response.Board
+@using OffLogs.Web.Services.Http
+@inject IApiService _apiService
+
+@if (_isLoading)
+{
+    <Preloader />
+}
+else
+{
+    <div class="row">
+        <div class="col-6">
+            Properties:
+            @foreach (var property in _log.Properties)
+            {
+                <div>
+                    <b>@property.Key:</b> @property.Value
+                </div>
+            }
+        </div>
+        <div class="col-6">
+            Traces:
+            @foreach (var trace in _log.Traces)
+            {
+                <div>@trace</div>
+            }
+        </div>
+    </div>    
+}
+
+@code {
+    [Parameter]
+    public long LogId { get; set; }
+
+    public LogResponseModel _log;
+    private bool _isLoading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadListAsync();
+    }
+    
+    private async Task LoadListAsync()
+    {
+        if (_log != null)
+        {
+            return;
+        }
+        _isLoading = true;
+        try
+        {
+            _log = await _apiService.GetLog(LogId);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message, e);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+        StateHasChanged();
+    }
+}

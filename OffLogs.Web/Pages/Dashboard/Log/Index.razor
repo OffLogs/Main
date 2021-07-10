@@ -1,6 +1,7 @@
 ﻿@page "/dashboard/logs"
 @using OffLogs.Web.Services.Http
 @using OffLogs.Web.Pages.Dashboard.Log.Info
+@using OffLogs.Web.Pages.Dashboard.Log.Parts
 @using OffLogs.Business.Common.Models.Api.Request.Board
 @using OffLogs.Business.Common.Models.Api.Response.Board
 @using System.Collections
@@ -23,7 +24,7 @@
 
 @foreach (var log in _logs)
 {
-    <div class="accordion mb-1">
+    <div class="accordion mb-1 w-log-block">
         <div class="accordion-item">
             <h2 class="accordion-header">
                 <button
@@ -38,7 +39,10 @@
             </h2>
             <div class="accordion-collapse collapse @(_expandedLogIds.Contains(@log.Id) ? "show" : "")">
                 <div class="accordion-body">
-                    aaaaaaaaaaaaaaaaaaaa
+                    @if (_expandedLogIds.Contains(@log.Id))
+                    {
+                        <LogInfoBlock LogId="@log.Id" />
+                    }
                 </div>
             </div>
         </div>
