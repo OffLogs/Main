@@ -1,11 +1,13 @@
 ﻿@page "/dashboard/logs"
 @using OffLogs.Web.Services.Http
 @using OffLogs.Web.Pages.Dashboard.Log.Info
+@using OffLogs.Web.Pages.Dashboard.Log.Parts
 @using OffLogs.Business.Common.Models.Api.Request.Board
 @using OffLogs.Business.Common.Models.Api.Response.Board
-@using System.Collections
-@using Bunit.Extensions
+@using OffLogs.Business.Common.Constants
 @using OffLogs.Business.Common.Extensions
+@using OffLogs.Web.Constants
+@using OffLogs.Web.Extensions
 @inject IApiService _apiService
 @inject ToastService _toastService
 
@@ -18,22 +20,56 @@
     OnChanged="@(async (item) => await OnSelectedApplication(item))"
 />
 
-<CustomTable 
-    Cols="@_tableCols" 
-    IsLoading="@_isLoading"
-    IsShowNotFound="@(!_logs.Any())"
-    IsShowMoreBtn="_isHasMore"
-    OnClickMoreBtn="OnMoreAsyncAsync"
-    >
-    @foreach (var log in _logs)
+@foreach (var log in _logs)
+{
+    <div class="accordion mb-1 w-log-block">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button
+                    @onclick="@(() => ExpandOrCloseLog(log))"
+                    class="accordion-button @(_expandedLogIds.Contains(@log.Id) ? "collapsed" : "")"
+                    type="button">
+                    
+                    @log.LogTime.ToFullDateTime()
+                    <Badge Color="@log.Level.GetBootstrapColorType()" Class="ms-2 me-2">
+                        @log.Level.GetLabel()
+                    </Badge>
+                    @log.Message.Truncate(128)
+                </button>
+            </h2>
+            <div class="accordion-collapse collapse @(_expandedLogIds.Contains(@log.Id) ? "show" : "")">
+                <div class="accordion-body">
+                    @if (_expandedLogIds.Contains(@log.Id))
+                    {
+                        <LogInfoBlock LogId="@log.Id" />
+                    }
+                </div>
+            </div>
+        </div>
+    </div>  
+}
+
+@if (_logs.Count == 0 && !_isLoading)
+{
+    <Alert Type="BootstrapColorType.Info">List is empty...</Alert>
+}
+
+<div class="mt-3 mb-5">
+    @if (_isLoading)
     {
-        <tr @onclick="@(async (item) => await OnClickRowAsync(log))">
-            <td>@log.Message.Truncate(128)</td>
-            <td>@log.LogTime.ToShortDateString() @log.LogTime.ToLongTimeString()</td>
-            <td>@log.CreateTime.ToShortDateString() @log.CreateTime.ToLongTimeString()</td>
-        </tr>    
+        <Preloader/>
     }
-</CustomTable>
+    
+    @if (_isHasMore && !_isLoading)
+    {
+        <div class="text-center">
+            <MyButton
+                OnClick="@(async () => await LoadListAsync())">
+                More
+            </MyButton>
+        </div>
+    }
+</div>
 
 <LogInfoModal IsShowAddModal="@(_selectedLog != null)" LogId="@_selectedLog?.Id"/>
 
@@ -45,6 +81,7 @@
     private bool _isHasMore = false;
     private long? _selectedApplicationId;
     private LogResponseModel _selectedLog = null;
+    private List<long> _expandedLogIds = new();
 
     private bool _isLoading = false;
 
@@ -138,5 +175,18 @@
         }
         StateHasChanged();
         return default;
+    }
+
+    private void ExpandOrCloseLog(LogResponseModel log)
+    {
+        if (_expandedLogIds.Contains(log.Id))
+        {
+            _expandedLogIds.Remove(log.Id);
+        }
+        else
+        {
+            _expandedLogIds.Add(log.Id);
+        }
+        StateHasChanged();
     }
 }

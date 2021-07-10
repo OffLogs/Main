@@ -1,11 +1,16 @@
 ﻿@if (IsShow)
 {
     <div class="w-preloader">
-        <img alt="Loading..." src="/img/preloader/1.gif"/>
+        <div class="spinner-border text-primary @Class">
+          <span class="visually-hidden">Loading...</span>
+        </div>
     </div>
 }
 
 @code {
     [Parameter]
     public bool IsShow { get; set; } = true;
+    
+    [Parameter]
+    public string Class { get; set; }
 }

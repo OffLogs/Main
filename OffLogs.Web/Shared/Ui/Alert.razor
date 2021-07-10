@@ -1,0 +1,14 @@
+﻿@using OffLogs.Web.Constants
+
+<div class="alert alert-@Type.GetName()">
+  @ChildContent
+</div>
+
+@code {
+
+    [Parameter]
+    public BootstrapColorType Type { get; set; } = BootstrapColorType.Primary;
+    
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+}

@@ -1,0 +1,16 @@
+﻿@using OffLogs.Web.Constants
+
+<span class="badge bg-@(Color.GetBadgeClass()) @Class">
+    @ChildContent
+</span>
+
+@code {
+    [Parameter]
+    public BootstrapColorType Color { get; set; }
+    
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    
+    [Parameter]
+    public string Class { get; set; }
+}
