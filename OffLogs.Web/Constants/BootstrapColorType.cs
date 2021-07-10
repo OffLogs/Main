@@ -12,7 +12,9 @@ namespace OffLogs.Web.Constants
         Success,
         Danger,
         Warning,
-        Info
+        Info,
+        Light,
+        Dark
     }
 
     public static class BootstrapColorTypeExtensions
@@ -31,7 +33,22 @@ namespace OffLogs.Web.Constants
                 return "warning";
             if (type == BootstrapColorType.Info)
                 return "info";
+            if (type == BootstrapColorType.Dark)
+                return "dark";
+            if (type == BootstrapColorType.Light)
+                return "light";
             return "";
+        }
+        
+        public static string GetBadgeClass(this BootstrapColorType type)
+        {
+            if (
+                type == BootstrapColorType.Warning
+                || type == BootstrapColorType.Info
+                || type == BootstrapColorType.Light
+            )
+                return type.GetName() + " text-dark";
+            return type.GetName();
         }
     }
 }

@@ -1,13 +1,14 @@
 ﻿@page "/dashboard/logs"
 @using OffLogs.Web.Services.Http
 @using OffLogs.Web.Pages.Dashboard.Log.Info
-@using OffLogs.Web.Shared.Ui.Components.Badges
 @using OffLogs.Business.Common.Models.Api.Request.Board
 @using OffLogs.Business.Common.Models.Api.Response.Board
 @using System.Collections
 @using Bunit.Extensions
+@using OffLogs.Business.Common.Constants
 @using OffLogs.Business.Common.Extensions
 @using OffLogs.Web.Constants
+@using OffLogs.Web.Extensions
 @inject IApiService _apiService
 @inject ToastService _toastService
 
@@ -20,40 +21,40 @@
     OnChanged="@(async (item) => await OnSelectedApplication(item))"
 />
 
-<CustomTable 
-    Cols="@_tableCols" 
-    IsLoading="@_isLoading"
-    IsShowNotFound="@(!_logs.Any())"
-    IsShowMoreBtn="_isHasMore"
-    OnClickMoreBtn="OnMoreAsyncAsync"
-    >
-    @foreach (var log in _logs)
-    {
-        <tr @onclick="@(async (item) => await OnClickRowAsync(log))">
-            <td>@log.Message.Truncate(128)</td>
-            <td>@log.LogTime.ToShortDateString() @log.LogTime.ToLongTimeString()</td>
-            <td>@log.CreateTime.ToShortDateString() @log.CreateTime.ToLongTimeString()</td>
-        </tr>    
-    }
-</CustomTable>
-
-<div class="accordion" id="accordionPanelsStayOpenExample">
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-            <button class="accordion-button" type="button">
-                Accordion Item #1 
-                <Badge Color="BadgeColor.Warning">
-                    Error
-                </Badge>
-            </button>
-        </h2>
-        <div class="accordion-collapse collapse show">
-            <div class="accordion-body">
-                <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+@foreach (var log in _logs)
+{
+    <div class="accordion mb-1">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button
+                    @onclick="@(() => ExpandOrCloseLog(log))"
+                    class="accordion-button @(_expandedLogIds.Contains(@log.Id) ? "collapsed" : "")"
+                    type="button">
+                    <Badge Color="@log.Level.GetBootstrapColorType()" Class="me-2">
+                        @log.Level.GetLabel()
+                    </Badge>
+                    @log.Message.Truncate(128)
+                </button>
+            </h2>
+            <div class="accordion-collapse collapse @(_expandedLogIds.Contains(@log.Id) ? "show" : "")">
+                <div class="accordion-body">
+                    aaaaaaaaaaaaaaaaaaaa
+                </div>
             </div>
         </div>
+    </div>  
+}
+
+@if (_isHasMore)
+{
+    <div class="text-center">
+        <MyButton
+            Class="mt-3 mb-5"
+            OnClick="@(async () => await LoadListAsync())">
+            More
+        </MyButton>
     </div>
-</div>
+}
 
 <LogInfoModal IsShowAddModal="@(_selectedLog != null)" LogId="@_selectedLog?.Id"/>
 
@@ -65,6 +66,7 @@
     private bool _isHasMore = false;
     private long? _selectedApplicationId;
     private LogResponseModel _selectedLog = null;
+    private List<long> _expandedLogIds = new();
 
     private bool _isLoading = false;
 
@@ -158,5 +160,18 @@
         }
         StateHasChanged();
         return default;
+    }
+
+    private void ExpandOrCloseLog(LogResponseModel log)
+    {
+        if (_expandedLogIds.Contains(log.Id))
+        {
+            _expandedLogIds.Remove(log.Id);
+        }
+        else
+        {
+            _expandedLogIds.Add(log.Id);
+        }
+        StateHasChanged();
     }
 }

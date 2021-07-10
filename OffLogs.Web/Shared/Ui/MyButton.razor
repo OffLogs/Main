@@ -3,7 +3,7 @@
 
 <button 
   id="@IdString"
-  class="btn btn-@Type" 
+  class="btn btn-@Type @Class" 
   @onclick="@OnClick" 
   type="@(IsSubmit ? @"submit" : "button")">
   @ChildContent
@@ -18,6 +18,9 @@
   
   [Parameter]
   public string Type { get; set; } = "primary";
+  
+  [Parameter]
+  public string Class { get; set; }
   
   [Parameter]
   public RenderFragment ChildContent { get; set; }
