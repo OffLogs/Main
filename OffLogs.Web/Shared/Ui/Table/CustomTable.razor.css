@@ -1,6 +1,3 @@
-.w-custom-table {
-  background-color: #0a53be;
-}
 .w-custom-table table thead tr th {
   font-weight: bold;
 }
@@ -9,9 +6,6 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-}
-::deep tbody {
-  background-color: #0a53be;
 }
 ::deep tbody tr {
   cursor: pointer;

@@ -1,11 +1,13 @@
 ﻿@page "/dashboard/logs"
 @using OffLogs.Web.Services.Http
 @using OffLogs.Web.Pages.Dashboard.Log.Info
+@using OffLogs.Web.Shared.Ui.Components.Badges
 @using OffLogs.Business.Common.Models.Api.Request.Board
 @using OffLogs.Business.Common.Models.Api.Response.Board
 @using System.Collections
 @using Bunit.Extensions
 @using OffLogs.Business.Common.Extensions
+@using OffLogs.Web.Constants
 @inject IApiService _apiService
 @inject ToastService _toastService
 
@@ -34,6 +36,24 @@
         </tr>    
     }
 </CustomTable>
+
+<div class="accordion" id="accordionPanelsStayOpenExample">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+            <button class="accordion-button" type="button">
+                Accordion Item #1 
+                <Badge Color="BadgeColor.Warning">
+                    Error
+                </Badge>
+            </button>
+        </h2>
+        <div class="accordion-collapse collapse show">
+            <div class="accordion-body">
+                <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+            </div>
+        </div>
+    </div>
+</div>
 
 <LogInfoModal IsShowAddModal="@(_selectedLog != null)" LogId="@_selectedLog?.Id"/>
 
