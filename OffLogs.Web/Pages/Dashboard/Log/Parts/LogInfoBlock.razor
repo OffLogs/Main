@@ -8,9 +8,15 @@
 }
 else
 {
-    <div class="row">
+    <div>
+        <b>Time:</b> @_log.LogTime.ToFullDateTime()
+    </div>
+    <div>
+        <b>Message:</b> @_log.Message
+    </div>
+    <div class="row mt-1">
         <div class="col-6">
-            Properties:
+            <b>Properties:</b>
             @foreach (var property in _log.Properties)
             {
                 <div>
@@ -19,7 +25,7 @@ else
             }
         </div>
         <div class="col-6">
-            Traces:
+            <b>Traces:</b>
             @foreach (var trace in _log.Traces)
             {
                 <div>@trace</div>
