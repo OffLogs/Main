@@ -13,12 +13,18 @@
 
 <h1>Logs</h1>
 
-<CustomAsyncDropDown
-    @ref="_dropDownApplications"
-    NonSelectedLabel="Select your application"
-    OnLoad="@(async () => await OnLoadApplicationsAsync())"
-    OnChanged="@(async (item) => await OnSelectedApplication(item))"
-/>
+<div class="d-flex flex-row mb-3">
+    <CustomAsyncDropDown
+        @ref="_dropDownApplications"
+        Class="me-1"
+        NonSelectedLabel="Select your application"
+        OnLoad="@(async () => await OnLoadApplicationsAsync())"
+        OnChanged="@(async (item) => await OnSelectedApplication(item))"
+    />
+    <LogLevelsDropDown
+        OnChanged="OnSelectLogLevelAsync"
+    />
+</div>
 
 @foreach (var log in _logs)
 {
@@ -79,10 +85,12 @@
     private List<LogResponseModel> _logs = new();
     private int _currentPage = 1;
     private bool _isHasMore = false;
-    private long? _selectedApplicationId;
     private LogResponseModel _selectedLog = null;
     private List<long> _expandedLogIds = new();
 
+    private long? _selectedApplicationId;
+    private LogLevel? _selectedLogLevel;
+    
     private bool _isLoading = false;
 
     private ICollection<CustomTableRowModel> _tableCols = new List<CustomTableRowModel>()
@@ -119,7 +127,8 @@
             var response = await _apiService.GetLogs(new LogListRequestModel()
             {
                 ApplicationId = _selectedApplicationId.Value,
-                Page = _currentPage
+                Page = _currentPage,
+                LogLevel = _selectedLogLevel
             });
             _logs = _logs.Concat(response.Items).ToList();
             _isHasMore = response.IsHasMore;
@@ -188,5 +197,16 @@
             _expandedLogIds.Add(log.Id);
         }
         StateHasChanged();
+    }
+
+    private async Task OnSelectLogLevelAsync(LogLevel level)
+    {
+        _selectedLogLevel = null;
+        if (level != default)
+        {
+            _selectedLogLevel = level;
+        }
+        StateHasChanged();
+        await LoadListAsync(false);
     }
 }
