@@ -114,5 +114,30 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             Assert.Equal(logs2.First().Id, responseData.Data.Items.First().Id); 
             Assert.Equal(logs1.First().Id, responseData.Data.Items.Last().Id); 
         }
+        
+        [Theory]
+        [InlineData("/board/log/list")]
+        public async Task ShouldReceiveOrderedListFilteredByLogLevel(string url)
+        {
+            var user = await DataSeeder.CreateNewUser();
+            await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information, 3);
+            await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Debug, 7);
+            
+            // Act
+            var response = await PostRequestAsync(url, user.ApiToken, new LogListRequestModel()
+            {
+                Page = 1,
+                ApplicationId = user.ApplicationId,
+                LogLevel = LogLevel.Debug
+            });
+            response.EnsureSuccessStatusCode();
+            // Assert
+            var responseData = await response.GetJsonDataAsync<PaginatedResponseModel<LogResponseModel>>();
+            Assert.Equal(7, responseData.Data.Items.Count);
+            foreach (var log in responseData.Data.Items)
+            {
+                Assert.Equal(LogLevel.Debug, log.Level);
+            } 
+        }
     }
 }

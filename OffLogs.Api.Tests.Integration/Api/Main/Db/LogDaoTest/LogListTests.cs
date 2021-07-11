@@ -42,7 +42,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.LogDaoTest
             await CreateLog(application, LogLevel.Error);
             await CreateLog(application, LogLevel.Information);
             
-            var (list, counter) = await LogDao.GetList(application.Id, 1, 30);
+            var (list, counter) = await LogDao.GetList(application.Id, 1, null, 30);
             Assert.Equal(2, counter);
             
             Assert.Contains(list, item => item.Level == LogLevel.Error);

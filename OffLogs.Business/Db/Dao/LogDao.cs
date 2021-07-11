@@ -147,6 +147,7 @@ namespace OffLogs.Business.Db.Dao
         public async Task<(IEnumerable<LogEntity>, long)> GetList(
             long applicationId, 
             int page, 
+            LogLevel? logLevel = null,
             int pageSize = 30
         )
         {
@@ -156,6 +157,7 @@ namespace OffLogs.Business.Db.Dao
             using var session = Session;
             var logs = await session.GetNamedQuery("Log.getList")
                 .SetParameter("applicationId", applicationId)
+                .SetParameter("logLevel", logLevel)
                 .SetFirstResult(offset)
                 .SetMaxResults(pageSize)
                 .ListAsync<LogEntity>();
