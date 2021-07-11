@@ -52,6 +52,7 @@ namespace OffLogs.Api.Controller.Board
                 var (list, totalItems) = await _logDao.GetList(
                     model.ApplicationId,
                     model.Page,
+                    model.LogLevel,
                     GlobalConstants.ListPageSize
                 );
                 var responseList = list.Select(item => item.GetResponseModel()).ToList();

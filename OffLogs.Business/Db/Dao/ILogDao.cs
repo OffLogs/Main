@@ -20,7 +20,12 @@ namespace OffLogs.Business.Db.Dao
             ICollection<LogTraceEntity> traces = null
         );
         Task<LogEntity> AddAsync(LogEntity log);
-        Task<(IEnumerable<LogEntity>, long)> GetList(long applicationId, int page, int pageSize = 30);
+        Task<(IEnumerable<LogEntity>, long)> GetList(
+            long applicationId, 
+            int page,
+            LogLevel? logLevel = null,
+            int pageSize = 30
+        );
         Task<bool> IsOwner(long userId, long logId);
         Task<bool> SetIsFavoriteAsync(long logId, bool isFavorite);
         Task<bool> IsLogExists(string token);

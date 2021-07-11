@@ -8,5 +8,7 @@
         from LogEntity as log
             inner join fetch log.Application
             where log.Application.Id = :applicationId
+                and (:logLevel is null or log.Level = :logLevel)
+            order by log.LogTime desc, log.CreateTime desc
     ]]></query>
 </hibernate-mapping>
