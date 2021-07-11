@@ -1,0 +1,48 @@
+﻿@using System.Linq;
+@using OffLogs.Business.Common.Constants
+
+<CustomDropDown
+    NonSelectedLabel="Select log level"
+    Items="_logLevels"
+    OnChanged="OnSelectLevelAsync"
+    Class="Class"
+    @ref="_dropDown"
+/>
+
+@code {
+    [Parameter]
+    public string Class { get; set; } = "";
+    
+    [Parameter]
+    public EventCallback<LogLevel> OnChanged { get; set; }
+    
+    private List<DropDownListItem> _logLevels = new();
+    private CustomDropDown.CustomDropDown _dropDown;
+
+    protected override void OnInitialized()
+    {
+        _logLevels.Add(
+            new DropDownListItem()
+            {
+                Id = "",
+                Label = "Not selected"
+            }    
+        );
+        foreach (var level in Enum.GetValues(typeof(LogLevel)).Cast<LogLevel>())
+        {
+            _logLevels.Add(
+                new DropDownListItem()
+                {
+                    Id = level.ToString(),
+                    Label = level.GetLabel()
+                }    
+            );
+        }
+    }
+
+    private async Task OnSelectLevelAsync()
+    {
+        Enum.TryParse<LogLevel>(_dropDown.SelectedItem.Id, out var level);
+        await OnChanged.InvokeAsync(level);
+    }
+}
