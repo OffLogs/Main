@@ -3,14 +3,15 @@
 @using OffLogs.Web.Core.Constants
 @using OffLogs.Web.Shared.Ui
 @using System.Collections
+@using OffLogs.Web.Constants
 @inject ToastService _toastService
 @inherits CustomDropDown
 
-<div class="w-custom-input-select">
+<div class="w-custom-input-select @Class">
     <div class="btn-group">
         <button
             type="button"
-            class="btn btn-@BtnType dropdown-toggle"
+            class="btn btn-@BtnType.GetName() dropdown-toggle"
             @onclick="@(() => ShowDropDown(!_isOpened))">
             @if (_isLoading)
             {
@@ -44,7 +45,6 @@
 </div>
 
 @code {
-
     [Parameter]
     public Func<Task<ICollection<DropDownListItem>>> OnLoad { get; set; }
 

@@ -2,14 +2,15 @@
 @using System.Timers
 @using OffLogs.Web.Core.Constants
 @using System.Collections
+@using OffLogs.Web.Constants
 @using OffLogs.Web.Services.Events
 @inject ToastService _toastService
 
-<div class="w-custom-input-select">
+<div class="w-custom-input-select @Class">
     <div class="btn-group">
         <button type="button"
-                class="btn btn-@BtnType dropdown-toggle"
-                @onclick="@(() => { ShowDropDown(!_isOpened); Console.WriteLine("aaa");  })"
+                class="btn btn-@BtnType.GetName() dropdown-toggle"
+                @onclick="@(() => { ShowDropDown(!_isOpened); })"
                 @onclick:stopPropagation>
             @_selectedItemTitle
         </button>
@@ -37,7 +38,9 @@
 </div>
 
 @code {
-
+    [Parameter]
+    public string Class { get; set; } = "";
+    
     [Parameter]
     public string NonSelectedLabel { get; set; } = "Select item";
 
@@ -48,7 +51,7 @@
     public ICollection<DropDownListItem> Items { get; set; } = new List<DropDownListItem>();
 
     [Parameter]
-    public string BtnType { get; set; } = "default";
+    public BootstrapColorType BtnType { get; set; } = BootstrapColorType.Primary;
 
     [Parameter]
     public EventCallback<DropDownListItem> OnChanged { get; set; }
