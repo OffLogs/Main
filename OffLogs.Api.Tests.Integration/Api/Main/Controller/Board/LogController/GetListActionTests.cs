@@ -92,5 +92,27 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             Assert.Equal(2, responseData.Data.TotalPages);
             Assert.Equal(GlobalConstants.ListPageSize, responseData.Data.Items.Count);
         }
+        
+        [Theory]
+        [InlineData("/board/log/list")]
+        public async Task ShouldReceiveOrderedList(string url)
+        {
+            var user = await DataSeeder.CreateNewUser();
+            var logs1 = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information);
+            var logs2 = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information);
+            
+            // Act
+            var response = await PostRequestAsync(url, user.ApiToken, new LogListRequestModel()
+            {
+                Page = 1,
+                ApplicationId = user.ApplicationId
+            });
+            response.EnsureSuccessStatusCode();
+            // Assert
+            var responseData = await response.GetJsonDataAsync<PaginatedResponseModel<LogResponseModel>>();
+            
+            Assert.Equal(logs2.First().Id, responseData.Data.Items.First().Id); 
+            Assert.Equal(logs1.First().Id, responseData.Data.Items.Last().Id); 
+        }
     }
 }
