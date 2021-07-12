@@ -11,5 +11,6 @@ namespace OffLogs.Web.Core.Constants
         
         public static readonly string LogList = "board/log/list";
         public static readonly string LogGet = "board/log/get";
+        public static readonly string LogSetIsFavorite = "board/log/setFavorite";
     }
 }

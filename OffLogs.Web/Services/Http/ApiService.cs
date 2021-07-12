@@ -159,5 +159,22 @@ namespace OffLogs.Web.Services.Http
             }
             return response?.Data;
         }
+        
+        public async Task<bool> LogSetIsFavorite(long logId, bool isFavorite)
+        {
+            var response = await PostAuthorizedAsync<LogResponseModel>(
+                ApiUrl.LogSetIsFavorite, 
+                new LogSetFavoriteRequestModel() { 
+                    LogId  = logId,
+                    IsFavorite = isFavorite
+                }
+            );
+            if (response == null)
+            {
+                return false;
+            }
+
+            return response.IsSuccess;
+        }
     }
 }

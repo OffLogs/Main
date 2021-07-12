@@ -10,6 +10,7 @@
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Forms
 @using OffLogs.Business.Common.Models.Api.Request.Board
+@using OffLogs.Web.Constants
 @using OffLogs.Web.Services
 @inject IApiService _apiService
 @inject ToastService _toastService
@@ -52,15 +53,14 @@
         
         var saveBtnModel = new ModalButtonModel(
             "Add",
-            OnAddAction,
-            "primary"
+            OnAddAction
         );
         saveBtnModel.IsCloseAfterAction = false;
         _modalButtons.Add(saveBtnModel);
         _modalButtons.Add(new (
             "Cancel",
             null,
-            "default"
+            BootstrapColorType.Light
             ));
         
         var applications = await _apiService.GetApplications(new PaginatedRequestModel()

@@ -41,6 +41,12 @@
                         @log.Level.GetLabel()
                     </Badge>
                     @log.Message.Truncate(128)
+                    @if (log.IsFavorite)
+                    {
+                        <text>(</text>
+                        <Icon IconType="favorite_border"/>
+                        <text>)</text>
+                    }
                 </button>
             </h2>
             <div class="accordion-collapse collapse @(_expandedLogIds.Contains(@log.Id) ? "show" : "")">

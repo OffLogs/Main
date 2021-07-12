@@ -14,5 +14,6 @@ namespace OffLogs.Web.Services.Http
         Task<PaginatedResponseModel<ApplicationResponseModel>> GetApplications(PaginatedRequestModel request = null);
         Task<PaginatedResponseModel<LogResponseModel>> GetLogs(LogListRequestModel request);
         Task<LogResponseModel> GetLog(long logId);
+        Task<bool> LogSetIsFavorite(long logId, bool isFavorite);
     }
 }
