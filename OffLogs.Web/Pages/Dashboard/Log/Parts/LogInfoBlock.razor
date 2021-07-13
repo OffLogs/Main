@@ -15,7 +15,7 @@ else
         OnClick="OnClickIsFavoriteAsync"
     >
         <Icon 
-            IconType="@(_log.IsFavorite ? "favorite_border" : "favorite")"
+            IconType="@(_log.IsFavorite ? "favorite" : "favorite_border")"
         />
     </MyButton>
     <hr/>
@@ -67,7 +67,6 @@ else
         try
         {
             _log = await _apiService.GetLog(LogId);
-            _log.IsFavorite = true;
         }
         catch (Exception e)
         {
