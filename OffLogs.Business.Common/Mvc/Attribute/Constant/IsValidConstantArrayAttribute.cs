@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using OffLogs.Business.Resources;
+using OffLogs.Business.Common.Resources;
 
 namespace OffLogs.Business.Common.Mvc.Attribute.Constant
 {
