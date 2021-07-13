@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
-using OffLogs.Business.Resources;
+using OffLogs.Business.Common.Resources;
 
 namespace OffLogs.Business.Common.Mvc.Attribute.Validation
 {

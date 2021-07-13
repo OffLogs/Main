@@ -10,6 +10,7 @@ namespace OffLogs.Business.Common.Models.Api.Response.Board
         public long ApplicationId { get; set; }
         public LogLevel Level { get; set; }
         public string Message { get; set; }
+        public bool IsFavorite { get; set; }
         public DateTime LogTime { get; set; }
         public DateTime CreateTime { get; set; }
         

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
-using OffLogs.Web.Core.Constants;
+using OffLogs.Web.Constants;
 using OffLogs.Web.Core.Models.Toast;
 
 namespace OffLogs.Web.Services

@@ -17,6 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Core\Constants" />
       <Folder Include="wwwroot\css\bootstrap" />
     </ItemGroup>
 
@@ -25,6 +26,7 @@
       <Content Include="Pages\Dashboard\Application\Index.razor.less" />
       <Content Include="Pages\Dashboard\Log\Index.razor.less" />
       <Content Include="Pages\Dashboard\Log\Info\LogInfoModal.razor.less" />
+      <Content Include="Pages\Dashboard\Log\Parts\LogInfoBlock.razor.less" />
       <Content Include="Shared\Ui\Form\CustomDropDown\CustomDropDown.razor.less" />
       <Content Include="Shared\Ui\MyButton.razor.less" />
       <Content Include="Shared\Ui\Preloader.razor.less" />

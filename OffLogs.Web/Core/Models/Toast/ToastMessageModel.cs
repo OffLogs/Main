@@ -1,5 +1,5 @@
 using System;
-using OffLogs.Web.Core.Constants;
+using OffLogs.Web.Constants;
 
 namespace OffLogs.Web.Core.Models.Toast
 {

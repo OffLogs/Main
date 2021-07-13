@@ -96,6 +96,7 @@ namespace OffLogs.Business.Db.Entities
                 ApplicationId = Application.Id,
                 Level = Level,
                 Message = Message,
+                IsFavorite = IsFavorite,
                 LogTime = LogTime,
                 CreateTime = CreateTime,
             };

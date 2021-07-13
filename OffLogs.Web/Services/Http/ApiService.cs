@@ -6,6 +6,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Newtonsoft.Json;
+using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Exceptions;
 using OffLogs.Business.Common.Models.Api.Request;
 using OffLogs.Business.Common.Models.Api.Request.Board;
@@ -13,7 +14,6 @@ using OffLogs.Business.Common.Models.Api.Request.User;
 using OffLogs.Business.Common.Models.Api.Response;
 using OffLogs.Business.Common.Models.Api.Response.Board;
 using OffLogs.Business.Common.Models.Http;
-using OffLogs.Web.Core.Constants;
 using OffLogs.Web.Core.Exceptions;
 
 namespace OffLogs.Web.Services.Http
@@ -76,7 +76,7 @@ namespace OffLogs.Web.Services.Http
         
         public async Task<LoginResponseModel> LoginAsync(LoginRequestModel model)
         {
-            var response = await PostAsync<LoginResponseModel>(ApiUrl.Login, model);
+            var response = await PostAsync<LoginResponseModel>(MainApiUrl.Login, model);
             if (response == null)
             {
                 throw new ServerErrorException();
@@ -92,7 +92,7 @@ namespace OffLogs.Web.Services.Http
         
         public async Task<bool> CheckIsLoggedInAsync(string token)
         {
-            var response = await GetAsync<object>(ApiUrl.UserCheckIsLoggedIn, null, token);
+            var response = await GetAsync<object>(MainApiUrl.UserCheckIsLoggedIn, null, token);
             if (response == null)
             {
                 throw new ServerErrorException();
@@ -110,7 +110,7 @@ namespace OffLogs.Web.Services.Http
                     Page = 1
                 };
             }
-            var response = await PostAuthorizedAsync<PaginatedResponseModel<ApplicationResponseModel>>(ApiUrl.ApplicationList, request);
+            var response = await PostAuthorizedAsync<PaginatedResponseModel<ApplicationResponseModel>>(MainApiUrl.ApplicationList, request);
             if (response == null)
             {
                 throw new ServerErrorException();
@@ -126,7 +126,7 @@ namespace OffLogs.Web.Services.Http
 
         public async Task<PaginatedResponseModel<LogResponseModel>> GetLogs(LogListRequestModel request)
         {
-            var response = await PostAuthorizedAsync<PaginatedResponseModel<LogResponseModel>>(ApiUrl.LogList, request);
+            var response = await PostAuthorizedAsync<PaginatedResponseModel<LogResponseModel>>(MainApiUrl.LogList, request);
             if (response == null)
             {
                 throw new ServerErrorException();
@@ -143,7 +143,7 @@ namespace OffLogs.Web.Services.Http
         public async Task<LogResponseModel> GetLog(long logId)
         {
             var response = await PostAuthorizedAsync<LogResponseModel>(
-                ApiUrl.LogGet, 
+                MainApiUrl.LogGet, 
                 new LogGetOneRequestModel() { 
                     Id = logId    
                 }
@@ -158,6 +158,23 @@ namespace OffLogs.Web.Services.Http
                 throw new Exception(response.Message);
             }
             return response?.Data;
+        }
+        
+        public async Task<bool> LogSetIsFavorite(long logId, bool isFavorite)
+        {
+            var response = await PostAuthorizedAsync<LogResponseModel>(
+                MainApiUrl.LogSetIsFavorite, 
+                new LogSetFavoriteRequestModel() { 
+                    LogId  = logId,
+                    IsFavorite = isFavorite
+                }
+            );
+            if (response == null)
+            {
+                return false;
+            }
+
+            return response.IsSuccess;
         }
     }
 }

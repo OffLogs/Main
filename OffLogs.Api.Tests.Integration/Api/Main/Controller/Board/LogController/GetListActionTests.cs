@@ -18,7 +18,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         public GetListActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
         
         [Theory]
-        [InlineData("/board/log/list")]
+        [InlineData(MainApiUrl.LogList)]
         public async Task OnlyAuthorizedUsersCanReceiveList(string url)
         {
             var user = await DataSeeder.CreateNewUser();
@@ -34,7 +34,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         }
         
         [Theory]
-        [InlineData("/board/log/list")]
+        [InlineData(MainApiUrl.LogList)]
         public async Task OnlyOwnerCanReceiveApplications(string url)
         {
             var user1 = await DataSeeder.CreateNewUser();
@@ -51,7 +51,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         }
         
         [Theory]
-        [InlineData("/board/log/list")]
+        [InlineData(MainApiUrl.LogList)]
         public async Task ShouldReceiveLogsList(string url)
         {
             var user = await DataSeeder.CreateNewUser();
@@ -74,7 +74,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         }
         
         [Theory]
-        [InlineData("/board/log/list")]
+        [InlineData(MainApiUrl.LogList)]
         public async Task ShouldReceiveMoreThanOnePages(string url)
         {
             var user = await DataSeeder.CreateNewUser();
@@ -94,7 +94,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         }
         
         [Theory]
-        [InlineData("/board/log/list")]
+        [InlineData(MainApiUrl.LogList)]
         public async Task ShouldReceiveOrderedList(string url)
         {
             var user = await DataSeeder.CreateNewUser();
@@ -116,7 +116,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         }
         
         [Theory]
-        [InlineData("/board/log/list")]
+        [InlineData(MainApiUrl.LogList)]
         public async Task ShouldReceiveOrderedListFilteredByLogLevel(string url)
         {
             var user = await DataSeeder.CreateNewUser();
@@ -138,6 +138,27 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             {
                 Assert.Equal(LogLevel.Debug, log.Level);
             } 
+        }
+        
+        [Theory]
+        [InlineData(MainApiUrl.LogList)]
+        public async Task ShouldReceiveCorrectIsFavoriteValue(string url)
+        {
+            var user = await DataSeeder.CreateNewUser();
+            var logs = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information);
+            var log = logs.First();
+            await LogDao.SetIsFavoriteAsync(log.Id, true);
+            
+            // Act
+            var response = await PostRequestAsync(url, user.ApiToken, new LogListRequestModel()
+            {
+                Page = 1,
+                ApplicationId = user.ApplicationId
+            });
+            response.EnsureSuccessStatusCode();
+            // Assert
+            var responseData = await response.GetJsonDataAsync<PaginatedResponseModel<LogResponseModel>>();
+            Assert.True(responseData.Data.Items.First().IsFavorite);
         }
     }
 }

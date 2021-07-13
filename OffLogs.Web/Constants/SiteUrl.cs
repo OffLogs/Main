@@ -1,4 +1,4 @@
-namespace OffLogs.Web.Core.Constants
+namespace OffLogs.Web.Constants
 {
     public class SiteUrl
     {
