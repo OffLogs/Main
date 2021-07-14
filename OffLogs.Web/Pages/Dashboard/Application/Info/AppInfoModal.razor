@@ -16,7 +16,10 @@
         }
         else
         {
-            
+            <div>
+                Name: @_application.Name
+                ApiToken: @_application.ApiToken
+            </div>
         }
 </ModalWindow>
 
@@ -43,8 +46,10 @@
     protected override async Task OnParametersSetAsync()
     {
         await base.OnParametersSetAsync();
-        if (_application == null)
+        if (ApplicationId == null)
         {
+            _isShowModal = false;
+            _application = null;
             return;
         }
         if (ApplicationId != _application?.Id)
