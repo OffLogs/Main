@@ -48,7 +48,7 @@ namespace OffLogs.Web.Services.Http
         {
             var response = await PostAuthorizedAsync<ApplicationResponseModel>(
                 MainApiUrl.ApplicationGetOne, 
-                new LogGetOneRequestModel() { 
+                new ApplicationGetModel() { 
                     Id = logId    
                 }
             );
