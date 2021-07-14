@@ -9,34 +9,46 @@
 @inject NavigationManager _navigationManager
 @inject ToastService _toastService
 
-<h1>Please login</h1>
-
-<EditForm Model="@model" OnValidSubmit="@HandleSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <p>
-        @UserNameError
-        <CustomInputText
-            Label="Login:"
-            @bind-Value="model.UserName"
-            ErrorMessage="@UserNameError"/>
+<div class="card w-login-page">
+  <div class="card-body">
+    <h5 class="card-title">Login to your account</h5>
+    <p class="card-text">
+        <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <p>
+                @UserNameError
+                <CustomInputText
+                    Label="Login:"
+                    @bind-Value="model.UserName"
+                    ErrorMessage="@UserNameError"/>
+            </p>
+            <p>
+                @PasswordError
+                <CustomInputText
+                    Label="Password:"
+                    @bind-Value="model.Password"
+                    type="password"
+                    ErrorMessage="@PasswordError"/>
+            </p>
+            @if (_isLoading)
+            {
+                <Preloader/>
+            }
+            else
+            {
+                <MyButton IsSubmit="true">Login</MyButton>    
+            }
+        </EditForm>
     </p>
-    <p>
-        @PasswordError
-        <CustomInputText
-            Label="Password:"
-            @bind-Value="model.Password"
-            type="password"
-            ErrorMessage="@PasswordError"/>
-    </p>
-    <MyButton IsSubmit="true">Login</MyButton>
-</EditForm>
+  </div>
+</div>
 
 @code
 {
     private LoginRequestModel model = new();
     private EditContext _editContext;
+    private bool _isLoading;
 
     private string? UserNameError
     {
@@ -58,15 +70,16 @@
 
     protected override void OnInitialized()
     {
+        _isLoading = false;
         _editContext = new EditContext(model);
     }
 
     private async Task HandleSubmit()
     {
         var isValid = _editContext.Validate();
-        
         if (isValid)
         {
+            _isLoading = true;
             try
             {
                 var isLoggedIn = await _authorizationService.LoginAsync(model);
@@ -79,6 +92,10 @@
             catch (Exception e)
             {
                 _toastService.AddErrorMessage("Login or password is incorrect");
+            }
+            finally
+            {
+                _isLoading = false;
             }
         }
         StateHasChanged();
