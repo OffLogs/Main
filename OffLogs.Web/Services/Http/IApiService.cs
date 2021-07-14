@@ -12,6 +12,7 @@ namespace OffLogs.Web.Services.Http
         Task<LoginResponseModel> LoginAsync(LoginRequestModel model);
         Task<bool> CheckIsLoggedInAsync(string token);
         Task<PaginatedResponseModel<ApplicationResponseModel>> GetApplications(PaginatedRequestModel request = null);
+        Task<ApplicationResponseModel> GetApplication(long logId);
         Task<PaginatedResponseModel<LogResponseModel>> GetLogs(LogListRequestModel request);
         Task<LogResponseModel> GetLog(long logId);
         Task<bool> LogSetIsFavorite(long logId, bool isFavorite);

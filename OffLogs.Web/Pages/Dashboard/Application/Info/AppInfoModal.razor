@@ -1,0 +1,86 @@
+﻿@using OffLogs.Web.Services.Http
+@using OffLogs.Web.Core.Models.Modal
+@using OffLogs.Web.Constants
+@using OffLogs.Business.Common.Models.Api.Response.Board
+@using OffLogs.Web.Resources
+@inject IApiService _apiService
+@inject ToastService _toastService
+
+<ModalWindow
+    IsShow="true"
+    Buttons="_modalButtons"
+    OnClose="OnClose">
+    @if (_isLoading)
+        {
+            <Preloader/>
+        }
+        else
+        {
+            
+        }
+</ModalWindow>
+
+@code {
+    [Parameter]
+    public Action OnClose { get; set; }
+    
+    [Parameter]
+    public long? ApplicationId { get; set; }
+    
+    private bool _isShowModal { get; set; }
+    private bool _isLoading { get; set; }
+    private ApplicationResponseModel _application { get; set; }
+    
+    private List<ModalButtonModel> _modalButtons = new ()
+    {
+        new (
+            "Cancel",
+            null,
+            BootstrapColorType.Light
+        )
+    };
+    
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        if (_application == null)
+        {
+            return;
+        }
+        if (ApplicationId != _application?.Id)
+        {
+            await LoadApplicationAsync();
+        }
+    }
+    
+    protected async Task LoadApplicationAsync()
+    {
+        if (!ApplicationId.HasValue)
+        {
+            _application = null;
+            _isShowModal = false;
+            return;
+        }
+        _isLoading = true;
+        _isShowModal = true;
+        try
+        {
+            _application = await _apiService.GetApplication(ApplicationId.Value);
+            if (_application == null)
+            {
+                _toastService.AddInfoMessage(Common.Error_LogNotFound);
+                _isShowModal = false;
+            }
+        }
+        catch (Exception e)
+        {
+            _toastService.AddServerErrorMessage();
+            Console.WriteLine(e.Message, e);
+        }
+        finally
+        {
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+}

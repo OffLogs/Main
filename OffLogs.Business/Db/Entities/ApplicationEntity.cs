@@ -44,6 +44,7 @@ namespace OffLogs.Business.Db.Entities
                     Id = Id,
                     UserId = User.Id,
                     Name = Name,
+                    ApiToken = ApiToken,
                     CreateTime = CreateTime,
                 };
                 return model;

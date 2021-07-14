@@ -3,6 +3,7 @@
 @using OffLogs.Business.Common.Models.Api.Request
 @using OffLogs.Business.Common.Models.Api.Response.Board
 @using OffLogs.Web.Pages.Dashboard.Application.Add
+@using OffLogs.Web.Pages.Dashboard.Application.Info
 @inject IApiService _apiService
 
 <h1>Your application</h1>
@@ -11,6 +12,8 @@
     bbbb
 </AddApplicationModal>
 
+<AppInfoModal ApplicationId="@_selectedApplicationId"/>   
+
 <table class="table table-hover w-table">
     <thead>
         <tr>
@@ -18,10 +21,10 @@
         </tr>
     </thead>
     <tbody>
-    @foreach (var applcation in _applications)
+    @foreach (var application in _applications)
     {
-        <tr>
-            <td @onclick="OnClickRowAsync">@applcation.Name</td>
+        <tr @onclick="@(async () => await OnClickRowAsync(application))">
+            <td>@application.Name</td>
         </tr>    
     }
     </tbody>
@@ -31,6 +34,7 @@
 {
     private List<ApplicationResponseModel> _applications = new();
     private int _currentPage = 1;
+    private long? _selectedApplicationId;
     
     protected override async Task OnInitializedAsync()
     {
@@ -52,8 +56,14 @@
         StateHasChanged();
     }
 
-    private async Task OnClickRowAsync()
+    private async Task OnClickRowAsync(ApplicationResponseModel application)
     {
-        Console.WriteLine("asdads");
+        _selectedApplicationId = application.Id;
+        await Task.CompletedTask;
+    }
+
+    private void OnCloseInfoModal()
+    {
+        _selectedApplicationId = null;
     }
 }

@@ -18,7 +18,7 @@ using OffLogs.Web.Core.Exceptions;
 
 namespace OffLogs.Web.Services.Http
 {
-    public class ApiService: IApiService
+    public partial class ApiService: IApiService
     {
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorage;
@@ -99,29 +99,6 @@ namespace OffLogs.Web.Services.Http
             }
 
             return response.IsSuccess;
-        }
-        
-        public async Task<PaginatedResponseModel<ApplicationResponseModel>> GetApplications(PaginatedRequestModel request = null)
-        {
-            if (request == null)
-            {
-                request = new PaginatedRequestModel()
-                {
-                    Page = 1
-                };
-            }
-            var response = await PostAuthorizedAsync<PaginatedResponseModel<ApplicationResponseModel>>(MainApiUrl.ApplicationList, request);
-            if (response == null)
-            {
-                throw new ServerErrorException();
-            }
-
-            if (!response.IsSuccess)
-            {
-                throw new Exception(response.Message);
-            }
-
-            return response?.Data;
         }
 
         public async Task<PaginatedResponseModel<LogResponseModel>> GetLogs(LogListRequestModel request)
