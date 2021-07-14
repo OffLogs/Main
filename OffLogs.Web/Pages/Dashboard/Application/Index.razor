@@ -12,7 +12,10 @@
     bbbb
 </AddApplicationModal>
 
-<AppInfoModal ApplicationId="@_selectedApplicationId"/>   
+@if (_selectedApplicationId != null)
+{
+    <AppInfoModal ApplicationId="@_selectedApplicationId"/>
+}
 
 <table class="table table-hover w-table">
     <thead>
