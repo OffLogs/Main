@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Domain.Abstractions;
 using Newtonsoft.Json;
 using NHibernate.Mapping.Attributes;
 using OffLogs.Business.Common.Constants;
@@ -13,7 +14,7 @@ using OffLogs.Business.Helpers;
 namespace OffLogs.Business.Db.Entities
 {
     [Class(Table = "logs", NameType = typeof(LogEntity))]
-    public class LogEntity
+    public class LogEntity: IEntity
     {
         [Id(Name = "Id", Generator = "native")]
         [Column(Name = "id", SqlType = "bigint", NotNull = true)]

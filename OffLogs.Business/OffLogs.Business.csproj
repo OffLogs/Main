@@ -69,6 +69,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Domain.Abstractions\Domain.Abstractions.csproj" />
       <ProjectReference Include="..\OffLogs.Business.Common\OffLogs.Business.Common.csproj" />
     </ItemGroup>
 

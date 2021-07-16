@@ -1,10 +1,11 @@
 using System;
+using Domain.Abstractions;
 using NHibernate.Mapping.Attributes;
 
 namespace OffLogs.Business.Db.Entities
 {
     [Class(Table = "users")]
-    public class UserEntity
+    public class UserEntity: IEntity
     {
         [Id(Name = "Id", Generator = "native")]
         [Column(Name = "id", SqlType = "bigint", NotNull = true)]

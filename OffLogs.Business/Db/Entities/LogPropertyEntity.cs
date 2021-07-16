@@ -1,4 +1,5 @@
 using System;
+using Domain.Abstractions;
 using Newtonsoft.Json;
 using NHibernate.Mapping.Attributes;
 using OffLogs.Business.Common.Models.Api.Response.Board;
@@ -6,7 +7,7 @@ using OffLogs.Business.Common.Models.Api.Response.Board;
 namespace OffLogs.Business.Db.Entities
 {
     [Class(Table = "log_properties")]
-    public class LogPropertyEntity
+    public class LogPropertyEntity: IEntity
     {
         [Id(Name = "Id", Generator = "native")]
         [Column(Name = "id", SqlType = "bigint", NotNull = true)]

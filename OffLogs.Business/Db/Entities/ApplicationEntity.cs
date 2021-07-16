@@ -1,11 +1,12 @@
 using System;
+using Domain.Abstractions;
 using NHibernate.Mapping.Attributes;
 using OffLogs.Business.Common.Models.Api.Response.Board;
 
 namespace OffLogs.Business.Db.Entities
 {
     [Class(Table = "applications")]
-    public class ApplicationEntity
+    public class ApplicationEntity: IEntity
     {
         [Id(Name = "Id", Generator = "native")]
         [Column(Name = "id", SqlType = "bigint", NotNull = true)]

@@ -1,4 +1,5 @@
 using System;
+using Domain.Abstractions;
 using NHibernate.Mapping.Attributes;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Db.Types;
@@ -6,7 +7,7 @@ using OffLogs.Business.Db.Types;
 namespace OffLogs.Business.Db.Entities
 {
     [Class(Table = "request_logs")]
-    public class RequestLogEntity
+    public class RequestLogEntity: IEntity
     {
         [Id(Name = "Id", Generator = "native")]
         [Column(Name = "id", SqlType = "bigint", NotNull = true)]
