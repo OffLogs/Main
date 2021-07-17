@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using OffLogs.Business.Orm.Connection;
 
-namespace OffLogs.Api.Di.Autofac.Modules
+namespace OffLogs.Business.Di.Autofac.Modules
 {
     public class DbModule : Module
     {

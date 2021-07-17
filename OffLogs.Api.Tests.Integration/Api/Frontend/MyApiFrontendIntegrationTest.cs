@@ -33,7 +33,6 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
         {
             _factory = factory;
             DbSessionProvider = _factory.Services.GetService(typeof(IDbSessionProvider)) as IDbSessionProvider;
-            DataSeeder = _factory.Services.GetService(typeof(IDataSeederService)) as IDataSeederService;
             KafkaProducerService = _factory.Services.GetService(typeof(IKafkaProducerService)) as IKafkaProducerService;
             KafkaConsumerService = _factory.Services.GetService(typeof(IKafkaConsumerService)) as IKafkaConsumerService;
             LogService = _factory.Services.GetService(typeof(ILogService)) as ILogService;

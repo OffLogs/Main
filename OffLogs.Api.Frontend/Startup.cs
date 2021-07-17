@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
-using Autofac.Extensions.ConfiguredModules;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -18,6 +17,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using OffLogs.Api.Frontend.Di.Autofac.Modules;
+using OffLogs.Business.Di.Autofac.Modules;
 using OffLogs.Business.Extensions;
 using Serilog;
 
@@ -107,7 +108,11 @@ namespace OffLogs.Api.Frontend
         public void ConfigureContainer(ContainerBuilder containerBuilder)
         {
             containerBuilder
-                .RegisterConfiguredModulesFromCurrentAssembly(Configuration);
+                .RegisterModule<ApiModule>()
+                .RegisterModule<DomainModule>()
+                .RegisterModule<DbModule>()
+                .RegisterModule<CommandsModule>()
+                .RegisterModule<QueriesModule>();
         }
         
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

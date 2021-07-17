@@ -3,7 +3,7 @@ using Commands.Abstractions;
 using OffLogs.Business.Orm;
 using OffLogs.Business.Orm.Commands;
 
-namespace OffLogs.Api.Di.Autofac.Modules
+namespace OffLogs.Business.Di.Autofac.Modules
 {
     public class CommandsModule : Module
     {

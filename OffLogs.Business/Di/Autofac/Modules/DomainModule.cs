@@ -1,8 +1,7 @@
 ﻿using Autofac;
 using Domain.Abstractions;
-using OffLogs.Business;
 
-namespace OffLogs.Api.Frontend.Di.Autofac.Modules
+namespace OffLogs.Business.Di.Autofac.Modules
 {
     public class DomainModule : Module
     {

@@ -3,7 +3,7 @@ using OffLogs.Business.Orm;
 using OffLogs.Business.Orm.Queries;
 using Queries.Abstractions;
 
-namespace OffLogs.Api.Di.Autofac.Modules
+namespace OffLogs.Business.Di.Autofac.Modules
 {
     public class QueriesModule : Module
     {

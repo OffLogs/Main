@@ -16,7 +16,7 @@ using OffLogs.Business.Services.Kafka.Models;
 
 namespace OffLogs.Api.Frontend.Controllers
 {
-    [Route("/[controller]")]
+    [Route("/2222[controller]")]
     [ApiController]
     public class LogController : BaseApiController
     {

@@ -1,5 +1,6 @@
 using System;
 using Domain.Abstractions;
+using Newtonsoft.Json;
 using NHibernate.Mapping.Attributes;
 using OffLogs.Business.Common.Constants;
 
@@ -31,5 +32,16 @@ namespace OffLogs.Business.Orm.Entities
         [Property(NotNull = true)]
         [Column(Name = "create_time", SqlType = "datetime", NotNull = true)]
         public virtual DateTime CreateTime { get; set; }
+
+        public RequestLogEntity() {}
+
+        public RequestLogEntity(RequestLogType type, string clientIp, object data, string token)
+        {
+            Type = type;
+            ClientIp = clientIp;
+            Data = JsonConvert.SerializeObject(data);
+            Token = token;
+            CreateTime = DateTime.Now;
+        }
     }
 }
