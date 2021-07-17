@@ -102,7 +102,7 @@ namespace OffLogs.Business.Services.Kafka
                     await LogMessageModel(messageModel, "Found log model with error!");
                     return;
                 }
-                ApplicationEntity application = await _queryBuilder.FindByIdAsync<ApplicationEntity>(
+                var application = await _queryBuilder.FindByIdAsync<ApplicationEntity>(
                     applicationId.Value
                 );
                 if (application == null)

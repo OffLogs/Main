@@ -26,5 +26,13 @@ namespace OffLogs.Api.Frontend.Controllers.Log
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public Task<IActionResult> AddCommonLog([FromBody] AddCommonLogsRequest request)
             => this.RequestAsync(request);
+        
+        [HttpPost]
+        [OnlyAuthorizedApplication]
+        [Route("add/serilog")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public Task<IActionResult> AddSerilogLog([FromBody] AddSerilogLogsRequest request)
+            => this.RequestAsync(request);
     }
 }

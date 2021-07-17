@@ -66,9 +66,8 @@ namespace AspNetCore.ApiControllers.Extensions
             try
             {
                 await apiController.AsyncRequestBuilder.ExecuteAsync(request);
-
                 await apiController.CommitPerformer.PerformCommitAsync();
-
+                
                 return success();
             }
             catch (Exception exception)
