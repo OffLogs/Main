@@ -5,6 +5,7 @@ using Commands.Abstractions;
 using Domain.Abstractions;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Connection;
+using Persistence.Transactions.Behaviors;
 
 namespace OffLogs.Business.Orm.Commands
 {

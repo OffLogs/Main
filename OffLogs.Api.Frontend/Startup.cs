@@ -110,9 +110,9 @@ namespace OffLogs.Api.Frontend
             containerBuilder
                 .RegisterModule<ApiModule>()
                 .RegisterModule<DomainModule>()
-                .RegisterModule<DbModule>()
                 .RegisterModule<CommandsModule>()
-                .RegisterModule<QueriesModule>();
+                .RegisterModule<QueriesModule>()
+                .RegisterModule<DbModule>();
         }
         
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

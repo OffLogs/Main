@@ -7,13 +7,11 @@ namespace Queries.Abstractions
     public class DefaultAsyncQueryFor<TResult> : IAsyncQueryFor<TResult>
     {
         private readonly IAsyncQueryFactory _asyncQueryFactory;
-
-
+        
         public DefaultAsyncQueryFor(IAsyncQueryFactory asyncQueryFactory)
         {
             _asyncQueryFactory = asyncQueryFactory ?? throw new ArgumentNullException(nameof(asyncQueryFactory));
         }
-
 
         public Task<TResult> WithAsync<TCriterion>(
             TCriterion criterion,

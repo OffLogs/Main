@@ -166,6 +166,12 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
+          "dependencies": {
+            "NHibernate": {
+              "target": "Package",
+              "version": "[5.3.9, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

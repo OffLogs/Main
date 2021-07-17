@@ -10,6 +10,7 @@ using System.Timers;
 using OffLogs.Business.Dao;
 using Timer = System.Timers.Timer;
 using Commands.Abstractions;
+using Persistence.Transactions.Behaviors;
 using Queries.Abstractions;
 
 namespace OffLogs.Business.Services.Kafka
@@ -26,6 +27,7 @@ namespace OffLogs.Business.Services.Kafka
         private readonly IJwtApplicationService _jwtApplicationService;
         private readonly IAsyncCommandBuilder _commandBuilder;
         private readonly IAsyncQueryBuilder _queryBuilder;
+        private readonly IDbSessionProvider _dbSessionProvider;
         private readonly ConsumerConfig _config;
         private readonly string _logsTopicName;
         private readonly Timer _timerProcessedCounter;
@@ -36,7 +38,8 @@ namespace OffLogs.Business.Services.Kafka
             ILogger<IKafkaProducerService> logger,
             IJwtApplicationService jwtApplicationService,
             IAsyncCommandBuilder commandBuilder,
-            IAsyncQueryBuilder queryBuilder
+            IAsyncQueryBuilder queryBuilder,
+            IDbSessionProvider dbSessionProvider
         )
         {
             _configuration = configuration;
@@ -44,6 +47,7 @@ namespace OffLogs.Business.Services.Kafka
             _jwtApplicationService = jwtApplicationService;
             this._commandBuilder = commandBuilder;
             _queryBuilder = queryBuilder;
+            _dbSessionProvider = dbSessionProvider;
             var kafkaSection = configuration.GetSection("Kafka");
             _groupName = kafkaSection.GetValue<string>("ConsumerGroup");
             _clientId = kafkaSection.GetValue<string>("ConsumerClientId");

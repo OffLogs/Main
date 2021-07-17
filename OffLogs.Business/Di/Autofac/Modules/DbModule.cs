@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using OffLogs.Business.Orm.Connection;
+using Persistence.Transactions.Behaviors;
 
 namespace OffLogs.Business.Di.Autofac.Modules
 {

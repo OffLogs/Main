@@ -13,6 +13,7 @@ using OffLogs.Business.Services.Data;
 using OffLogs.Business.Services.Entities.Log;
 using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Kafka;
+using Persistence.Transactions.Behaviors;
 using Queries.Abstractions;
 using Xunit;
 

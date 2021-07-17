@@ -10,6 +10,7 @@ using OffLogs.Api.Tests.Integration.Core.Service;
 using OffLogs.Business.Di.Autofac.Modules;
 using OffLogs.Business.Extensions;
 using OffLogs.Business.Helpers;
+using OffLogs.Business.Services.Data;
 using Serilog;
 
 namespace OffLogs.Api.Tests.Integration.Api.Frontend
@@ -39,6 +40,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
                         .UseContentRoot(Directory.GetCurrentDirectory())
                         .ConfigureTestServices(services => 
                         {
+                            services.AddScoped<IDataFactoryService, DataFactoryService>();
                             services.AddScoped<IDataSeederService, DataSeederService>();
                             // We can further customize our application setup here.
                         })

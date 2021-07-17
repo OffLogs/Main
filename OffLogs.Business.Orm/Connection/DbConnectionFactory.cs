@@ -8,16 +8,17 @@ using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Mapping.Attributes;
 using OffLogs.Business.Common.Utils;
+using Persistence.Transactions.Behaviors;
 
 namespace OffLogs.Business.Orm.Connection
 {
     public class DbConnectionFactory : IDbConnectionFactory
     {
-        private readonly string _dbNamespace = "OffLogs.Business.Db";
+        private readonly string _dbNamespace = "OffLogs.Business.Orm.Hibernate";
         private readonly IConfiguration _configuration;
         private ISessionFactory _sessionFactory;
 
-        public DbConnectionFactory(IConfiguration configuration, ILogger<IDbConnectionFactory> logger)
+        public DbConnectionFactory(IConfiguration configuration)
         {
             this._configuration = configuration;
         }
@@ -26,7 +27,6 @@ namespace OffLogs.Business.Orm.Connection
         {
             if (_sessionFactory == null)
             {
-                var currentAssembly = Assembly.GetExecutingAssembly();
                 var connectionString = _configuration.GetConnectionString("DefaultConnection");
                 var properties = new Dictionary<string, string>
                 {
@@ -39,29 +39,7 @@ namespace OffLogs.Business.Orm.Connection
                     properties.Add("show_sql", "true");            
                     properties.Add("format_sql", "true");
                 }
-
-                var hibernateConfiguration = new Configuration()
-                    .AddProperties(properties)
-                    .Configure(currentAssembly, $"{_dbNamespace}.hibernate.hbm.xml");
-
-                // Enable validation (optional)
-                HbmSerializer.Default.Validate = true;
-
-                // Import all entities and queries
-                hibernateConfiguration.AddInputStream(HbmSerializer.Default.Serialize(currentAssembly));
-                // Import all mapping files
-                currentAssembly.GetManifestResourceNames().Where(resourceName => {
-                        return resourceName.StartsWith($"{_dbNamespace}.Queries");
-                        // TODO: Delete files and revert it
-                        //|| resourceName.StartsWith($"{_dbNamespace}.Mapping")
-                    })
-                    .Select(resourceName => {
-                        var filePath = IoUtils.GetResourcePath(currentAssembly, resourceName);
-                        hibernateConfiguration.AddInputStream(currentAssembly.GetManifestResourceStream(filePath));
-                        return resourceName;
-                    }).ToArray();
-
-                _sessionFactory = hibernateConfiguration.BuildSessionFactory();
+                _sessionFactory = BuildFactory(properties);
             }
             return Task.FromResult(_sessionFactory);
         }
@@ -69,6 +47,30 @@ namespace OffLogs.Business.Orm.Connection
         public void Dispose()
         {
             _sessionFactory?.Close();
+        }
+
+        private ISessionFactory BuildFactory(IDictionary<string, string> properties)
+        {
+            var currentAssembly = Assembly.GetExecutingAssembly();
+            var hibernateConfiguration = new Configuration()
+                .AddProperties(properties)
+                .Configure(currentAssembly, $"{_dbNamespace}.hibernate.hbm.xml");
+
+            // Enable validation (optional)
+            HbmSerializer.Default.Validate = true;
+
+            // Import all entities and queries
+            hibernateConfiguration.AddInputStream(HbmSerializer.Default.Serialize(currentAssembly));
+            // Import all mapping files
+            var classes = currentAssembly.GetManifestResourceNames()
+                .Where(resourceName => resourceName.StartsWith($"{_dbNamespace}.Queries"));
+            foreach (var resourceName in classes)
+            {
+                var filePath = IoUtils.GetResourcePath(currentAssembly, resourceName);
+                hibernateConfiguration.AddInputStream(currentAssembly.GetManifestResourceStream(filePath));
+            }
+
+            return hibernateConfiguration.BuildSessionFactory();
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using NHibernate;
 
-namespace OffLogs.Business.Orm.Connection
+namespace Persistence.Transactions.Behaviors
 {
     public interface IDbConnectionFactory: IDisposable
     {

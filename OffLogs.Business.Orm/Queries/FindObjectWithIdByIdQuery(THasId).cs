@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Domain.Abstractions;
 using OffLogs.Business.Orm.Connection;
 using OffLogs.Business.Orm.Criteria;
+using Persistence.Transactions.Behaviors;
 
 namespace OffLogs.Business.Orm.Queries
 {

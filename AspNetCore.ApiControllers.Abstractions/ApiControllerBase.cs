@@ -17,20 +17,16 @@ namespace AspNetCore.ApiControllers.Abstractions
             IShouldPerformCommit
     {
         private readonly IAsyncRequestBuilder _asyncRequestBuilder;
-        private readonly IExpectCommit _commitPerformer;
-
-
-
+        private readonly IDbSessionProvider _commitPerformer;
+        
         public ApiControllerBase(
             IAsyncRequestBuilder asyncRequestBuilder,
-            IExpectCommit commitPerformer)
+            IDbSessionProvider commitPerformer)
         {
             _asyncRequestBuilder = asyncRequestBuilder ?? throw new ArgumentNullException(nameof(asyncRequestBuilder));
             _commitPerformer = commitPerformer ?? throw new ArgumentNullException(nameof(commitPerformer));
         }
-
-
-
+        
         public virtual Func<IActionResult> Success
             => () => new OkResult();
 
@@ -43,11 +39,9 @@ namespace AspNetCore.ApiControllers.Abstractions
 
         public virtual Func<ModelStateDictionary, IActionResult> InvalidModelState
             => (ModelStateDictionary modelState) => new BadRequestObjectResult(new ValidationProblemDetails(modelState).Errors);
-
-
-
+        
         IAsyncRequestBuilder IAsyncApiController.AsyncRequestBuilder => _asyncRequestBuilder;
 
-        IExpectCommit IShouldPerformCommit.CommitPerformer => _commitPerformer;
+        IDbSessionProvider IShouldPerformCommit.CommitPerformer => _commitPerformer;
     }
 }

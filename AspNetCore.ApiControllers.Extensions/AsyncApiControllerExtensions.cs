@@ -67,7 +67,7 @@ namespace AspNetCore.ApiControllers.Extensions
             {
                 await apiController.AsyncRequestBuilder.ExecuteAsync(request);
 
-                apiController.CommitPerformer.PerformCommitAsync();
+                await apiController.CommitPerformer.PerformCommitAsync();
 
                 return success();
             }
@@ -139,7 +139,7 @@ namespace AspNetCore.ApiControllers.Extensions
             {
                 TResponse response = await apiController.AsyncRequestBuilder.ExecuteAsync<TRequest, TResponse>(request);
 
-                apiController.CommitPerformer.PerformCommitAsync();
+                await apiController.CommitPerformer.PerformCommitAsync();
 
                 return success(response);
             }

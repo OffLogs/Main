@@ -6,11 +6,11 @@ using NHibernate.Linq;
 using OffLogs.Business.Orm.Connection;
 using OffLogs.Business.Orm.Criteria.Entites;
 using OffLogs.Business.Orm.Entities;
+using Persistence.Transactions.Behaviors;
 
 namespace OffLogs.Business.Orm.Queries.Entities
 {
-    public class LogIsExistsByTokenQuery<THasId> : LinqAsyncQueryBase<THasId, LogIsExistsByTokenCriteria, bool>
-        where THasId : class, IHasId, new()
+    public class LogIsExistsByTokenQuery : LinqAsyncQueryBase<LogEntity, LogIsExistsByTokenCriteria, bool>
     {
         public LogIsExistsByTokenQuery(IDbSessionProvider transactionProvider) 
             : base(transactionProvider)

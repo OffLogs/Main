@@ -11,7 +11,7 @@ namespace OffLogs.Api.Frontend.Controllers
     {
         public FrontendApiControllerBase(
             IAsyncRequestBuilder asyncRequestBuilder, 
-            IExpectCommit commitPerformer
+            IDbSessionProvider commitPerformer
         ) : base(asyncRequestBuilder, commitPerformer)
         {
         }

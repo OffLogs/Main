@@ -121,6 +121,7 @@ namespace OffLogs.Business.Services.Kafka
                 }
                 entity.Application = application;
                 await _commandBuilder.SaveAsync(entity);
+                await _dbSessionProvider.PerformCommitAsync();
             }
             catch (Exception e)
             {

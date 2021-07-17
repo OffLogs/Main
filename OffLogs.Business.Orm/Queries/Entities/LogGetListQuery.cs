@@ -9,11 +9,11 @@ using OffLogs.Business.Orm.Connection;
 using OffLogs.Business.Orm.Criteria.Entites;
 using OffLogs.Business.Orm.Dto;
 using OffLogs.Business.Orm.Entities;
+using Persistence.Transactions.Behaviors;
 
 namespace OffLogs.Business.Orm.Queries.Entities
 {
-    public class LogGetListQuery<THasId> : LinqAsyncQueryBase<THasId, LogGetListCriteria, ListDto<LogEntity>>
-        where THasId : class, IHasId, new()
+    public class LogGetListQuery : LinqAsyncQueryBase<LogEntity, LogGetListCriteria, ListDto<LogEntity>>
     {
         public LogGetListQuery(IDbSessionProvider transactionProvider) 
             : base(transactionProvider)
