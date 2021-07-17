@@ -1,4 +1,3 @@
-using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -6,9 +5,10 @@ using OffLogs.Api.Models.Response;
 using OffLogs.Business.Mvc.Attribute.Auth;
 using OffLogs.Business.Mvc.Controller;
 
-namespace OffLogs.Api.Controller
+namespace OffLogs.Api.Controller.Public.Home
 {
     [ApiController]
+    [Route("/[controller]")]
     public class HomeController : BaseApiController
     {
         public HomeController(ILogger<HomeController> logger, IConfiguration configuration) : base(logger, configuration)
