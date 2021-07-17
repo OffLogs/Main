@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using OffLogs.Api.Tests.Integration.Core.Models;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Db.Dao;
-using OffLogs.Business.Db.Entities;
+using OffLogs.Business.Dao;
+using OffLogs.Business.Entities;
 using OffLogs.Business.Services.Data;
 using OffLogs.Business.Services.Jwt;
 

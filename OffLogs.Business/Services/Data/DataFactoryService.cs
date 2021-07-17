@@ -2,7 +2,7 @@ using System;
 using Bogus;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Db.Entities;
+using OffLogs.Business.Entities;
 
 namespace OffLogs.Business.Services.Data
 {

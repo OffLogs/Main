@@ -11,7 +11,7 @@ using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Models.Api.Request.Board;
 using OffLogs.Business.Common.Models.Api.Response;
 using OffLogs.Business.Common.Models.Api.Response.Board;
-using OffLogs.Business.Db.Dao;
+using OffLogs.Business.Dao;
 using OffLogs.Business.Mvc.Controller;
 using OffLogs.Business.Services.Jwt;
 

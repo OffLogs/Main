@@ -3,7 +3,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using OffLogs.Api.Tests.Integration.Core.Service;
-using OffLogs.Business.Db.Dao;
+using OffLogs.Business.Dao;
 using OffLogs.Business.Services.Data;
 using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Kafka;

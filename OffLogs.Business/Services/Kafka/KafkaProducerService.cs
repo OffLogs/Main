@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Confluent.Kafka;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using OffLogs.Business.Db.Entities;
+using OffLogs.Business.Entities;
 using OffLogs.Business.Services.Kafka.Models;
 using OffLogs.Business.Services.Kafka.Serializers;
 

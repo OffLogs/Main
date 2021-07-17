@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Autofac" Version="6.2.0" />
       <PackageReference Include="Bogus" Version="33.0.2" />
       <PackageReference Include="Confluent.Kafka" Version="1.7.0" />
       <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
@@ -36,6 +37,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Di" />
       <Folder Include="Test" />
     </ItemGroup>
 

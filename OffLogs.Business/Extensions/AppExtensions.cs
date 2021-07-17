@@ -1,7 +1,7 @@
 using System;
 using System.Data;
 using Microsoft.Extensions.DependencyInjection;
-using OffLogs.Business.Db.Dao;
+using OffLogs.Business.Dao;
 using OffLogs.Business.Services.Data;
 using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Kafka;

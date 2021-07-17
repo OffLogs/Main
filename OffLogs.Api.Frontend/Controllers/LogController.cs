@@ -10,7 +10,7 @@ using OffLogs.Business.Services.Kafka;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using OffLogs.Api.Frontend.Models.Request.Log.Serilog;
-using OffLogs.Business.Db.Entities;
+using OffLogs.Business.Entities;
 using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Kafka.Models;
 

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using OffLogs.Business.Db.Entities;
+using OffLogs.Business.Entities;
 
 namespace OffLogs.Api.Tests.Integration.Core.Models
 {

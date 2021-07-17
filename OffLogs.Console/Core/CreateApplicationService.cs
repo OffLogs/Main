@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using OffLogs.Business.Db.Dao;
+using OffLogs.Business.Dao;
 using OffLogs.Business.Services.Data;
 using OffLogs.Business.Services.Jwt;
 using OffLogs.Console.Verbs;
