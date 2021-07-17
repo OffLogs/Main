@@ -6,16 +6,12 @@ namespace Api.Requests.Abstractions
     public class DefaultAsyncRequestBuilder : IAsyncRequestBuilder
     {
         private readonly IAsyncRequestHandlerFactory _asyncRequestHandlerFactory;
-
-
-
+        
         public DefaultAsyncRequestBuilder(IAsyncRequestHandlerFactory asyncRequestHandlerFactory)
         {
             _asyncRequestHandlerFactory = asyncRequestHandlerFactory ?? throw new ArgumentNullException(nameof(asyncRequestHandlerFactory));
         }
-
-
-
+        
         public Task ExecuteAsync<TRequest>(TRequest request)
             where TRequest : IRequest
         {

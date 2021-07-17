@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Api.Requests.Abstractions;
+using OffLogs.Business.Services.Jwt;
+using OffLogs.Business.Services.Kafka;
 using Queries.Abstractions;
 
 namespace OffLogs.Api.Frontend.Controllers.Log.Actions.Log
@@ -8,10 +10,18 @@ namespace OffLogs.Api.Frontend.Controllers.Log.Actions.Log
     public class AddCommonLogRequestHandler : IAsyncRequestHandler<AddCommonLogsRequest>
     {
         private readonly IAsyncQueryBuilder _asyncQueryBuilder;
+        private readonly IKafkaProducerService _kafkaProducerService;
+        private readonly IJwtApplicationService _jwtApplicationService;
 
-        public AddCommonLogRequestHandler(IAsyncQueryBuilder asyncQueryBuilder)
+        public AddCommonLogRequestHandler(
+            IAsyncQueryBuilder asyncQueryBuilder,
+            IKafkaProducerService kafkaProducerService,
+            IJwtApplicationService jwtApplicationService
+        )
         {
             _asyncQueryBuilder = asyncQueryBuilder ?? throw new ArgumentNullException(nameof(asyncQueryBuilder));
+            _kafkaProducerService = kafkaProducerService;
+            _jwtApplicationService = jwtApplicationService;
         }
 
         public async Task ExecuteAsync(AddCommonLogsRequest request)

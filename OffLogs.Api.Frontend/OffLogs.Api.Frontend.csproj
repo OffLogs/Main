@@ -15,10 +15,15 @@
         <PackageReference Include="Serilog.Settings.Configuration" Version="3.2.0-dev-00272" />
         <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+        <PackageReference Include="Tados.Autofac.Extensions.ConfiguredModules" Version="1.0.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Api.Requests.Abstractions\Api.Requests.Abstractions.csproj" />
+      <ProjectReference Include="..\AspNetCore.ApiControllers.Abstractions\AspNetCore.ApiControllers.Abstractions.csproj" />
+      <ProjectReference Include="..\AspNetCore.ApiControllers.Extensions\AspNetCore.ApiControllers.Extensions.csproj" />
+      <ProjectReference Include="..\Commands.Abstractions\Commands.Abstractions.csproj" />
+      <ProjectReference Include="..\OffLogs.Business.Orm\OffLogs.Business.Orm.csproj" />
       <ProjectReference Include="..\OffLogs.Business\OffLogs.Business.csproj" />
       <ProjectReference Include="..\Queries.Abstractions\Queries.Abstractions.csproj" />
     </ItemGroup>

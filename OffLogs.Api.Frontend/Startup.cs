@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Autofac;
+using Autofac.Extensions.ConfiguredModules;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -102,6 +104,12 @@ namespace OffLogs.Api.Frontend
                 });
         }
 
+        public void ConfigureContainer(ContainerBuilder containerBuilder)
+        {
+            containerBuilder
+                .RegisterConfiguredModulesFromCurrentAssembly(Configuration);
+        }
+        
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

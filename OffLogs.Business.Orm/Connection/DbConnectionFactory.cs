@@ -11,7 +11,7 @@ using OffLogs.Business.Utils;
 
 namespace OffLogs.Business.Orm.Connection
 {
-    internal class DbConnectionFactory : IDbConnectionFactory
+    public class DbConnectionFactory : IDbConnectionFactory
     {
         private readonly string _dbNamespace = "OffLogs.Business.Db";
         private readonly IConfiguration _configuration;

@@ -6,7 +6,7 @@ using NHibernate;
 
 namespace OffLogs.Business.Orm.Connection
 {
-    internal class DbSessionProvider : IDbSessionProvider
+    public class DbSessionProvider : IDbSessionProvider
     {
         private readonly IDbConnectionFactory _dbConnectionFactory;
         private readonly ILogger<IDbConnectionFactory> _logger;
