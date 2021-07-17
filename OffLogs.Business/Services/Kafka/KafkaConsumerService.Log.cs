@@ -3,8 +3,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using Microsoft.Extensions.Logging;
+using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Entities;
+using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Services.Kafka.Models;
 
 namespace OffLogs.Business.Services.Kafka

@@ -1,9 +1,9 @@
 using System;
 using Domain.Abstractions;
 using NHibernate.Mapping.Attributes;
-using OffLogs.Business.Constants;
+using OffLogs.Business.Common.Constants;
 
-namespace OffLogs.Business.Entities
+namespace OffLogs.Business.Orm.Entities
 {
     [Class(Table = "request_logs")]
     public class RequestLogEntity: IEntity

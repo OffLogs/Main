@@ -4,10 +4,10 @@ using Newtonsoft.Json;
 using NHibernate.Mapping.Attributes;
 using OffLogs.Business.Common.Models.Api.Response.Board;
 
-namespace OffLogs.Business.Entities
+namespace OffLogs.Business.Orm.Entities
 {
-    [Class(Table = "log_properties")]
-    public class LogPropertyEntity: IEntity
+    [Class(Table = "log_traces")]
+    public class LogTraceEntity: IEntity
     {
         [Id(Name = "Id", Generator = "native")]
         [Column(Name = "id", SqlType = "bigint", NotNull = true)]
@@ -23,53 +23,33 @@ namespace OffLogs.Business.Entities
         public virtual LogEntity Log { get; set; }
         
         [Property(NotNull = true)]
-        [Column(Name = "key", Length = 200, NotNull = true)]
-        public virtual string Key { get; set; }
-        
-        [Property(NotNull = true)]
-        [Column(Name = "value", Length = 2048, NotNull = true)]
-        public virtual string Value { get; set; }
+        [Column(Name = "trace", Length = 2048, NotNull = true)]
+        public virtual string Trace { get; set; }
         
         [Property(NotNull = true)]
         [Column(Name = "create_time", SqlType = "datetime", NotNull = true)]
         public virtual DateTime CreateTime { get; set; }
         
         [JsonIgnore]
-        public virtual LogPropertyResponseModel ResponseModel
+        public virtual LogTraceResponseModel ResponseModel
         {
             get
             {
-                var model = new LogPropertyResponseModel()
+                var model = new LogTraceResponseModel()
                 {
                     Id = Id,
-                    Key = Key,
-                    Value = Value,
+                    Trace = Trace,
                     CreateTime = CreateTime,
                 };
                 return model;
             }
         }
         
-        public LogPropertyEntity() {}
+        public LogTraceEntity() {}
 
-        public LogPropertyEntity(string key, string value)
+        public LogTraceEntity(string trace)
         {
-            Key = key;
-            Value = value;
-            CreateTime = DateTime.Now;
-        }
-        
-        public LogPropertyEntity(string key, object value)
-        {
-            Key = key;
-            try
-            {
-                Value = JsonConvert.SerializeObject(value);
-            }
-            catch (Exception)
-            {
-                Value = "";
-            }
+            Trace = trace;
             CreateTime = DateTime.Now;
         }
     }

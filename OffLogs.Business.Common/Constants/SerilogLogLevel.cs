@@ -1,8 +1,6 @@
-using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Extensions;
-using OffLogs.Business.Extensions;
 
-namespace OffLogs.Business.Constants
+namespace OffLogs.Business.Common.Constants
 {
     public class SerilogLogLevel : AConstant<SerilogLogLevel>
     {

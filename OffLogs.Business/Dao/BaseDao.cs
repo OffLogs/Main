@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Mapping.Attributes;
-using OffLogs.Business.Utils;
+using OffLogs.Business.Common.Utils;
 
 namespace OffLogs.Business.Dao
 {

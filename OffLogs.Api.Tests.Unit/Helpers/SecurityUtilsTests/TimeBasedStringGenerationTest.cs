@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NHibernate.Mapping;
 using OffLogs.Business.Common.Extensions;
+using OffLogs.Business.Common.Utils;
 using OffLogs.Business.Helpers;
 using Xunit;
 

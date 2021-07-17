@@ -7,7 +7,7 @@ using NHibernate;
 using NHibernate.Linq;
 using NHibernate.Multi;
 using OffLogs.Business.Common.Constants;
-using OffLogs.Business.Entities;
+using OffLogs.Business.Orm.Entities;
 
 namespace OffLogs.Business.Dao
 {

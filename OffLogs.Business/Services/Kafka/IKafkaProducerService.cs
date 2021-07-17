@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Domain.Abstractions;
-using OffLogs.Business.Entities;
+using OffLogs.Business.Orm.Entities;
 
 namespace OffLogs.Business.Services.Kafka
 {

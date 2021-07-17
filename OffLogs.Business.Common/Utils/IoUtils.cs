@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace OffLogs.Business.Utils
+namespace OffLogs.Business.Common.Utils
 {
     public static class IoUtils
     {

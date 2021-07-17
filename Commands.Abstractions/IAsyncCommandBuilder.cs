@@ -7,6 +7,7 @@ namespace Commands.Abstractions
     {
         Task ExecuteAsync<TCommandContext>(
             TCommandContext commandContext,
-            CancellationToken cancellationToken = default) where TCommandContext : ICommandContext;
+            CancellationToken cancellationToken = default
+        ) where TCommandContext : ICommandContext;
     }
 }

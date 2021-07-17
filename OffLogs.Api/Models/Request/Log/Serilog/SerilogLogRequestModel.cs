@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
+using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Mvc.Attribute.Constant;
 using OffLogs.Business.Constants;
 

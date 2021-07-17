@@ -6,10 +6,10 @@ using Domain.Abstractions;
 
 namespace OffLogs.Business.Orm.Commands.Context
 {
-    public class CreateObjectWithIdCommandContext<THasId> : ICommandContext
+    public class SaveObjectWithIdCommandContext<THasId> : ICommandContext
         where THasId : class, IHasId, new()
     {
-        public CreateObjectWithIdCommandContext(THasId objectWithId)
+        public SaveObjectWithIdCommandContext(THasId objectWithId)
         {
             ObjectWithId = objectWithId ?? throw new ArgumentNullException(nameof(objectWithId));
         }
@@ -19,14 +19,16 @@ namespace OffLogs.Business.Orm.Commands.Context
 
     public static class CreateObjectWithIdCommandContextExtensions
     {
-        public static Task CreateAsync<THasId>(
+        public static Task SaveAsync<THasId>(
             this IAsyncCommandBuilder commandBuilder,
             THasId objectWithId,
-            CancellationToken cancellationToken = default) where THasId : class, IHasId, new()
+            CancellationToken cancellationToken = default
+        ) where THasId : class, IHasId, new()
         {
             return commandBuilder.ExecuteAsync(
-                new CreateObjectWithIdCommandContext<THasId>(objectWithId),
-                cancellationToken);
+                new SaveObjectWithIdCommandContext<THasId>(objectWithId),
+                cancellationToken
+            );
         }
     }
 }

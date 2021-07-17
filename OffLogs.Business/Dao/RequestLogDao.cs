@@ -5,8 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using NHibernate.Linq;
+using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Entities;
+using OffLogs.Business.Orm.Entities;
 
 namespace OffLogs.Business.Dao
 {

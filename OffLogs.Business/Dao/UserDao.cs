@@ -5,8 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NHibernate.Linq;
 using Npgsql;
-using OffLogs.Business.Entities;
+using OffLogs.Business.Common.Utils;
 using OffLogs.Business.Helpers;
+using OffLogs.Business.Orm.Entities;
 
 namespace OffLogs.Business.Dao
 {

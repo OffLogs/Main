@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using OffLogs.Api.Tests.Integration.Core.Models;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Entities;
+using OffLogs.Business.Orm.Entities;
 
 namespace OffLogs.Api.Tests.Integration.Core.Service
 {

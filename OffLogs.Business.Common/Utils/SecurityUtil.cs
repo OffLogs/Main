@@ -1,11 +1,8 @@
 using System;
-using System.Buffers.Text;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
 
-namespace OffLogs.Business.Helpers
+namespace OffLogs.Business.Common.Utils
 {
     public static class SecurityUtil
     {

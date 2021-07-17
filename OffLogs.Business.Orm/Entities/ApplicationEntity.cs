@@ -3,7 +3,7 @@ using Domain.Abstractions;
 using NHibernate.Mapping.Attributes;
 using OffLogs.Business.Common.Models.Api.Response.Board;
 
-namespace OffLogs.Business.Entities
+namespace OffLogs.Business.Orm.Entities
 {
     [Class(Table = "applications")]
     public class ApplicationEntity: IEntity
@@ -53,5 +53,14 @@ namespace OffLogs.Business.Entities
         }
         
         public ApplicationEntity() {}
+
+        public ApplicationEntity(UserEntity user, string name)
+        {
+            User = user;
+            Name = name;
+            ApiToken = "tempToken";
+            CreateTime = DateTime.Now;
+            UpdateTime = DateTime.Now;
+        }
     }
 }

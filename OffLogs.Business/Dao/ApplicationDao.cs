@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NHibernate.Linq;
-using OffLogs.Business.Entities;
+using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Services.Jwt;
 
 namespace OffLogs.Business.Dao
@@ -42,14 +42,7 @@ namespace OffLogs.Business.Dao
         
         public async Task<ApplicationEntity> CreateNewApplication(UserEntity user,  string name)
         {   
-            var application = new ApplicationEntity()
-            {
-                User = user,
-                Name = name,
-                ApiToken = "tempToken",
-                CreateTime = DateTime.Now,
-                UpdateTime = DateTime.Now
-            };
+            var application = new ApplicationEntity(user, name);
             using (var session = Session)
             using (var transaction = session.BeginTransaction())
             {

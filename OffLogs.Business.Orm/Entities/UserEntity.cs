@@ -2,7 +2,7 @@ using System;
 using Domain.Abstractions;
 using NHibernate.Mapping.Attributes;
 
-namespace OffLogs.Business.Entities
+namespace OffLogs.Business.Orm.Entities
 {
     [Class(Table = "users")]
     public class UserEntity: IEntity
@@ -36,5 +36,7 @@ namespace OffLogs.Business.Entities
         public virtual DateTime UpdateTime { get; set; }
         
         public virtual string Password { get; set; }
+
+        public UserEntity() {}
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using OffLogs.Business.Common.Utils;
 using OffLogs.Business.Extensions;
 using OffLogs.Business.Helpers;
 using Xunit;

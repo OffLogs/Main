@@ -33,8 +33,6 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
                     builder.UseStartup<OffLogs.Api.Frontend.Startup>()
                         .ConfigureTestServices(services => 
                         {
-                            services.AddHttpContextAccessor();
-                            services.InitServices();
                             services.AddScoped<IDataSeederService, DataSeederService>();
                             // We can further customize our application setup here.
                         })

@@ -7,7 +7,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Commands.Abstractions\Commands.Abstractions.csproj" />
       <ProjectReference Include="..\Domain.Abstractions\Domain.Abstractions.csproj" />
-      <ProjectReference Include="..\OffLogs.Business\OffLogs.Business.csproj" />
+      <ProjectReference Include="..\OffLogs.Business.Common\OffLogs.Business.Common.csproj" />
       <ProjectReference Include="..\Persistence.Transactions.Behaviors\Persistence.Transactions.Behaviors.csproj" />
       <ProjectReference Include="..\Queries.Abstractions\Queries.Abstractions.csproj" />
     </ItemGroup>
@@ -24,6 +24,10 @@
       <EmbeddedResource Include="Hibernate\hibernate.hbm.xml" />
       <EmbeddedResource Include="Hibernate\Queries\getLogWithData.hbm.xml" />
       <EmbeddedResource Include="Hibernate\Queries\Log\getList.hbm.xml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Commands\Entities\User" />
     </ItemGroup>
 
 </Project>

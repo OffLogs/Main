@@ -37,7 +37,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Di" />
+      <Folder Include="Entities" />
       <Folder Include="Test" />
     </ItemGroup>
 
@@ -62,8 +62,11 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Commands.Abstractions\Commands.Abstractions.csproj" />
       <ProjectReference Include="..\Domain.Abstractions\Domain.Abstractions.csproj" />
       <ProjectReference Include="..\OffLogs.Business.Common\OffLogs.Business.Common.csproj" />
+      <ProjectReference Include="..\OffLogs.Business.Orm\OffLogs.Business.Orm.csproj" />
+      <ProjectReference Include="..\Queries.Abstractions\Queries.Abstractions.csproj" />
     </ItemGroup>
 
 </Project>

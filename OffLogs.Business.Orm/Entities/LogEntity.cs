@@ -6,10 +6,9 @@ using Newtonsoft.Json;
 using NHibernate.Mapping.Attributes;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Models.Api.Response.Board;
-using OffLogs.Business.Extensions;
-using OffLogs.Business.Helpers;
+using OffLogs.Business.Common.Utils;
 
-namespace OffLogs.Business.Entities
+namespace OffLogs.Business.Orm.Entities
 {
     [Class(Table = "logs", NameType = typeof(LogEntity))]
     public class LogEntity: IEntity
@@ -100,11 +99,11 @@ namespace OffLogs.Business.Entities
                 CreateTime = CreateTime,
             };
 
-            if (Traces != null && !Traces.IsHibernateLazy())
+            if (Traces != null)
             {
                 model.Traces = Traces.Select(item => item.Trace).ToList();
             }
-            if (Properties != null && !Properties.IsHibernateLazy())
+            if (Properties != null)
             {
                 model.Properties = Properties.ToDictionary(
                     item => item.Key,

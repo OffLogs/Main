@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 using OffLogs.Api.Tests.Integration.Core;
+using OffLogs.Business.Common.Constants;
+using OffLogs.Business.Common.Utils;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Helpers;
 using Xunit;
