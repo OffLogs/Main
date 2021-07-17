@@ -1,6 +1,8 @@
+using Domain.Abstractions;
+
 namespace OffLogs.Business.Services.Jwt
 {
-    public interface IJwtApplicationService
+    public interface IJwtApplicationService: IDomainService
     {
         public string GetToken();
         public string BuildJwt(long applicationId);

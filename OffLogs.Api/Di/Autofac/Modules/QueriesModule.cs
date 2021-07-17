@@ -1,11 +1,9 @@
 ﻿using Autofac;
-using Commands.Abstractions;
 using OffLogs.Business.Orm;
-using OffLogs.Business.Orm.Commands;
 using OffLogs.Business.Orm.Queries;
 using Queries.Abstractions;
 
-namespace OffLogs.Api.Frontend.Di.Autofac.Modules
+namespace OffLogs.Api.Di.Autofac.Modules
 {
     public class QueriesModule : Module
     {
