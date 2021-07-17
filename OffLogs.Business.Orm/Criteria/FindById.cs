@@ -15,7 +15,6 @@ namespace OffLogs.Business.Orm.Criteria
         }
     }
 
-
     public static class FindByIdCriterionExtensions
     {
         public static Task<THasId> FindByIdAsync<THasId>(

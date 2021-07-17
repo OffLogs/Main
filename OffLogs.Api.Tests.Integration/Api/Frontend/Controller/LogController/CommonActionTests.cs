@@ -2,11 +2,8 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging.Abstractions;
 using OffLogs.Business.Common.Constants;
-using OffLogs.Business.Constants;
-using OffLogs.Business.Orm.Criteria.Entites;
-using OffLogs.Business.Orm.Dto;
+using OffLogs.Business.Orm.Criteria;
 using OffLogs.Business.Orm.Entities;
 using Xunit;
 
@@ -58,7 +55,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             
             var actualList = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(1, actualList.Count);
-            var actualLog = await LogDao.GetLogAsync(actualList.Items.First().Id);
+            var actualLog = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.First().Id);
             Assert.NotEmpty(actualLog.Message);
             Assert.NotNull(actualLog.Level);
             Assert.True(actualLog.Properties.Count  > 0);
@@ -106,7 +103,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             
             var actualList = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(1, actualList.Count);
-            var actualLog = await LogDao.GetLogAsync(actualList.Items.First().Id);
+            var actualLog = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.First().Id);
             Assert.NotEmpty(actualLog.Message);
             Assert.NotNull(actualLog.Level);
             Assert.True(actualLog.Properties.Count  > 0);
@@ -120,8 +117,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             // Arrange
             var user = await DataSeeder.CreateNewUser();
 
-            var (_, logsCounter) = await GetLogsList(user.Applications.First().Id, 1);
-            Assert.Equal(0, logsCounter);
+            var list = await GetLogsList(user.Applications.First().Id, 1);
+            Assert.Equal(0, list.Count);
             // Act
             var response = await PostRequestAsync(url, user.ApplicationApiToken, new
             {
@@ -170,9 +167,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             
             var actualList = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(2, actualList.Count);
-            var actualLog = await LogDao.GetLogAsync(actualList.Items.First().Id);
+            var actualLog = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.First().Id);
             Assert.NotEmpty(actualLog.Message);
-            Assert.NotNull(actualLog.Level);
             Assert.True(actualLog.Properties.Count  > 0);
             Assert.True(actualLog.Traces.Count == 0);
         }
@@ -228,9 +224,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             
             var actualList = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(1, actualList.Count);
-            var actualLog = await LogDao.GetLogAsync(actualList.Items.First().Id);
+            var actualLog = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.First().Id);
             Assert.NotEmpty(actualLog.Message);
-            Assert.NotNull(actualLog.Level);
             Assert.True(actualLog.Properties.Count == 9);
             Assert.True(actualLog.Traces.Count == 7);
         }

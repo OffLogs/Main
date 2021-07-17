@@ -11,6 +11,7 @@ using OffLogs.Business.Services.Data;
 using OffLogs.Business.Services.Entities.Application;
 using OffLogs.Business.Services.Entities.User;
 using OffLogs.Business.Services.Jwt;
+using Queries.Abstractions;
 
 namespace OffLogs.Api.Tests.Integration.Core.Service
 {
@@ -18,6 +19,7 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
     {
         private readonly IDataFactoryService _factory;
         private readonly IAsyncCommandBuilder _commandBuilder;
+        private readonly IAsyncQueryBuilder _queryBuilder;
         private readonly IJwtAuthService _jwtAuthService;
         private readonly IUserService _userService;
         private readonly IApplicationService _applicationService;
@@ -27,7 +29,8 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
             IAsyncCommandBuilder commandBuilder, 
             IJwtAuthService jwtAuthService,
             IUserService userService,
-            IApplicationService applicationService
+            IApplicationService applicationService,
+            IAsyncQueryBuilder queryBuilder
         )
         {
             _factory = factoryService;
@@ -35,6 +38,7 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
             _jwtAuthService = jwtAuthService;
             _userService = userService;
             _applicationService = applicationService;
+            _queryBuilder = queryBuilder;
         }
 
         public async Task<UserTestModel> CreateNewUser()
