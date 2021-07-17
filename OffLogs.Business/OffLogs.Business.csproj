@@ -44,20 +44,11 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>RG.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Include="Db\hibernate.hbm.xml" />
-      <EmbeddedResource Include="Db\Mapping\RequestLog.hbm.xml" />
-      <EmbeddedResource Include="Db\Queries\getLogWithData.hbm.xml" />
-      <EmbeddedResource Include="Db\Queries\Log\getList.hbm.xml" />
       <None Remove="Db\hibernate.hbm.xml" />
       <None Remove="Db\Queries\log_get_list.sql" />
-      <EmbeddedResource Include="Db\Mapping\Application.hbm.xml" />
-      <EmbeddedResource Include="Db\Mapping\LogProperty.hbm.xml" />
-      <EmbeddedResource Include="Db\Mapping\LogTrace.hbm.xml" />
-      <EmbeddedResource Include="Db\Mapping\User.hbm.xml" />
       <None Remove="Db\hibernate.cfg.xml" />
       <None Remove="Db\Mapping\Cat.hbm.xml" />
       <None Remove="Db\Mapping\Log.hbm.xml" />
-      <EmbeddedResource Include="Db\Mapping\Log.hbm.xml" />
     </ItemGroup>
 
     <ItemGroup>

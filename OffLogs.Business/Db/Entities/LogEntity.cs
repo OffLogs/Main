@@ -6,8 +6,6 @@ using Newtonsoft.Json;
 using NHibernate.Mapping.Attributes;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Models.Api.Response.Board;
-using OffLogs.Business.Constants;
-using OffLogs.Business.Db.Types;
 using OffLogs.Business.Extensions;
 using OffLogs.Business.Helpers;
 

@@ -2,7 +2,6 @@ using System;
 using Domain.Abstractions;
 using NHibernate.Mapping.Attributes;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Db.Types;
 
 namespace OffLogs.Business.Db.Entities
 {
