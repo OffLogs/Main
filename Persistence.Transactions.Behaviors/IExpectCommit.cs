@@ -1,7 +1,10 @@
-﻿namespace Persistence.Transactions.Behaviors
+﻿using System.Threading;
+using System.Threading.Tasks;
+
+namespace Persistence.Transactions.Behaviors
 {
     public interface IExpectCommit
     {
-        void PerformCommit();
+        Task PerformCommitAsync(CancellationToken cancellationToken = default);
     }
 }

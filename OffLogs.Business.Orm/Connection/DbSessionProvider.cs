@@ -42,7 +42,7 @@ namespace OffLogs.Business.Orm.Connection
             //Dispose();
         }
 
-        public async Task PerformCommit(CancellationToken cancellationToken = default)
+        public async Task PerformCommitAsync(CancellationToken cancellationToken = default)
         {
             if (_transaction != null && _session.IsOpen)
             {
@@ -66,7 +66,7 @@ namespace OffLogs.Business.Orm.Connection
         {
             if (_transaction != null && _transaction.IsActive)
             {
-                PerformCommit().Wait();
+                PerformCommitAsync().Wait();
             }
             if (_session != null)
             {

@@ -18,7 +18,14 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Api.Requests.Abstractions\Api.Requests.Abstractions.csproj" />
       <ProjectReference Include="..\OffLogs.Business\OffLogs.Business.csproj" />
+      <ProjectReference Include="..\Queries.Abstractions\Queries.Abstractions.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Controllers\Log\Dto" />
+      <Folder Include="Controllers\Log\Profiles" />
     </ItemGroup>
 
 </Project>
