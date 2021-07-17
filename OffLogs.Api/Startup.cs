@@ -38,6 +38,7 @@ namespace OffLogs.Api
             EnableSwaggerIntegration(services);
             services.InitServices();
             services.AddCors();
+            services.AddAutoMapper(typeof(ApiAssemblyMarker).Assembly);
             services.AddControllers()
                 .ConfigureApiBehaviorOptions(options =>
                 {
