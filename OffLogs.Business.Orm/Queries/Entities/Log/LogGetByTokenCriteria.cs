@@ -1,8 +1,7 @@
-﻿
-using System;
+﻿using System;
 using Queries.Abstractions;
 
-namespace OffLogs.Business.Orm.Criteria.Entites
+namespace OffLogs.Business.Orm.Queries.Entities.Log
 {
     public class LogGetByTokenCriteria : ICriterion
     {

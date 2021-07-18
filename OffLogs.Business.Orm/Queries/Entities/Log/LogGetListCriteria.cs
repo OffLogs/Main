@@ -1,9 +1,7 @@
-﻿
-using System;
-using OffLogs.Business.Common.Constants;
+﻿using OffLogs.Business.Common.Constants;
 using Queries.Abstractions;
 
-namespace OffLogs.Business.Orm.Criteria.Entites
+namespace OffLogs.Business.Orm.Queries.Entities.Log
 {
     public class LogGetListCriteria : ICriterion
     {

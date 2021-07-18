@@ -6,8 +6,8 @@ using OffLogs.Business.Constants;
 using OffLogs.Business.Dao;
 using OffLogs.Business.Helpers;
 using OffLogs.Business.Orm.Commands.Context;
-using OffLogs.Business.Orm.Criteria.Entites;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Queries.Entities.RequestLog;
 using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main.Db.RequestLogDaoTest

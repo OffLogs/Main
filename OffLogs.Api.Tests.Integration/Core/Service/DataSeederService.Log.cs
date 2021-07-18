@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Orm.Commands.Context;
-using OffLogs.Business.Orm.Criteria;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Queries;
 
 namespace OffLogs.Api.Tests.Integration.Core.Service
 {

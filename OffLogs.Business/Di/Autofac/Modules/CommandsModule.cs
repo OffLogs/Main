@@ -10,7 +10,7 @@ namespace OffLogs.Business.Di.Autofac.Modules
         protected override void Load(ContainerBuilder builder)
         {
             builder
-                .RegisterGeneric(typeof(CreateObjectWithIdCommand<>))
+                .RegisterGeneric(typeof(SaveObjectWithIdCommand<>))
                 .As(typeof(IAsyncCommand<>))
                 .InstancePerLifetimeScope();
 

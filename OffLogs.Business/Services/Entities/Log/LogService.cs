@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Commands.Abstractions;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Orm.Commands.Context;
-using OffLogs.Business.Orm.Criteria;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Services.Jwt;
 using Queries.Abstractions;
 

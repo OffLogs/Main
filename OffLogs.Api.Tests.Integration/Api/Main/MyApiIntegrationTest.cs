@@ -5,11 +5,12 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Commands.Abstractions;
 using OffLogs.Api.Tests.Integration.Core.Service;
-using OffLogs.Business.Orm.Criteria.Entites;
 using OffLogs.Business.Orm.Dto;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Queries.Entities.Log;
 using OffLogs.Business.Services.Data;
 using OffLogs.Business.Services.Entities.Log;
+using OffLogs.Business.Services.Entities.User;
 using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Kafka;
 using Persistence.Transactions.Behaviors;
@@ -33,6 +34,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         protected readonly IAsyncCommandBuilder CommandBuilder;
         
         protected readonly ILogService LogService;
+        protected readonly IUserService UserService;
         
         public MyApiIntegrationTest(ApiCustomWebApplicationFactory factory)
         {
@@ -46,6 +48,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
             KafkaProducerService = _factory.Services.GetService(typeof(IKafkaProducerService)) as IKafkaProducerService;
             KafkaConsumerService = _factory.Services.GetService(typeof(IKafkaConsumerService)) as IKafkaConsumerService;
             LogService = _factory.Services.GetService(typeof(ILogService)) as ILogService;
+            UserService = _factory.Services.GetService(typeof(IUserService)) as IUserService;
         }
 
         public void Dispose()

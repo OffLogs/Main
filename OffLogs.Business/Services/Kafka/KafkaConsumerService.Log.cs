@@ -6,9 +6,9 @@ using Microsoft.Extensions.Logging;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Orm.Commands.Context;
-using OffLogs.Business.Orm.Criteria;
-using OffLogs.Business.Orm.Criteria.Entites;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Queries;
+using OffLogs.Business.Orm.Queries.Entities.Log;
 using OffLogs.Business.Services.Kafka.Models;
 
 namespace OffLogs.Business.Services.Kafka

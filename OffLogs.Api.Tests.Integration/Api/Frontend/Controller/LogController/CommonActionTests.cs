@@ -3,8 +3,8 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using OffLogs.Business.Common.Constants;
-using OffLogs.Business.Orm.Criteria;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Queries;
 using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController

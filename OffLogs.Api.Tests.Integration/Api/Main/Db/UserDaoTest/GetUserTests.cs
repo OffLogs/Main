@@ -1,5 +1,8 @@
 ﻿using System.Threading.Tasks;
 using OffLogs.Api.Tests.Integration.Core;
+using OffLogs.Business.Orm.Commands.Entities.User;
+using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Queries.Entities.User;
 using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main.Db.UserDaoTest
@@ -14,10 +17,11 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.UserDaoTest
         [InlineData("some-get-user-2", "user-get-2@email.com")]
         public async Task ShouldCreateNewUser(string expectedUserName, string expectedEmail)
         {
-            await UserDao.DeleteByUserName(expectedUserName);
+            await CommandBuilder.ExecuteAsync(new UserDeleteCommandContext(expectedUserName));
             
-            await UserDao.CreateNewUser(expectedUserName, expectedEmail);
-            var newUser = await UserDao.GetByUserName(expectedUserName);
+            await UserService.CreateNewUser(expectedUserName, expectedEmail);
+            var newUser = await QueryBuilder.For<UserEntity>()
+                .WithAsync(new UserGetByCriteria(expectedUserName));
             Assert.NotNull(newUser);
             Assert.Equal(expectedUserName, newUser.UserName);
             Assert.Equal(expectedEmail, newUser.Email);

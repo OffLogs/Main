@@ -28,7 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Commands\Entities\User" />
+      <Folder Include="Criteria\Entites" />
     </ItemGroup>
 
 </Project>

@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 using Domain.Abstractions;
 using Queries.Abstractions;
 
-namespace OffLogs.Business.Orm.Criteria
+namespace OffLogs.Business.Orm.Queries
 {
-    public class FindById : ICriterion
+    public class FindByIdCriteria : ICriterion
     {
         public readonly long Id;
 
-        public FindById(long Id)
+        public FindByIdCriteria(long Id)
         {
             this.Id = Id;
         }
@@ -25,7 +25,7 @@ namespace OffLogs.Business.Orm.Criteria
         {
             return asyncQueryBuilder
                 .For<THasId>()
-                .WithAsync(new FindById(id), cancellationToken);
+                .WithAsync(new FindByIdCriteria(id), cancellationToken);
         }
     }
 }
