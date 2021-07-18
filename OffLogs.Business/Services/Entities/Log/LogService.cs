@@ -5,22 +5,27 @@ using System.Threading.Tasks;
 using Commands.Abstractions;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Orm.Commands.Context;
+using OffLogs.Business.Orm.Criteria;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Services.Jwt;
+using Queries.Abstractions;
 
 namespace OffLogs.Business.Services.Entities.Log
 {
     public class LogService: ILogService
     {
         private readonly IAsyncCommandBuilder _commandBuilder;
+        private readonly IAsyncQueryBuilder _queryBuilder;
         private readonly IJwtApplicationService _jwtService;
 
         public LogService(
-            IAsyncCommandBuilder commandBuilder, 
+            IAsyncCommandBuilder commandBuilder,
+            IAsyncQueryBuilder queryBuilder,
             IJwtApplicationService jwtService
         )
         {
             _commandBuilder = commandBuilder;
+            _queryBuilder = queryBuilder;
             _jwtService = jwtService;
         }
         
@@ -71,6 +76,19 @@ namespace OffLogs.Business.Services.Entities.Log
             }
             await _commandBuilder.SaveAsync(log);
             return log;
+        }
+        
+        public async Task<bool> SetIsFavoriteAsync(long logId, bool isFavorite)
+        {
+            var log = await _queryBuilder.FindByIdAsync<LogEntity>(logId);
+            if (log == null)
+            {
+                return false;
+            }
+
+            log.IsFavorite = isFavorite;
+            await _commandBuilder.SaveAsync(log);
+            return true;
         }
     }
 }

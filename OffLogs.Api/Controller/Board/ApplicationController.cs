@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OffLogs.Api.Models.Request;
-using OffLogs.Api.Models.Response;
 using OffLogs.Business.Common.Models.Api.Request;
 using OffLogs.Business.Common.Models.Api.Request.Board;
 using OffLogs.Business.Common.Models.Api.Response;

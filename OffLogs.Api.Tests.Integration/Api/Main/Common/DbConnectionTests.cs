@@ -10,7 +10,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Common
         [Fact]
         public void ShouldTestDbConnection()
         {
-            Assert.True(Dao.IsConnectionSuccessful());
+            Assert.True(DbSessionProvider.CurrentSession.IsConnected);
         }
     }
 }

@@ -147,7 +147,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             var user = await DataSeeder.CreateNewUser();
             var logs = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information);
             var log = logs.First();
-            await LogDao.SetIsFavoriteAsync(log.Id, true);
+            await LogService.SetIsFavoriteAsync(log.Id, true);
             
             // Act
             var response = await PostRequestAsync(url, user.ApiToken, new LogListRequestModel()

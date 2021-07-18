@@ -1,6 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using OffLogs.Api.Models.Response;
+using OffLogs.Api.Controller.Public.Home.Actions;
 using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Test.Extensions;
@@ -24,9 +24,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller
 
             // Assert
             response.EnsureSuccessStatusCode();
-            var responseData = await response.GetJsonDataAsync<PongResponseModel>();
+            var responseData = await response.GetJsonDataAsync<PongResponse>();
             Assert.Equal(
-                new PongResponseModel(),
+                new PongResponse(),
                 responseData.Data
             );
         }
@@ -46,9 +46,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller
 
             // Assert
             response.EnsureSuccessStatusCode();
-            var responseData = await response.GetJsonDataAsync<PongResponseModel>();
+            var responseData = await response.GetJsonDataAsync<PongResponse>();
             Assert.Equal(
-                new PongResponseModel(),
+                new PongResponse(),
                 responseData.Data
             );
         }
@@ -67,9 +67,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller
 
             // Assert
             response.EnsureSuccessStatusCode();
-            var responseData = await response.GetJsonDataAsync<PongResponseModel>();
+            var responseData = await response.GetJsonDataAsync<PongResponse>();
             Assert.Equal(
-                new PongResponseModel(),
+                new PongResponse(),
                 responseData.Data
             );
         }
