@@ -3,7 +3,11 @@ using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Utils;
 using OffLogs.Business.Constants;
+using OffLogs.Business.Dao;
 using OffLogs.Business.Helpers;
+using OffLogs.Business.Orm.Commands.Context;
+using OffLogs.Business.Orm.Criteria.Entites;
+using OffLogs.Business.Orm.Entities;
 using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main.Db.RequestLogDaoTest
@@ -19,9 +23,11 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.RequestLogDaoTest
             var clientIp = "127.0.0.1";
             var token = SecurityUtil.GetTimeBasedToken();
             
-            await RequestLogDao.AddAsync(RequestLogType.Log, clientIp, "{some data}", token);
+            var log = new RequestLogEntity(RequestLogType.Log, clientIp, "{some data}", token);
+            await CommandBuilder.SaveAsync(log);
             
-            var existsLog = await RequestLogDao.GetByTokenAsync(token);
+            var existsLog = await QueryBuilder.For<RequestLogEntity>()
+                .WithAsync(new RequestLogGetByTokenCriteria(token));
             Assert.True(existsLog.Id > 0);
             Assert.NotNull(existsLog.CreateTime);
             Assert.Equal(RequestLogType.Log, existsLog.Type);

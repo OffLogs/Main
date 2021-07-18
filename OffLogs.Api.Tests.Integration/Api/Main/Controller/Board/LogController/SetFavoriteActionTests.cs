@@ -5,6 +5,8 @@ using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Models.Api.Request.Board;
 using OffLogs.Business.Constants;
+using OffLogs.Business.Orm.Criteria;
+using OffLogs.Business.Orm.Entities;
 using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
@@ -66,7 +68,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             });
             response.EnsureSuccessStatusCode();
             // Assert
-            var actualLog = await LogDao.GetLogAsync(log.Id);
+            var actualLog = await QueryBuilder.FindByIdAsync<LogEntity>(log.Id);
             Assert.True(actualLog.IsFavorite);
         }
     }

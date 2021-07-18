@@ -1,17 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Domain.Abstractions;
 using NHibernate.Linq;
 using OffLogs.Business.Common.Constants;
-using OffLogs.Business.Orm.Connection;
 using OffLogs.Business.Orm.Criteria.Entites;
 using OffLogs.Business.Orm.Dto;
 using OffLogs.Business.Orm.Entities;
 using Persistence.Transactions.Behaviors;
 
-namespace OffLogs.Business.Orm.Queries.Entities
+namespace OffLogs.Business.Orm.Queries.Entities.Log
 {
     public class LogGetListQuery : LinqAsyncQueryBase<LogEntity, LogGetListCriteria, ListDto<LogEntity>>
     {

@@ -35,7 +35,7 @@ namespace OffLogs.Business.Orm.Entities
 
         public RequestLogEntity() {}
 
-        public RequestLogEntity(RequestLogType type, string clientIp, object data, string token)
+        public RequestLogEntity(RequestLogType type, string clientIp, object data, string token = null)
         {
             Type = type;
             ClientIp = clientIp;

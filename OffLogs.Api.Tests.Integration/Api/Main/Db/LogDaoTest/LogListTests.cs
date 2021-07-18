@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Constants;
+using OffLogs.Business.Orm.Criteria;
 using OffLogs.Business.Orm.Entities;
 using Xunit;
 
@@ -28,7 +29,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.LogDaoTest
             Assert.NotEmpty(log.Traces);
             Assert.True(log.Traces.First().Id > 0);
             
-            var logFromDb = await LogDao.GetLogAsync(log.Id);
+            var logFromDb = await QueryBuilder.FindByIdAsync<LogEntity>(log.Id);
             Assert.Equal(LogLevel.Error, logFromDb.Level);
             Assert.Equal(application.Id, logFromDb.Application.Id);
         }
@@ -42,16 +43,16 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.LogDaoTest
             await CreateLog(application, LogLevel.Error);
             await CreateLog(application, LogLevel.Information);
             
-            var (list, counter) = await LogDao.GetList(application.Id, 1, null, 30);
-            Assert.Equal(2, counter);
+            var list = await GetLogsList(application.Id);
+            Assert.Equal(2, list.Count);
             
-            Assert.Contains(list, item => item.Level == LogLevel.Error);
-            Assert.Contains(list, item => item.Level == LogLevel.Information);
+            Assert.Contains(list.Items, item => item.Level == LogLevel.Error);
+            Assert.Contains(list.Items, item => item.Level == LogLevel.Information);
         }
 
         private async Task<LogEntity> CreateLog(ApplicationEntity application, LogLevel level)
         {
-            return await LogDao.AddAsync(
+            return await LogService.AddAsync(
                 application, 
                 "SomeMessage", 
                 level, 
