@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OffLogs.Api.Controller.Public.Home.Actions;
-using OffLogs.Api.Frontend.Controllers.Log.Actions.Log;
 using OffLogs.Business.Mvc.Attribute.Auth;
 using OffLogs.Business.Mvc.Controller;
 using Persistence.Transactions.Behaviors;

@@ -19,6 +19,9 @@ namespace OffLogs.Api.Extensions
             services.AddControllers()
                 .ConfigureApiBehaviorOptions(options =>
                 {
+                    // Disable pre-model validation of the models
+                    options.SuppressModelStateInvalidFilter = true;
+                    
                     options.InvalidModelStateResponseFactory = context =>
                     {
                         // Get an instance of ILogger (see below) and log accordingly.

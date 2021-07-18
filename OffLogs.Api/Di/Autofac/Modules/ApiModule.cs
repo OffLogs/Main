@@ -1,6 +1,5 @@
 ﻿using Api.Requests.Abstractions;
 using Autofac;
-using OffLogs.Api.Frontend;
 
 namespace OffLogs.Api.Di.Autofac.Modules
 {
@@ -9,12 +8,12 @@ namespace OffLogs.Api.Di.Autofac.Modules
         protected override void Load(ContainerBuilder builder)
         {
             builder
-                .RegisterAssemblyTypes(typeof(ApiFrontendAssemblyMarker).Assembly)
+                .RegisterAssemblyTypes(typeof(ApiAssemblyMarker).Assembly)
                 .AsClosedTypesOf(typeof(IAsyncRequestHandler<>))
                 .InstancePerDependency();
 
             builder
-                .RegisterAssemblyTypes(typeof(ApiFrontendAssemblyMarker).Assembly)
+                .RegisterAssemblyTypes(typeof(ApiAssemblyMarker).Assembly)
                 .AsClosedTypesOf(typeof(IAsyncRequestHandler<,>))
                 .InstancePerDependency();
 
