@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
+using OffLogs.Api.Controller.Public.User.Actions;
 using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Common.Models.Api.Request.User;
 using OffLogs.Business.Test.Extensions;
@@ -22,7 +23,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.UserController
                 Password = "test_not_exists",
             });
             // Assert
-            Assert.True(response.StatusCode == HttpStatusCode.Unauthorized);
+            Assert.False(response.IsSuccessStatusCode);
         }
         
         [Theory]
@@ -39,7 +40,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.UserController
                 Password = "fake password",
             });
             // Assert
-            Assert.True(response.StatusCode == HttpStatusCode.Unauthorized);
+            Assert.False(response.IsSuccessStatusCode);
         }
         
         [Theory]
@@ -48,7 +49,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.UserController
         {
             // Arrange
             var user = await DataSeeder.CreateNewUser();
-
+            
             // Act
             var response = await PostRequestAsAnonymousAsync(url, new
             {
@@ -57,8 +58,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.UserController
             });
             // Assert
             response.EnsureSuccessStatusCode();
-            var data = await response.GetJsonDataAsync<LoginResponseModel>();
-            Assert.True(JwtAuthService.IsValidJwt(data.Data.Token));
+            var data = await response.GetJsonDataAsync<LoginResponse>();
+            Assert.True(JwtAuthService.IsValidJwt(data.Token));
         }
     }
 }

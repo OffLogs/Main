@@ -30,30 +30,20 @@ namespace OffLogs.Api.Controller.Public.User
         {
         }
         
-        // [HttpPost("login")]
-        // public async Task<IActionResult> Login([FromBody]LoginRequestModel model)
-        // {
-        //     var existsUser = await _userDao.GetByUserName(model.UserName);
-        //     if (existsUser == null)
-        //     {
-        //         return JsonError(HttpStatusCode.Unauthorized);
-        //     }
-        //
-        //     var passwordHash = SecurityUtil.GeneratePasswordHash(model.Password, existsUser.PasswordSalt);
-        //     if (!passwordHash.CompareTo(existsUser.PasswordHash))
-        //     {
-        //         return JsonError(HttpStatusCode.Unauthorized);
-        //     }
-        //     return JsonSuccess(new LoginResponseModel
-        //     {
-        //         Token = _jwtService.BuildJwt(existsUser.Id)
-        //     });
-        // }
-        
+        [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public Task<IActionResult> CheckIsLoggedIn([FromBody] LoginRequest request)
+            => this.RequestAsync()
+                .For<LoginResponse>()
+                .With(request);
+
         [HttpGet("checkIsLoggedIn")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public Task<IActionResult> CheckIsLoggedIn([FromQuery] CheckIsLoggedInRequest request)
             => this.RequestAsync(request);
     }
