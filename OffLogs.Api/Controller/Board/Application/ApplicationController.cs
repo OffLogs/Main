@@ -31,5 +31,11 @@ namespace OffLogs.Api.Controller.Board.Application
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public Task<IActionResult> AddCommonLog(GetListRequest request)
             => this.RequestAsync().For<PaginatedListDto<ApplicationListItemDto>>().With(request);
+
+        [HttpPost("update")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public Task<IActionResult> Update(UpdateRequest request)
+            => this.RequestAsync().For<ApplicationDto>().With(request);
     }
 }

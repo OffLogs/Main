@@ -56,28 +56,7 @@ namespace OffLogs.Api.Controller.Board
                 return JsonError();
             }
         }
-        
-        [HttpPost("update")]
-        public async Task<IActionResult> Update([FromBody]ApplicationUpdateModel model)
-        {
-            try
-            {
-                var userId = _jwtService.GetUserId();
-                if (!await _applicationDao.IsOwner(userId, model.Id))
-                {
-                    return JsonError(HttpStatusCode.Forbidden);
-                }
-
-                var application = await _applicationDao.UpdateApplication(model.Id, model.Name);
-                return JsonSuccess(application.ResponseModel);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, e.Message);
-                return JsonError();
-            }
-        }
-        
+               
         [HttpPost("get")]
         public async Task<IActionResult> GetOne([FromBody]ApplicationGetModel model)
         {

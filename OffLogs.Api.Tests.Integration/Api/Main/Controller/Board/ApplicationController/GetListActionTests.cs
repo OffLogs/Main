@@ -97,7 +97,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
             // Assert
             var responseData = await response.GetJsonDataAsync<PaginatedListDto<ApplicationListItemDto>>();
             Assert.Equal(2, responseData.TotalPages);
-            Assert.Equal(26, responseData.Items.Count);
+            Assert.Equal(20, responseData.Items.Count);
+            Assert.Equal(26, responseData.TotalCount);
         }
     }
 }

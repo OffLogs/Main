@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Commands.Abstractions;
 using Domain.Abstractions;
+using OffLogs.Business.Exceptions;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries;
@@ -32,6 +33,19 @@ namespace OffLogs.Business.Services.Entities.Application
             var application = new ApplicationEntity(user, name);
             await _commandBuilder.SaveAsync(application);
             application.ApiToken = _jwtService.BuildJwt(application.Id);
+            await _commandBuilder.SaveAsync(application);
+            return application;
+        }
+
+        public async Task<ApplicationEntity> UpdateApplication(long applicationId, string name)
+        {
+            var application = await _queryBuilder.FindByIdAsync<ApplicationEntity>(applicationId);
+            if (application == null)
+            {
+                throw new ItemNotFoundException(nameof(ApplicationEntity));
+            }
+            application.Name = name;
+            application.UpdateTime = System.DateTime.Now;
             await _commandBuilder.SaveAsync(application);
             return application;
         }

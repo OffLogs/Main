@@ -9,5 +9,6 @@ namespace OffLogs.Business.Services.Entities.Application
         Task<ApplicationEntity> CreateNewApplication(UserEntity user, string name);
         Task<bool> IsOwner(long userId, ApplicationEntity application);
         Task<bool> IsOwner(long userId, long applicationId);
+        Task<ApplicationEntity> UpdateApplication(long applicationId, string name);
     }
 }
