@@ -5,6 +5,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Criteria\**" />
+      <EmbeddedResource Remove="Criteria\**" />
+      <None Remove="Criteria\**" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\Commands.Abstractions\Commands.Abstractions.csproj" />
       <ProjectReference Include="..\Domain.Abstractions\Domain.Abstractions.csproj" />
       <ProjectReference Include="..\OffLogs.Business.Common\OffLogs.Business.Common.csproj" />
@@ -25,10 +31,6 @@
       <EmbeddedResource Include="Hibernate\hibernate.hbm.xml" />
       <EmbeddedResource Include="Hibernate\Queries\getLogWithData.hbm.xml" />
       <EmbeddedResource Include="Hibernate\Queries\Log\getList.hbm.xml" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Criteria\Entites" />
     </ItemGroup>
 
 </Project>

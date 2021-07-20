@@ -1,0 +1,19 @@
+﻿using Api.Requests.Abstractions;
+using OffLogs.Api.Controller.Board.Application.Dto;
+using OffLogs.Api.Dto;
+using OffLogs.Business.Common.Mvc.Attribute.Validation;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace OffLogs.Api.Controller.Board.Application.Actions
+{
+    public class GetListRequest : IRequest<PaginatedListDto<ApplicationDto>>
+    {
+        [Required]
+        [IsPositive]
+        public int Page { get; set; }
+    }
+}

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\hshy\\Work\\net\\Main\\Commands.Abstractions\\Commands.Abstractions.csproj": {}
+    "C:\\Users\\hshy\\Work\\net\\Main\\Commands.Abstractions\\Commands.Abstractions.csproj": {}
   },
   "projects": {
-    "c:\\Users\\hshy\\Work\\net\\Main\\Commands.Abstractions\\Commands.Abstractions.csproj": {
+    "C:\\Users\\hshy\\Work\\net\\Main\\Commands.Abstractions\\Commands.Abstractions.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\hshy\\Work\\net\\Main\\Commands.Abstractions\\Commands.Abstractions.csproj",
+        "projectUniqueName": "C:\\Users\\hshy\\Work\\net\\Main\\Commands.Abstractions\\Commands.Abstractions.csproj",
         "projectName": "Commands.Abstractions",
-        "projectPath": "c:\\Users\\hshy\\Work\\net\\Main\\Commands.Abstractions\\Commands.Abstractions.csproj",
+        "projectPath": "C:\\Users\\hshy\\Work\\net\\Main\\Commands.Abstractions\\Commands.Abstractions.csproj",
         "packagesPath": "C:\\Users\\hshy\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\hshy\\Work\\net\\Main\\Commands.Abstractions\\obj\\",
+        "outputPath": "C:\\Users\\hshy\\Work\\net\\Main\\Commands.Abstractions\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\hshy\\AppData\\Roaming\\NuGet\\NuGet.Config",
