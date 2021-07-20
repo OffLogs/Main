@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
+using NHibernate.Exceptions;
 using Npgsql;
 using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Orm.Commands.Entities.User;
+using OffLogs.Business.Orm.Exceptions;
 using OffLogs.Business.Services.Entities.User;
 using Xunit;
 
@@ -35,7 +37,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.UserDaoTest
             await DeleteUser(expectedUserName);
             
             await UserService.CreateNewUser(expectedUserName, email1);
-            await Assert.ThrowsAsync<PostgresException>(() => UserService.CreateNewUser(expectedUserName, email2));
+            await Assert.ThrowsAsync<EntityIsExistException>(() => UserService.CreateNewUser(expectedUserName, email2));
         }
         
         [Theory]
@@ -46,7 +48,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.UserDaoTest
             await DeleteUser(userName);
             
             await UserService.CreateNewUser(userName, expectedEmail);
-            await Assert.ThrowsAsync<PostgresException>(async () =>
+            await Assert.ThrowsAsync<EntityIsExistException>(async () =>
             {
                 await UserService.CreateNewUser(userName2, expectedEmail);
             });

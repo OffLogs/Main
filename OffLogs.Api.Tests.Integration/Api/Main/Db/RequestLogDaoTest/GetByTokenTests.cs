@@ -31,7 +31,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.RequestLogDaoTest
             Assert.True(existsLog.Id > 0);
             Assert.NotNull(existsLog.CreateTime);
             Assert.Equal(RequestLogType.Log, existsLog.Type);
-            Assert.Equal(data, existsLog.Data);
+            Assert.Equal("\"{some data}\"", existsLog.Data);
             Assert.Equal(clientIp, existsLog.ClientIp);
         }
     }

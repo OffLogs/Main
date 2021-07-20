@@ -90,7 +90,6 @@ namespace OffLogs.Business.Orm.Connection
             }
             if (_session != null)
             {
-                _session.Flush();
                 _session.Dispose();
                 _session = null;
             }
