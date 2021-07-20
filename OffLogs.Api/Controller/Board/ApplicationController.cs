@@ -38,25 +38,7 @@ namespace OffLogs.Api.Controller.Board
             _applicationDao = applicationDao;
             _jwtService = jwtService;
         }
-        
-        [HttpPost("add")]
-        public async Task<IActionResult> Add([FromBody]ApplicationAddModel model)
-        {
-            try
-            {
-                var userId = _jwtService.GetUserId();
-                var application = await _applicationDao.CreateNewApplication(userId, model.Name);
-                return JsonSuccess(
-                    application.ResponseModel    
-                );
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, e.Message);
-                return JsonError();
-            }
-        }
-               
+                      
         [HttpPost("get")]
         public async Task<IActionResult> GetOne([FromBody]ApplicationGetModel model)
         {
