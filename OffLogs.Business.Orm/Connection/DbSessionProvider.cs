@@ -64,7 +64,23 @@ namespace OffLogs.Business.Orm.Connection
             _transaction?.Dispose();
             _transaction = null;
         }
-
+        
+        public async Task RefreshEntityAsync(object entity, CancellationToken cancellationToken = default)
+        {
+            if (_session != null && _session.IsOpen)
+            {
+                try
+                {
+                    await _session.RefreshAsync(entity, cancellationToken);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e.Message, e);
+                    throw;
+                }
+            }
+        }
+        
         #region IDisposable implementation
         public void Dispose()
         {
@@ -74,7 +90,8 @@ namespace OffLogs.Business.Orm.Connection
             }
             if (_session != null)
             {
-                _session?.Dispose();
+                _session.Flush();
+                _session.Dispose();
                 _session = null;
             }
             GC.SuppressFinalize(this);

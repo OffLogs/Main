@@ -37,5 +37,11 @@ namespace OffLogs.Api.Controller.Board.Log
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public Task<IActionResult> GetOne(GetRequest request)
             => this.RequestAsync().For<LogDto>().With(request);
+        
+        [HttpPost("setFavorite")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public Task<IActionResult> SetIsFavorite(SetIsFavoriteRequest request)
+            => this.RequestAsync(request);
     }
 }
