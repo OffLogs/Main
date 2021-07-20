@@ -7,12 +7,12 @@ namespace OffLogs.Business.Orm.Dto
     {
         public ICollection<T> Items { get; }
         
-        public long Count { get; }
+        public long TotalCount { get; }
 
         public ListDto(ICollection<T> items, long count)
         {
             Items = items;
-            Count = count;
+            TotalCount = count;
         }
     }
 }

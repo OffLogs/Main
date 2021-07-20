@@ -12,7 +12,26 @@ namespace OffLogs.Api.Profiles
     {
         public LogProfile()
         {
-            CreateMap<LogEntity, LogDto>();
+            CreateMap<LogEntity, LogDto>()
+                .ForPath(
+                    s=> s.Properties, 
+                    member => member.MapFrom(
+                        entity => entity.Properties.Select(
+                            property => new KeyValuePair<string, string>(
+                                property.Key,
+                                property.Value
+                            )
+                        )
+                    )
+                )
+                .ForPath(
+                    s=> s.Traces, 
+                    member => member.MapFrom(
+                        entity => entity.Traces.Select(
+                            trace => trace.Trace
+                        )
+                    )
+                );
             CreateMap<LogEntity, LogListItemDto>();
         }
     }

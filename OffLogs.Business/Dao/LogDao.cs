@@ -42,8 +42,13 @@ namespace OffLogs.Business.Dao
                         .Add("traces", tracesQuery)
                         .Add("properties", propertiesQuery);
 
-                    log.Traces = queries.GetResult<LogTraceEntity>("traces").ToList();
-                    log.Properties = queries.GetResult<LogPropertyEntity>("properties").ToList();
+                    var traces = queries.GetResult<LogTraceEntity>("traces")
+                        .ToList();
+                    foreach (var trace in traces)
+                        log.AddTrace(trace);
+                    var properties = queries.GetResult<LogPropertyEntity>("properties").ToList();
+                    foreach (var property in properties)
+                        log.AddProperty(property);
                 }
                 
                 return await Task.FromResult(log);    

@@ -42,7 +42,7 @@ namespace OffLogs.Api.Controller.Board.Application.Actions
             var applicationDtos = _mapper.Map<List<ApplicationListItemDto>>(applicationsList.Items);
             return new PaginatedListDto<ApplicationListItemDto>(
                 applicationDtos,
-                applicationsList.Count
+                applicationsList.TotalCount
             );
         }
     }

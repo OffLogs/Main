@@ -31,5 +31,11 @@ namespace OffLogs.Api.Controller.Board.Log
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public Task<IActionResult> AddCommonLog(GetListRequest request)
             => this.RequestAsync().For<PaginatedListDto<LogListItemDto>>().With(request);
+        
+        [HttpPost("get")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public Task<IActionResult> GetOne(GetRequest request)
+            => this.RequestAsync().For<LogDto>().With(request);
     }
 }

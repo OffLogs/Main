@@ -67,12 +67,12 @@ namespace OffLogs.Business.Orm.Entities
         [Bag(Inverse = true, Lazy = CollectionLazy.Extra, Cascade = "all-delete-orphan")]
         [Key(Column = "log_id")]
         [OneToMany(ClassType = typeof(LogTraceEntity))]
-        public virtual ICollection<LogTraceEntity> Traces { get; } = new List<LogTraceEntity>();
+        public virtual ICollection<LogTraceEntity> Traces { get; set; } = new List<LogTraceEntity>();
         
         [Bag(Inverse = true, Lazy = CollectionLazy.Extra, Cascade = "all-delete-orphan")]
         [Key(Column = "log_id")]
         [OneToMany(ClassType = typeof(LogPropertyEntity))]
-        public virtual ICollection<LogPropertyEntity> Properties { get; } = new List<LogPropertyEntity>();
+        public virtual ICollection<LogPropertyEntity> Properties { get; set; } = new List<LogPropertyEntity>();
 
         public virtual void AddTrace(LogTraceEntity entity)
         {
