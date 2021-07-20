@@ -43,5 +43,11 @@ namespace OffLogs.Api.Controller.Board.Application
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public Task<IActionResult> Add(AddRequest request)
             => this.RequestAsync().For<ApplicationDto>().With(request);
+
+        [HttpPost("get")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public Task<IActionResult> GetOne(GetRequest request)
+            => this.RequestAsync().For<ApplicationDto>().With(request);
     }
 }
