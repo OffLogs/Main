@@ -6,10 +6,12 @@
 @inject IApiService _apiService
 @inject ToastService _toastService
 
-<ModalWindow IsShow="_isShowModal"
-             Buttons="_modalButtons"
-             OnClose="OnClose"
-             Title="@_title">
+<ModalWindow 
+    IsShow="_isShowModal"
+    Buttons="_modalButtons"
+    OnClose="OnClose"
+    Title="@_title">
+
     @if (_isLoading)
     {
         <Preloader />
@@ -30,6 +32,7 @@
 @code {
     [Parameter]
     public long? ApplicationId { get; set; }
+
     private bool _isShowModal { get; set; }
     private bool _isLoading { get; set; }
     private ApplicationResponseModel _application { get; set; }
