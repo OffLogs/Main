@@ -11,16 +11,16 @@ namespace OffLogs.Api.Dto
     public class PaginatedListDto<TItem>: IResponse
     {
         [JsonPropertyName("items")]
-        public ICollection<TItem> Items { get; }
+        public ICollection<TItem> Items { get; set; }
 
         [JsonPropertyName("totalPages")]
-        public long TotalPages { get; }
+        public long TotalPages { get; set; }
 
         [JsonPropertyName("pageSize")]
-        public int PageSize { get; }
+        public int PageSize { get; set; }
 
         [JsonPropertyName("totalCount")]
-        public long TotalCount { get; }
+        public long TotalCount { get; set; }
 
         [JsonPropertyName("isHasMore")]
         public bool IsHasMore

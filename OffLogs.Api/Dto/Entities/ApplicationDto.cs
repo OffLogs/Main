@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OffLogs.Api.Controller.Board.Application.Dto
+namespace OffLogs.Api.Dto.Entities
 {
     public class ApplicationDto
     {

@@ -1,6 +1,6 @@
 ﻿using Api.Requests.Abstractions;
-using OffLogs.Api.Controller.Board.Application.Dto;
 using OffLogs.Api.Dto;
+using OffLogs.Api.Dto.Entities;
 using OffLogs.Business.Common.Mvc.Attribute.Validation;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OffLogs.Api.Controller.Board.Application.Actions
 {
-    public class GetListRequest : IRequest<PaginatedListDto<ApplicationDto>>
+    public class GetListRequest : IRequest<PaginatedListDto<ApplicationListItemDto>>
     {
         [Required]
         [IsPositive]

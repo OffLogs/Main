@@ -1,4 +1,6 @@
-﻿namespace Queries.Abstractions
+﻿using System.Threading.Tasks;
+
+namespace Queries.Abstractions
 {
     public interface IAsyncQueryBuilder
     {

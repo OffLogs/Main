@@ -35,6 +35,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Controller\Board\Application\Dto\" />
       <Folder Include="Controller\Public\Home\Dto" />
       <Folder Include="Controller\Public\Home\Profiles" />
       <Folder Include="Controller\Public\User\Dto" />

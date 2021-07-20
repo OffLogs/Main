@@ -39,28 +39,6 @@ namespace OffLogs.Api.Controller.Board
             _jwtService = jwtService;
         }
         
-        [HttpPost("list")]
-        public async Task<IActionResult> GetList([FromBody]PaginatedRequestModel model)
-        {
-            try
-            {
-                var userId = _jwtService.GetUserId();
-                var (list, totalItems) = await _applicationDao.GetList(
-                    userId,
-                    model.Page
-                );
-                var responseList = list.Select(application => application.ResponseModel).ToList();
-                return JsonSuccess(
-                    new PaginatedResponseModel<ApplicationResponseModel>(responseList, totalItems)    
-                );
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, e.Message);
-                return JsonError();
-            }
-        }
-        
         [HttpPost("add")]
         public async Task<IActionResult> Add([FromBody]ApplicationAddModel model)
         {
