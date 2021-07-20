@@ -20,6 +20,9 @@ namespace OffLogs.Business.Orm.Connection
                 if (_session == null || !_session.IsOpen)
                 {
                     _session = _sessionFactory.OpenSession();
+                }
+                if (_transaction == null || !_transaction.IsActive)
+                {
                     _transaction = _session.BeginTransaction();
                 }
                 return _session;

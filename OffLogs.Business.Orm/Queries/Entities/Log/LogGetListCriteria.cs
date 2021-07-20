@@ -10,7 +10,5 @@ namespace OffLogs.Business.Orm.Queries.Entities.Log
         public long Page { get; set; }
         
         public LogLevel? LogLevel { get; set; }
-        
-        public int PageSize { get; set; }
     }
 }

@@ -21,17 +21,11 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
             var logTraceFactory = _factory.LogTraceFactory();
             logTraceFactory.GenerateLazy(4)
                 .ToList()
-                .ForEach(item =>
-                {   
-                    log.Traces.Add(item);
-                });
+                .ForEach(log.AddTrace);
             var logPropertyFactory = _factory.LogPropertyFactory();
             logPropertyFactory.GenerateLazy(3)
                 .ToList()
-                .ForEach(item =>
-                {
-                    log.Properties.Add(item);
-                });
+                .ForEach(log.AddProperty);
 
             return await Task.FromResult(log);
         }
