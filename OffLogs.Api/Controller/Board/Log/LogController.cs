@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using OffLogs.Api.Controller.Board.Log.Actions;
 using OffLogs.Api.Dto;
 using OffLogs.Api.Dto.Entities;
-using OffLogs.Business.Orm.Dto.Entities;
 using Persistence.Transactions.Behaviors;
 using System;
 using System.Collections.Generic;
@@ -50,7 +49,7 @@ namespace OffLogs.Api.Controller.Board.Log
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public Task<IActionResult> GetStatisticForNow(GetLogStatisticForNowRequest request)
             => this.RequestAsync()
-                .For<PaginatedListDto<LogStatisticForNowDto>>()
+                .For<LogStatisticForNowDto>()
                 .With(request);
     }
 }

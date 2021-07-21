@@ -1,28 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\hshy\\Work\\net\\Main\\Commands.Abstractions\\Commands.Abstractions.csproj": {}
+    "D:\\work\\net\\OffLogs\\Commands.Abstractions\\Commands.Abstractions.csproj": {}
   },
   "projects": {
-    "C:\\Users\\hshy\\Work\\net\\Main\\Commands.Abstractions\\Commands.Abstractions.csproj": {
+    "D:\\work\\net\\OffLogs\\Commands.Abstractions\\Commands.Abstractions.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\hshy\\Work\\net\\Main\\Commands.Abstractions\\Commands.Abstractions.csproj",
+        "projectUniqueName": "D:\\work\\net\\OffLogs\\Commands.Abstractions\\Commands.Abstractions.csproj",
         "projectName": "Commands.Abstractions",
-        "projectPath": "C:\\Users\\hshy\\Work\\net\\Main\\Commands.Abstractions\\Commands.Abstractions.csproj",
-        "packagesPath": "C:\\Users\\hshy\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\hshy\\Work\\net\\Main\\Commands.Abstractions\\obj\\",
+        "projectPath": "D:\\work\\net\\OffLogs\\Commands.Abstractions\\Commands.Abstractions.csproj",
+        "packagesPath": "C:\\Users\\lampe\\.nuget\\packages\\",
+        "outputPath": "D:\\work\\net\\OffLogs\\Commands.Abstractions\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\hshy\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 20.1.config",
+          "C:\\Users\\lampe\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\DevExpress 20.1\\Components\\System\\Components\\Packages": {},
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -62,7 +60,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     }
