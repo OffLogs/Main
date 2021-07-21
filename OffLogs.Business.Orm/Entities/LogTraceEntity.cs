@@ -50,7 +50,7 @@ namespace OffLogs.Business.Orm.Entities
         public LogTraceEntity(string trace)
         {
             Trace = trace;
-            CreateTime = DateTime.Now;
+            CreateTime = DateTime.UtcNow;
         }
     }
 }

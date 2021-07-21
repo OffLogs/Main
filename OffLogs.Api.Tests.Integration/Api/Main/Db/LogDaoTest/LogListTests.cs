@@ -55,8 +55,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.LogDaoTest
             return await LogService.AddAsync(
                 application, 
                 "SomeMessage", 
-                level, 
-                DateTime.Now,
+                level,
+                DateTime.UtcNow,
                 new List<LogPropertyEntity>()
                 {
                     new()
@@ -70,7 +70,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.LogDaoTest
                     new()
                     {
                         Trace = "TestTrace",
-                        CreateTime = DateTime.Now
+                        CreateTime = DateTime.UtcNow
                     }
                 }
             );

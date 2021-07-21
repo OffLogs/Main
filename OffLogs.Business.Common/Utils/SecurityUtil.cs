@@ -86,7 +86,7 @@ namespace OffLogs.Business.Common.Utils
         {
             lock (_TimeBasedRandomizerLock)
             {
-                var ticks = DateTime.Now.Ticks;
+                var ticks = DateTime.UtcNow.Ticks;
                 var ticksBytes = BitConverter.GetBytes(ticks);
                 var guidBytes = Guid.NewGuid().ToByteArray();
                 return Convert.ToBase64String(

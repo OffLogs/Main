@@ -75,11 +75,11 @@ namespace OffLogs.Business.Services.Data
                 )
                 .RuleFor(
                     entity => entity.LogTime,
-                    (faker) => DateTime.Now.AddMinutes(-1)
+                    (faker) => DateTime.UtcNow.AddMinutes(-1)
                 )
                 .RuleFor(
                     entity => entity.CreateTime,
-                    (faker) => DateTime.Now
+                    (faker) => DateTime.UtcNow
                 );
         }
 

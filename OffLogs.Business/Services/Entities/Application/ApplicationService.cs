@@ -45,7 +45,7 @@ namespace OffLogs.Business.Services.Entities.Application
                 throw new ItemNotFoundException(nameof(ApplicationEntity));
             }
             application.Name = name;
-            application.UpdateTime = System.DateTime.Now;
+            application.UpdateTime = System.DateTime.UtcNow;
             await _commandBuilder.SaveAsync(application);
             return application;
         }

@@ -59,8 +59,8 @@ namespace OffLogs.Business.Orm.Entities
             User = user;
             Name = name;
             ApiToken = "tempToken";
-            CreateTime = DateTime.Now;
-            UpdateTime = DateTime.Now;
+            CreateTime = DateTime.UtcNow;
+            UpdateTime = DateTime.UtcNow;
         }
     }
 }
