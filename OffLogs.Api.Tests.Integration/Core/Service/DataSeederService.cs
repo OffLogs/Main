@@ -1,10 +1,7 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Commands.Abstractions;
 using OffLogs.Api.Tests.Integration.Core.Models;
-using OffLogs.Business.Constants;
-using OffLogs.Business.Dao;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Services.Data;

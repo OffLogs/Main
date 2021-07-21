@@ -2,16 +2,11 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Utils;
-using OffLogs.Business.Constants;
-using OffLogs.Business.Dao;
-using OffLogs.Business.Helpers;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries.Entities.Log;
 using OffLogs.Business.Orm.Queries.Entities.RequestLog;
-using Serilog;
 using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka

@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Confluent.Kafka;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Kafka.Deserializers;
 using System.Timers;
-using OffLogs.Business.Dao;
 using Timer = System.Timers.Timer;
 using Commands.Abstractions;
 using Persistence.Transactions.Behaviors;
