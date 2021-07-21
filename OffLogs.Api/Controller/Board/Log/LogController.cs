@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using OffLogs.Api.Controller.Board.Log.Actions;
 using OffLogs.Api.Dto;
 using OffLogs.Api.Dto.Entities;
+using OffLogs.Business.Orm.Dto.Entities;
 using Persistence.Transactions.Behaviors;
 using System;
 using System.Collections.Generic;
@@ -44,10 +45,12 @@ namespace OffLogs.Api.Controller.Board.Log
         public Task<IActionResult> SetIsFavorite(SetIsFavoriteRequest request)
             => this.RequestAsync(request);
 
-        //[HttpPost("getStatisticForNow")]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //public Task<IActionResult> SetIsFavorite(SetIsFavoriteRequest request)
-        //    => this.RequestAsync(request);
+        [HttpPost("getStatisticForNow")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public Task<IActionResult> GetStatisticForNow(GetLogStatisticForNowRequest request)
+            => this.RequestAsync()
+                .For<PaginatedListDto<LogStatisticForNowDto>>()
+                .With(request);
     }
 }

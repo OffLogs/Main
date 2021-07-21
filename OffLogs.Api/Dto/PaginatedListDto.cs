@@ -34,7 +34,7 @@ namespace OffLogs.Api.Dto
 
         public PaginatedListDto(
             ICollection<TItem> responseList, 
-            long totalItems, 
+            long totalItems = 0, 
             int pageSize = GlobalConstants.ListPageSize
         )
         {

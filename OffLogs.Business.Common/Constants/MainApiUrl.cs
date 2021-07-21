@@ -13,6 +13,7 @@ namespace OffLogs.Business.Common.Constants
         public const string LogList = "/board/log/list";
         public const string LogGet = "/board/log/get";
         public const string LogSetIsFavorite = "/board/log/setFavorite";
-        
+        public const string LogGetStatisticForNow = "/board/log/getStatisticForNow";
+
     }
 }
