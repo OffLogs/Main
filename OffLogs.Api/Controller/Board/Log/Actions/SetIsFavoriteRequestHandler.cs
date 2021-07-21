@@ -15,35 +15,36 @@ using System.Linq;
 using System.Threading.Tasks;
 using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Services.Entities.Log;
+using OffLogs.Business.Services.Api;
 
 namespace OffLogs.Api.Controller.Board.Log.Actions
 {
     public class SetIsFavoriteRequestHandler : IAsyncRequestHandler<SetIsFavoriteRequest>
     {
-        private readonly IJwtAuthService _jwtAuthService;
         private readonly IMapper _mapper;
         private readonly ILogService _logService;
         private readonly IApplicationService _applicationService;
         private readonly IAsyncQueryBuilder _queryBuilder;
+        private readonly IRequestService _requestService;
 
         public SetIsFavoriteRequestHandler(
-            IJwtAuthService jwtAuthService,
             IMapper mapper,
             ILogService logService,
             IApplicationService applicationService,
-            IAsyncQueryBuilder queryBuilder
+            IAsyncQueryBuilder queryBuilder,
+            IRequestService requestService
         )
         {
-            this._jwtAuthService = jwtAuthService ?? throw new ArgumentNullException(nameof(jwtAuthService));
-            this._mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _logService = logService;
-            _applicationService = applicationService;
-            _queryBuilder = queryBuilder;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _logService = logService ?? throw new ArgumentNullException(nameof(logService));
+            _applicationService = applicationService ?? throw new ArgumentNullException(nameof(applicationService));
+            _queryBuilder = queryBuilder ?? throw new ArgumentNullException(nameof(queryBuilder));
+            _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
         }
 
         public async Task ExecuteAsync(SetIsFavoriteRequest request)
         {
-            var userId = _jwtAuthService.GetUserId();
+            var userId = _requestService.GetUserIdFromJwt();
             var log = await _queryBuilder.FindByIdAsync<LogEntity>(request.LogId);
             if (log == null)
             {

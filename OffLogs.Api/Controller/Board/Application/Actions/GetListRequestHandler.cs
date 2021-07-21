@@ -6,6 +6,7 @@ using OffLogs.Business.Common.Mvc.Attribute.Validation;
 using OffLogs.Business.Orm.Dto;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries.Entities.Application;
+using OffLogs.Business.Services.Api;
 using OffLogs.Business.Services.Jwt;
 using Queries.Abstractions;
 using System;
@@ -21,21 +22,24 @@ namespace OffLogs.Api.Controller.Board.Application.Actions
         private readonly IJwtAuthService _jwtAuthService;
         private readonly IMapper _mapper;
         private readonly IAsyncQueryBuilder _queryBuilder;
+        private readonly IRequestService _requestService;
 
         public GetListRequestHandler(
             IJwtAuthService jwtAuthService, 
             IMapper mapper,
-            IAsyncQueryBuilder queryBuilder
+            IAsyncQueryBuilder queryBuilder,
+            IRequestService requestService
         )
         {
-            this._jwtAuthService = jwtAuthService ?? throw new ArgumentNullException(nameof(jwtAuthService));
-            this._mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            this._queryBuilder = queryBuilder;
+            _jwtAuthService = jwtAuthService ?? throw new ArgumentNullException(nameof(jwtAuthService));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _queryBuilder = queryBuilder;
+            _requestService = requestService;
         }
 
         public async Task<PaginatedListDto<ApplicationListItemDto>> ExecuteAsync(GetListRequest request)
         {
-            var userId = _jwtAuthService.GetUserId();
+            var userId = _requestService.GetUserIdFromJwt();
             var applicationsList = await _queryBuilder.For<ListDto<ApplicationEntity>>()
                 .WithAsync(new ApplicationGetListCriteria(userId, request.Page));
 

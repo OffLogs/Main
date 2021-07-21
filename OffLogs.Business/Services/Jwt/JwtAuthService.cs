@@ -14,18 +14,14 @@ namespace OffLogs.Business.Services.Jwt
     public class JwtAuthService: IJwtAuthService
     {
         private readonly IConfiguration _configuration;
-        private readonly IHttpContextAccessor _httpContext;
         
         private readonly string _issuer;
         private readonly string _audience;
         private readonly SymmetricSecurityKey _key;
         
-        private string JwtToken => _httpContext.HttpContext?.Request.GetApiToken();
-        
         public JwtAuthService(IConfiguration configuration, IHttpContextAccessor httpContext)
         {
             _configuration = configuration;
-            _httpContext = httpContext;
             _key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(
                     _configuration.GetValue<string>("App:Auth:SymmetricSecurityKey")
@@ -33,11 +29,6 @@ namespace OffLogs.Business.Services.Jwt
             );
             _issuer = _configuration.GetValue<string>("App:Auth:Issuer");
             _audience = _configuration.GetValue<string>("App:Auth:Audience");
-        }
-
-        public string GetToken()
-        {
-            return JwtToken;
         }
 
         public string BuildJwt(long userId)
@@ -74,11 +65,12 @@ namespace OffLogs.Business.Services.Jwt
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
         
-        public long GetUserId(string jwtString = null)
+        public long GetUserId(string jwtString)
         {
+            jwtString = jwtString ?? throw new ArgumentNullException(nameof(jwtString));
             try
             {   
-                var jwt = new JwtSecurityToken(string.IsNullOrEmpty(jwtString) ? JwtToken : jwtString);
+                var jwt = new JwtSecurityToken(jwtString);
                 return long.Parse(jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
             }
             catch (Exception)
@@ -87,9 +79,9 @@ namespace OffLogs.Business.Services.Jwt
             }
         }
         
-        public bool IsValidJwt(string jwtString = null)
+        public bool IsValidJwt(string token)
         {
-            var token = string.IsNullOrEmpty(jwtString) ? JwtToken : jwtString;
+            token = token ?? throw new ArgumentNullException(nameof(token));
             var parameters = new TokenValidationParameters()
             {
                 ValidateIssuerSigningKey = true,

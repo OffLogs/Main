@@ -5,6 +5,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Models\Response\**" />
+      <Content Remove="Models\Response\**" />
+      <EmbeddedResource Remove="Models\Response\**" />
+      <None Remove="Models\Response\**" />
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="Autofac" Version="6.2.0" />
       <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
       <PackageReference Include="AutoMapper" Version="10.1.1" />
@@ -39,7 +46,6 @@
       <Folder Include="Controller\Public\Home\Profiles" />
       <Folder Include="Controller\Public\User\Dto" />
       <Folder Include="Controller\Public\User\Profiles" />
-      <Folder Include="Models\Response" />
     </ItemGroup>
 
 </Project>

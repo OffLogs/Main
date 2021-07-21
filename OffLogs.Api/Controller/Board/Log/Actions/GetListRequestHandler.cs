@@ -6,6 +6,7 @@ using OffLogs.Business.Exceptions;
 using OffLogs.Business.Orm.Dto;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries.Entities.Log;
+using OffLogs.Business.Services.Api;
 using OffLogs.Business.Services.Entities.Application;
 using OffLogs.Business.Services.Jwt;
 using Queries.Abstractions;
@@ -22,23 +23,26 @@ namespace OffLogs.Api.Controller.Board.Log.Actions
         private readonly IMapper _mapper;
         private readonly IAsyncQueryBuilder _queryBuilder;
         private readonly IApplicationService _applicationService;
+        private readonly IRequestService _requestService;
 
         public GetListRequestHandler(
             IJwtAuthService jwtAuthService,
             IMapper mapper,
             IAsyncQueryBuilder queryBuilder,
-            IApplicationService applicationService
+            IApplicationService applicationService,
+            IRequestService requestService
         )
         {
-            this._jwtAuthService = jwtAuthService ?? throw new ArgumentNullException(nameof(jwtAuthService));
-            this._mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            this._queryBuilder = queryBuilder ?? throw new ArgumentNullException(nameof(queryBuilder));
-            this._applicationService = applicationService ?? throw new ArgumentNullException(nameof(applicationService));
+            _jwtAuthService = jwtAuthService ?? throw new ArgumentNullException(nameof(jwtAuthService));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _queryBuilder = queryBuilder ?? throw new ArgumentNullException(nameof(queryBuilder));
+            _applicationService = applicationService ?? throw new ArgumentNullException(nameof(applicationService));
+            _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
         }
 
         public async Task<PaginatedListDto<LogListItemDto>> ExecuteAsync(GetListRequest request)
         {
-            var userId = _jwtAuthService.GetUserId();
+            var userId = _requestService.GetUserIdFromJwt();
             if (!await _applicationService.IsOwner(userId, request.ApplicationId))
             {
                 throw new DataPermissionException();

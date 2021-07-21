@@ -17,6 +17,7 @@ using Newtonsoft.Json.Serialization;
 using OffLogs.Api.Di.Autofac.Modules;
 using OffLogs.Api.Extensions;
 using OffLogs.Api.Middleware;
+using OffLogs.Business;
 using OffLogs.Business.Di.Autofac.Modules;
 using OffLogs.Business.Extensions;
 using Serilog;
@@ -50,10 +51,7 @@ namespace OffLogs.Api
         {
             containerBuilder
                 .RegisterModule<ApiModule>()
-                .RegisterModule<DomainModule>()
-                .RegisterModule<CommandsModule>()
-                .RegisterModule<QueriesModule>()
-                .RegisterModule<DbModule>();
+                .RegisterAssemblyModules(typeof(BusinessAssemblyMarker).Assembly);
         }
         
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

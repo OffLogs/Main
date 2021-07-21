@@ -14,7 +14,6 @@ c:\Users\hshy\Work\net\Main\Commands.Abstractions\bin\Debug\net5.0\Commands.Abst
 c:\Users\hshy\Work\net\Main\Commands.Abstractions\bin\Debug\net5.0\Commands.Abstractions.dll
 c:\Users\hshy\Work\net\Main\Commands.Abstractions\bin\Debug\net5.0\ref\Commands.Abstractions.dll
 c:\Users\hshy\Work\net\Main\Commands.Abstractions\bin\Debug\net5.0\Commands.Abstractions.pdb
-c:\Users\hshy\Work\net\Main\Commands.Abstractions\obj\Debug\net5.0\Commands.Abstractions.csproj.AssemblyReference.cache
 c:\Users\hshy\Work\net\Main\Commands.Abstractions\obj\Debug\net5.0\Commands.Abstractions.GeneratedMSBuildEditorConfig.editorconfig
 c:\Users\hshy\Work\net\Main\Commands.Abstractions\obj\Debug\net5.0\Commands.Abstractions.AssemblyInfoInputs.cache
 c:\Users\hshy\Work\net\Main\Commands.Abstractions\obj\Debug\net5.0\Commands.Abstractions.AssemblyInfo.cs

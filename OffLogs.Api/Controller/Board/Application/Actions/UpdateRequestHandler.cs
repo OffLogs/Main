@@ -4,6 +4,7 @@ using OffLogs.Api.Dto;
 using OffLogs.Api.Dto.Entities;
 using OffLogs.Business.Common.Mvc.Attribute.Validation;
 using OffLogs.Business.Exceptions;
+using OffLogs.Business.Services.Api;
 using OffLogs.Business.Services.Entities.Application;
 using OffLogs.Business.Services.Jwt;
 using Queries.Abstractions;
@@ -17,27 +18,27 @@ namespace OffLogs.Api.Controller.Board.Application.Actions
 {
     public class UpdateRequestHandler : IAsyncRequestHandler<UpdateRequest, ApplicationDto>
     {
-        private readonly IJwtAuthService _jwtAuthService;
         private readonly IMapper _mapper;
         private readonly IAsyncQueryBuilder _queryBuilder;
         private readonly IApplicationService _applicationService;
+        private readonly IRequestService _requestService;
 
         public UpdateRequestHandler(
-            IJwtAuthService jwtAuthService,
             IMapper mapper,
             IAsyncQueryBuilder queryBuilder,
-            IApplicationService applicationService
+            IApplicationService applicationService,
+            IRequestService requestService
         )
         {
-            this._jwtAuthService = jwtAuthService ?? throw new ArgumentNullException(nameof(jwtAuthService));
-            this._mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            this._queryBuilder = queryBuilder;
-            this._applicationService = applicationService;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _queryBuilder = queryBuilder ?? throw new ArgumentNullException(nameof(queryBuilder));
+            _applicationService = applicationService ?? throw new ArgumentNullException(nameof(applicationService));
+            _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
         }
 
         public async Task<ApplicationDto> ExecuteAsync(UpdateRequest request)
         {
-            var userId = _jwtAuthService.GetUserId();
+            var userId = _requestService.GetUserIdFromJwt();
             if (!await _applicationService.IsOwner(userId, request.Id))
             {
                 throw new DataPermissionException();
