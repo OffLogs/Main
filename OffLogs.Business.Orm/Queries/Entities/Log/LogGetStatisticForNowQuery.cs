@@ -24,6 +24,7 @@ namespace OffLogs.Business.Orm.Queries.Entities.Log
         {
             return await TransactionProvider.CurrentSession
                 .GetNamedQuery("Log.getStatisticForNow")
+                .SetParameter("applicationId", criterion.ApplicationId)
                 .SetResultTransformer(Transformers.AliasToBean<LogStatisticForNowDto>())
                 .ListAsync<LogStatisticForNowDto>();
         }
