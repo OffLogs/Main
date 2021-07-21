@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Services;
+using OffLogs.Business.Services.Api;
 using OffLogs.Business.Services.Jwt;
 
 namespace OffLogs.Business.Mvc.Attribute.Auth
@@ -21,10 +22,15 @@ namespace OffLogs.Business.Mvc.Attribute.Auth
             var myAuthorizationService = context.HttpContext.RequestServices.GetService(typeof(IJwtApplicationService)) as IJwtApplicationService;
             if (myAuthorizationService == null)
             {
-                throw new ArgumentNullException("_MyAuthorizationService service not found");
+                throw new ArgumentNullException(nameof(myAuthorizationService));
+            }
+            var requestService = context.HttpContext.RequestServices.GetService(typeof(IRequestService)) as IRequestService;
+            if (requestService == null)
+            {
+                throw new ArgumentNullException(nameof(requestService));
             }
 
-            if (!myAuthorizationService.IsValidJwt())
+            if (!myAuthorizationService.IsValidJwt(requestService.GetApiToken()))
             {
                 context.Result = new ObjectResult(new {
                     Status = HttpResponseStatus.Fail.GetValue()

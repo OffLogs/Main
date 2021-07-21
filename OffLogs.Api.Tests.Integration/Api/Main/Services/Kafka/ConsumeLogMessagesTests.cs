@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Common.Constants;
-using OffLogs.Business.Constants;
-using OffLogs.Business.Db.Entities;
-using OffLogs.Business.Helpers;
+using OffLogs.Business.Common.Utils;
+using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Queries.Entities.Log;
+using OffLogs.Business.Orm.Queries.Entities.RequestLog;
 using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
@@ -31,7 +31,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             var processedRecords = await KafkaConsumerService.ProcessLogsAsync(false);
             Assert.True(processedRecords > 0);
 
-            var existsLog = await LogDao.GetLogAsync(log1.Token);
+            var existsLog = await QueryBuilder.For<LogEntity>()
+                .WithAsync(new LogGetByTokenCriteria(log1.Token));
             Assert.NotNull(existsLog);
             Assert.Equal(log1.Message, existsLog.Message);
             Assert.Equal(log1.Level, existsLog.Level);
@@ -57,7 +58,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             var processedRecords = await KafkaConsumerService.ProcessLogsAsync(false, cancellationToken);
             Assert.True(processedRecords > 0);
 
-            var existsLog = await LogDao.GetLogAsync(log1.Token);
+            var existsLog = await QueryBuilder.For<LogEntity>()
+                .WithAsync(new LogGetByTokenCriteria(log1.Token), cancellationToken);
             Assert.NotNull(existsLog);
         }
         
@@ -83,7 +85,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             Assert.True(processedRecords >= logCounter);
             foreach (var expectedLog in logs)
             {
-                Assert.True(await LogDao.IsLogExists(expectedLog.Token));
+                var isExists = await QueryBuilder.For<bool>()
+                    .WithAsync(new LogIsExistsByTokenCriteria(expectedLog.Token));
+                Assert.True(isExists);
             }
         }
         
@@ -104,10 +108,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             var processedRecords = await KafkaConsumerService.ProcessLogsAsync(false);
             Assert.True(processedRecords > 0);
 
-            var isExists = await LogDao.IsLogExists(log1.Token);
+            var isExists = await QueryBuilder.For<bool>()
+                .WithAsync(new LogIsExistsByTokenCriteria(log1.Token));
             Assert.False(isExists);
 
-            var requestLog = await RequestLogDao.GetByTokenAsync(fakeJwt);
+            var requestLog = await QueryBuilder.For<RequestLogEntity>()
+                .WithAsync(new RequestLogGetByTokenCriteria(fakeJwt));
             Assert.NotNull(requestLog);
         }
     }

@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using OffLogs.Business.Constants;
+using OffLogs.Business.Common.Constants;
+using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Queries;
 using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
@@ -18,8 +20,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             // Arrange
             var user = await DataSeeder.CreateNewUser();
 
-            var (_, logsCounter) = await LogDao.GetList(user.Applications.First().Id, 1);
-            Assert.Equal(0, logsCounter);
+            var list = await GetLogsList(user.Applications.First().Id, 1);
+            Assert.Equal(0, list.TotalCount);
             // Act
             var response = await PostRequestAsync(url, user.ApplicationApiToken, new
             {
@@ -51,9 +53,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             // Process messages from Kafka
             await KafkaConsumerService.ProcessLogsAsync(false);
             
-            var (actualLogs, actualLogsCounter) = await LogDao.GetList(user.Applications.First().Id, 1);
-            Assert.Equal(1, actualLogsCounter);
-            var actualLog = await LogDao.GetLogAsync(actualLogs.First().Id);
+            var actualList = await GetLogsList(user.Applications.First().Id, 1);
+            Assert.Equal(1, actualList.TotalCount);
+            var actualLog = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.First().Id);
             Assert.NotEmpty(actualLog.Message);
             Assert.NotNull(actualLog.Level);
             Assert.True(actualLog.Properties.Count  > 0);
@@ -67,8 +69,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             // Arrange
             var user = await DataSeeder.CreateNewUser();
 
-            var (_, logsCounter) = await LogDao.GetList(user.Applications.First().Id, 1);
-            Assert.Equal(0, logsCounter);
+            var list = await GetLogsList(user.Applications.First().Id, 1);
+            Assert.Equal(0, list.TotalCount);
             // Act
             var response = await PostRequestAsync(url, user.ApplicationApiToken, new
             {
@@ -99,9 +101,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             KafkaProducerService.Flush();
             await KafkaConsumerService.ProcessLogsAsync(false);
             
-            var (actualLogs, actualLogsCounter) = await LogDao.GetList(user.Applications.First().Id, 1);
-            Assert.Equal(1, actualLogsCounter);
-            var actualLog = await LogDao.GetLogAsync(actualLogs.First().Id);
+            var actualList = await GetLogsList(user.Applications.First().Id, 1);
+            Assert.Equal(1, actualList.TotalCount);
+            var actualLog = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.First().Id);
             Assert.NotEmpty(actualLog.Message);
             Assert.NotNull(actualLog.Level);
             Assert.True(actualLog.Properties.Count  > 0);
@@ -115,8 +117,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             // Arrange
             var user = await DataSeeder.CreateNewUser();
 
-            var (_, logsCounter) = await LogDao.GetList(user.Applications.First().Id, 1);
-            Assert.Equal(0, logsCounter);
+            var list = await GetLogsList(user.Applications.First().Id, 1);
+            Assert.Equal(0, list.TotalCount);
             // Act
             var response = await PostRequestAsync(url, user.ApplicationApiToken, new
             {
@@ -163,11 +165,10 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             KafkaProducerService.Flush();
             await KafkaConsumerService.ProcessLogsAsync(false);
             
-            var (actualLogs, actualLogsCounter) = await LogDao.GetList(user.Applications.First().Id, 1);
-            Assert.Equal(2, actualLogsCounter);
-            var actualLog = await LogDao.GetLogAsync(actualLogs.First().Id);
+            var actualList = await GetLogsList(user.Applications.First().Id, 1);
+            Assert.Equal(2, actualList.TotalCount);
+            var actualLog = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.First().Id);
             Assert.NotEmpty(actualLog.Message);
-            Assert.NotNull(actualLog.Level);
             Assert.True(actualLog.Properties.Count  > 0);
             Assert.True(actualLog.Traces.Count == 0);
         }
@@ -179,8 +180,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             // Arrange
             var user = await DataSeeder.CreateNewUser();
 
-            var (_, logsCounter) = await LogDao.GetList(user.Applications.First().Id, 1);
-            Assert.Equal(0, logsCounter);
+            var list = await GetLogsList(user.Applications.First().Id, 1);
+            Assert.Equal(0, list.TotalCount);
             // Act
             var response = await PostRequestAsync(url, user.ApplicationApiToken, new
             {
@@ -221,11 +222,10 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             KafkaProducerService.Flush();
             await KafkaConsumerService.ProcessLogsAsync(false);
             
-            var (actualLogs, actualLogsCounter) = await LogDao.GetList(user.Applications.First().Id, 1);
-            Assert.Equal(1, actualLogsCounter);
-            var actualLog = await LogDao.GetLogAsync(actualLogs.First().Id);
+            var actualList = await GetLogsList(user.Applications.First().Id, 1);
+            Assert.Equal(1, actualList.TotalCount);
+            var actualLog = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.First().Id);
             Assert.NotEmpty(actualLog.Message);
-            Assert.NotNull(actualLog.Level);
             Assert.True(actualLog.Properties.Count == 9);
             Assert.True(actualLog.Traces.Count == 7);
         }

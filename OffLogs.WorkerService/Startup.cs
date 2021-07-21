@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Autofac;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OffLogs.Business;
 using OffLogs.Business.Extensions;
 using OffLogs.WorkerService.LogProcessing;
 
@@ -22,8 +24,12 @@ namespace OffLogs.WorkerService
         {
             services.AddScoped<ILogProcessingService, LogProcessingService>();
             services.AddHostedService<LogProcessingHostedService>();
-            
-            services.InitServices();
+        }
+
+        public void ConfigureContainer(ContainerBuilder containerBuilder)
+        {
+            containerBuilder
+                .RegisterAssemblyModules(typeof(BusinessAssemblyMarker).Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using NHibernate.Util;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Db.Entities;
+using OffLogs.Business.Orm.Entities;
 
 namespace OffLogs.Business.Services.Kafka.Models
 {
@@ -37,15 +39,16 @@ namespace OffLogs.Business.Services.Kafka.Models
 
         public LogEntity GetEntity()
         {
-            return new()
+            var log = new LogEntity
             {
                 Token = Token,
                 Level = LogLevel,
                 Message = Message,
-                LogTime = LogTime,
-                Traces = Traces,
-                Properties = Properties,
+                LogTime = LogTime
             };
+            Traces?.ForEach(log.AddTrace);
+            Properties?.ForEach(log.AddProperty);
+            return log;
         }
     }
 }

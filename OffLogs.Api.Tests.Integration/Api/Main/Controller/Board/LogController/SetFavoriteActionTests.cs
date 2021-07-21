@@ -1,10 +1,13 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using OffLogs.Api.Controller.Board.Log.Actions;
 using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Models.Api.Request.Board;
 using OffLogs.Business.Constants;
+using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Queries;
 using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
@@ -21,7 +24,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             var logs = await DataSeeder.CreateLogsAsync(user.Applications.First().Id, LogLevel.Debug);
             
             // Act
-            var response = await PostRequestAsAnonymousAsync(url, new LogSetFavoriteRequestModel()
+            var response = await PostRequestAsAnonymousAsync(url, new SetIsFavoriteRequest()
             {
                 LogId = logs.First().Id
             });
@@ -39,13 +42,13 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             var user2 = await DataSeeder.CreateNewUser();
             
             // Act
-            var response = await PostRequestAsync(url, user2.ApiToken, new LogSetFavoriteRequestModel()
+            var response = await PostRequestAsync(url, user2.ApiToken, new SetIsFavoriteRequest()
             {
                 LogId = logs.First().Id,
                 IsFavorite = true
             });
             // Assert
-            Assert.True(response.StatusCode == HttpStatusCode.Forbidden);
+            Assert.True(response.StatusCode == HttpStatusCode.BadRequest);
         }
         
         [Theory]
@@ -54,20 +57,19 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         {
             var user = await DataSeeder.CreateNewUser();
             var logs = await DataSeeder.CreateLogsAsync(user.Applications.First().Id, LogLevel.Debug);
-
-
+            
             var log = logs.First();
             Assert.False(log.IsFavorite);
             // Act
-            var response = await PostRequestAsync(url, user.ApiToken, new LogSetFavoriteRequestModel()
+            var response = await PostRequestAsync(url, user.ApiToken, new SetIsFavoriteRequest()
             {
                 IsFavorite = true,
                 LogId = logs.First().Id
             });
             response.EnsureSuccessStatusCode();
             // Assert
-            var actualLog = await LogDao.GetLogAsync(log.Id);
-            Assert.True(actualLog.IsFavorite);
+            await DbSessionProvider.RefreshEntityAsync(log);
+            Assert.True(log.IsFavorite);
         }
     }
 }

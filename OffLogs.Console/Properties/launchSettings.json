@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "OffLogs.Console": {
+      "commandName": "Project",
+      "commandLineArgs": "user-create --username=testlocal2 --email=test-local2@test.com"
+    }
+  }
+}

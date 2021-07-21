@@ -1,6 +1,10 @@
 ﻿using System.Threading.Tasks;
+using NHibernate.Exceptions;
 using Npgsql;
 using OffLogs.Api.Tests.Integration.Core;
+using OffLogs.Business.Orm.Commands.Entities.User;
+using OffLogs.Business.Orm.Exceptions;
+using OffLogs.Business.Services.Entities.User;
 using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main.Db.UserDaoTest
@@ -15,9 +19,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.UserDaoTest
         [InlineData("some-user-2", "user1@email.com")]
         public async Task ShouldCreateNewUser(string expectedUserName, string expectedEmail)
         {
-            await UserDao.DeleteByUserName(expectedUserName);
+            await DeleteUser(expectedUserName);
             
-            var newUser = await UserDao.CreateNewUser(expectedUserName, expectedEmail);
+            var newUser = await UserService.CreateNewUser(expectedUserName, expectedEmail);
             Assert.True(newUser.Password.Length > 3);
             Assert.Equal(expectedUserName, newUser.UserName);
             Assert.Equal(expectedEmail, newUser.Email);
@@ -30,10 +34,10 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.UserDaoTest
         [InlineData("some-user-2", "test4@test.com", "test5@test.com")]
         public async Task ShouldNotCreateNewUserWithSameUserName(string expectedUserName, string email1, string email2)
         {
-            await UserDao.DeleteByUserName(expectedUserName);
+            await DeleteUser(expectedUserName);
             
-            await UserDao.CreateNewUser(expectedUserName, email1);
-            await Assert.ThrowsAsync<PostgresException>(() => UserDao.CreateNewUser(expectedUserName, email2));
+            await UserService.CreateNewUser(expectedUserName, email1);
+            await Assert.ThrowsAsync<EntityIsExistException>(() => UserService.CreateNewUser(expectedUserName, email2));
         }
         
         [Theory]
@@ -41,13 +45,18 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.UserDaoTest
         [InlineData("test7@test.com", "someUserName3", "someUserName4")]
         public async Task ShouldNotCreateNewUserWithSameEmail(string expectedEmail, string userName, string userName2)
         {
-            await UserDao.DeleteByUserName(userName);
+            await DeleteUser(userName);
             
-            await UserDao.CreateNewUser(userName, expectedEmail);
-            await Assert.ThrowsAsync<PostgresException>(async () =>
+            await UserService.CreateNewUser(userName, expectedEmail);
+            await Assert.ThrowsAsync<EntityIsExistException>(async () =>
             {
-                await UserDao.CreateNewUser(userName2, expectedEmail);
+                await UserService.CreateNewUser(userName2, expectedEmail);
             });
+        }
+
+        private async Task DeleteUser(string userName)
+        {
+            await CommandBuilder.ExecuteAsync(new UserDeleteCommandContext(userName));
         }
     }
 }

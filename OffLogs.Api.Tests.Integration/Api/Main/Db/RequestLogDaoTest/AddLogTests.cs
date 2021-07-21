@@ -1,6 +1,9 @@
 ﻿using System.Threading.Tasks;
 using OffLogs.Api.Tests.Integration.Core;
+using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Constants;
+using OffLogs.Business.Orm.Commands.Context;
+using OffLogs.Business.Orm.Entities;
 using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main.Db.RequestLogDaoTest
@@ -12,28 +15,32 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.RequestLogDaoTest
         [Fact]
         public async Task ShouldAddNewRequestLogWithLogType()
         {
-            var log = await RequestLogDao.AddAsync(RequestLogType.Log, "127.0.0.1", "{some data}");
+            var log = new RequestLogEntity(RequestLogType.Log, "127.0.0.1", "{some data}");
+            await CommandBuilder.SaveAsync(log);
             Assert.True(log.Id > 0);
         }
         
         [Fact]
         public async Task ShouldAddNewRequestLogWithLogTypeAndObjectData()
         {
-            var log = await RequestLogDao.AddAsync(RequestLogType.Log, "127.0.0.1", new { someData = 1123 });
+            var log = new RequestLogEntity(RequestLogType.Log, "127.0.0.1", new { someData = 1123 });
+            await CommandBuilder.SaveAsync(log);
             Assert.True(log.Id > 0);
         }
         
         [Fact]
         public async Task ShouldAddNewRequestLogWithRequestType()
         {
-            var log = await RequestLogDao.AddAsync(RequestLogType.Request, "127.0.0.1", "{some data}");
+            var log = new RequestLogEntity(RequestLogType.Request, "127.0.0.1", "{some data}");
+            await CommandBuilder.SaveAsync(log);
             Assert.True(log.Id > 0);
         }
         
         [Fact]
         public async Task ShouldAddNewRequestLogWithRequestTypeAndObjectData()
         {
-            var log = await RequestLogDao.AddAsync(RequestLogType.Request, "127.0.0.1", new { someData = 321 });
+            var log = new RequestLogEntity(RequestLogType.Request, "127.0.0.1", new { someData = 321 });
+            await CommandBuilder.SaveAsync(log);
             Assert.True(log.Id > 0);
         }
     }

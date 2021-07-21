@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using OffLogs.Api.Controller.Board.Log.Actions;
+using OffLogs.Api.Dto.Entities;
 using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Models.Api.Request.Board;
@@ -25,7 +27,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             var logs = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information);
             
             // Act
-            var response = await PostRequestAsAnonymousAsync(url, new LogGetOneRequestModel()
+            var response = await PostRequestAsAnonymousAsync(url, new GetRequest()
             {
                 Id = logs.First().Id
             });
@@ -40,12 +42,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             var user = await DataSeeder.CreateNewUser();
             
             // Act
-            var response = await PostRequestAsync(url, user.ApiToken, new LogGetOneRequestModel()
+            var response = await PostRequestAsync(url, user.ApiToken, new GetRequest()
             {
                 Id = 0
             });
             // Assert
-            Assert.True(response.StatusCode == HttpStatusCode.NotFound);
+            Assert.True(response.StatusCode == HttpStatusCode.BadRequest);
         }
         
         [Theory]
@@ -59,12 +61,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             var log = logs.First();
             
             // Act
-            var response = await PostRequestAsync(url, user1.ApiToken, new LogGetOneRequestModel()
+            var response = await PostRequestAsync(url, user1.ApiToken, new GetRequest()
             {
                 Id = log.Id
             });
             // Assert
-            Assert.True(response.StatusCode == HttpStatusCode.Forbidden);
+            Assert.True(response.StatusCode == HttpStatusCode.BadRequest);
         }
         
         [Theory]
@@ -76,14 +78,13 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             var log = logs.First();
             
             // Act
-            var response = await PostRequestAsync(url, user.ApiToken, new LogGetOneRequestModel()
+            var response = await PostRequestAsync(url, user.ApiToken, new GetRequest()
             {
                 Id = log.Id
             });
             response.EnsureSuccessStatusCode();
             // Assert
-            var responseData = await response.GetJsonDataAsync<LogResponseModel>();
-            var receivedLog = responseData.Data;
+            var receivedLog = await response.GetJsonDataAsync<LogDto>();
             Assert.NotNull(receivedLog);
             Assert.Equal(log.Properties.Count, receivedLog.Properties.Count);
             Assert.Equal(log.Traces.Count, receivedLog.Traces.Count);

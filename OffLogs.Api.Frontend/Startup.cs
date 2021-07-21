@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Autofac;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,6 +17,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using OffLogs.Api.Frontend.Di.Autofac.Modules;
+using OffLogs.Business.Di.Autofac.Modules;
 using OffLogs.Business.Extensions;
 using Serilog;
 
@@ -33,11 +36,14 @@ namespace OffLogs.Api.Frontend
         // This method gets called by the runtime. Use this method to add services to the container.
         public virtual void ConfigureServices(IServiceCollection services)
         {
-            services.InitServices();
             services.AddCors();
+            services.AddHttpContextAccessor();
             services.AddControllers()
                 .ConfigureApiBehaviorOptions(options =>
                 {
+                    // Disable pre-model validation of the models
+                    options.SuppressModelStateInvalidFilter = true;
+                    
                     options.InvalidModelStateResponseFactory = context =>
                     {
                         // Get an instance of ILogger (see below) and log accordingly.
@@ -99,6 +105,16 @@ namespace OffLogs.Api.Frontend
                 });
         }
 
+        public void ConfigureContainer(ContainerBuilder containerBuilder)
+        {
+            containerBuilder
+                .RegisterModule<ApiModule>()
+                .RegisterModule<DomainModule>()
+                .RegisterModule<CommandsModule>()
+                .RegisterModule<QueriesModule>()
+                .RegisterModule<DbModule>();
+        }
+        
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

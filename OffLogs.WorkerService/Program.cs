@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using OffLogs.Business.Extensions;
 using OffLogs.Business.Helpers;
 using Serilog;
+using Autofac.Extensions.DependencyInjection;
 
 namespace OffLogs.WorkerService
 {
@@ -38,6 +39,7 @@ namespace OffLogs.WorkerService
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .UseSerilog()
                 .ConfigureAppConfiguration(config =>
                 {

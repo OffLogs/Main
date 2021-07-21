@@ -3,8 +3,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using Microsoft.Extensions.Logging;
+using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Db.Entities;
+using OffLogs.Business.Orm.Commands.Context;
+using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Queries;
+using OffLogs.Business.Orm.Queries.Entities.Log;
 using OffLogs.Business.Services.Kafka.Models;
 
 namespace OffLogs.Business.Services.Kafka
@@ -98,7 +102,9 @@ namespace OffLogs.Business.Services.Kafka
                     await LogMessageModel(messageModel, "Found log model with error!");
                     return;
                 }
-                ApplicationEntity application = await _applicationDao.GetAsync(applicationId.Value);
+                var application = await _queryBuilder.FindByIdAsync<ApplicationEntity>(
+                    applicationId.Value
+                );
                 if (application == null)
                 {
                     await LogMessageModel(messageModel, "Application not found for the log message model!");
@@ -107,13 +113,15 @@ namespace OffLogs.Business.Services.Kafka
                 
                 // 2. Save log
                 var entity = messageModel.GetEntity();
-                var isExists = await _logDao.IsLogExists(entity.Token);
+                var isExists = await _queryBuilder.For<bool>()
+                    .WithAsync(new LogIsExistsByTokenCriteria(entity.Token));
                 if (isExists)
                 {
                     return;
                 }
                 entity.Application = application;
-                await _logDao.AddAsync(entity);
+                await _commandBuilder.SaveAsync(entity);
+                await _dbSessionProvider.PerformCommitAsync();
             }
             catch (Exception e)
             {
@@ -124,12 +132,13 @@ namespace OffLogs.Business.Services.Kafka
 
         private async Task LogMessageModel(LogMessageModel messageModel, string logMessage)
         {
-            await _requestLogDao.AddAsync(
+            var request = new RequestLogEntity(
                 RequestLogType.Log,
                 messageModel.ClientIp,
                 messageModel,
-                messageModel.ApplicationJwtToken
+                messageModel.ApplicationJwtToken    
             );
+            await _commandBuilder.SaveAsync(request);
             _logger.LogError(logMessage);
         }
     }

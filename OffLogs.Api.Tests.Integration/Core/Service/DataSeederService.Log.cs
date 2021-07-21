@@ -3,7 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Db.Entities;
+using OffLogs.Business.Orm.Commands.Context;
+using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Queries;
 
 namespace OffLogs.Api.Tests.Integration.Core.Service
 {
@@ -19,17 +21,11 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
             var logTraceFactory = _factory.LogTraceFactory();
             logTraceFactory.GenerateLazy(4)
                 .ToList()
-                .ForEach(item =>
-                {   
-                    log.Traces.Add(item);
-                });
+                .ForEach(log.AddTrace);
             var logPropertyFactory = _factory.LogPropertyFactory();
             logPropertyFactory.GenerateLazy(3)
                 .ToList()
-                .ForEach(item =>
-                {
-                    log.Properties.Add(item);
-                });
+                .ForEach(log.AddProperty);
 
             return await Task.FromResult(log);
         }
@@ -40,7 +36,7 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
             for (int i = 1; i <= counter; i++)
             {
                 var log = await MakeLogAsync(application, level);
-                await _logDao.AddAsync(log);
+                await _commandBuilder.SaveAsync(log);
                 result.Add(log);
             }
             return result;
@@ -48,7 +44,7 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
 
         public async Task<List<LogEntity>> CreateLogsAsync(long applicationId, LogLevel level, int counter = 1)
         {
-            var application = await _applicationDao.GetAsync(applicationId);
+            var application = await _queryBuilder.FindByIdAsync<ApplicationEntity>(applicationId);
             return await CreateLogsAsync(application, level, counter);
         }
     }
