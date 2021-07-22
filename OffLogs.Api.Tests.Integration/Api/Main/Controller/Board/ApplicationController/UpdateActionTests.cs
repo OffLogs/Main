@@ -65,5 +65,26 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
             var responseData = await response.GetJsonDataAsync<ApplicationDto>();
             Assert.Equal(applicationName, responseData.Name);
         }
+
+        [Theory]
+        [InlineData(Url)]
+        public async Task SharedUserShouldNotUpdateApplication(string url)
+        {
+            var applicationName = "NewApplicationName";
+            var user1 = await DataSeeder.CreateNewUser();
+            var user2 = await DataSeeder.CreateNewUser();
+
+            await ApplicationService.ShareForUser(user1.Application, user2);
+
+            // Act
+            Assert.NotEqual(applicationName, user1.Application.Name);
+            var response = await PostRequestAsync(url, user2.ApiToken, new UpdateRequest()
+            {
+                Id = user1.ApplicationId,
+                Name = applicationName
+            });
+            // Assert
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
     }
 }
