@@ -43,7 +43,7 @@ namespace OffLogs.Api.Controller.Board.Application.Actions
         public async Task<ApplicationDto> ExecuteAsync(GetRequest request)
         {
             var userId = _requestService.GetUserIdFromJwt();
-            if (!await _accessPolicyService.HasWriteAccessAsync<ApplicationEntity>(request.Id, userId))
+            if (!await _accessPolicyService.HasReadAccessAsync<ApplicationEntity>(request.Id, userId))
             {
                 throw new DataPermissionException();
             }

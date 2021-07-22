@@ -31,7 +31,12 @@ namespace OffLogs.Business.Orm.Queries.Entities.Application
 
             var session = TransactionProvider.CurrentSession;
             var query = session.Query<ApplicationEntity>()
-                .Where(record => record.User.Id == criterion.UserId);
+                .Where(
+                    record => record.User.Id == criterion.UserId 
+                        || record.SharedForUsers.Any(
+                            sharedUser => sharedUser.Id == criterion.UserId
+                        )
+                );
             var listQuery = query
                 .Skip(offset)
                 .Take(pageSize)
