@@ -1,6 +1,8 @@
 ﻿using Api.Requests.Abstractions;
 using OffLogs.Business.Common.Constants.Permissions;
+using OffLogs.Business.Exceptions;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Services.Api;
 using OffLogs.Business.Services.Entities.Application;
 using Queries.Abstractions;
@@ -9,6 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using ValidationException = OffLogs.Business.Exceptions.ValidationException;
 
 namespace OffLogs.Api.Controller.Board.Permission.Actions
 {
@@ -36,13 +39,22 @@ namespace OffLogs.Api.Controller.Board.Permission.Actions
             {
                 await AddApplicationReadRights(request);
             }
-            var list = await _queryBuilder.For<ICollection<UserEntity>>()
-                .WithAsync(new UserSearchCriteria(request.Search, new long[] { userId }));
+            else
+            {
+                throw new ValidationException("Handler for the current AccessType not found");
+            }
         }
 
-        private Task AddApplicationReadRights(AddAccessRequest request)
+        private async Task AddApplicationReadRights(AddAccessRequest request)
         {
-            var recepient = await _applicationService.ShareForUser();
+            var recepient = await _queryBuilder.FindByIdAsync<UserEntity>(request.RecepientId);
+            if (recepient == null)
+                throw new ItemNotFoundException(nameof(recepient));
+            var application = await _queryBuilder.FindByIdAsync<ApplicationEntity>(request.ItemId);
+            if (application == null)
+                throw new ItemNotFoundException(nameof(application));
+
+            await _applicationService.ShareForUser(application, recepient);
         }
     }
 }
