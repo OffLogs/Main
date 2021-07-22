@@ -63,5 +63,26 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
             Assert.Equal(user1.Application.Name, responseData.Name);
             Assert.Equal(user1.Application.ApiToken, responseData.ApiToken);
         }
+
+        [Theory]
+        [InlineData(MainApiUrl.ApplicationGetOne)]
+        public async Task SharedUserShouldReceiveApplication(string url)
+        {
+            var user1 = await DataSeeder.CreateNewUser();
+            var user2 = await DataSeeder.CreateNewUser();
+
+            await ApplicationService.ShareForUser(user1.Application, user2);
+
+            // Act
+            var response = await PostRequestAsync(url, user2.ApiToken, new GetRequest()
+            {
+                Id = user1.ApplicationId
+            });
+            // Assert
+            var responseData = await response.GetJsonDataAsync<ApplicationDto>();
+            Assert.Equal(user1.Application.Id, responseData.Id);
+            Assert.Equal(user1.Application.Name, responseData.Name);
+            Assert.Equal(user1.Application.ApiToken, responseData.ApiToken);
+        }
     }
 }

@@ -56,7 +56,7 @@ namespace OffLogs.Business.Orm.Entities
         {
             Key = key;
             Value = value;
-            CreateTime = DateTime.Now;
+            CreateTime = DateTime.UtcNow;
         }
         
         public LogPropertyEntity(string key, object value)
@@ -70,7 +70,7 @@ namespace OffLogs.Business.Orm.Entities
             {
                 Value = "";
             }
-            CreateTime = DateTime.Now;
+            CreateTime = DateTime.UtcNow;
         }
     }
 }

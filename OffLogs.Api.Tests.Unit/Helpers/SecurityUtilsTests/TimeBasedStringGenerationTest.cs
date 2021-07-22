@@ -42,12 +42,12 @@ namespace OffLogs.Api.Tests.Unit.Helpers.SecurityUtilsTests
         [Fact]
         public void BigArrayGenerationShouldNotBeLongerThan3Seconds()
         {
-            var start = DateTime.Now;
+            var start = DateTime.UtcNow;
             for (int i = 0; i < 1000000; i++)
             {
                 SecurityUtil.GetTimeBasedToken();
             }
-            var end = DateTime.Now;
+            var end = DateTime.UtcNow;
             Assert.True(end - start < TimeSpan.FromSeconds(3));
         }
     }

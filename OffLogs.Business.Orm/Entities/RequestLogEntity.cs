@@ -41,7 +41,7 @@ namespace OffLogs.Business.Orm.Entities
             ClientIp = clientIp;
             Data = JsonConvert.SerializeObject(data);
             Token = token;
-            CreateTime = DateTime.Now;
+            CreateTime = DateTime.UtcNow;
         }
     }
 }

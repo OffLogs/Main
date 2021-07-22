@@ -6,6 +6,7 @@ using OffLogs.Api.Controller.Board.Application.Actions;
 using OffLogs.Api.Dto;
 using OffLogs.Api.Dto.Entities;
 using OffLogs.Api.Tests.Integration.Core;
+using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Models.Api.Request;
 using OffLogs.Business.Common.Models.Api.Response;
 using OffLogs.Business.Common.Models.Api.Response.Board;
@@ -19,7 +20,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         public GetListActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
 
         [Theory]
-        [InlineData("/board/application/list")]
+        [InlineData(MainApiUrl.ApplicationList)]
         public async Task OnlyAuthorizedUsersCanReceiveList(string url)
         {
             var user = await DataSeeder.CreateNewUser();
@@ -35,7 +36,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         }
 
         [Theory]
-        [InlineData("/board/application/list")]
+        [InlineData(MainApiUrl.ApplicationList)]
         public async Task OnlyOwnerCanReceiveApplications(string url)
         {
             var user1 = await DataSeeder.CreateNewUser();
@@ -60,7 +61,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         }
 
         [Theory]
-        [InlineData("/board/application/list")]
+        [InlineData(MainApiUrl.ApplicationList)]
         public async Task ShouldReceiveLogsList(string url)
         {
             var user = await DataSeeder.CreateNewUser();
@@ -82,7 +83,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         }
 
         [Theory]
-        [InlineData("/board/application/list")]
+        [InlineData(MainApiUrl.ApplicationList)]
         public async Task ShouldReceiveMoreThanOnePages(string url)
         {
             var user = await DataSeeder.CreateNewUser();
@@ -99,6 +100,37 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
             Assert.Equal(2, responseData.TotalPages);
             Assert.Equal(20, responseData.Items.Count);
             Assert.Equal(26, responseData.TotalCount);
+        }
+
+        [Theory]
+        [InlineData(MainApiUrl.ApplicationList)]
+        public async Task ApplicationListShouldContainSharedApplications(string url)
+        {
+            var user = await DataSeeder.CreateNewUser();
+            await DataSeeder.CreateApplicationsAsync(user, 10);
+
+            var user2 = await DataSeeder.CreateNewUser();
+            foreach (var applicationOfUser2 in await DataSeeder.CreateApplicationsAsync(user2, 3))
+            {
+                await ApplicationService.ShareForUser(applicationOfUser2, user);
+            }
+
+            var user3 = await DataSeeder.CreateNewUser();
+            foreach (var applicationOfUser3 in await DataSeeder.CreateApplicationsAsync(user3, 3))
+            {
+                await ApplicationService.ShareForUser(applicationOfUser3, user);
+            }
+
+            // Act
+            var response = await PostRequestAsync(url, user.ApiToken, new GetListRequest()
+            {
+                Page = 1
+            });
+            response.EnsureSuccessStatusCode();
+            // Assert
+            var responseData = await response.GetJsonDataAsync<PaginatedListDto<ApplicationListItemDto>>();
+            Assert.Equal(1, responseData.TotalPages);
+            Assert.Equal(17, responseData.Items.Count);
         }
     }
 }

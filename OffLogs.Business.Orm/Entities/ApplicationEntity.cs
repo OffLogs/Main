@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Domain.Abstractions;
 using NHibernate.Mapping.Attributes;
 using OffLogs.Business.Common.Models.Api.Response.Board;
@@ -19,7 +20,22 @@ namespace OffLogs.Business.Orm.Entities
             Cascade = "delete-orphan"
         )]
         public virtual UserEntity User { get; set; }
-        
+
+        [Set(
+            Table = "application_users",
+            Lazy = CollectionLazy.True,
+            Cascade = "delete-orphan"
+        )]
+        [Key(
+            Column = "application_id"
+        )]
+        [ManyToMany(
+            Unique = true,
+            ClassType = typeof(UserEntity),
+            Column = "user_id"
+        )]
+        public virtual ICollection<UserEntity> SharedForUsers { get; set; } = new List<UserEntity>();
+
         [Property(NotNull = true)]
         [Column(Name = "name", Length = 200, NotNull = true)]
         public virtual string Name { get; set; }
@@ -59,8 +75,8 @@ namespace OffLogs.Business.Orm.Entities
             User = user;
             Name = name;
             ApiToken = "tempToken";
-            CreateTime = DateTime.Now;
-            UpdateTime = DateTime.Now;
+            CreateTime = DateTime.UtcNow;
+            UpdateTime = DateTime.UtcNow;
         }
     }
 }

@@ -37,7 +37,7 @@ namespace OffLogs.Business.Services.Kafka
                 LogDebug($"Subscribe to {_logsTopicName}");
                 consumer.Subscribe(_logsTopicName);
 
-                var startTime = DateTime.Now;
+                var startTime = DateTime.UtcNow;
                 if (!isInfiniteLoop)
                 {
                     var task = Task.Run(() =>
@@ -45,7 +45,7 @@ namespace OffLogs.Business.Services.Kafka
                         while (true)
                         {
                             Thread.Sleep(100);
-                            var difference = DateTime.Now - startTime;
+                            var difference = DateTime.UtcNow - startTime;
                             if (difference >= _defaultWaitTimeout)
                             {
                                 cancellationTokenSource.Cancel();

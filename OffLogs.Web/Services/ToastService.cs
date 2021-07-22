@@ -52,7 +52,7 @@ namespace OffLogs.Web.Services
                 Type = type,
                 Title = title,
                 Content = text,
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.UtcNow
             });
             NotifyListChanged();
         }
@@ -68,7 +68,7 @@ namespace OffLogs.Web.Services
             var tempMessage = _messages.ToList();
             foreach (var message in tempMessage)
             {
-                var timeDifference = DateTime.Now - message.CreatedAt;
+                var timeDifference = DateTime.UtcNow - message.CreatedAt;
                 if (timeDifference.Seconds >= 5)
                 {
                     NotifyMessageRemove(message);

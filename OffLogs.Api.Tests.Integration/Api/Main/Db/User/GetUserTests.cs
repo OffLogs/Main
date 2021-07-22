@@ -5,20 +5,20 @@ using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries.Entities.User;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Api.Main.Db.UserDaoTest
+namespace OffLogs.Api.Tests.Integration.Api.Main.Db.User
 {
     [Collection("UserDaoTest.GetUserTests")]
-    public class GetUserTests: MyApiIntegrationTest
+    public class GetUserTests : MyApiIntegrationTest
     {
-        public GetUserTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
-        
+        public GetUserTests(ApiCustomWebApplicationFactory factory) : base(factory) { }
+
         [Theory]
         [InlineData("some-get-user", "user-get@email.com")]
         [InlineData("some-get-user-2", "user-get-2@email.com")]
         public async Task ShouldCreateNewUser(string expectedUserName, string expectedEmail)
         {
             await CommandBuilder.ExecuteAsync(new UserDeleteCommandContext(expectedUserName));
-            
+
             await UserService.CreateNewUser(expectedUserName, expectedEmail);
             var newUser = await QueryBuilder.For<UserEntity>()
                 .WithAsync(new UserGetByCriteria(expectedUserName));

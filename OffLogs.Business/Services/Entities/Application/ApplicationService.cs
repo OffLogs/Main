@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Commands.Abstractions;
 using Domain.Abstractions;
@@ -45,20 +46,29 @@ namespace OffLogs.Business.Services.Entities.Application
                 throw new ItemNotFoundException(nameof(ApplicationEntity));
             }
             application.Name = name;
-            application.UpdateTime = System.DateTime.Now;
+            application.UpdateTime = System.DateTime.UtcNow;
             await _commandBuilder.SaveAsync(application);
             return application;
         }
 
-        public async Task<bool> IsOwner(long userId, long applicationId)
+        /// <summary>
+        /// Should add rights for the other user for this app
+        /// </summary>
+        /// <param name="application"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task ShareForUser(ApplicationEntity application, UserEntity user)
         {
-            var application = await _queryBuilder.FindByIdAsync<ApplicationEntity>(applicationId);
-            return await IsOwner(userId, application);
-        }
-
-        public async Task<bool> IsOwner(long userId, ApplicationEntity application)
-        {
-            return await Task.FromResult(application.User.Id == userId);
+            if (application.User.Id == user.Id)
+            {
+                throw new PermissionException("This is application owner");
+            }
+            if (application.SharedForUsers.Any(u => u.Id == user.Id))
+            {
+                throw new PermissionException("This user already has access right for this application");
+            }
+            application.SharedForUsers.Add(user);
+            await _commandBuilder.SaveAsync(application);
         }
     }
 }

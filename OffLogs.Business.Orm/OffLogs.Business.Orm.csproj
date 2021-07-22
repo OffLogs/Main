@@ -11,6 +11,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="Hibernate\Queries\Log\getStatisticForNow.hbm.xml" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\Commands.Abstractions\Commands.Abstractions.csproj" />
       <ProjectReference Include="..\Domain.Abstractions\Domain.Abstractions.csproj" />
       <ProjectReference Include="..\OffLogs.Business.Common\OffLogs.Business.Common.csproj" />
@@ -30,6 +34,7 @@
     <ItemGroup>
       <EmbeddedResource Include="Hibernate\hibernate.hbm.xml" />
       <EmbeddedResource Include="Hibernate\Queries\getLogWithData.hbm.xml" />
+      <EmbeddedResource Include="Hibernate\Queries\Log\getStatisticForNow.hbm.xml" />
       <EmbeddedResource Include="Hibernate\Queries\Log\getList.hbm.xml" />
     </ItemGroup>
 

@@ -48,8 +48,8 @@ namespace OffLogs.Business.Services.Entities.User
                 Password = password,
                 PasswordSalt = passwordSalt,
                 PasswordHash = passwordHash,
-                CreateTime = DateTime.Now,
-                UpdateTime = DateTime.Now
+                CreateTime = DateTime.UtcNow,
+                UpdateTime = DateTime.UtcNow
             };
             await _commandBuilder.SaveAsync(user);
             return user;

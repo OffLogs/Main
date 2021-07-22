@@ -6,22 +6,22 @@ using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries.Entities.RequestLog;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Api.Main.Db.RequestLogDaoTest
+namespace OffLogs.Api.Tests.Integration.Api.Main.Db.RequestLog
 {
-    public class GetByTokenTests: MyApiIntegrationTest
+    public class GetByTokenTests : MyApiIntegrationTest
     {
-        public GetByTokenTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
-        
+        public GetByTokenTests(ApiCustomWebApplicationFactory factory) : base(factory) { }
+
         [Fact]
         public async Task ShouldGetByToken()
         {
             var data = "{some data}";
             var clientIp = "127.0.0.1";
             var token = SecurityUtil.GetTimeBasedToken();
-            
+
             var log = new RequestLogEntity(RequestLogType.Log, clientIp, "{some data}", token);
             await CommandBuilder.SaveAsync(log);
-            
+
             var existsLog = await QueryBuilder.For<RequestLogEntity>()
                 .WithAsync(new RequestLogGetByTokenCriteria(token));
             Assert.True(existsLog.Id > 0);

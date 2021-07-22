@@ -43,5 +43,13 @@ namespace OffLogs.Api.Controller.Board.Log
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public Task<IActionResult> SetIsFavorite(SetIsFavoriteRequest request)
             => this.RequestAsync(request);
+
+        [HttpPost("getStatisticForNow")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public Task<IActionResult> GetStatisticForNow(GetLogStatisticForNowRequest request)
+            => this.RequestAsync()
+                .For<LogStatisticForNowDto>()
+                .With(request);
     }
 }

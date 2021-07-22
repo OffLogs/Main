@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping
+        xmlns="urn:nhibernate-mapping-2.2"
+        namespace="OffLogs.Business.Db.Entity"
+        assembly="OffLogs.Business">
+
+	<sql-query name="Log.getStatisticForNow">
+
+		SELECT
+		COUNT(id) AS count,
+		level AS levelId,
+		to_timestamp(floor((extract('epoch' from create_time) / 5 )) * 5) AT TIME ZONE 'UTC' as timeInterval
+		FROM logs
+		WHERE create_time > now() AT TIME ZONE 'UTC' - interval '2 minutes'
+		AND (:applicationId IS NULL OR logs.application_id = :applicationId)
+		GROUP BY timeInterval, level
+		ORDER BY timeInterval desc
+	</sql-query>
+</hibernate-mapping>

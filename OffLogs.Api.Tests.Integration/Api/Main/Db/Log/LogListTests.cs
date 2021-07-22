@@ -9,13 +9,13 @@ using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Api.Main.Db.LogDaoTest
+namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Log
 {
     [Collection("LogDaoTest.LogListTests")]
-    public class LogListTests: MyApiIntegrationTest
+    public class LogListTests : MyApiIntegrationTest
     {
-        public LogListTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
-        
+        public LogListTests(ApiCustomWebApplicationFactory factory) : base(factory) { }
+
         [Fact]
         public async Task ShouldAddNewErrorLog()
         {
@@ -28,12 +28,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.LogDaoTest
             Assert.True(log.Properties.First().Id > 0);
             Assert.NotEmpty(log.Traces);
             Assert.True(log.Traces.First().Id > 0);
-            
+
             var logFromDb = await QueryBuilder.FindByIdAsync<LogEntity>(log.Id);
             Assert.Equal(LogLevel.Error, logFromDb.Level);
             Assert.Equal(application.Id, logFromDb.Application.Id);
         }
-        
+
         [Fact]
         public async Task ShouldReceiveLogsList()
         {
@@ -42,10 +42,10 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.LogDaoTest
 
             await CreateLog(application, LogLevel.Error);
             await CreateLog(application, LogLevel.Information);
-            
+
             var list = await GetLogsList(application.Id);
             Assert.Equal(2, list.TotalCount);
-            
+
             Assert.Contains(list.Items, item => item.Level == LogLevel.Error);
             Assert.Contains(list.Items, item => item.Level == LogLevel.Information);
         }
@@ -53,10 +53,10 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.LogDaoTest
         private async Task<LogEntity> CreateLog(ApplicationEntity application, LogLevel level)
         {
             return await LogService.AddAsync(
-                application, 
-                "SomeMessage", 
-                level, 
-                DateTime.Now,
+                application,
+                "SomeMessage",
+                level,
+                DateTime.UtcNow,
                 new List<LogPropertyEntity>()
                 {
                     new()
@@ -70,7 +70,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.LogDaoTest
                     new()
                     {
                         Trace = "TestTrace",
-                        CreateTime = DateTime.Now
+                        CreateTime = DateTime.UtcNow
                     }
                 }
             );
