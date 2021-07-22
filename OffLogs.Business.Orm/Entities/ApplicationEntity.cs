@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Domain.Abstractions;
 using NHibernate.Mapping.Attributes;
-using OffLogs.Business.Common.Models.Api.Response.Board;
 
 namespace OffLogs.Business.Orm.Entities
 {
@@ -51,22 +50,6 @@ namespace OffLogs.Business.Orm.Entities
         [Property(NotNull = true)]
         [Column(Name = "update_time", SqlType = "datetime", NotNull = true)]
         public virtual DateTime UpdateTime { get; set; }
-        
-        public virtual ApplicationResponseModel ResponseModel
-        {
-            get
-            {
-                var model = new ApplicationResponseModel()
-                {
-                    Id = Id,
-                    UserId = User.Id,
-                    Name = Name,
-                    ApiToken = ApiToken,
-                    CreateTime = CreateTime,
-                };
-                return model;
-            }
-        }
         
         public ApplicationEntity() {}
 

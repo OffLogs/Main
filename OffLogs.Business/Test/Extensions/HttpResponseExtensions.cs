@@ -1,8 +1,5 @@
-﻿using System;
-using System.Globalization;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
-using OffLogs.Business.Common.Models.Http;
 
 namespace OffLogs.Business.Test.Extensions
 {

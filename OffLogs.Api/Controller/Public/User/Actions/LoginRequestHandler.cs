@@ -1,21 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Net;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Api.Requests.Abstractions;
 using Microsoft.AspNetCore.Http;
+using OffLogs.Api.Controller.Public.User.Dto;
 using OffLogs.Api.Exceptions;
 using OffLogs.Business.Common.Extensions;
-using OffLogs.Business.Common.Models.Api.Request.User;
 using OffLogs.Business.Common.Utils;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries.Entities.User;
-using OffLogs.Business.Services.Entities.User;
 using OffLogs.Business.Services.Jwt;
 using Queries.Abstractions;
 
 namespace OffLogs.Api.Controller.Public.User.Actions
 {
-    public class LoginRequestHandler : IAsyncRequestHandler<LoginRequest, LoginResponse>
+    public class LoginRequestHandler : IAsyncRequestHandler<LoginRequest, LoginResponseDto>
     {
         private readonly IAsyncQueryBuilder _queryBuilder;
         private readonly IJwtAuthService _jwtAuthService;
@@ -30,16 +27,17 @@ namespace OffLogs.Api.Controller.Public.User.Actions
             _jwtAuthService = jwtAuthService;
         }
 
-        public async Task<LoginResponse> ExecuteAsync(LoginRequest request)
+        public async Task<LoginResponseDto> ExecuteAsync(LoginRequest request)
         {
             var existsUser = await _queryBuilder.For<UserEntity>()
                 .WithAsync(new UserGetByCriteria(request.UserName));
             
         
-if (existsUser == null)
+            if (existsUser == null)
             {
                 throw new UserNotAuthorizedException();
-            }            var passwordHash = SecurityUtil.GeneratePasswordHash(
+            }
+            var passwordHash = SecurityUtil.GeneratePasswordHash(
                 request.Password, 
                 existsUser.PasswordSalt
             );
@@ -47,7 +45,7 @@ if (existsUser == null)
             {
                 throw new UserNotAuthorizedException();
             }
-            return new LoginResponse()
+            return new LoginResponseDto()
             {
                 Token = _jwtAuthService.BuildJwt(existsUser.Id)
             };

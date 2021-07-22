@@ -3,11 +3,8 @@ using Api.Requests.Abstractions;
 using AspNetCore.ApiControllers.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using OffLogs.Api.Controller.Public.Home.Actions;
 using OffLogs.Business.Mvc.Attribute.Auth;
-using OffLogs.Business.Mvc.Controller;
 using Persistence.Transactions.Behaviors;
 
 namespace OffLogs.Api.Controller.Public.Home

@@ -5,7 +5,6 @@ using Domain.Abstractions;
 using Newtonsoft.Json;
 using NHibernate.Mapping.Attributes;
 using OffLogs.Business.Common.Constants;
-using OffLogs.Business.Common.Models.Api.Response.Board;
 using OffLogs.Business.Common.Utils;
 
 namespace OffLogs.Business.Orm.Entities
@@ -84,34 +83,6 @@ namespace OffLogs.Business.Orm.Entities
         {
             entity.Log = this;
             Properties.Add(entity);
-        }
-
-        public virtual LogResponseModel GetResponseModel()
-        {
-            var model = new LogResponseModel()
-            {
-                Id = Id,
-                ApplicationId = Application.Id,
-                Level = Level,
-                Message = Message,
-                IsFavorite = IsFavorite,
-                LogTime = LogTime,
-                CreateTime = CreateTime,
-            };
-
-            if (Traces != null)
-            {
-                model.Traces = Traces.Select(item => item.Trace).ToList();
-            }
-            if (Properties != null)
-            {
-                model.Properties = Properties.ToDictionary(
-                    item => item.Key,
-                    item => item.Value
-                );
-            }
-
-            return model;
         }
     }
 }

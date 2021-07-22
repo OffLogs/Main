@@ -27,21 +27,23 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffLogs.WorkerService", "Of
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{5BC5768D-9450-4026-8178-DBCA739DCB0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands.Abstractions", "Commands.Abstractions\Commands.Abstractions.csproj", "{BAC4433C-731C-4D52-AB21-6FEE89E1D10E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commands.Abstractions", "Commands.Abstractions\Commands.Abstractions.csproj", "{BAC4433C-731C-4D52-AB21-6FEE89E1D10E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Abstractions", "Domain.Abstractions\Domain.Abstractions.csproj", "{CD0649B7-D577-4E75-88AC-A17998999B88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Abstractions", "Domain.Abstractions\Domain.Abstractions.csproj", "{CD0649B7-D577-4E75-88AC-A17998999B88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Queries.Abstractions", "Queries.Abstractions\Queries.Abstractions.csproj", "{23688826-2748-4060-B592-8331E141133F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Queries.Abstractions", "Queries.Abstractions\Queries.Abstractions.csproj", "{23688826-2748-4060-B592-8331E141133F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffLogs.Business.Orm", "OffLogs.Business.Orm\OffLogs.Business.Orm.csproj", "{E48CADD9-4494-47D8-BE42-5D4B71A361F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffLogs.Business.Orm", "OffLogs.Business.Orm\OffLogs.Business.Orm.csproj", "{E48CADD9-4494-47D8-BE42-5D4B71A361F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore.ApiControllers.Abstractions", "AspNetCore.ApiControllers.Abstractions\AspNetCore.ApiControllers.Abstractions.csproj", "{9C54B5D8-EF88-401E-AD4E-875073D67966}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore.ApiControllers.Abstractions", "AspNetCore.ApiControllers.Abstractions\AspNetCore.ApiControllers.Abstractions.csproj", "{9C54B5D8-EF88-401E-AD4E-875073D67966}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.Transactions.Behaviors", "Persistence.Transactions.Behaviors\Persistence.Transactions.Behaviors.csproj", "{75C520F1-E9B5-4DED-AB67-DE4A3105D0B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence.Transactions.Behaviors", "Persistence.Transactions.Behaviors\Persistence.Transactions.Behaviors.csproj", "{75C520F1-E9B5-4DED-AB67-DE4A3105D0B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Requests.Abstractions", "Api.Requests.Abstractions\Api.Requests.Abstractions.csproj", "{3796C3CC-C38B-4BBB-B4AC-BBBCFB1486CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Requests.Abstractions", "Api.Requests.Abstractions\Api.Requests.Abstractions.csproj", "{3796C3CC-C38B-4BBB-B4AC-BBBCFB1486CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore.ApiControllers.Extensions", "AspNetCore.ApiControllers.Extensions\AspNetCore.ApiControllers.Extensions.csproj", "{7A646375-F6C3-4439-9191-B1E8DB386A42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore.ApiControllers.Extensions", "AspNetCore.ApiControllers.Extensions\AspNetCore.ApiControllers.Extensions.csproj", "{7A646375-F6C3-4439-9191-B1E8DB386A42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Offlogs.Business.Api", "Offlogs.Business.Api\Offlogs.Business.Api.csproj", "{78402407-853C-4BE5-A886-1C81B3D48F3D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -121,6 +123,10 @@ Global
 		{7A646375-F6C3-4439-9191-B1E8DB386A42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A646375-F6C3-4439-9191-B1E8DB386A42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A646375-F6C3-4439-9191-B1E8DB386A42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78402407-853C-4BE5-A886-1C81B3D48F3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78402407-853C-4BE5-A886-1C81B3D48F3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78402407-853C-4BE5-A886-1C81B3D48F3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78402407-853C-4BE5-A886-1C81B3D48F3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -137,7 +143,7 @@ Global
 		{7A646375-F6C3-4439-9191-B1E8DB386A42} = {5BC5768D-9450-4026-8178-DBCA739DCB0E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {63E75E79-B233-4DE6-B7BA-50C825A8C820}
 		LessCompiler = 198917b0-a634-4f0d-a496-36161600daff
+		SolutionGuid = {63E75E79-B233-4DE6-B7BA-50C825A8C820}
 	EndGlobalSection
 EndGlobal

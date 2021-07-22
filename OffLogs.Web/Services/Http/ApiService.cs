@@ -6,6 +6,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Newtonsoft.Json;
+using OffLogs.Api.Controller.Public.User.Actions;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Exceptions;
 using OffLogs.Business.Common.Models.Api.Request;
@@ -29,7 +30,7 @@ namespace OffLogs.Web.Services.Http
             _localStorage = localStorage;
         }
 
-        private async Task<JsonCommonResponse<T>> RequestAsync<T>(string requestUri, string jwtToken, object data, HttpMethod httpMethod)
+        private async Task<TResponse> RequestAsync<TResponse>(string requestUri, string jwtToken, object data, HttpMethod httpMethod)
         {
             // create request object
             var request = new HttpRequestMessage(httpMethod, requestUri);
@@ -48,20 +49,20 @@ namespace OffLogs.Web.Services.Http
             var responseString = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
-                return JsonConvert.DeserializeObject<JsonCommonResponse<T>>(responseString);
+                return JsonConvert.DeserializeObject<TResponse>(responseString);
             }
 
             throw new HttpResponseStatusException(response.StatusCode, "Add message");
         }
 
-        private async Task<JsonCommonResponse<T>> PostAsync<T>(string requestUri, object data, string jwtToken = null)
+        private async Task<TResponse> PostAsync<TResponse>(string requestUri, object data, string jwtToken = null)
         {
-            return await RequestAsync<T>(requestUri, jwtToken, data, HttpMethod.Post);
+            return await RequestAsync<TResponse>(requestUri, jwtToken, data, HttpMethod.Post);
         }    
         
-        private async Task<JsonCommonResponse<T>> PostAuthorizedAsync<T>(string requestUri, object data)
+        private async Task<TResponse> PostAuthorizedAsync<TResponse>(string requestUri, object data)
         {
-            return await RequestAsync<T>(
+            return await RequestAsync<TResponse>(
                 requestUri, 
                 await _localStorage.GetItemAsync<string>(AuthorizationService.AuthKey), 
                 data, 
@@ -69,12 +70,12 @@ namespace OffLogs.Web.Services.Http
             );
         }
         
-        private async Task<JsonCommonResponse<T>> GetAsync<T>(string requestUri, object data, string jwtToken = null)
+        private async Task<TResponse> GetAsync<TResponse>(string requestUri, object data, string jwtToken = null)
         {
-            return await RequestAsync<T>(requestUri, jwtToken, data, HttpMethod.Get);
+            return await RequestAsync<TResponse>(requestUri, jwtToken, data, HttpMethod.Get);
         }  
         
-        public async Task<LoginResponseModel> LoginAsync(LoginRequestModel model)
+        public async Task<LoginResponseModel> LoginAsync(LoginRequest model)
         {
             var response = await PostAsync<LoginResponseModel>(MainApiUrl.Login, model);
             if (response == null)

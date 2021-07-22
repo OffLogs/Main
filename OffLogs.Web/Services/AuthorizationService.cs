@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Newtonsoft.Json;
+using Offlogs.Business.Api.Controller.Public.User.Actions;
 using OffLogs.Business.Common.Models.Api.Request.User;
 using OffLogs.Web.Core.Exceptions;
 using OffLogs.Web.Services.Http;
@@ -37,7 +38,7 @@ namespace OffLogs.Web.Services
             await _localStorage.RemoveItemAsync(AuthKey);
         }
 
-        public async Task<bool> LoginAsync(LoginRequestModel model)
+        public async Task<bool> LoginAsync(LoginRequest model)
         {
             var loginData = await _apiService.LoginAsync(model);
             var jwtToken = loginData?.Token;

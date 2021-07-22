@@ -1,8 +1,6 @@
-﻿using System.Net;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using OffLogs.Api.Controller.Public.User.Actions;
-using OffLogs.Api.Tests.Integration.Core;
-using OffLogs.Business.Common.Models.Api.Request.User;
+using OffLogs.Api.Controller.Public.User.Dto;
 using OffLogs.Business.Test.Extensions;
 using Xunit;
 
@@ -58,7 +56,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.UserController
             });
             // Assert
             response.EnsureSuccessStatusCode();
-            var data = await response.GetJsonDataAsync<LoginResponse>();
+            var data = await response.GetJsonDataAsync<LoginResponseDto>();
             Assert.True(JwtAuthService.IsValidJwt(data.Token));
         }
     }

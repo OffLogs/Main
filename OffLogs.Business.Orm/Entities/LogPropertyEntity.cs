@@ -2,7 +2,6 @@ using System;
 using Domain.Abstractions;
 using Newtonsoft.Json;
 using NHibernate.Mapping.Attributes;
-using OffLogs.Business.Common.Models.Api.Response.Board;
 
 namespace OffLogs.Business.Orm.Entities
 {
@@ -33,22 +32,6 @@ namespace OffLogs.Business.Orm.Entities
         [Property(NotNull = true)]
         [Column(Name = "create_time", SqlType = "datetime", NotNull = true)]
         public virtual DateTime CreateTime { get; set; }
-        
-        [JsonIgnore]
-        public virtual LogPropertyResponseModel ResponseModel
-        {
-            get
-            {
-                var model = new LogPropertyResponseModel()
-                {
-                    Id = Id,
-                    Key = Key,
-                    Value = Value,
-                    CreateTime = CreateTime,
-                };
-                return model;
-            }
-        }
         
         public LogPropertyEntity() {}
 
