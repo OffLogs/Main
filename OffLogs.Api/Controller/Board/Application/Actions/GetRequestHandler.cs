@@ -7,6 +7,7 @@ using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Services.Api;
 using OffLogs.Business.Services.Entities.Application;
 using OffLogs.Business.Services.Jwt;
+using OffLogs.Business.Services.Security;
 using Queries.Abstractions;
 using System;
 using System.Threading.Tasks;
@@ -20,13 +21,15 @@ namespace OffLogs.Api.Controller.Board.Application.Actions
         private readonly IAsyncQueryBuilder _queryBuilder;
         private readonly IApplicationService _applicationService;
         private readonly IRequestService _requestService;
+        private readonly IAccessPolicyService _accessPolicyService;
 
         public GetRequestHandler(
             IJwtAuthService jwtAuthService,
             IMapper mapper,
             IAsyncQueryBuilder queryBuilder,
             IApplicationService applicationService,
-            IRequestService requestService
+            IRequestService requestService,
+            IAccessPolicyService accessPolicyService
         )
         {
             _jwtAuthService = jwtAuthService ?? throw new ArgumentNullException(nameof(jwtAuthService));
@@ -34,12 +37,13 @@ namespace OffLogs.Api.Controller.Board.Application.Actions
             _queryBuilder = queryBuilder;
             _applicationService = applicationService;
             _requestService = requestService;
+            _accessPolicyService = accessPolicyService;
         }
 
         public async Task<ApplicationDto> ExecuteAsync(GetRequest request)
         {
             var userId = _requestService.GetUserIdFromJwt();
-            if (!await _applicationService.IsOwner(userId, request.Id))
+            if (!await _accessPolicyService.HasWriteAccessAsync<ApplicationEntity>(request.Id, userId))
             {
                 throw new DataPermissionException();
             }

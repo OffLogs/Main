@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Services.Entities.Log;
 using OffLogs.Business.Services.Api;
+using OffLogs.Business.Services.Security;
 
 namespace OffLogs.Api.Controller.Board.Log.Actions
 {
@@ -26,13 +27,15 @@ namespace OffLogs.Api.Controller.Board.Log.Actions
         private readonly IApplicationService _applicationService;
         private readonly IAsyncQueryBuilder _queryBuilder;
         private readonly IRequestService _requestService;
+        private readonly IAccessPolicyService _accessPolicyService;
 
         public SetIsFavoriteRequestHandler(
             IMapper mapper,
             ILogService logService,
             IApplicationService applicationService,
             IAsyncQueryBuilder queryBuilder,
-            IRequestService requestService
+            IRequestService requestService,
+            IAccessPolicyService accessPolicyService
         )
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -40,6 +43,7 @@ namespace OffLogs.Api.Controller.Board.Log.Actions
             _applicationService = applicationService ?? throw new ArgumentNullException(nameof(applicationService));
             _queryBuilder = queryBuilder ?? throw new ArgumentNullException(nameof(queryBuilder));
             _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
+            _accessPolicyService = accessPolicyService;
         }
 
         public async Task ExecuteAsync(SetIsFavoriteRequest request)
@@ -50,7 +54,7 @@ namespace OffLogs.Api.Controller.Board.Log.Actions
             {
                 throw new ItemNotFoundException(nameof(log));
             }
-            if (!await _applicationService.IsOwner(userId, log.Application))
+            if (!await _accessPolicyService.HasWriteAccessAsync<ApplicationEntity>(log.Application.Id, userId))
             {
                 throw new DataPermissionException();
             }

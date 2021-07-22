@@ -51,17 +51,6 @@ namespace OffLogs.Business.Services.Entities.Application
             return application;
         }
 
-        public async Task<bool> IsOwner(long userId, long applicationId)
-        {
-            var application = await _queryBuilder.FindByIdAsync<ApplicationEntity>(applicationId);
-            return await IsOwner(userId, application);
-        }
-
-        public async Task<bool> IsOwner(long userId, ApplicationEntity application)
-        {
-            return await Task.FromResult(application.User.Id == userId);
-        }
-
         /// <summary>
         /// Should add rights for the other user for this app
         /// </summary>
