@@ -10,5 +10,6 @@ namespace OffLogs.Business.Services.Entities.Application
         Task<bool> IsOwner(long userId, ApplicationEntity application);
         Task<bool> IsOwner(long userId, long applicationId);
         Task<ApplicationEntity> UpdateApplication(long applicationId, string name);
+        Task ShareForUser(ApplicationEntity application, UserEntity user);
     }
 }

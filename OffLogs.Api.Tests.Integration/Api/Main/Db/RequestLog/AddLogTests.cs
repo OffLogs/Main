@@ -6,12 +6,12 @@ using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Api.Main.Db.RequestLogDaoTest
+namespace OffLogs.Api.Tests.Integration.Api.Main.Db.RequestLog
 {
-    public class AddLogTests: MyApiIntegrationTest
+    public class AddLogTests : MyApiIntegrationTest
     {
-        public AddLogTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
-        
+        public AddLogTests(ApiCustomWebApplicationFactory factory) : base(factory) { }
+
         [Fact]
         public async Task ShouldAddNewRequestLogWithLogType()
         {
@@ -19,7 +19,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.RequestLogDaoTest
             await CommandBuilder.SaveAsync(log);
             Assert.True(log.Id > 0);
         }
-        
+
         [Fact]
         public async Task ShouldAddNewRequestLogWithLogTypeAndObjectData()
         {
@@ -27,7 +27,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.RequestLogDaoTest
             await CommandBuilder.SaveAsync(log);
             Assert.True(log.Id > 0);
         }
-        
+
         [Fact]
         public async Task ShouldAddNewRequestLogWithRequestType()
         {
@@ -35,7 +35,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.RequestLogDaoTest
             await CommandBuilder.SaveAsync(log);
             Assert.True(log.Id > 0);
         }
-        
+
         [Fact]
         public async Task ShouldAddNewRequestLogWithRequestTypeAndObjectData()
         {

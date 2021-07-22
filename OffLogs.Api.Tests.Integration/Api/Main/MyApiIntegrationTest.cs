@@ -9,6 +9,7 @@ using OffLogs.Business.Orm.Dto;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries.Entities.Log;
 using OffLogs.Business.Services.Data;
+using OffLogs.Business.Services.Entities.Application;
 using OffLogs.Business.Services.Entities.Log;
 using OffLogs.Business.Services.Entities.User;
 using OffLogs.Business.Services.Jwt;
@@ -35,7 +36,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         
         protected readonly ILogService LogService;
         protected readonly IUserService UserService;
-        
+        protected readonly IApplicationService ApplicationService;
+
         public MyApiIntegrationTest(ApiCustomWebApplicationFactory factory)
         {
             _factory = factory;
@@ -49,6 +51,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
             KafkaConsumerService = _factory.Services.GetService(typeof(IKafkaConsumerService)) as IKafkaConsumerService;
             LogService = _factory.Services.GetService(typeof(ILogService)) as ILogService;
             UserService = _factory.Services.GetService(typeof(IUserService)) as IUserService;
+            ApplicationService = _factory.Services.GetService(typeof(IApplicationService)) as IApplicationService;
         }
 
         public void Dispose()

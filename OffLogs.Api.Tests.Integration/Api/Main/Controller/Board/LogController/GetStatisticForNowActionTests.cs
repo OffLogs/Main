@@ -11,7 +11,6 @@ using OffLogs.Business.Common.Models.Api.Request.Board;
 using OffLogs.Business.Common.Models.Api.Response;
 using OffLogs.Business.Common.Models.Api.Response.Board;
 using OffLogs.Business.Constants;
-using OffLogs.Business.Orm.Dto.Entities;
 using OffLogs.Business.Test.Extensions;
 using Xunit;
 
@@ -69,11 +68,11 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             });
             response.EnsureSuccessStatusCode();
             // Assert
-            var responseData = await response.GetJsonDataAsync<PaginatedListDto<LogStatisticForNowDto>>();
-            Assert.True(responseData.Items.Count <= 2);
+            var responseData = await response.GetJsonDataAsync<LogStatisticForNowDto>();
+            Assert.True(responseData.Count <= 2);
             Assert.Equal(
                 3,
-                responseData.Items.Where(item => item.LogLevel == LogLevel.Error).Sum(item => item.Count)
+                responseData.Where(item => item.LogLevel == LogLevel.Error).Sum(item => item.Count)
             );
         }
 
@@ -98,8 +97,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             });
             response.EnsureSuccessStatusCode();
             // Assert
-            var responseData = await response.GetJsonDataAsync<PaginatedListDto<LogStatisticForNowDto>>();
-            var list = responseData.Items;
+            var responseData = await response.GetJsonDataAsync<LogStatisticForNowDto>();
+            var list = responseData;
             Assert.Equal(
                 expectedCounter,
                 list.Where(item => item.LogLevel == LogLevel.Error).Sum(item => item.Count)

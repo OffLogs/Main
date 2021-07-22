@@ -8,13 +8,13 @@ using OffLogs.Business.Extensions;
 using OffLogs.Business.Orm.Entities;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Api.Main.Db.LogDaoTest
+namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Log
 {
     [Collection("LogDaoTest.AddLogTests")]
-    public class AddLogTests: MyApiIntegrationTest
+    public class AddLogTests : MyApiIntegrationTest
     {
-        public AddLogTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
-        
+        public AddLogTests(ApiCustomWebApplicationFactory factory) : base(factory) { }
+
         [Fact]
         public async Task ShouldAddNewLogsWithUniqToken()
         {
@@ -24,15 +24,15 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.LogDaoTest
             var logs = new List<LogEntity>();
             Parallel.For(0, 100, async (index) =>
             {
-               logs.Add(
-                   await DataSeeder.MakeLogAsync(application, LogLevel.Error)   
-                ); 
+                logs.Add(
+                    await DataSeeder.MakeLogAsync(application, LogLevel.Error)
+                 );
             });
             Assert.True(
-                logs.DistinctBy(log => log.Token).Count() == logs.Count()  
+                logs.DistinctBy(log => log.Token).Count() == logs.Count()
             );
         }
-        
+
         [Fact]
         public async Task ShouldAddNewLogWithUniqToken()
         {
@@ -41,7 +41,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.LogDaoTest
 
             var logs = await DataSeeder.CreateLogsAsync(application.Id, LogLevel.Error, 10);
             Assert.True(
-                logs.DistinctBy(log => log.Token).Count() == logs.Count()  
+                logs.DistinctBy(log => log.Token).Count() == logs.Count()
             );
         }
     }

@@ -11,13 +11,13 @@ using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Orm.Queries.Entities.Log;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Api.Main.Db.LogDaoTest
+namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Log
 {
     [Collection("LogDaoTest.LogListTests")]
     public class LogGetStatisticForNowTests : MyApiIntegrationTest
     {
-        public LogGetStatisticForNowTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
-        
+        public LogGetStatisticForNowTests(ApiCustomWebApplicationFactory factory) : base(factory) { }
+
         [Fact]
         public async Task ShouldReceiveLogStatisticWithoutApplication()
         {
@@ -58,7 +58,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.LogDaoTest
                 .WithAsync(new LogGetStatisticForNowCriteria(application.Id));
 
             Assert.Equal(
-                expectedCounter, 
+                expectedCounter,
                 statisticList.Where(item => item.LogLevel == LogLevel.Error).Sum(item => item.Count)
             );
             Assert.Equal(
