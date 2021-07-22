@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NHibernate;
+using OffLogs.Business.Orm.Connection.Interceptors;
 using Persistence.Transactions.Behaviors;
 
 namespace OffLogs.Business.Orm.Connection
@@ -11,6 +13,7 @@ namespace OffLogs.Business.Orm.Connection
     {
         private readonly IDbConnectionFactory _dbConnectionFactory;
         private readonly ILogger<IDbConnectionFactory> _logger;
+        private readonly IConfiguration _configuration;
 
         private ISession _session { get; set; }
         private ISessionFactory _sessionFactory { get; set; }
@@ -19,7 +22,17 @@ namespace OffLogs.Business.Orm.Connection
             get {
                 if (_session == null || !_session.IsOpen)
                 {
-                    _session = _sessionFactory.OpenSession();
+                    var isShowSql = _configuration.GetValue<bool>("Hibernate:IsShowSql", false);
+                    if (isShowSql)
+                    {
+                        _session = _sessionFactory.WithOptions()
+                            .Interceptor(new SqlQueryInterceptor())
+                            .OpenSession();
+                    }
+                    else
+                    {
+                        _session = _sessionFactory.OpenSession();
+                    }
                 }
                 if (_transaction == null || !_transaction.IsActive)
                 {
@@ -33,11 +46,13 @@ namespace OffLogs.Business.Orm.Connection
 
         public DbSessionProvider(
             IDbConnectionFactory dbConnectionFactory, 
-            ILogger<IDbConnectionFactory> logger
+            ILogger<IDbConnectionFactory> logger,
+            IConfiguration configuration
         )
         {
-            this._dbConnectionFactory = dbConnectionFactory ?? throw new ArgumentNullException(nameof(dbConnectionFactory));
-            this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _dbConnectionFactory = dbConnectionFactory ?? throw new ArgumentNullException(nameof(dbConnectionFactory));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _configuration = configuration;
             _sessionFactory = _dbConnectionFactory.GetSessionFactoryAsync().Result;
         }
 

@@ -8,6 +8,7 @@ using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Mapping.Attributes;
 using OffLogs.Business.Common.Utils;
+using OffLogs.Business.Orm.Connection.Interceptors;
 using Persistence.Transactions.Behaviors;
 
 namespace OffLogs.Business.Orm.Connection
@@ -51,6 +52,8 @@ namespace OffLogs.Business.Orm.Connection
 
         private ISessionFactory BuildFactory(IDictionary<string, string> properties)
         {
+            // Logging
+
             var currentAssembly = Assembly.GetExecutingAssembly();
             var hibernateConfiguration = new Configuration()
                 .AddProperties(properties)
@@ -69,7 +72,6 @@ namespace OffLogs.Business.Orm.Connection
                 var filePath = IoUtils.GetResourcePath(currentAssembly, resourceName);
                 hibernateConfiguration.AddInputStream(currentAssembly.GetManifestResourceStream(filePath));
             }
-
             return hibernateConfiguration.BuildSessionFactory();
         }
     }

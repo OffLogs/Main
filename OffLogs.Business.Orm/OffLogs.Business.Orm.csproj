@@ -29,6 +29,7 @@
       <PackageReference Include="NHibernate" Version="5.3.9" />
       <PackageReference Include="NHibernate.Mapping.Attributes" Version="5.1.0" />
       <PackageReference Include="Npgsql" Version="5.0.7" />
+      <PackageReference Include="Serilog" Version="2.10.0" />
     </ItemGroup>
 
     <ItemGroup>

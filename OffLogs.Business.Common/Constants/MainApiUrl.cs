@@ -15,5 +15,7 @@ namespace OffLogs.Business.Common.Constants
         public const string LogSetIsFavorite = "/board/log/setFavorite";
         public const string LogGetStatisticForNow = "/board/log/getStatisticForNow";
 
+        public const string UserSearch = "/board/user/search";
+
     }
 }

@@ -17,9 +17,9 @@ namespace OffLogs.Api.Controller.Board.Log
     [Authorize]
     [Route("/board/[controller]")]
     [ApiController]
-    public class LogController : MainApiControllerBase
+    public class UserController : MainApiControllerBase
     {
-        public LogController(
+        public UserController(
             IAsyncRequestBuilder asyncRequestBuilder, 
             IDbSessionProvider commitPerformer
         ) : base(asyncRequestBuilder, commitPerformer)
