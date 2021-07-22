@@ -42,8 +42,8 @@ namespace OffLogs.Api.Controller.Board.Log.Actions
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _queryBuilder = queryBuilder ?? throw new ArgumentNullException(nameof(queryBuilder));
             _applicationService = applicationService ?? throw new ArgumentNullException(nameof(applicationService));
-            _requestService = requestService;
-            _accessPolicyService = accessPolicyService;
+            _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
+            _accessPolicyService = accessPolicyService ?? throw new ArgumentNullException(nameof(accessPolicyService));
         }
 
         public async Task<LogDto> ExecuteAsync(GetRequest request)

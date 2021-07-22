@@ -43,7 +43,7 @@ namespace OffLogs.Api.Controller.Board.Log.Actions
             _applicationService = applicationService ?? throw new ArgumentNullException(nameof(applicationService));
             _queryBuilder = queryBuilder ?? throw new ArgumentNullException(nameof(queryBuilder));
             _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
-            _accessPolicyService = accessPolicyService;
+            _accessPolicyService = accessPolicyService ?? throw new ArgumentNullException(nameof(accessPolicyService));
         }
 
         public async Task ExecuteAsync(SetIsFavoriteRequest request)

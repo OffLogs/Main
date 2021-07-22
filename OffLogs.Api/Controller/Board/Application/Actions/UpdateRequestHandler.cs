@@ -38,7 +38,7 @@ namespace OffLogs.Api.Controller.Board.Application.Actions
             _queryBuilder = queryBuilder ?? throw new ArgumentNullException(nameof(queryBuilder));
             _applicationService = applicationService ?? throw new ArgumentNullException(nameof(applicationService));
             _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
-            _accessPolicyService = accessPolicyService;
+            _accessPolicyService = accessPolicyService ?? throw new ArgumentNullException(nameof(accessPolicyService));
         }
 
         public async Task<ApplicationDto> ExecuteAsync(UpdateRequest request)

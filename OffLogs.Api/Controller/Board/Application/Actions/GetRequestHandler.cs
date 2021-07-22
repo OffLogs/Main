@@ -34,10 +34,10 @@ namespace OffLogs.Api.Controller.Board.Application.Actions
         {
             _jwtAuthService = jwtAuthService ?? throw new ArgumentNullException(nameof(jwtAuthService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _queryBuilder = queryBuilder;
-            _applicationService = applicationService;
-            _requestService = requestService;
-            _accessPolicyService = accessPolicyService;
+            _queryBuilder = queryBuilder ?? throw new ArgumentNullException(nameof(queryBuilder));
+            _applicationService = applicationService ?? throw new ArgumentNullException(nameof(applicationService));
+            _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
+            _accessPolicyService = accessPolicyService ?? throw new ArgumentNullException(nameof(accessPolicyService));
         }
 
         public async Task<ApplicationDto> ExecuteAsync(GetRequest request)

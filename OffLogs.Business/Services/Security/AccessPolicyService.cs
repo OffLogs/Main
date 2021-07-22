@@ -16,7 +16,7 @@ namespace OffLogs.Business.Services.Security
 
         public AccessPolicyService(IAsyncQueryBuilder queryBuilder)
         {
-            _queryBuilder = queryBuilder;
+            _queryBuilder = queryBuilder ?? throw new ArgumentNullException(nameof(queryBuilder));
         }
 
         #region Write
@@ -24,15 +24,16 @@ namespace OffLogs.Business.Services.Security
         {
             var user = await _queryBuilder.FindByIdAsync<UserEntity>(userId);
             var entity = await _queryBuilder.FindByIdAsync<TEntity>(entityId);
-            if (user == null)
-                throw new ArgumentNullException(nameof(user));
-            if (entity == null)
-                throw new ArgumentNullException(nameof(entity));
             return await HasWriteAccessAsync(entity, user);
         }
 
         public async Task<bool> HasWriteAccessAsync(IEntity entity, UserEntity user)
         {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
             if (entity is ApplicationEntity)
             {
                 return HasAccessApplication(entity as ApplicationEntity, user, false);
@@ -46,15 +47,16 @@ namespace OffLogs.Business.Services.Security
         {
             var user = await _queryBuilder.FindByIdAsync<UserEntity>(userId);
             var entity = await _queryBuilder.FindByIdAsync<TEntity>(entityId);
-            if (user == null)
-                throw new ArgumentNullException(nameof(user));
-            if (entity == null)
-                throw new ArgumentNullException(nameof(entity));
             return await HasReadAccessAsync(entity, user);
         }
 
         public async Task<bool> HasReadAccessAsync(IEntity entity, UserEntity user)
         {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
             if (entity is ApplicationEntity)
             {
                 return HasAccessApplication(entity as ApplicationEntity, user, true);
