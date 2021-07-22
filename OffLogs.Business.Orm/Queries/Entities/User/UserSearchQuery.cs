@@ -23,8 +23,8 @@ namespace OffLogs.Business.Orm.Queries.Entities.User
                 .QueryOver<UserEntity>(() => userAlias)
                 .Where(
                     Restrictions.Or(
-                        Restrictions.Like("UserName", criterion.Search),
-                        Restrictions.Like("Email", criterion.Search)
+                        Restrictions.InsensitiveLike("UserName", criterion.Search, MatchMode.Anywhere),
+                        Restrictions.InsensitiveLike("Email", criterion.Search, MatchMode.Anywhere)
                     )
                 );
 
