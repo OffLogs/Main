@@ -54,7 +54,7 @@ namespace OffLogs.Api.Controller.Board.Log.Actions
             {
                 throw new ItemNotFoundException(nameof(log));
             }
-            if (!await _accessPolicyService.HasWriteAccessAsync<ApplicationEntity>(log.Application.Id, userId))
+            if (!await _accessPolicyService.HasReadAccessAsync<ApplicationEntity>(log.Application.Id, userId))
             {
                 throw new DataPermissionException();
             }

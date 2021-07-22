@@ -47,7 +47,12 @@ namespace OffLogs.Api.Controller.Board.Log.Actions
         public async Task<PaginatedListDto<LogListItemDto>> ExecuteAsync(GetListRequest request)
         {
             var userId = _requestService.GetUserIdFromJwt();
-            if (!await _accessPolicyService.HasWriteAccessAsync<ApplicationEntity>(request.ApplicationId, userId))
+            if (
+                !await _accessPolicyService.HasReadAccessAsync<ApplicationEntity>(
+                    request.ApplicationId, 
+                    userId
+                )
+            )
             {
                 throw new DataPermissionException();
             }

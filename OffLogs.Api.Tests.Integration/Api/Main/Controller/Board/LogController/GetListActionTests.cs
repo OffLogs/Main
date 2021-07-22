@@ -163,5 +163,32 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             var responseData = await response.GetJsonDataAsync<PaginatedListDto<LogListItemDto>>();
             Assert.True(responseData.Items.First().IsFavorite);
         }
+
+        [Theory]
+        [InlineData(MainApiUrl.LogList)]
+        public async Task ShouldReceiveLogsForSharedApplications(string url)
+        {
+            var user = await DataSeeder.CreateNewUser();
+            var user2 = await DataSeeder.CreateNewUser();
+
+            await ApplicationService.ShareForUser(user2.Application, user);
+
+            var logs1 = await DataSeeder.CreateLogsAsync(user2.ApplicationId, LogLevel.Information);
+            var logs2 = await DataSeeder.CreateLogsAsync(user2.ApplicationId, LogLevel.Information);
+
+            // Act
+            var response = await PostRequestAsync(url, user.ApiToken, new GetListRequest()
+            {
+                Page = 1,
+                ApplicationId = user2.ApplicationId
+            });
+            response.EnsureSuccessStatusCode();
+            // Assert
+            var responseData = await response.GetJsonDataAsync<PaginatedListDto<LogListItemDto>>();
+
+            Assert.Equal(2, responseData.Items.Count);
+            Assert.Contains(responseData.Items, l => l.Id == logs2.First().Id);
+            Assert.Contains(responseData.Items, l => l.Id == logs1.First().Id);
+        }
     }
 }
