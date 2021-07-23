@@ -52,7 +52,7 @@ namespace OffLogs.Api.Business.Controller.Board.Log.Actions
             {
                 throw new DataPermissionException();
             }
-            await _logService.SetIsFavoriteAsync(request.LogId, request.IsFavorite);
+            await _logService.SetIsFavoriteAsync(userId, request.LogId, request.IsFavorite);
         }
     }
 }

@@ -18,6 +18,7 @@ namespace OffLogs.Business.Common.Constants
         public const string UserSearch = "/board/user/search";
 
         public const string PermissionAddAccess = "/board/permission/addAccess";
+        public const string PermissionRemoveAccess = "/board/permission/removeAccess";
 
     }
 }

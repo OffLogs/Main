@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Domain.Abstractions;
 using NHibernate.Mapping.Attributes;
 
@@ -34,7 +35,23 @@ namespace OffLogs.Business.Orm.Entities
         [Property(NotNull = true)]
         [Column(Name = "update_time", SqlType = "datetime", NotNull = true)]
         public virtual DateTime UpdateTime { get; set; }
-        
+
+        [Set(
+            Table = "log_favorites",
+            Lazy = CollectionLazy.True,
+            Cascade = "none",
+            BatchSize = 20
+       )]
+        [Key(
+           Column = "user_id"
+       )]
+        [ManyToMany(
+           Unique = true,
+           ClassType = typeof(LogEntity),
+           Column = "log_id"
+       )]
+        public virtual ICollection<LogEntity> FavoriteLogs { get; set; } = new List<LogEntity>();
+
         public virtual string Password { get; set; }
 
         public UserEntity() {}

@@ -9,5 +9,6 @@ namespace OffLogs.Business.Services.Entities.Application
         Task<ApplicationEntity> CreateNewApplication(UserEntity user, string name);
         Task<ApplicationEntity> UpdateApplication(long applicationId, string name);
         Task ShareForUser(ApplicationEntity application, UserEntity user);
+        Task RemoveShareForUser(ApplicationEntity application, UserEntity user);
     }
 }

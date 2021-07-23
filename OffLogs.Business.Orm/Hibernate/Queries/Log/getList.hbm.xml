@@ -4,7 +4,8 @@
         namespace="OffLogs.Business.Db.Entity"
         assembly="OffLogs.Business">
 
-    <query name="Log.getList"><![CDATA[
+    <query name="Log.getList">
+				<![CDATA[
         from LogEntity as log
             inner join fetch log.Application
             where log.Application.Id = :applicationId

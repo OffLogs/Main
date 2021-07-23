@@ -14,28 +14,22 @@ namespace OffLogs.Console.Core
 {
     public class CreateApplicationService: ICreateApplicationService
     {
-        private readonly IDataFactoryService _factory;
-        private readonly IUserService _userService;
         private readonly IAsyncQueryBuilder _queryBuilder;
         private readonly IApplicationService _applicationService;
         private readonly ILogger<CreateApplicationService> _logger;
         private readonly IDbSessionProvider _dbSessionProvider;
 
         public CreateApplicationService(
-            IDataFactoryService factoryService, 
-            IUserService userService,
             IAsyncQueryBuilder queryBuilder,
             IApplicationService applicationService,
             ILogger<CreateApplicationService> logger,
             IDbSessionProvider dbSessionProvider
         )
         {
-            _factory = factoryService;
-            this._userService = userService;
-            this._queryBuilder = queryBuilder;
-            this._applicationService = applicationService;
+            _queryBuilder = queryBuilder;
+            _applicationService = applicationService;
             _logger = logger;
-            this._dbSessionProvider = dbSessionProvider;
+            _dbSessionProvider = dbSessionProvider;
         }
 
         public async Task<int> Create(CreateNewApplicationVerb verb)

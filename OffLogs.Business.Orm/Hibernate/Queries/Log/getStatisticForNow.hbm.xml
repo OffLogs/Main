@@ -14,6 +14,6 @@
 		WHERE create_time > now() AT TIME ZONE 'UTC' - interval '2 minutes'
 		AND (:applicationId IS NULL OR logs.application_id = :applicationId)
 		GROUP BY timeInterval, level
-		ORDER BY timeInterval desc
+		ORDER BY timeInterval DESC
 	</sql-query>
 </hibernate-mapping>

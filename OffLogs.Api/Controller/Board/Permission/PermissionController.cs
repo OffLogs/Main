@@ -26,5 +26,11 @@ namespace OffLogs.Api.Business.Controller.Board.Permission
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public Task<IActionResult> AddAccess(AddAccessRequest request)
             => this.RequestAsync(request);
+
+        [HttpPost("removeAccess")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public Task<IActionResult> RemoveAccess(RemoveAccessRequest request)
+            => this.RequestAsync(request);
     }
 }
