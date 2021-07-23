@@ -1,9 +1,9 @@
 using System.Net;
 using System.Threading.Tasks;
-using OffLogs.Api.Business.Controller.Board.Permission.Actions;
 using OffLogs.Business.Common.Constants;
 using Xunit;
 using OffLogs.Business.Common.Constants.Permissions;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Permission;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.PermissionController
 {

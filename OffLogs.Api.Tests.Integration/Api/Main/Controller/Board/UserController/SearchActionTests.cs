@@ -1,7 +1,6 @@
 using System.Net;
 using System.Threading.Tasks;
-using OffLogs.Api.Business.Controller.Board.User.Actions;
-using OffLogs.Api.Business.Controller.Board.User.Dto;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.User;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Test.Extensions;
 using Xunit;

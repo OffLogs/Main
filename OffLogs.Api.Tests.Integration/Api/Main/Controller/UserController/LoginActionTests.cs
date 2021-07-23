@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using OffLogs.Api.Business.Controller.Public.User.Dto;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
 using OffLogs.Business.Test.Extensions;
 using Xunit;
 

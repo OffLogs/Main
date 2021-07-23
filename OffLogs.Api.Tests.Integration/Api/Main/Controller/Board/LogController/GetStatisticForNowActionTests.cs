@@ -1,8 +1,8 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using OffLogs.Api.Business.Controller.Board.Log.Actions;
-using OffLogs.Api.Business.Dto.Entities;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log;
+using OffLogs.Api.Common.Requests.Board.Log;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Test.Extensions;
 using Xunit;
