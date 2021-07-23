@@ -31,11 +31,11 @@ namespace OffLogs.Console.Core
         )
         {
             _factory = factoryService;
-            this._userService = userService;
-            this._queryBuilder = queryBuilder;
-            this._applicationService = applicationService;
+            _userService = userService;
+            _queryBuilder = queryBuilder;
+            _applicationService = applicationService;
             _logger = logger;
-            this._dbSessionProvider = dbSessionProvider;
+            _dbSessionProvider = dbSessionProvider;
         }
 
         public async Task<int> Create(CreateNewApplicationVerb verb)

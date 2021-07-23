@@ -8,6 +8,7 @@ services:
     environment:
       ConnectionStrings__DefaultConnection: 'User ID=postgres;Password=P@ssW0rd!;Host=database;Port=5432;Database=postgres;Pooling=true;'
       Kafka__Servers: 'kafka:9094'
+      Hibernate__IsShowSql: false
     volumes:
       - /opt/vsts/work/_temp:/var/temp
     depends_on:
