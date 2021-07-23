@@ -1,7 +1,11 @@
-﻿using Api.Requests.Abstractions;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Api.Requests.Abstractions;
 using AutoMapper;
-using OffLogs.Api.Dto;
-using OffLogs.Api.Dto.Entities;
+using OffLogs.Api.Common.Dto;
+using OffLogs.Api.Common.Dto.Entities;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log;
 using OffLogs.Business.Exceptions;
 using OffLogs.Business.Orm.Dto;
 using OffLogs.Business.Orm.Entities;
@@ -11,12 +15,8 @@ using OffLogs.Business.Services.Entities.Application;
 using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Security;
 using Queries.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace OffLogs.Api.Controller.Board.Log.Actions
+namespace OffLogs.Api.Business.Controller.Board.Log.Actions
 {
     public class GetListRequestHandler : IAsyncRequestHandler<GetListRequest, PaginatedListDto<LogListItemDto>>
     {

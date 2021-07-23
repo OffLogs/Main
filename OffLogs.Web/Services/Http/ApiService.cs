@@ -1,19 +1,15 @@
-using System;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Newtonsoft.Json;
+using OffLogs.Api.Common.Dto;
+using OffLogs.Api.Common.Dto.Entities;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Exceptions;
-using OffLogs.Business.Common.Models.Api.Request;
-using OffLogs.Business.Common.Models.Api.Request.Board;
-using OffLogs.Business.Common.Models.Api.Request.User;
-using OffLogs.Business.Common.Models.Api.Response;
-using OffLogs.Business.Common.Models.Api.Response.Board;
-using OffLogs.Business.Common.Models.Http;
 using OffLogs.Web.Core.Exceptions;
 
 namespace OffLogs.Web.Services.Http
@@ -29,7 +25,7 @@ namespace OffLogs.Web.Services.Http
             _localStorage = localStorage;
         }
 
-        private async Task<JsonCommonResponse<T>> RequestAsync<T>(string requestUri, string jwtToken, object data, HttpMethod httpMethod)
+        private async Task<TResponse> RequestAsync<TResponse>(string requestUri, string jwtToken, object data, HttpMethod httpMethod)
         {
             // create request object
             var request = new HttpRequestMessage(httpMethod, requestUri);
@@ -48,20 +44,20 @@ namespace OffLogs.Web.Services.Http
             var responseString = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
-                return JsonConvert.DeserializeObject<JsonCommonResponse<T>>(responseString);
+                return JsonConvert.DeserializeObject<TResponse>(responseString);
             }
 
             throw new HttpResponseStatusException(response.StatusCode, "Add message");
         }
 
-        private async Task<JsonCommonResponse<T>> PostAsync<T>(string requestUri, object data, string jwtToken = null)
+        private async Task<TResponse> PostAsync<TResponse>(string requestUri, object data, string jwtToken = null)
         {
-            return await RequestAsync<T>(requestUri, jwtToken, data, HttpMethod.Post);
+            return await RequestAsync<TResponse>(requestUri, jwtToken, data, HttpMethod.Post);
         }    
         
-        private async Task<JsonCommonResponse<T>> PostAuthorizedAsync<T>(string requestUri, object data)
+        private async Task<TResponse> PostAuthorizedAsync<TResponse>(string requestUri, object data)
         {
-            return await RequestAsync<T>(
+            return await RequestAsync<TResponse>(
                 requestUri, 
                 await _localStorage.GetItemAsync<string>(AuthorizationService.AuthKey), 
                 data, 
@@ -69,25 +65,20 @@ namespace OffLogs.Web.Services.Http
             );
         }
         
-        private async Task<JsonCommonResponse<T>> GetAsync<T>(string requestUri, object data, string jwtToken = null)
+        private async Task<TResponse> GetAsync<TResponse>(string requestUri, object data, string jwtToken = null)
         {
-            return await RequestAsync<T>(requestUri, jwtToken, data, HttpMethod.Get);
+            return await RequestAsync<TResponse>(requestUri, jwtToken, data, HttpMethod.Get);
         }  
         
-        public async Task<LoginResponseModel> LoginAsync(LoginRequestModel model)
+        public async Task<LoginResponseDto> LoginAsync(LoginRequest model)
         {
-            var response = await PostAsync<LoginResponseModel>(MainApiUrl.Login, model);
+            var response = await PostAsync<LoginResponseDto>(MainApiUrl.Login, model);
             if (response == null)
             {
                 throw new ServerErrorException();
             }
 
-            if (!response.IsSuccess)
-            {
-                throw new Exception(response.Message);
-            }
-
-            return response?.Data;
+            return response;
         }
         
         public async Task<bool> CheckIsLoggedInAsync(string token)
@@ -97,61 +88,7 @@ namespace OffLogs.Web.Services.Http
             {
                 throw new ServerErrorException();
             }
-
-            return response.IsSuccess;
-        }
-
-        public async Task<PaginatedResponseModel<LogResponseModel>> GetLogs(LogListRequestModel request)
-        {
-            var response = await PostAuthorizedAsync<PaginatedResponseModel<LogResponseModel>>(MainApiUrl.LogList, request);
-            if (response == null)
-            {
-                throw new ServerErrorException();
-            }
-
-            if (!response.IsSuccess)
-            {
-                throw new Exception(response.Message);
-            }
-
-            return response?.Data;
-        }
-
-        public async Task<LogResponseModel> GetLog(long logId)
-        {
-            var response = await PostAuthorizedAsync<LogResponseModel>(
-                MainApiUrl.LogGet, 
-                new LogGetOneRequestModel() { 
-                    Id = logId    
-                }
-            );
-            if (response == null)
-            {
-                throw new ServerErrorException();
-            }
-
-            if (!response.IsSuccess)
-            {
-                throw new Exception(response.Message);
-            }
-            return response?.Data;
-        }
-        
-        public async Task<bool> LogSetIsFavorite(long logId, bool isFavorite)
-        {
-            var response = await PostAuthorizedAsync<LogResponseModel>(
-                MainApiUrl.LogSetIsFavorite, 
-                new LogSetFavoriteRequestModel() { 
-                    LogId  = logId,
-                    IsFavorite = isFavorite
-                }
-            );
-            if (response == null)
-            {
-                return false;
-            }
-
-            return response.IsSuccess;
+            return true;
         }
     }
 }

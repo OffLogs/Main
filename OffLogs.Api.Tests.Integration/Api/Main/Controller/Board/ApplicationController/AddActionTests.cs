@@ -1,11 +1,7 @@
 using System.Net;
 using System.Threading.Tasks;
-using OffLogs.Api.Controller.Board.Application.Actions;
-using OffLogs.Api.Dto.Entities;
-using OffLogs.Api.Tests.Integration.Core;
-using OffLogs.Business.Common.Models.Api.Request;
-using OffLogs.Business.Common.Models.Api.Request.Board;
-using OffLogs.Business.Common.Models.Api.Response.Board;
+using OffLogs.Api.Common.Dto.Entities;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application;
 using OffLogs.Business.Test.Extensions;
 using Xunit;
 

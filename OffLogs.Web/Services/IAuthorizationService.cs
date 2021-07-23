@@ -1,12 +1,12 @@
 using System.Threading.Tasks;
-using OffLogs.Business.Common.Models.Api.Request.User;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
 
 namespace OffLogs.Web.Services
 {
     public interface IAuthorizationService
     {
         bool IsLoggedIn();
-        Task<bool> LoginAsync(LoginRequestModel model);
+        Task<bool> LoginAsync(LoginRequest model);
         Task LogoutAsync();
         Task<bool> IsHasJwtAsync();
         Task<string> GetJwtAsync();

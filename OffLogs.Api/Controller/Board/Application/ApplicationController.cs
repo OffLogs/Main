@@ -1,18 +1,15 @@
-﻿using Api.Requests.Abstractions;
+﻿using System.Threading.Tasks;
+using Api.Requests.Abstractions;
 using AspNetCore.ApiControllers.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using OffLogs.Api.Controller.Board.Application.Actions;
-using OffLogs.Api.Dto;
-using OffLogs.Api.Dto.Entities;
+using OffLogs.Api.Common.Dto;
+using OffLogs.Api.Common.Dto.Entities;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application;
 using Persistence.Transactions.Behaviors;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace OffLogs.Api.Controller.Board.Application
+namespace OffLogs.Api.Business.Controller.Board.Application
 {
     [Route("/board/[controller]")]
     [Authorize]

@@ -3,14 +3,11 @@ using Api.Requests.Abstractions;
 using AspNetCore.ApiControllers.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using OffLogs.Api.Controller.Public.Home.Actions;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.Home;
 using OffLogs.Business.Mvc.Attribute.Auth;
-using OffLogs.Business.Mvc.Controller;
 using Persistence.Transactions.Behaviors;
 
-namespace OffLogs.Api.Controller.Public.Home
+namespace OffLogs.Api.Business.Controller.Public.Home
 {
     [ApiController]
     [Route("/[controller]")]

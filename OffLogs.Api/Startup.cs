@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using OffLogs.Api.Business;
 using OffLogs.Api.Di.Autofac.Modules;
 using OffLogs.Api.Extensions;
 using OffLogs.Api.Middleware;

@@ -1,8 +1,8 @@
 ﻿@using OffLogs.Web.Services.Http
 @using OffLogs.Web.Core.Models.Modal
 @using OffLogs.Web.Constants
-@using OffLogs.Business.Common.Models.Api.Response.Board
 @using OffLogs.Web.Resources
+@using OffLogs.Api.Common.Dto.Entities
 @inject IApiService _apiService
 @inject ToastService _toastService
 
@@ -35,7 +35,7 @@
 
     private bool _isShowModal { get; set; }
     private bool _isLoading { get; set; }
-    private ApplicationResponseModel _application { get; set; }
+    private ApplicationDto _application { get; set; }
 
     private string _title {
         get {

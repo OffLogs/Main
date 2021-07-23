@@ -4,10 +4,10 @@ using AspNetCore.ApiControllers.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using OffLogs.Api.Controller.Public.User.Actions;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
 using Persistence.Transactions.Behaviors;
 
-namespace OffLogs.Api.Controller.Public.User
+namespace OffLogs.Api.Business.Controller.Public.User
 {
     [Route("/[controller]")]
     [ApiController]
@@ -26,7 +26,7 @@ namespace OffLogs.Api.Controller.Public.User
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public Task<IActionResult> CheckIsLoggedIn([FromBody] LoginRequest request)
             => this.RequestAsync()
-                .For<LoginResponse>()
+                .For<LoginResponseDto>()
                 .With(request);
 
         [HttpGet("checkIsLoggedIn")]

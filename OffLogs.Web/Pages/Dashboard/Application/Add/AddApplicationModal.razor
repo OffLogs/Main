@@ -1,16 +1,14 @@
 ﻿@using OffLogs.Web.Services.Http
-@using OffLogs.Business.Common.Models.Api.Request
 @using OffLogs.Web.Core.Models.Modal
 @using Microsoft.AspNetCore.Components.Web
-@using OffLogs.Business.Common.Models.Api.Request.User
 @using OffLogs.Web.Core.Components.Form
 @using OffLogs.Web.Shared.Modal
 @using OffLogs.Web.Shared.Ui
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Forms
-@using OffLogs.Business.Common.Models.Api.Request.Board
 @using OffLogs.Web.Constants
 @using OffLogs.Web.Services
+@using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application
 @inject IApiService _apiService
 @inject ToastService _toastService
 
@@ -36,7 +34,7 @@
     [Parameter]
     public RenderFragment ChildContent { get; set; }
     
-    private ApplicationAddModel _model = new();
+    private AddRequest _model = new();
     private EditContext _editContext;
     private MyButton _btnSubmit;
     
@@ -62,13 +60,13 @@
             BootstrapColorType.Light
         ));
         
-        var applications = await _apiService.GetApplications(new PaginatedRequestModel()
+        var applications = await _apiService.GetApplications(new GetListRequest()
         {
             Page = 1
         });
     }
     
-    private async Task HandleSubmit()
+    private Task HandleSubmit()
     {
         var isValid = _editContext.Validate();
         if (isValid)
@@ -83,6 +81,7 @@
                 Console.WriteLine(e.Message);
             }
         }
+        return Task.CompletedTask;
     }
     
     private void OnAddAction()

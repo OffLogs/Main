@@ -5,7 +5,7 @@ using Domain.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Persistence.Transactions.Behaviors;
 
-namespace OffLogs.Api.Controller
+namespace OffLogs.Api.Business.Controller
 {
     public class MainApiControllerBase: ApiControllerBase
     {

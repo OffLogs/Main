@@ -1,10 +1,9 @@
-﻿using AutoMapper;
-using OffLogs.Api.Dto.Entities;
-using OffLogs.Business.Orm.Entities;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
+using OffLogs.Api.Common.Dto.Entities;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log;
+using OffLogs.Business.Orm.Entities;
 
 namespace OffLogs.Api.Profiles
 {
@@ -14,7 +13,7 @@ namespace OffLogs.Api.Profiles
         {
             CreateMap<LogEntity, LogDto>()
                 .ForPath(
-                    s=> s.Properties, 
+                    s => s.Properties,
                     member => member.MapFrom(
                         entity => entity.Properties.Select(
                             property => new KeyValuePair<string, string>(
@@ -25,7 +24,7 @@ namespace OffLogs.Api.Profiles
                     )
                 )
                 .ForPath(
-                    s=> s.Traces, 
+                    s => s.Traces,
                     member => member.MapFrom(
                         entity => entity.Traces.Select(
                             trace => trace.Trace
@@ -33,6 +32,9 @@ namespace OffLogs.Api.Profiles
                     )
                 );
             CreateMap<LogEntity, LogListItemDto>();
+
+            // Log Statistic DTO mapping
+            CreateMap<OffLogs.Business.Orm.Dto.Entities.LogStatisticForNowDto, LogStatisticForNowItemDto> ();
         }
     }
 }

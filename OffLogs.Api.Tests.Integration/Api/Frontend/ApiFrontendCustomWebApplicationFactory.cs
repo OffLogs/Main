@@ -55,7 +55,6 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
                         {
                             builder.ConfigureConfigurationProvider();
                         })
-                        .UseSerilog()
                         .UseTestServer();
                 });
             return builder;

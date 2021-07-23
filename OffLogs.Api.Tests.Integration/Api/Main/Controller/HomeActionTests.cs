@@ -1,12 +1,4 @@
-﻿using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using OffLogs.Api.Controller.Public.Home.Actions;
-using OffLogs.Api.Tests.Integration.Core;
-using OffLogs.Business.Services.Jwt;
-using OffLogs.Business.Test.Extensions;
-using Xunit;
-
-namespace OffLogs.Api.Tests.Integration.Api.Main.Controller
+﻿namespace OffLogs.Api.Tests.Integration.Api.Main.Controller
 {
     public class HomeActionTests: MyApiIntegrationTest
     {

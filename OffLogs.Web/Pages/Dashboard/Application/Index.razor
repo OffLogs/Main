@@ -1,9 +1,9 @@
 ﻿@page "/dashboard/applications"
 @using OffLogs.Web.Services.Http
-@using OffLogs.Business.Common.Models.Api.Request
-@using OffLogs.Business.Common.Models.Api.Response.Board
 @using OffLogs.Web.Pages.Dashboard.Application.Add
 @using OffLogs.Web.Pages.Dashboard.Application.Info
+@using OffLogs.Api.Common.Dto.Entities
+@using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application
 @inject IApiService _apiService
 
 <h1>Your application</h1>
@@ -14,31 +14,32 @@
 
 @if (_selectedApplicationId != null)
 {
-    <AppInfoModal ApplicationId="@_selectedApplicationId"/>
+    <AppInfoModal ApplicationId="@_selectedApplicationId" />
 }
 
 <table class="table table-hover w-table">
     <thead>
         <tr>
-           <th>Name</th> 
+            <th>Name</th>
         </tr>
     </thead>
     <tbody>
-    @foreach (var application in _applications)
-    {
-        <tr @onclick="@(async () => await OnClickRowAsync(application))">
-            <td>@application.Name</td>
-        </tr>    
-    }
+        @foreach (var application in _applications)
+        {
+            <tr @onclick="@(async () => await OnClickRowAsync(application))">
+                <td>@application.Name</td>
+            </tr>
+
+        }
     </tbody>
 </table>
 
 @code
 {
-    private List<ApplicationResponseModel> _applications = new();
+    private List<ApplicationListItemDto> _applications = new();
     private int _currentPage = 1;
     private long? _selectedApplicationId;
-    
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -51,7 +52,7 @@
         {
             _currentPage++;
         }
-        var response = await _apiService.GetApplications(new PaginatedRequestModel()
+        var response = await _apiService.GetApplications(new GetListRequest()
         {
             Page = _currentPage
         });
@@ -59,7 +60,7 @@
         StateHasChanged();
     }
 
-    private async Task OnClickRowAsync(ApplicationResponseModel application)
+    private async Task OnClickRowAsync(ApplicationListItemDto application)
     {
         _selectedApplicationId = application.Id;
         await Task.CompletedTask;
