@@ -1,20 +1,13 @@
-using System;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Newtonsoft.Json;
-using OffLogs.Api.Controller.Public.User.Actions;
+using OffLogs.Api.Business.Controller.Public.User.Actions;
+using OffLogs.Api.Business.Controller.Public.User.Dto;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Exceptions;
-using OffLogs.Business.Common.Models.Api.Request;
-using OffLogs.Business.Common.Models.Api.Request.Board;
-using OffLogs.Business.Common.Models.Api.Request.User;
-using OffLogs.Business.Common.Models.Api.Response;
-using OffLogs.Business.Common.Models.Api.Response.Board;
-using OffLogs.Business.Common.Models.Http;
 using OffLogs.Web.Core.Exceptions;
 
 namespace OffLogs.Web.Services.Http
@@ -75,20 +68,15 @@ namespace OffLogs.Web.Services.Http
             return await RequestAsync<TResponse>(requestUri, jwtToken, data, HttpMethod.Get);
         }  
         
-        public async Task<LoginResponseModel> LoginAsync(LoginRequest model)
+        public async Task<LoginResponseDto> LoginAsync(LoginRequest model)
         {
-            var response = await PostAsync<LoginResponseModel>(MainApiUrl.Login, model);
+            var response = await PostAsync<LoginResponseDto>(MainApiUrl.Login, model);
             if (response == null)
             {
                 throw new ServerErrorException();
             }
 
-            if (!response.IsSuccess)
-            {
-                throw new Exception(response.Message);
-            }
-
-            return response?.Data;
+            return response;
         }
         
         public async Task<bool> CheckIsLoggedInAsync(string token)
@@ -98,61 +86,7 @@ namespace OffLogs.Web.Services.Http
             {
                 throw new ServerErrorException();
             }
-
-            return response.IsSuccess;
-        }
-
-        public async Task<PaginatedResponseModel<LogResponseModel>> GetLogs(LogListRequestModel request)
-        {
-            var response = await PostAuthorizedAsync<PaginatedResponseModel<LogResponseModel>>(MainApiUrl.LogList, request);
-            if (response == null)
-            {
-                throw new ServerErrorException();
-            }
-
-            if (!response.IsSuccess)
-            {
-                throw new Exception(response.Message);
-            }
-
-            return response?.Data;
-        }
-
-        public async Task<LogResponseModel> GetLog(long logId)
-        {
-            var response = await PostAuthorizedAsync<LogResponseModel>(
-                MainApiUrl.LogGet, 
-                new LogGetOneRequestModel() { 
-                    Id = logId    
-                }
-            );
-            if (response == null)
-            {
-                throw new ServerErrorException();
-            }
-
-            if (!response.IsSuccess)
-            {
-                throw new Exception(response.Message);
-            }
-            return response?.Data;
-        }
-        
-        public async Task<bool> LogSetIsFavorite(long logId, bool isFavorite)
-        {
-            var response = await PostAuthorizedAsync<LogResponseModel>(
-                MainApiUrl.LogSetIsFavorite, 
-                new LogSetFavoriteRequestModel() { 
-                    LogId  = logId,
-                    IsFavorite = isFavorite
-                }
-            );
-            if (response == null)
-            {
-                return false;
-            }
-
-            return response.IsSuccess;
+            return true;
         }
     }
 }

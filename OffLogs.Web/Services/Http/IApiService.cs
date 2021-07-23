@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using OffLogs.Api.Business.Controller.Board.Application.Actions;
 using OffLogs.Api.Business.Controller.Public.User.Actions;
 using OffLogs.Api.Business.Controller.Public.User.Dto;
 using OffLogs.Api.Business.Dto;
@@ -12,7 +13,7 @@ namespace OffLogs.Web.Services.Http
         Task<bool> CheckIsLoggedInAsync(string token);
         Task<PaginatedListDto<ApplicationListItemDto>> GetApplications(GetListRequest request = null);
         Task<ApplicationDto> GetApplication(long logId);
-        Task<PaginatedListDto<LogDto>> GetLogs(Offlogs.Business.Api.Controller.Board.Log.Actions.GetListRequest request);
+        Task<PaginatedListDto<LogDto>> GetLogs(OffLogs.Api.Business.Controller.Board.Log.Actions.GetListRequest request);
         Task<LogDto> GetLog(long logId);
         Task<bool> LogSetIsFavorite(long logId, bool isFavorite);
     }
