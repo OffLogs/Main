@@ -6,24 +6,20 @@
 @using OffLogs.Business.Common.Extensions
 @using OffLogs.Web.Constants
 @using OffLogs.Web.Extensions
-@using OffLogs.Api.Business.Dto.Entities
-@using OffLogs.Api.Business.Controller.Board.Log.Actions
+@using OffLogs.Api.Common.Dto.Entities
+@using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log
 @inject IApiService _apiService
 @inject ToastService _toastService
 
 <h1>Logs</h1>
 
 <div class="d-flex flex-row mb-3">
-    <CustomAsyncDropDown
-        @ref="_dropDownApplications"
-        Class="me-1"
-        NonSelectedLabel="Select your application"
-        OnLoad="@(async () => await OnLoadApplicationsAsync())"
-        OnChanged="@(async (item) => await OnSelectedApplication(item))"
-    />
-    <LogLevelsDropDown
-        OnChanged="OnSelectLogLevelAsync"
-    />
+    <CustomAsyncDropDown @ref="_dropDownApplications"
+                         Class="me-1"
+                         NonSelectedLabel="Select your application"
+                         OnLoad="@(async () => await OnLoadApplicationsAsync())"
+                         OnChanged="@(async (item) => await OnSelectedApplication(item))" />
+    <LogLevelsDropDown OnChanged="OnSelectLogLevelAsync" />
 </div>
 
 @foreach (var log in _logs)
@@ -31,11 +27,10 @@
     <div class="accordion mb-1 w-log-block">
         <div class="accordion-item">
             <h2 class="accordion-header">
-                <button
-                    @onclick="@(() => ExpandOrCloseLog(log))"
-                    class="accordion-button ms-4 @(_expandedLogIds.Contains(@log.Id) ? "collapsed" : "")"
-                    type="button">
-                    
+                <button @onclick="@(() => ExpandOrCloseLog(log))"
+                        class="accordion-button ms-4 @(_expandedLogIds.Contains(@log.Id) ? "collapsed" : "")"
+                        type="button">
+
                     @log.LogTime.ToFullDateTime()
                     <Badge Color="@log.Level.GetBootstrapColorType()" Class="ms-2 me-2">
                         @log.Level.GetLabel()
@@ -45,7 +40,7 @@
                 @if (log.IsFavorite)
                 {
                     <div class="w-favorite-icon">
-                         <Icon IconType="favorite" Class="fs-6"/>
+                        <Icon IconType="favorite" Class="fs-6" />
                     </div>
                 }
             </h2>
@@ -58,7 +53,7 @@
                 </div>
             </div>
         </div>
-    </div>  
+    </div>
 }
 
 @if (_logs.Count == 0 && !_isLoading)
@@ -69,21 +64,20 @@
 <div class="mt-3 mb-5">
     @if (_isLoading)
     {
-        <Preloader/>
+        <Preloader />
     }
-    
+
     @if (_isHasMore && !_isLoading)
     {
         <div class="text-center">
-            <MyButton
-                OnClick="@(async () => await LoadListAsync())">
+            <MyButton OnClick="@(async () => await LoadListAsync())">
                 More
             </MyButton>
         </div>
     }
 </div>
 
-<LogInfoModal IsShowAddModal="@(_selectedLog != null)" LogId="@_selectedLog?.Id"/>
+<LogInfoModal IsShowAddModal="@(_selectedLog != null)" LogId="@_selectedLog?.Id" />
 
 @code
 {
@@ -96,16 +90,16 @@
 
     private long? _selectedApplicationId;
     private LogLevel? _selectedLogLevel;
-    
+
     private bool _isLoading = false;
 
     private ICollection<CustomTableRowModel> _tableCols = new List<CustomTableRowModel>()
-    {
+{
         new(){ Name = "Message" },
         new(){ Name = "Log time" },
         new(){ Name = "Create time" }
     };
-    
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -151,23 +145,24 @@
         StateHasChanged();
     }
 
-    private async Task OnClickRowAsync(LogListItemDto log)
+    private Task OnClickRowAsync(LogListItemDto log)
     {
         _selectedLog = log;
         StateHasChanged();
+        return Task.CompletedTask;
     }
 
     private async Task OnMoreAsyncAsync()
     {
         await LoadListAsync();
     }
-    
+
     private async Task OnSelectedApplication(DropDownListItem selectListItem)
     {
         _selectedApplicationId = selectListItem.IdAsLong;
         await LoadListAsync(false);
     }
-    
+
     private async Task<ICollection<DropDownListItem>> OnLoadApplicationsAsync()
     {
         _isLoading = true;

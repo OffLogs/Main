@@ -1,5 +1,5 @@
 ﻿@page "/login"
-@using OffLogs.Api.Business.Controller.Public.User.Actions
+@using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User
 @using OffLogs.Web.Constants
 @using OffLogs.Web.Core.Components.Form
 @inject IAuthorizationService _authorizationService
@@ -7,38 +7,36 @@
 @inject ToastService _toastService
 
 <div class="card w-login-page">
-  <div class="card-body">
-    <h5 class="card-title">Login to your account</h5>
-    <p class="card-text">
-        <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
-            <DataAnnotationsValidator />
-            <ValidationSummary />
-            <p>
-                @UserNameError
-                <CustomInputText
-                    Label="Login:"
-                    @bind-Value="model.UserName"
-                    ErrorMessage="@UserNameError"/>
-            </p>
-            <p>
-                @PasswordError
-                <CustomInputText
-                    Label="Password:"
-                    @bind-Value="model.Password"
-                    type="password"
-                    ErrorMessage="@PasswordError"/>
-            </p>
-            @if (_isLoading)
-            {
-                <Preloader/>
-            }
-            else
-            {
-                <MyButton IsSubmit="true">Login</MyButton>    
-            }
-        </EditForm>
-    </p>
-  </div>
+    <div class="card-body">
+        <h5 class="card-title">Login to your account</h5>
+        <p class="card-text">
+            <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <p>
+                    @UserNameError
+                    <CustomInputText Label="Login:"
+                                     @bind-Value="model.UserName"
+                                     ErrorMessage="@UserNameError" />
+                </p>
+                <p>
+                    @PasswordError
+                    <CustomInputText Label="Password:"
+                                     @bind-Value="model.Password"
+                                     type="password"
+                                     ErrorMessage="@PasswordError" />
+                </p>
+                @if (_isLoading)
+                {
+                    <Preloader />
+                }
+                else
+                {
+                    <MyButton IsSubmit="true">Login</MyButton>
+                }
+            </EditForm>
+        </p>
+    </div>
 </div>
 
 @code
@@ -47,7 +45,7 @@
     private EditContext _editContext;
     private bool _isLoading;
 
-    private string? UserNameError
+    private string UserNameError
     {
         get
         {
@@ -55,8 +53,8 @@
             return messages.FirstOrDefault();
         }
     }
-    
-    private string? PasswordError
+
+    private string PasswordError
     {
         get
         {

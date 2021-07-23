@@ -6,9 +6,9 @@
 @using OffLogs.Web.Shared.Ui
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Forms
-@using OffLogs.Api.Business.Controller.Board.Application.Actions
 @using OffLogs.Web.Constants
 @using OffLogs.Web.Services
+@using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application
 @inject IApiService _apiService
 @inject ToastService _toastService
 
@@ -66,7 +66,7 @@
         });
     }
     
-    private async Task HandleSubmit()
+    private Task HandleSubmit()
     {
         var isValid = _editContext.Validate();
         if (isValid)
@@ -81,6 +81,7 @@
                 Console.WriteLine(e.Message);
             }
         }
+        return Task.CompletedTask;
     }
     
     private void OnAddAction()

@@ -1,10 +1,12 @@
-using System;
-using System.Threading.Tasks;
-using OffLogs.Api.Business.Controller.Board.Log.Actions;
-using OffLogs.Api.Business.Dto;
-using OffLogs.Api.Business.Dto.Entities;
+﻿using OffLogs.Api.Common.Dto;
+using OffLogs.Api.Common.Dto.Entities;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Web.Core.Exceptions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace OffLogs.Web.Services.Http
 {
@@ -23,9 +25,10 @@ namespace OffLogs.Web.Services.Http
         public async Task<LogDto> GetLog(long logId)
         {
             var response = await PostAuthorizedAsync<LogDto>(
-                MainApiUrl.LogGet, 
-                new GetRequest() { 
-                    Id = logId    
+                MainApiUrl.LogGet,
+                new GetRequest()
+                {
+                    Id = logId
                 }
             );
             if (response == null)
@@ -34,13 +37,14 @@ namespace OffLogs.Web.Services.Http
             }
             return response;
         }
-        
+
         public async Task<bool> LogSetIsFavorite(long logId, bool isFavorite)
         {
             var response = await PostAuthorizedAsync<bool>(
-                MainApiUrl.LogSetIsFavorite, 
-                new SetIsFavoriteRequest() { 
-                    LogId  = logId,
+                MainApiUrl.LogSetIsFavorite,
+                new SetIsFavoriteRequest()
+                {
+                    LogId = logId,
                     IsFavorite = isFavorite
                 }
             );

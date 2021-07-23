@@ -2,8 +2,8 @@
 @using OffLogs.Web.Services.Http
 @using OffLogs.Web.Pages.Dashboard.Application.Add
 @using OffLogs.Web.Pages.Dashboard.Application.Info
-@using OffLogs.Api.Business.Dto.Entities
-@using OffLogs.Api.Business.Controller.Board.Application.Actions
+@using OffLogs.Api.Common.Dto.Entities
+@using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application
 @inject IApiService _apiService
 
 <h1>Your application</h1>
@@ -14,22 +14,23 @@
 
 @if (_selectedApplicationId != null)
 {
-    <AppInfoModal ApplicationId="@_selectedApplicationId"/>
+    <AppInfoModal ApplicationId="@_selectedApplicationId" />
 }
 
 <table class="table table-hover w-table">
     <thead>
         <tr>
-           <th>Name</th> 
+            <th>Name</th>
         </tr>
     </thead>
     <tbody>
-    @foreach (var application in _applications)
-    {
-        <tr @onclick="@(async () => await OnClickRowAsync(application))">
-            <td>@application.Name</td>
-        </tr>    
-    }
+        @foreach (var application in _applications)
+        {
+            <tr @onclick="@(async () => await OnClickRowAsync(application))">
+                <td>@application.Name</td>
+            </tr>
+
+        }
     </tbody>
 </table>
 
@@ -38,7 +39,7 @@
     private List<ApplicationListItemDto> _applications = new();
     private int _currentPage = 1;
     private long? _selectedApplicationId;
-    
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();

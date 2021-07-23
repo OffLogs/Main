@@ -1,19 +1,17 @@
+using OffLogs.Api.Common.Dto;
+using OffLogs.Api.Common.Dto.Entities;
 using System.Threading.Tasks;
-using OffLogs.Api.Business.Controller.Board.Application.Actions;
-using OffLogs.Api.Business.Controller.Public.User.Actions;
-using OffLogs.Api.Business.Controller.Public.User.Dto;
-using OffLogs.Api.Business.Dto;
-using OffLogs.Api.Business.Dto.Entities;
+
 
 namespace OffLogs.Web.Services.Http
 {
     public interface IApiService
     {
-        Task<LoginResponseDto> LoginAsync(LoginRequest model);
+        Task<Api.Common.Dto.RequestsAndResponses.Public.User.LoginResponseDto> LoginAsync(Api.Common.Dto.RequestsAndResponses.Public.User.LoginRequest model);
         Task<bool> CheckIsLoggedInAsync(string token);
-        Task<PaginatedListDto<ApplicationListItemDto>> GetApplications(GetListRequest request = null);
+        Task<PaginatedListDto<ApplicationListItemDto>> GetApplications(Api.Common.Dto.RequestsAndResponses.Board.Application.GetListRequest request = null);
         Task<ApplicationDto> GetApplication(long logId);
-        Task<PaginatedListDto<LogListItemDto>> GetLogs(OffLogs.Api.Business.Controller.Board.Log.Actions.GetListRequest request);
+        Task<PaginatedListDto<LogListItemDto>> GetLogs(Api.Common.Dto.RequestsAndResponses.Board.Log.GetListRequest request);
         Task<LogDto> GetLog(long logId);
         Task<bool> LogSetIsFavorite(long logId, bool isFavorite);
     }

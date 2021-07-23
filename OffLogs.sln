@@ -47,6 +47,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffLogs.Api.Business", "Off
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffLogs.Api.Common", "OffLogs.Api.Common\OffLogs.Api.Common.csproj", "{C3738B5E-484D-4A57-8590-04D15E5A1782}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Requests.Base", "Api.Requests.Base\Api.Requests.Base.csproj", "{D360395F-AADC-46ED-BDDE-A000D5AD7FDF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -133,6 +135,10 @@ Global
 		{C3738B5E-484D-4A57-8590-04D15E5A1782}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3738B5E-484D-4A57-8590-04D15E5A1782}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3738B5E-484D-4A57-8590-04D15E5A1782}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D360395F-AADC-46ED-BDDE-A000D5AD7FDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D360395F-AADC-46ED-BDDE-A000D5AD7FDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D360395F-AADC-46ED-BDDE-A000D5AD7FDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D360395F-AADC-46ED-BDDE-A000D5AD7FDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -147,6 +153,7 @@ Global
 		{75C520F1-E9B5-4DED-AB67-DE4A3105D0B9} = {5BC5768D-9450-4026-8178-DBCA739DCB0E}
 		{3796C3CC-C38B-4BBB-B4AC-BBBCFB1486CF} = {5BC5768D-9450-4026-8178-DBCA739DCB0E}
 		{7A646375-F6C3-4439-9191-B1E8DB386A42} = {5BC5768D-9450-4026-8178-DBCA739DCB0E}
+		{D360395F-AADC-46ED-BDDE-A000D5AD7FDF} = {5BC5768D-9450-4026-8178-DBCA739DCB0E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {63E75E79-B233-4DE6-B7BA-50C825A8C820}

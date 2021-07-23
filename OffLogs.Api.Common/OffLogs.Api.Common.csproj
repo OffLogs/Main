@@ -4,4 +4,9 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Api.Requests.Abstractions\Api.Requests.Abstractions.csproj" />
+    <ProjectReference Include="..\OffLogs.Business.Common\OffLogs.Business.Common.csproj" />
+  </ItemGroup>
+
 </Project>

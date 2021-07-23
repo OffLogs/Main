@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
-using OffLogs.Api.Business.Controller.Public.User.Actions;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
 using OffLogs.Web.Services.Http;
 
 namespace OffLogs.Web.Services
