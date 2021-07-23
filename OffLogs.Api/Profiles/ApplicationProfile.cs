@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using OffLogs.Api.Business.Dto.Entities;
+using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Business.Orm.Entities;
 
 namespace OffLogs.Api.Profiles

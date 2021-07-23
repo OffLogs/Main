@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using OffLogs.Api.Business.Dto.Entities;
+using OffLogs.Api.Common.Dto.Entities;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log;
 using OffLogs.Business.Orm.Entities;
 
 namespace OffLogs.Api.Profiles
@@ -31,6 +32,9 @@ namespace OffLogs.Api.Profiles
                     )
                 );
             CreateMap<LogEntity, LogListItemDto>();
+
+            // Log Statistic DTO mapping
+            CreateMap<OffLogs.Business.Orm.Dto.Entities.LogStatisticForNowDto, LogStatisticForNowItemDto> ();
         }
     }
 }

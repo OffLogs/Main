@@ -21,12 +21,12 @@ namespace OffLogs.Api.Di.Autofac.Modules
                 .InstancePerLifetimeScope();
 
             builder
-                .RegisterAssemblyTypes(typeof(OffLogsApiBusinessAssemblyMarker).Assembly)
+                .RegisterAssemblyTypes(typeof(ApiAssemblyMarker).Assembly)
                 .AsClosedTypesOf(typeof(IAsyncRequestHandler<>))
                 .InstancePerDependency();
 
             builder
-                .RegisterAssemblyTypes(typeof(OffLogsApiBusinessAssemblyMarker).Assembly)
+                .RegisterAssemblyTypes(typeof(ApiAssemblyMarker).Assembly)
                 .AsClosedTypesOf(typeof(IAsyncRequestHandler<,>))
                 .InstancePerDependency();
 

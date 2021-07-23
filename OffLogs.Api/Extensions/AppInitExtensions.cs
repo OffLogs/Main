@@ -17,11 +17,7 @@ namespace OffLogs.Api.Extensions
     {
         public static void InitControllers(this IServiceCollection services)
         {
-            services.AddControllers(options =>
-                {
-                    
-                })
-                .AddApplicationPart(typeof(OffLogsApiBusinessAssemblyMarker).Assembly)
+            services.AddControllers()
                 .ConfigureApiBehaviorOptions(options =>
                 {
                     // Disable pre-model validation of the models
