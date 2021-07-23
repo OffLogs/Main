@@ -20,6 +20,6 @@ namespace OffLogs.Business.Services.Entities.Log
             ICollection<LogTraceEntity> traces = null
         );
 
-        Task<bool> SetIsFavoriteAsync(long logId, bool isFavorite);
+        Task<bool> SetIsFavoriteAsync(long userId, long logId, bool isFavorite);
     }
 }

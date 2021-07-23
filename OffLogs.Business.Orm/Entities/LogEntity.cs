@@ -46,11 +46,7 @@ namespace OffLogs.Business.Orm.Entities
         [Property(TypeType = typeof(LogLevel), NotNull = true)]
         [Column(Name = "level", SqlType = "int", NotNull = true)]
         public virtual LogLevel Level { get; set; }
-        
-        [Property(NotNull = true)]
-        [Column(Name = "is_favorite", SqlType = "boolean", NotNull = true)]
-        public virtual bool IsFavorite { get; set; }
-        
+               
         [Property(NotNull = true)]
         [Column(Name = "message", Length = 2048, NotNull = true)]
         public virtual string Message { get; set; }
@@ -72,6 +68,24 @@ namespace OffLogs.Business.Orm.Entities
         [Key(Column = "log_id")]
         [OneToMany(ClassType = typeof(LogPropertyEntity))]
         public virtual ICollection<LogPropertyEntity> Properties { get; set; } = new List<LogPropertyEntity>();
+
+        [Set(
+            Table = "log_favorites",
+            Lazy = CollectionLazy.True,
+            Cascade = "delete-orphan",
+            BatchSize = 20
+       )]
+        [Key(
+           Column = "log_id"
+       )]
+        [ManyToMany(
+           Unique = true,
+           ClassType = typeof(UserEntity),
+           Column = "user_id"
+       )]
+        public virtual ICollection<UserEntity> FavoriteForUsers { get; set; } = new List<UserEntity>();
+
+        public virtual bool IsFavorite { get; set; }
 
         public virtual void AddTrace(LogTraceEntity entity)
         {

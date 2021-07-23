@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping
+        xmlns="urn:nhibernate-mapping-2.2"
+        namespace="OffLogs.Business.Db.Entity"
+        assembly="OffLogs.Business">
+
+	<sql-query name="Log.getFavoriteCount">
+
+		SELECT
+		COUNT(l.id) AS count
+		FROM logs as l
+		INNER JOIN log_favorites as lf ON lf.log_id = l.id
+		WHERE lf.log_id = :logId AND lf.user_id = :userId
+	</sql-query>
+</hibernate-mapping>

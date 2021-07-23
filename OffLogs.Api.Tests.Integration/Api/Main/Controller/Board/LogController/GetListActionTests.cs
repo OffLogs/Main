@@ -142,9 +142,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         public async Task ShouldReceiveCorrectIsFavoriteValue(string url)
         {
             var user = await DataSeeder.CreateNewUser();
-            var logs = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information);
-            var log = logs.First();
-            await LogService.SetIsFavoriteAsync(log.Id, true);
+            var logs = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information, 3);            
+            await LogService.SetIsFavoriteAsync(user.Id, logs.First().Id, true);
+            await LogService.SetIsFavoriteAsync(user.Id, logs.Last().Id, true);
 
             // Act
             var response = await PostRequestAsync(url, user.ApiToken, new GetListRequest()
@@ -156,6 +156,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             // Assert
             var responseData = await response.GetJsonDataAsync<PaginatedListDto<LogListItemDto>>();
             Assert.True(responseData.Items.First().IsFavorite);
+            Assert.True(responseData.Items.Last().IsFavorite);
         }
 
         [Theory]

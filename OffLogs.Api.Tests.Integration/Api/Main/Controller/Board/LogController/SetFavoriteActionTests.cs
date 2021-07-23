@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log;
 using OffLogs.Business.Common.Constants;
+using OffLogs.Business.Orm.Queries.Entities.Log;
 using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
@@ -54,7 +55,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             var logs = await DataSeeder.CreateLogsAsync(user.Applications.First().Id, LogLevel.Debug);
             
             var log = logs.First();
-            Assert.False(log.IsFavorite);
+            Assert.False(await IsFavorite(user.Id, log.Id));
             // Act
             var response = await PostRequestAsync(url, user.ApiToken, new SetIsFavoriteRequest()
             {
@@ -63,8 +64,16 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             });
             response.EnsureSuccessStatusCode();
             // Assert
-            await DbSessionProvider.RefreshEntityAsync(log);
-            Assert.True(log.IsFavorite);
+            await DbSessionProvider.PerformCommitAsync();
+
+            Assert.True(await IsFavorite(user.Id, log.Id));
+        }
+
+        private async Task<bool> IsFavorite(long userId, long logId)
+        {
+            return await QueryBuilder.For<bool>().WithAsync(
+                new LogIsFavoriteCriteria(userId, logId)
+            );
         }
     }
 }
