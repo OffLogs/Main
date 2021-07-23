@@ -43,7 +43,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Requests.Abstractions",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore.ApiControllers.Extensions", "AspNetCore.ApiControllers.Extensions\AspNetCore.ApiControllers.Extensions.csproj", "{7A646375-F6C3-4439-9191-B1E8DB386A42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffLogs.Api.Business", "OffLogs.Api.Business\OffLogs.Api.Business.csproj", "{43DCE749-269B-4F47-95E3-481C6102DC11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffLogs.Api.Business", "OffLogs.Api.Business\OffLogs.Api.Business.csproj", "{43DCE749-269B-4F47-95E3-481C6102DC11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffLogs.Api.Common", "OffLogs.Api.Common\OffLogs.Api.Common.csproj", "{C3738B5E-484D-4A57-8590-04D15E5A1782}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,6 +129,10 @@ Global
 		{43DCE749-269B-4F47-95E3-481C6102DC11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43DCE749-269B-4F47-95E3-481C6102DC11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43DCE749-269B-4F47-95E3-481C6102DC11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3738B5E-484D-4A57-8590-04D15E5A1782}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3738B5E-484D-4A57-8590-04D15E5A1782}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3738B5E-484D-4A57-8590-04D15E5A1782}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3738B5E-484D-4A57-8590-04D15E5A1782}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -143,7 +149,7 @@ Global
 		{7A646375-F6C3-4439-9191-B1E8DB386A42} = {5BC5768D-9450-4026-8178-DBCA739DCB0E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		LessCompiler = 198917b0-a634-4f0d-a496-36161600daff
 		SolutionGuid = {63E75E79-B233-4DE6-B7BA-50C825A8C820}
+		LessCompiler = 198917b0-a634-4f0d-a496-36161600daff
 	EndGlobalSection
 EndGlobal

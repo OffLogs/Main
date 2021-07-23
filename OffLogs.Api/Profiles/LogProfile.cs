@@ -4,7 +4,7 @@ using AutoMapper;
 using OffLogs.Api.Business.Dto.Entities;
 using OffLogs.Business.Orm.Entities;
 
-namespace OffLogs.Api.Business.Profiles
+namespace OffLogs.Api.Profiles
 {
     public class LogProfile : Profile
     {
@@ -12,7 +12,7 @@ namespace OffLogs.Api.Business.Profiles
         {
             CreateMap<LogEntity, LogDto>()
                 .ForPath(
-                    s=> s.Properties, 
+                    s => s.Properties,
                     member => member.MapFrom(
                         entity => entity.Properties.Select(
                             property => new KeyValuePair<string, string>(
@@ -23,7 +23,7 @@ namespace OffLogs.Api.Business.Profiles
                     )
                 )
                 .ForPath(
-                    s=> s.Traces, 
+                    s => s.Traces,
                     member => member.MapFrom(
                         entity => entity.Traces.Select(
                             trace => trace.Trace

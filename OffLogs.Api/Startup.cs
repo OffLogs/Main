@@ -42,10 +42,7 @@ namespace OffLogs.Api
         public virtual void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddAutoMapper(
-                typeof(ApiAssemblyMarker).Assembly,
-                typeof(OffLogsApiBusinessAssemblyMarker).Assembly
-            );
+            services.AddAutoMapper(typeof(ApiAssemblyMarker).Assembly);
             services.InitControllers();
             services.InitAuthServices(Configuration);
             services.InitSwaggerServices();

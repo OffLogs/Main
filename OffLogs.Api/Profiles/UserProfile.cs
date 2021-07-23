@@ -2,9 +2,9 @@
 using OffLogs.Api.Business.Dto.Entities;
 using OffLogs.Business.Orm.Entities;
 
-namespace OffLogs.Api.Business.Profiles
+namespace OffLogs.Api.Profiles
 {
-    public class UserProfile: Profile
+    public class UserProfile : Profile
     {
         public UserProfile()
         {
