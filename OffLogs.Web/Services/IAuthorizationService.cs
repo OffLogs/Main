@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Offlogs.Business.Api.Controller.Public.User.Actions;
+using OffLogs.Api.Business.Controller.Public.User.Actions;
 
 namespace OffLogs.Web.Services
 {

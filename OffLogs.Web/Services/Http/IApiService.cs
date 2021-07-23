@@ -1,9 +1,8 @@
 using System.Threading.Tasks;
-using Offlogs.Business.Api.Controller.Board.Application.Actions;
-using Offlogs.Business.Api.Controller.Public.User.Actions;
-using Offlogs.Business.Api.Controller.Public.User.Dto;
-using Offlogs.Business.Api.Dto;
-using Offlogs.Business.Api.Dto.Entities;
+using OffLogs.Api.Business.Controller.Public.User.Actions;
+using OffLogs.Api.Business.Controller.Public.User.Dto;
+using OffLogs.Api.Business.Dto;
+using OffLogs.Api.Business.Dto.Entities;
 
 namespace OffLogs.Web.Services.Http
 {

@@ -43,7 +43,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Requests.Abstractions",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore.ApiControllers.Extensions", "AspNetCore.ApiControllers.Extensions\AspNetCore.ApiControllers.Extensions.csproj", "{7A646375-F6C3-4439-9191-B1E8DB386A42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Offlogs.Business.Api", "Offlogs.Business.Api\Offlogs.Business.Api.csproj", "{78402407-853C-4BE5-A886-1C81B3D48F3D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffLogs.Api.Business", "OffLogs.Api.Business\OffLogs.Api.Business.csproj", "{43DCE749-269B-4F47-95E3-481C6102DC11}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -123,10 +123,10 @@ Global
 		{7A646375-F6C3-4439-9191-B1E8DB386A42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A646375-F6C3-4439-9191-B1E8DB386A42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A646375-F6C3-4439-9191-B1E8DB386A42}.Release|Any CPU.Build.0 = Release|Any CPU
-		{78402407-853C-4BE5-A886-1C81B3D48F3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{78402407-853C-4BE5-A886-1C81B3D48F3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{78402407-853C-4BE5-A886-1C81B3D48F3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{78402407-853C-4BE5-A886-1C81B3D48F3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43DCE749-269B-4F47-95E3-481C6102DC11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43DCE749-269B-4F47-95E3-481C6102DC11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43DCE749-269B-4F47-95E3-481C6102DC11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43DCE749-269B-4F47-95E3-481C6102DC11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
