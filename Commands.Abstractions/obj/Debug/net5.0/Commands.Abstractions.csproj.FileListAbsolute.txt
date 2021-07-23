@@ -20,5 +20,4 @@ c:\Users\hshy\Work\net\Main\Commands.Abstractions\obj\Debug\net5.0\Commands.Abst
 c:\Users\hshy\Work\net\Main\Commands.Abstractions\obj\Debug\net5.0\Commands.Abstractions.dll
 c:\Users\hshy\Work\net\Main\Commands.Abstractions\obj\Debug\net5.0\ref\Commands.Abstractions.dll
 c:\Users\hshy\Work\net\Main\Commands.Abstractions\obj\Debug\net5.0\Commands.Abstractions.pdb
-D:\work\net\OffLogs\Commands.Abstractions\obj\Debug\net5.0\Commands.Abstractions.csproj.AssemblyReference.cache
 C:\Users\hshy\Work\net\Main\Commands.Abstractions\obj\Debug\net5.0\Commands.Abstractions.csproj.AssemblyReference.cache

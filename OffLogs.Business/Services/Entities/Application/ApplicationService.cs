@@ -70,5 +70,26 @@ namespace OffLogs.Business.Services.Entities.Application
             application.SharedForUsers.Add(user);
             await _commandBuilder.SaveAsync(application);
         }
+
+        /// <summary>
+        /// Should remove access rights of the user for this app
+        /// </summary>
+        /// <param name="application"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task RemoveShareForUser(ApplicationEntity application, UserEntity user)
+        {
+            if (application.User.Id == user.Id)
+            {
+                throw new PermissionException("This is application owner");
+            }
+            if (application.SharedForUsers.Any(u => u.Id == user.Id))
+            {
+                application.SharedForUsers.Remove(user);
+                await _commandBuilder.SaveAsync(application);
+                return;
+            }
+            throw new PermissionException("This user does not have access right for this application");
+        }
     }
 }

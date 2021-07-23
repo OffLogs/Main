@@ -23,7 +23,7 @@ namespace OffLogs.Business.Orm.Entities
         [Set(
             Table = "application_users",
             Lazy = CollectionLazy.True,
-            Cascade = "delete-orphan",
+            Cascade = "none",
             BatchSize = 20
         )]
         [Key(
