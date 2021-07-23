@@ -1,9 +1,9 @@
 ﻿@page "/dashboard/applications"
 @using OffLogs.Web.Services.Http
-@using OffLogs.Business.Common.Models.Api.Request
-@using OffLogs.Business.Common.Models.Api.Response.Board
 @using OffLogs.Web.Pages.Dashboard.Application.Add
 @using OffLogs.Web.Pages.Dashboard.Application.Info
+@using OffLogs.Api.Business.Dto.Entities
+@using OffLogs.Api.Business.Controller.Board.Application.Actions
 @inject IApiService _apiService
 
 <h1>Your application</h1>
@@ -35,7 +35,7 @@
 
 @code
 {
-    private List<ApplicationResponseModel> _applications = new();
+    private List<ApplicationListItemDto> _applications = new();
     private int _currentPage = 1;
     private long? _selectedApplicationId;
     
@@ -51,7 +51,7 @@
         {
             _currentPage++;
         }
-        var response = await _apiService.GetApplications(new PaginatedRequestModel()
+        var response = await _apiService.GetApplications(new GetListRequest()
         {
             Page = _currentPage
         });
@@ -59,7 +59,7 @@
         StateHasChanged();
     }
 
-    private async Task OnClickRowAsync(ApplicationResponseModel application)
+    private async Task OnClickRowAsync(ApplicationListItemDto application)
     {
         _selectedApplicationId = application.Id;
         await Task.CompletedTask;

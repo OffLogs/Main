@@ -13,7 +13,7 @@ namespace OffLogs.Web.Services.Http
         Task<bool> CheckIsLoggedInAsync(string token);
         Task<PaginatedListDto<ApplicationListItemDto>> GetApplications(GetListRequest request = null);
         Task<ApplicationDto> GetApplication(long logId);
-        Task<PaginatedListDto<LogDto>> GetLogs(OffLogs.Api.Business.Controller.Board.Log.Actions.GetListRequest request);
+        Task<PaginatedListDto<LogListItemDto>> GetLogs(OffLogs.Api.Business.Controller.Board.Log.Actions.GetListRequest request);
         Task<LogDto> GetLog(long logId);
         Task<bool> LogSetIsFavorite(long logId, bool isFavorite);
     }

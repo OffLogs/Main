@@ -1,5 +1,5 @@
-﻿@using OffLogs.Business.Common.Models.Api.Response.Board
-@using OffLogs.Web.Services.Http
+﻿@using OffLogs.Web.Services.Http
+@using OffLogs.Api.Business.Dto.Entities
 @inject IApiService _apiService
 @inject ToastService _toastService
 
@@ -49,7 +49,7 @@ else
     [Parameter]
     public long LogId { get; set; }
 
-    public LogResponseModel _log;
+    public LogDto _log;
     private bool _isLoading = false;
 
     protected override async Task OnInitializedAsync()

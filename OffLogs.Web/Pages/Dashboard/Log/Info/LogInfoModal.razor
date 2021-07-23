@@ -1,8 +1,7 @@
 ﻿@using OffLogs.Web.Services.Http
-@using OffLogs.Business.Common.Models.Api.Request
 @using OffLogs.Web.Shared.Modal
 @using Microsoft.AspNetCore.Components
-@using OffLogs.Business.Common.Models.Api.Response.Board
+@using OffLogs.Api.Business.Dto.Entities
 @using OffLogs.Web.Resources
 @using OffLogs.Web.Services
 @inject IApiService _apiService
@@ -34,7 +33,7 @@
     public long? _logId { get; set; }
 
     private bool _isLoading { get; set; }
-    private LogResponseModel _log { get; set; }
+    private LogDto _log { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

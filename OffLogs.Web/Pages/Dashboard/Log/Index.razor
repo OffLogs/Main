@@ -2,12 +2,12 @@
 @using OffLogs.Web.Services.Http
 @using OffLogs.Web.Pages.Dashboard.Log.Info
 @using OffLogs.Web.Pages.Dashboard.Log.Parts
-@using OffLogs.Business.Common.Models.Api.Request.Board
-@using OffLogs.Business.Common.Models.Api.Response.Board
 @using OffLogs.Business.Common.Constants
 @using OffLogs.Business.Common.Extensions
 @using OffLogs.Web.Constants
 @using OffLogs.Web.Extensions
+@using OffLogs.Api.Business.Dto.Entities
+@using OffLogs.Api.Business.Controller.Board.Log.Actions
 @inject IApiService _apiService
 @inject ToastService _toastService
 
@@ -88,10 +88,10 @@
 @code
 {
     private CustomAsyncDropDown _dropDownApplications;
-    private List<LogResponseModel> _logs = new();
+    private List<LogListItemDto> _logs = new();
     private int _currentPage = 1;
     private bool _isHasMore = false;
-    private LogResponseModel _selectedLog = null;
+    private LogListItemDto _selectedLog = null;
     private List<long> _expandedLogIds = new();
 
     private long? _selectedApplicationId;
@@ -130,7 +130,7 @@
         }
         try
         {
-            var response = await _apiService.GetLogs(new LogListRequestModel()
+            var response = await _apiService.GetLogs(new GetListRequest()
             {
                 ApplicationId = _selectedApplicationId.Value,
                 Page = _currentPage,
@@ -151,7 +151,7 @@
         StateHasChanged();
     }
 
-    private async Task OnClickRowAsync(LogResponseModel log)
+    private async Task OnClickRowAsync(LogListItemDto log)
     {
         _selectedLog = log;
         StateHasChanged();
@@ -192,7 +192,7 @@
         return default;
     }
 
-    private void ExpandOrCloseLog(LogResponseModel log)
+    private void ExpandOrCloseLog(LogListItemDto log)
     {
         if (_expandedLogIds.Contains(log.Id))
         {

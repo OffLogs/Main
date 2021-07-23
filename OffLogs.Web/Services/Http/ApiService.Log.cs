@@ -10,9 +10,9 @@ namespace OffLogs.Web.Services.Http
 {
     public partial class ApiService
     {
-        public async Task<PaginatedListDto<LogDto>> GetLogs(GetListRequest request)
+        public async Task<PaginatedListDto<LogListItemDto>> GetLogs(GetListRequest request)
         {
-            var response = await PostAuthorizedAsync<PaginatedListDto<LogDto>>(MainApiUrl.LogList, request);
+            var response = await PostAuthorizedAsync<PaginatedListDto<LogListItemDto>>(MainApiUrl.LogList, request);
             if (response == null)
             {
                 throw new ServerErrorException();
