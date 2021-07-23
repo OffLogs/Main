@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using OffLogs.Api.Business;
 using OffLogs.Business.Extensions;
 using Serilog;
 
@@ -16,7 +17,11 @@ namespace OffLogs.Api.Extensions
     {
         public static void InitControllers(this IServiceCollection services)
         {
-            services.AddControllers()
+            services.AddControllers(options =>
+                {
+                    
+                })
+                .AddApplicationPart(typeof(OffLogsApiBusinessAssemblyMarker).Assembly)
                 .ConfigureApiBehaviorOptions(options =>
                 {
                     // Disable pre-model validation of the models

@@ -1,6 +1,6 @@
 using System.Net;
 using System.Threading.Tasks;
-using OffLogs.Api.Controller.Board.Permission.Actions;
+using OffLogs.Api.Business.Controller.Board.Permission.Actions;
 using OffLogs.Business.Common.Constants;
 using Xunit;
 using OffLogs.Business.Common.Constants.Permissions;

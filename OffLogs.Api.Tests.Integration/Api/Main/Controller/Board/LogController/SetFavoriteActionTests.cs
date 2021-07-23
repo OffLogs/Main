@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using OffLogs.Api.Controller.Board.Log.Actions;
+using OffLogs.Api.Business.Controller.Board.Log.Actions;
 using OffLogs.Business.Common.Constants;
 using Xunit;
 

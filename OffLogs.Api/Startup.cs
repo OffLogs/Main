@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using OffLogs.Api.Business;
 using OffLogs.Api.Di.Autofac.Modules;
 using OffLogs.Api.Extensions;
 using OffLogs.Api.Middleware;
@@ -41,7 +42,10 @@ namespace OffLogs.Api
         public virtual void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddAutoMapper(typeof(ApiAssemblyMarker).Assembly);
+            services.AddAutoMapper(
+                typeof(ApiAssemblyMarker).Assembly,
+                typeof(OffLogsApiBusinessAssemblyMarker).Assembly
+            );
             services.InitControllers();
             services.InitAuthServices(Configuration);
             services.InitSwaggerServices();
