@@ -58,6 +58,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             var actualLog = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.First().Id);
             Assert.NotEmpty(actualLog.Message);
             Assert.NotNull(actualLog.Level);
+            Assert.True(actualLog.CreateTime > System.DateTime.UtcNow.AddMinutes(-1));
             Assert.True(actualLog.Properties.Count  > 0);
             Assert.True(actualLog.Traces.Count == 0);
         }
@@ -106,6 +107,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             var actualLog = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.First().Id);
             Assert.NotEmpty(actualLog.Message);
             Assert.NotNull(actualLog.Level);
+            Assert.True(actualLog.CreateTime > System.DateTime.UtcNow.AddMinutes(-1));
             Assert.True(actualLog.Properties.Count  > 0);
             Assert.True(actualLog.Traces.Count == 0);
         }
@@ -169,6 +171,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             Assert.Equal(2, actualList.TotalCount);
             var actualLog = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.First().Id);
             Assert.NotEmpty(actualLog.Message);
+            Assert.True(actualLog.CreateTime > System.DateTime.UtcNow.AddMinutes(-1));
             Assert.True(actualLog.Properties.Count  > 0);
             Assert.True(actualLog.Traces.Count == 0);
         }
@@ -226,6 +229,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             Assert.Equal(1, actualList.TotalCount);
             var actualLog = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.First().Id);
             Assert.NotEmpty(actualLog.Message);
+            Assert.True(actualLog.CreateTime > System.DateTime.UtcNow.AddMinutes(-1));
             Assert.True(actualLog.Properties.Count == 9);
             Assert.True(actualLog.Traces.Count == 7);
         }

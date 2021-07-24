@@ -44,7 +44,8 @@ namespace OffLogs.Business.Services.Kafka.Models
                 Token = Token,
                 Level = LogLevel,
                 Message = Message,
-                LogTime = LogTime
+                LogTime = LogTime,
+                CreateTime = DateTime.UtcNow
             };
             Traces?.ForEach(log.AddTrace);
             Properties?.ForEach(log.AddProperty);
