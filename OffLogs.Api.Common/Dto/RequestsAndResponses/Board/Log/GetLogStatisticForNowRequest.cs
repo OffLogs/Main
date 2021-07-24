@@ -7,8 +7,7 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log
 {
     public class GetLogStatisticForNowRequest : IRequest<LogStatisticForNowDto>
     {
-        [Required]
         [IsPositive]
-        public long ApplicationId { get; set; }
+        public long? ApplicationId { get; set; }
     }
 }

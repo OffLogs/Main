@@ -7,14 +7,10 @@ namespace AspNetCore.ApiControllers.Extensions
     {
         private readonly ApiControllerBase _apiController;
 
-
-
         public AsyncApiControllerBaseRequestBuilder(ApiControllerBase apiController)
         {
             _apiController = apiController;
         }
-
-
 
         public AsyncApiControllerBaseRequestFor<TResponse> For<TResponse>() 
             where TResponse : IResponse 

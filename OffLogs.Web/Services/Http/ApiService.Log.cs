@@ -1,6 +1,7 @@
 ﻿using OffLogs.Api.Common.Dto;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log;
+using OffLogs.Api.Common.Requests.Board.Log;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Web.Core.Exceptions;
 using System;
@@ -48,6 +49,22 @@ namespace OffLogs.Web.Services.Http
                     IsFavorite = isFavorite
                 }
             );
+            return response;
+        }
+
+        public async Task<LogStatisticForNowDto> LogGetStatisticForNow(long? applicationId = null)
+        {
+            var response = await PostAuthorizedAsync<LogStatisticForNowDto>(
+                MainApiUrl.LogGetStatisticForNow,
+                new GetLogStatisticForNowRequest()
+                {
+                    ApplicationId = applicationId
+                }
+            );
+            if (response == null)
+            {
+                throw new ServerErrorException();
+            }
             return response;
         }
     }

@@ -26,7 +26,6 @@ namespace OffLogs.Api.Frontend.Controllers
                     Type = exception.GetType().Name,
                     Message = exception.Message
                 });
-
             throw exception;
         }
     }
