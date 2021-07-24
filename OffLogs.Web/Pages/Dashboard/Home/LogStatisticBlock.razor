@@ -15,6 +15,7 @@
 @using ChartJs.Blazor.LineChart
 @using OffLogs.Web.Services.Http
 @using OffLogs.Api.Common.Requests.Board.Log
+@using OffLogs.Business.Common.Constants
 @using static SampleUtils
 @inject IApiService _apiService
 @inject ToastService _toastService
@@ -28,9 +29,12 @@ else
     <Chart Config="_config" @ref="_chart"></Chart>
 }
 
+<button @onclick="LoadData">aaa</button>
+
 @code {
     private bool _isLoading = false;
     private LogStatisticForNowDto _statistic = null;
+    private int _chartLabelsCount = 0;
 
     private const int InitalCount = 7;
     private LineConfig _config;
@@ -86,26 +90,7 @@ else
                 }
             }
         };
-
-        IDataset<int> dataset1 = new LineDataset<int>(RandomScalingFactor(InitalCount))
-        {
-            Label = "My first dataset",
-            BackgroundColor = ColorUtil.FromDrawingColor(ChartColors.Red),
-            BorderColor = ColorUtil.FromDrawingColor(ChartColors.Red),
-            Fill = FillingMode.Disabled
-        };
-
-        IDataset<int> dataset2 = new LineDataset<int>(RandomScalingFactor(InitalCount))
-        {
-            Label = "My second dataset",
-            BackgroundColor = ColorUtil.FromDrawingColor(ChartColors.Blue),
-            BorderColor = ColorUtil.FromDrawingColor(ChartColors.Blue),
-            Fill = FillingMode.Disabled
-        };
-
-        _config.Data.Labels.ToList().AddRange(Months.Take(InitalCount));
-        _config.Data.Datasets.Add(dataset1);
-        _config.Data.Datasets.Add(dataset2);
+        //_chart.Update();
     }
 
     private void RandomizeData()
@@ -114,7 +99,10 @@ else
         {
             int count = dataset.Count;
             dataset.Clear();
-            dataset.ToList().AddRange(RandomScalingFactor(count));
+            foreach (var item in RandomScalingFactor(count))
+            {
+                dataset.Add(item);
+            }
         }
 
         _chart.Update();
@@ -185,6 +173,11 @@ else
         try
         {
             _statistic = await _apiService.LogGetStatisticForNow(8);
+            if (_statistic != null)
+            {
+                _chartLabelsCount = _statistic.GroupBy(i => i.LogLevel).Max(i => i.ToList().Count);
+                RebuildChart();
+            }
         }
         catch (Exception e)
         {
@@ -196,5 +189,49 @@ else
             _isLoading = false;
             StateHasChanged();
         }
+    }
+
+    private void RebuildChart()
+    {
+        _config.Data.Labels.Clear();
+        _config.Data.Datasets.Clear();
+        foreach (LogLevel logLevel in (LogLevel[])Enum.GetValues(typeof(LogLevel)))
+        {
+            if (!_statistic.Any(i => i.LogLevel == logLevel))
+            {
+                continue;
+            }
+            LineDataset<long> dataset = new LineDataset<long>()
+            {
+                Label = logLevel.GetLabel(),
+                BackgroundColor = ColorUtil.FromDrawingColor(GetLevelColor(logLevel)),
+                BorderColor = ColorUtil.FromDrawingColor(GetLevelColor(logLevel)),
+                Fill = FillingMode.Disabled
+            };
+            var levelCounters = _statistic.Where(s => s.LogLevel == logLevel).Select(i => i.Count).ToList();
+            dataset.AddRange(levelCounters);
+            _config.Data.Datasets.Add(dataset);
+        }
+        for (int i = 1; i <= _chartLabelsCount; i++)
+        {
+            _config.Data.Labels.Add(i.ToString());
+        }
+
+        _chart?.Update();
+    }
+
+    private Color GetLevelColor(LogLevel level)
+    {
+        if (level == LogLevel.Error)
+            return ChartColors.Red;
+        if (level == LogLevel.Warning)
+            return ChartColors.Orange;
+        if (level == LogLevel.Debug)
+            return ChartColors.Yellow;
+        if (level == LogLevel.Fatal)
+            return ChartColors.Red;
+        if (level == LogLevel.Information)
+            return ChartColors.Blue;
+        return ChartColors.Purple;
     }
 }
