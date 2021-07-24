@@ -49,5 +49,13 @@ namespace OffLogs.Api.Business.Controller.Board.Log
             => this.RequestAsync()
                 .For<LogStatisticForNowDto>()
                 .With(request);
+
+        [HttpPost("share")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public Task<IActionResult> ShareLog(LogShareRequest request)
+            => this.RequestAsync()
+                .For<LogShareDto>()
+                .With(request);
     }
 }
