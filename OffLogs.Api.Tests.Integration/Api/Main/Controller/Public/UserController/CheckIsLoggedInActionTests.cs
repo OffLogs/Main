@@ -3,12 +3,12 @@ using System.Threading.Tasks;
 using OffLogs.Api.Tests.Integration.Core;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.UserController
+namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Public.UserController
 {
-    public class CheckIsLoggedInActionTests: MyApiIntegrationTest
+    public class CheckIsLoggedInActionTests : MyApiIntegrationTest
     {
-        public CheckIsLoggedInActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
-        
+        public CheckIsLoggedInActionTests(ApiCustomWebApplicationFactory factory) : base(factory) { }
+
         [Theory]
         [InlineData("/user/checkIsLoggedIn")]
         public async Task ShouldReturnUnauthorized(string url)
@@ -18,7 +18,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.UserController
             // Assert
             Assert.True(response.StatusCode == HttpStatusCode.Unauthorized);
         }
-        
+
         [Theory]
         [InlineData("/user/checkIsLoggedIn")]
         public async Task ShouldReturnUnauthorizedForIncorrectJwt(string url)
@@ -28,7 +28,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.UserController
             // Assert
             Assert.True(response.StatusCode == HttpStatusCode.Unauthorized);
         }
-        
+
         [Theory]
         [InlineData("/user/checkIsLoggedIn")]
         public async Task ShouldReturnSuccess(string url)

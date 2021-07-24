@@ -1,9 +1,10 @@
-﻿namespace OffLogs.Api.Tests.Integration.Api.Main.Controller
+﻿namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Public
 {
-    public class HomeActionTests: MyApiIntegrationTest
+    public class HomeActionTests : MyApiIntegrationTest
     {
-        public HomeActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
-        
+        public HomeActionTests(ApiCustomWebApplicationFactory factory) : base(factory) { }
+
+        // TODO: Revert it
         // [Theory]
         // [InlineData("/ping")]
         // public async Task ShouldPingViberBot(string url)
