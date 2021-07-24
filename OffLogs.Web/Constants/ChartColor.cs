@@ -8,6 +8,7 @@ namespace OffLogs.Web.Constants
 {
     public class ChartColor
     {
+        public static readonly Color DarkRed = Color.FromArgb(220, 53, 69);
         public static readonly Color Red = Color.FromArgb(255, 99, 132);
         public static readonly Color Orange = Color.FromArgb(255, 159, 64);
         public static readonly Color Yellow = Color.FromArgb(255, 205, 86);

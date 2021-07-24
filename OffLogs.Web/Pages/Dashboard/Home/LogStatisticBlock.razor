@@ -16,34 +16,38 @@
 @using OffLogs.Web.Services.Http
 @using OffLogs.Api.Common.Requests.Board.Log
 @using OffLogs.Business.Common.Constants
-@using static SampleUtils
+@using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log
+@using System.Timers
 @inject IApiService _apiService
 @inject ToastService _toastService
+@implements IAsyncDisposable
 
 @if (_isLoading)
 {
-    <Preloader/>
+    <Preloader />
 }
 else
 {
     <Chart Config="_config" @ref="_chart"></Chart>
 }
 
-<button @onclick="LoadData">aaa</button>
-
 @code {
     private bool _isLoading = false;
     private LogStatisticForNowDto _statistic = null;
-    private int _chartLabelsCount = 0;
 
-    private const int InitalCount = 7;
     private LineConfig _config;
     private Chart _chart;
+
+    private Timer _timer = new(10000);
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        LoadData();
+
+        _ = InvokeAsync(async () =>
+        {
+            await LoadData();
+        });
 
         _config = new LineConfig
         {
@@ -53,7 +57,7 @@ else
                 Title = new OptionsTitle
                 {
                     Display = true,
-                    Text = "ChartJs.Blazor Line Chart"
+                    Text = "Logs statistic"
                 },
                 Tooltips = new Tooltips
                 {
@@ -68,103 +72,38 @@ else
                 Scales = new Scales
                 {
                     XAxes = new List<CartesianAxis>
-            {
+                    {
                         new CategoryAxis
                         {
                             ScaleLabel = new ScaleLabel
                             {
-                                LabelString = "Month"
+                                LabelString = "Time"
                             }
                         }
                     },
                     YAxes = new List<CartesianAxis>
-            {
+                    {
                         new LinearCartesianAxis
                         {
                             ScaleLabel = new ScaleLabel
                             {
-                                LabelString = "Value"
+                                LabelString = "Count"
                             }
                         }
                     }
                 }
             }
         };
-        //_chart.Update();
+
+
+        _timer.Elapsed += (sender, eventArgs) => OnTimerCallback();
+        _timer.Start();
     }
 
-    private void RandomizeData()
+    public async ValueTask DisposeAsync()
     {
-        foreach (IDataset<int> dataset in _config.Data.Datasets)
-        {
-            int count = dataset.Count;
-            dataset.Clear();
-            foreach (var item in RandomScalingFactor(count))
-            {
-                dataset.Add(item);
-            }
-        }
-
-        _chart.Update();
-    }
-
-    private void AddDataset()
-    {
-        string color = ColorUtil.FromDrawingColor(ChartColors.All[_config.Data.Datasets.Count % ChartColors.All.Count]);
-        IDataset<int> dataset = new LineDataset<int>(RandomScalingFactor(_config.Data.Labels.Count))
-        {
-            Label = $"Dataset {_config.Data.Datasets.Count}",
-            BackgroundColor = color,
-            BorderColor = color,
-            Fill = FillingMode.Disabled
-        };
-
-        _config.Data.Datasets.Add(dataset);
-        _chart.Update();
-    }
-
-    private void RemoveDataset()
-    {
-        IList<IDataset> datasets = _config.Data.Datasets;
-        if (datasets.Count == 0)
-            return;
-
-        datasets.RemoveAt(datasets.Count - 1);
-        _chart.Update();
-    }
-
-    private void AddData()
-    {
-        if (_config.Data.Datasets.Count == 0)
-            return;
-
-        string month = Months[_config.Data.Labels.Count % Months.Count];
-        _config.Data.Labels.Add(month);
-
-        foreach (IDataset<int> dataset in _config.Data.Datasets)
-        {
-            dataset.Add(RandomScalingFactor());
-        }
-
-        _chart.Update();
-    }
-
-    private void RemoveData()
-    {
-        if (_config.Data.Datasets.Count == 0 ||
-            _config.Data.Labels.Count == 0)
-        {
-            return;
-        }
-
-        _config.Data.Labels.RemoveAt(_config.Data.Labels.Count - 1);
-
-        foreach (IDataset<int> dataset in _config.Data.Datasets)
-        {
-            dataset.RemoveAt(dataset.Count - 1);
-        }
-
-        _chart.Update();
+        _timer?.Dispose();
+        await Task.CompletedTask;
     }
 
     private async Task LoadData()
@@ -175,7 +114,6 @@ else
             _statistic = await _apiService.LogGetStatisticForNow(8);
             if (_statistic != null)
             {
-                _chartLabelsCount = _statistic.GroupBy(i => i.LogLevel).Max(i => i.ToList().Count);
                 RebuildChart();
             }
         }
@@ -195,26 +133,35 @@ else
     {
         _config.Data.Labels.Clear();
         _config.Data.Datasets.Clear();
-        foreach (LogLevel logLevel in (LogLevel[])Enum.GetValues(typeof(LogLevel)))
+
+        var datasets = new Dictionary<LogLevel, Dataset<long>>();
+        datasets.Add(LogLevel.Error, CreateDataSet(LogLevel.Error));
+        datasets.Add(LogLevel.Fatal, CreateDataSet(LogLevel.Fatal));
+        datasets.Add(LogLevel.Warning, CreateDataSet(LogLevel.Warning));
+        datasets.Add(LogLevel.Debug, CreateDataSet(LogLevel.Debug));
+        datasets.Add(LogLevel.Information, CreateDataSet(LogLevel.Information));
+
+        foreach (var keyValue in datasets)
         {
-            if (!_statistic.Any(i => i.LogLevel == logLevel))
-            {
-                continue;
-            }
-            LineDataset<long> dataset = new LineDataset<long>()
-            {
-                Label = logLevel.GetLabel(),
-                BackgroundColor = ColorUtil.FromDrawingColor(GetLevelColor(logLevel)),
-                BorderColor = ColorUtil.FromDrawingColor(GetLevelColor(logLevel)),
-                Fill = FillingMode.Disabled
-            };
-            var levelCounters = _statistic.Where(s => s.LogLevel == logLevel).Select(i => i.Count).ToList();
-            dataset.AddRange(levelCounters);
-            _config.Data.Datasets.Add(dataset);
+            _config.Data.Datasets.Add(keyValue.Value);
         }
-        for (int i = 1; i <= _chartLabelsCount; i++)
+
+        var dataGroups = _statistic.GroupBy(i => i.TimeInterval).OrderBy(i => i.Key);
+        foreach (var dataGroup in dataGroups)
         {
-            _config.Data.Labels.Add(i.ToString());
+            Console.WriteLine(dataGroup.Key.ToString("HH:mm:ss"));
+            _config.Data.Labels.Add(dataGroup.Key.ToString("HH:mm:ss"));
+
+            foreach (var keyValue in datasets)
+            {
+                var datasetLogLevel = keyValue.Key;
+                var dataset = keyValue.Value;
+
+                var existStatistic = dataGroup.Where(i => i.LogLevel == datasetLogLevel).FirstOrDefault();
+                dataset.Add(
+                    existStatistic != null ? existStatistic.Count : 0
+                );
+            }
         }
 
         _chart?.Update();
@@ -223,15 +170,34 @@ else
     private Color GetLevelColor(LogLevel level)
     {
         if (level == LogLevel.Error)
-            return ChartColors.Red;
-        if (level == LogLevel.Warning)
-            return ChartColors.Orange;
-        if (level == LogLevel.Debug)
-            return ChartColors.Yellow;
+            return ChartColor.Red;
         if (level == LogLevel.Fatal)
-            return ChartColors.Red;
+            return ChartColor.DarkRed;
+        if (level == LogLevel.Warning)
+            return ChartColor.Orange;
+        if (level == LogLevel.Debug)
+            return ChartColor.Yellow;
         if (level == LogLevel.Information)
-            return ChartColors.Blue;
-        return ChartColors.Purple;
+            return ChartColor.Blue;
+        return ChartColor.Purple;
+    }
+
+    private LineDataset<long> CreateDataSet(LogLevel logLevel)
+    {
+        return new LineDataset<long>()
+        {
+            Label = logLevel.GetLabel(),
+            BackgroundColor = ColorUtil.FromDrawingColor(GetLevelColor(logLevel)),
+            BorderColor = ColorUtil.FromDrawingColor(GetLevelColor(logLevel)),
+            Fill = FillingMode.Disabled
+        };
+    }
+
+    private void OnTimerCallback()
+    {
+        _ = InvokeAsync(async () =>
+        {
+            await LoadData();
+        });
     }
 }
