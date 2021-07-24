@@ -36,6 +36,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         protected readonly IAsyncCommandBuilder CommandBuilder;
         
         protected readonly ILogService LogService;
+        protected readonly ILogShareService LogShareService;
         protected readonly IUserService UserService;
         protected readonly IApplicationService ApplicationService;
 
@@ -56,6 +57,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
             UserService = _factory.Services.GetService(typeof(IUserService)) as IUserService;
             ApplicationService = _factory.Services.GetService(typeof(IApplicationService)) as IApplicationService;
             AccessPolicyService = _factory.Services.GetService(typeof(IAccessPolicyService)) as IAccessPolicyService;
+            LogShareService = _factory.Services.GetService(typeof(ILogShareService)) as ILogShareService;
         }
 
         public void Dispose()

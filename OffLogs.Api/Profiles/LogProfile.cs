@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using NHibernate.Criterion;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log;
 using OffLogs.Business.Orm.Entities;
@@ -30,6 +31,10 @@ namespace OffLogs.Api.Profiles
                             trace => trace.Trace
                         )
                     )
+                )
+                .ForPath(
+                    s => s.Shares,
+                    member => member.MapFrom(entity => entity.LogShares)
                 );
             CreateMap<LogEntity, LogListItemDto>();
 

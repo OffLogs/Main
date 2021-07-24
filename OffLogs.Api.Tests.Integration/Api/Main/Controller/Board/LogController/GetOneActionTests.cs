@@ -14,7 +14,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         public GetOneActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
         
         [Theory]
-        [InlineData("/board/log/get")]
+        [InlineData(MainApiUrl.LogGet)]
         public async Task OnlyAuthorizedUsersCanReceiveLog(string url)
         {
             var user = await DataSeeder.CreateNewUser();
@@ -30,7 +30,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         }
         
         [Theory]
-        [InlineData("/board/log/get")]
+        [InlineData(MainApiUrl.LogGet)]
         public async Task ShouldReturnErrorIfLogNotFound(string url)
         {
             var user = await DataSeeder.CreateNewUser();
@@ -45,7 +45,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         }
         
         [Theory]
-        [InlineData("/board/log/get")]
+        [InlineData(MainApiUrl.LogGet)]
         public async Task OnlyOwnerCanReceiveLog(string url)
         {
             var user1 = await DataSeeder.CreateNewUser();
@@ -64,7 +64,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         }
         
         [Theory]
-        [InlineData("/board/log/get")]
+        [InlineData(MainApiUrl.LogGet)]
         public async Task ShouldReceiveLog(string url)
         {
             var user = await DataSeeder.CreateNewUser();
@@ -90,7 +90,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         }
 
         [Theory]
-        [InlineData("/board/log/get")]
+        [InlineData(MainApiUrl.LogGet)]
         public async Task ShouldReceiveLogFromSharedApplication(string url)
         {
             var user = await DataSeeder.CreateNewUser();
@@ -112,6 +112,29 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             Assert.Equal(log.Traces.Count, receivedLog.Traces.Count);
             Assert.Equal(log.Message, receivedLog.Message);
             Assert.Equal(log.Id, receivedLog.Id);
+        }
+
+        [Theory]
+        [InlineData(MainApiUrl.LogGet)]
+        public async Task ShouldReceiveSharedTokensWithLog(string url)
+        {
+            var user = await DataSeeder.CreateNewUser();
+            var logs = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Debug, 1);
+            var log = logs.First();
+
+            await LogShareService.Share(log);
+
+            // Act
+            var response = await PostRequestAsync(url, user.ApiToken, new GetRequest()
+            {
+                Id = log.Id
+            });
+            response.EnsureSuccessStatusCode();
+            // Assert
+            var receivedLog = await response.GetJsonDataAsync<LogDto>();
+            Assert.NotNull(receivedLog);
+            Assert.NotEmpty(receivedLog.Shares);
+            Assert.NotEmpty(receivedLog.Shares.First().Token);
         }
     }
 }

@@ -17,6 +17,7 @@ namespace OffLogs.Api.Common.Dto.Entities
 
         public List<string> Traces { get; set; } = new();
         public Dictionary<string, string> Properties { get; set; } = new();
+        public List<LogShareDto> Shares { get; set; } = new();
 
         public LogDto()
         {
