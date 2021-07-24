@@ -28,10 +28,21 @@
 }
 else
 {
-    <Chart Config="_config" @ref="_chart"></Chart>
+    @if (_statistic != null && _statistic.Any())
+    {
+        <Chart Config="_config" @ref="_chart"></Chart>
+    }
+    else
+    { 
+        <Alert Type="BootstrapColorType.Info">Statistic information not found...</Alert>
+    }
 }
 
 @code {
+
+    [Parameter]
+    public long? ApplicationId { get; set; }
+
     private bool _isLoading = false;
     private LogStatisticForNowDto _statistic = null;
 
@@ -100,6 +111,15 @@ else
         _timer.Start();
     }
 
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        _ = InvokeAsync(async () =>
+        {
+            await LoadData();
+        });
+    }
+
     public async ValueTask DisposeAsync()
     {
         _timer?.Dispose();
@@ -111,7 +131,7 @@ else
         _isLoading = true;
         try
         {
-            _statistic = await _apiService.LogGetStatisticForNow(8);
+            _statistic = await _apiService.LogGetStatisticForNow(ApplicationId);
             if (_statistic != null)
             {
                 RebuildChart();
@@ -149,7 +169,6 @@ else
         var dataGroups = _statistic.GroupBy(i => i.TimeInterval).OrderBy(i => i.Key);
         foreach (var dataGroup in dataGroups)
         {
-            Console.WriteLine(dataGroup.Key.ToString("HH:mm:ss"));
             _config.Data.Labels.Add(dataGroup.Key.ToString("HH:mm:ss"));
 
             foreach (var keyValue in datasets)
