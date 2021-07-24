@@ -3,12 +3,12 @@ using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
 using OffLogs.Business.Test.Extensions;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.UserController
+namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Public.UserController
 {
-    public class LoginActionTests: MyApiIntegrationTest
+    public class LoginActionTests : MyApiIntegrationTest
     {
-        public LoginActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
-        
+        public LoginActionTests(ApiCustomWebApplicationFactory factory) : base(factory) { }
+
         [Theory]
         [InlineData("/user/login")]
         public async Task ShouldNotLoginIfNotExists(string url)
@@ -22,7 +22,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.UserController
             // Assert
             Assert.False(response.IsSuccessStatusCode);
         }
-        
+
         [Theory]
         [InlineData("/user/login")]
         public async Task ShouldNotLoginIfPasswordIsIncorrect(string url)
@@ -39,18 +39,18 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.UserController
             // Assert
             Assert.False(response.IsSuccessStatusCode);
         }
-        
+
         [Theory]
         [InlineData("/user/login")]
         public async Task ShouldLogin(string url)
         {
             // Arrange
             var user = await DataSeeder.CreateNewUser();
-            
+
             // Act
             var response = await PostRequestAsAnonymousAsync(url, new
             {
-                user.UserName, 
+                user.UserName,
                 user.Password,
             });
             // Assert
