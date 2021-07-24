@@ -21,8 +21,8 @@ namespace OffLogs.Migrations.Migrations
                 .ToTable("logs").PrimaryColumn("id");
 
             Create.UniqueConstraint()
-                .OnTable("log_favorites")
-                .Columns("log_id", "user_id");
+                .OnTable("log_shares")
+                .Columns("log_id");
 
             base.Up();
         }

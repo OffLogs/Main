@@ -11,6 +11,7 @@ namespace OffLogs.Business.Common.Constants
         public const string ApplicationUpdate = "/board/application/update";
         
         public const string LogList = "/board/log/list";
+        public const string LogShare = "/board/log/share";
         public const string LogGet = "/board/log/get";
         public const string LogSetIsFavorite = "/board/log/setFavorite";
         public const string LogGetStatisticForNow = "/board/log/getStatisticForNow";

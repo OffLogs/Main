@@ -87,13 +87,10 @@ namespace OffLogs.Business.Orm.Entities
         public virtual ICollection<UserEntity> FavoriteForUsers { get; set; } = new List<UserEntity>();
 
         [JsonIgnore]
-        [OneToOne(
-            ClassType = typeof(LogShareEntity),
-            Cascade = "delete-orphan",
-            Lazy = Laziness.Proxy,
-            Fetch = FetchMode.Join
-        )]
-        public virtual LogShareEntity LogShare { get; set; }
+        [Bag(Inverse = true, Lazy = CollectionLazy.Extra, Cascade = "all-delete-orphan")]
+        [Key(Column = "log_id")]
+        [OneToMany(ClassType = typeof(LogShareEntity))]
+        public virtual ICollection<LogShareEntity> LogShares { get; set; } = new List<LogShareEntity>();
 
         public virtual bool IsFavorite { get; set; }
 

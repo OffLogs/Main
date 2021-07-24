@@ -21,23 +21,23 @@ namespace OffLogs.Business.Services.Entities.Log
 
         public async Task DeleteShare(LogEntity log)
         {
-            if (log.LogShare != null)
+            if (!log.LogShares.Any(sh => sh.Log == log))
             {
                 throw new ItemNotFoundException("Share not found");
             }
-            log.LogShare = null;
+            log.LogShares.Clear();
             await _commandBuilder.SaveAsync(log);
         }
 
         public async Task<LogShareEntity> Share(LogEntity log)
         {
-            if (log.LogShare != null)
+            if (log.LogShares.Any())
             {
                 throw new ValidationException("Share already created for this log");
             }
             var logShare = new LogShareEntity();
             logShare.Log = log;
-            log.LogShare = logShare;
+            log.LogShares.Add(logShare);
             await _commandBuilder.SaveAsync(logShare);
             return logShare;
         }
