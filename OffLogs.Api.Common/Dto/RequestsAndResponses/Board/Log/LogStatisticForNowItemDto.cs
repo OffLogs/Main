@@ -12,5 +12,7 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log
         public long Count { get; set; }
 
         public LogLevel LogLevel { get; set; }
+
+        public DateTime TimeInterval { get; set; }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -112,6 +113,10 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
                 expectedCounter,
                 list.Where(item => item.LogLevel == LogLevel.Debug).Sum(item => item.Count)
             );
+            foreach (var actualListItem in list)
+            {
+                Assert.True(actualListItem.TimeInterval > DateTime.UtcNow.AddMinutes(-2));
+            }
         }
     }
 }
