@@ -69,6 +69,7 @@ namespace OffLogs.Business.Orm.Entities
         [OneToMany(ClassType = typeof(LogPropertyEntity))]
         public virtual ICollection<LogPropertyEntity> Properties { get; set; } = new List<LogPropertyEntity>();
 
+        [JsonIgnore]
         [Set(
             Table = "log_favorites",
             Lazy = CollectionLazy.True,
@@ -84,6 +85,15 @@ namespace OffLogs.Business.Orm.Entities
            Column = "user_id"
        )]
         public virtual ICollection<UserEntity> FavoriteForUsers { get; set; } = new List<UserEntity>();
+
+        [JsonIgnore]
+        [OneToOne(
+            ClassType = typeof(LogShareEntity),
+            Cascade = "delete-orphan",
+            Lazy = Laziness.Proxy,
+            Fetch = FetchMode.Join
+        )]
+        public virtual LogShareEntity LogShare { get; set; }
 
         public virtual bool IsFavorite { get; set; }
 
