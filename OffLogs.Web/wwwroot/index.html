@@ -14,7 +14,7 @@
 <body>
     <div id="app">
         <div class="w-app-init-block">
-            <img src="/img/preloader/2.gif" alt="Loading..."/>
+            <img src="/img/preloader/2.gif" alt="Loading..." />
         </div>
     </div>
 
@@ -26,6 +26,11 @@
     <script src="js/common.js"></script>
     <script src="_framework/blazor.webassembly.js"></script>
     <script src="_content/BlazorDeferredRemove/BlazorDeferredRemove.js"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <!-- This is the glue between Blazor and Chart.js -->
+    <script src="_content/ChartJs.Blazor.Fork/ChartJsBlazorInterop.js"></script>
 </body>
 
 </html>
