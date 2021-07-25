@@ -12,23 +12,17 @@ namespace OffLogs.Api.Frontend.Controllers.Log.Actions.Log
 {
     public class AddCommonLogRequestHandler : IAsyncRequestHandler<AddCommonLogsRequest>
     {
-        private readonly IAsyncQueryBuilder _asyncQueryBuilder;
         private readonly IKafkaProducerService _kafkaProducerService;
-        private readonly IJwtApplicationService _jwtApplicationService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IRequestService _requestService;
 
         public AddCommonLogRequestHandler(
-            IAsyncQueryBuilder asyncQueryBuilder,
             IKafkaProducerService kafkaProducerService,
-            IJwtApplicationService jwtApplicationService,
             IHttpContextAccessor httpContextAccessor,
             IRequestService requestService
         )
         {
-            _asyncQueryBuilder = asyncQueryBuilder ?? throw new ArgumentNullException(nameof(asyncQueryBuilder));
             _kafkaProducerService = kafkaProducerService;
-            _jwtApplicationService = jwtApplicationService;
             _httpContextAccessor = httpContextAccessor;
             _requestService = requestService;
         }
