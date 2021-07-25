@@ -2,6 +2,7 @@
 using Autofac;
 using Microsoft.AspNetCore.Http;
 using OffLogs.Business.Services.Api;
+using OffLogs.Business.Services.Jwt;
 
 namespace OffLogs.Api.Frontend.Di.Autofac.Modules
 {
@@ -12,6 +13,11 @@ namespace OffLogs.Api.Frontend.Di.Autofac.Modules
             builder
                 .RegisterType<RequestService>()
                 .As<IRequestService>()
+                .InstancePerLifetimeScope();
+
+            builder
+                .RegisterType<JwtAuthService>()
+                .As<IJwtAuthService>()
                 .InstancePerLifetimeScope();
 
             builder
