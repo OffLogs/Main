@@ -11,6 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="Hibernate\Queries\Log\deleteSpoiled.hbm.xml" />
       <None Remove="Hibernate\Queries\Log\getFavoriteCount.hbm.xml" />
       <None Remove="Hibernate\Queries\Log\getStatisticForNow.hbm.xml" />
     </ItemGroup>
@@ -36,6 +37,7 @@
     <ItemGroup>
       <EmbeddedResource Include="Hibernate\hibernate.hbm.xml" />
       <EmbeddedResource Include="Hibernate\Queries\getLogWithData.hbm.xml" />
+      <EmbeddedResource Include="Hibernate\Queries\Log\deleteSpoiled.hbm.xml" />
       <EmbeddedResource Include="Hibernate\Queries\Log\getFavoriteCount.hbm.xml" />
       <EmbeddedResource Include="Hibernate\Queries\Log\getStatisticForNow.hbm.xml" />
       <EmbeddedResource Include="Hibernate\Queries\Log\getList.hbm.xml" />
