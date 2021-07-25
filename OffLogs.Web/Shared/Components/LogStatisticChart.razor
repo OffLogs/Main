@@ -151,6 +151,8 @@ else
 
     private void RebuildChart()
     {
+        FillSkippedTimeIntervals();
+
         _config.Data.Labels.Clear();
         _config.Data.Datasets.Clear();
 
@@ -208,7 +210,9 @@ else
             Label = logLevel.GetLabel(),
             BackgroundColor = ColorUtil.FromDrawingColor(GetLevelColor(logLevel)),
             BorderColor = ColorUtil.FromDrawingColor(GetLevelColor(logLevel)),
-            Fill = FillingMode.Disabled
+            CubicInterpolationMode = CubicInterpolationMode.Default,
+            Fill = FillingMode.Disabled,
+            BorderJoinStyle = BorderJoinStyle.Miter
         };
     }
 
@@ -218,5 +222,27 @@ else
         {
             await LoadData();
         });
+    }
+
+    /// <summary>
+    /// Add empty time slots
+    /// </summary>
+    private void FillSkippedTimeIntervals()
+    {
+        var startTime = _statistic.Min(i => i.TimeInterval);
+        var endTime = _statistic.Max(i => i.TimeInterval);
+        var currentTime = startTime;
+        while (currentTime <= endTime)
+        {
+            if (!_statistic.Any(i => i.TimeInterval == currentTime))
+            {
+                _statistic.Add(new LogStatisticForNowItemDto() {
+                    LogLevel = LogLevel.Information,
+                    Count = 0,
+                    TimeInterval = currentTime
+                });
+            }
+            currentTime = currentTime.AddSeconds(5);
+        }
     }
 }
