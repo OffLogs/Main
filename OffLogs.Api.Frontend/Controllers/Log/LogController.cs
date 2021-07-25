@@ -12,10 +12,8 @@ namespace OffLogs.Api.Frontend.Controllers.Log
     [Route("/[controller]")]
     public class LogController : FrontendApiControllerBase
     {
-        public LogController(
-            IAsyncRequestBuilder asyncRequestBuilder, 
-            IDbSessionProvider commitPerformer
-        ) : base(asyncRequestBuilder, commitPerformer)
+        public LogController(IAsyncRequestBuilder asyncRequestBuilder) 
+            : base(asyncRequestBuilder)
         {
         }
         

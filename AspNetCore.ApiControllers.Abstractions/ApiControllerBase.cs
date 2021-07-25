@@ -26,7 +26,12 @@ namespace AspNetCore.ApiControllers.Abstractions
             _asyncRequestBuilder = asyncRequestBuilder ?? throw new ArgumentNullException(nameof(asyncRequestBuilder));
             _commitPerformer = commitPerformer ?? throw new ArgumentNullException(nameof(commitPerformer));
         }
-        
+
+        public ApiControllerBase(IAsyncRequestBuilder asyncRequestBuilder)
+        {
+            _asyncRequestBuilder = asyncRequestBuilder ?? throw new ArgumentNullException(nameof(asyncRequestBuilder));
+        }
+
         public virtual Func<IActionResult> Success
             => () => new OkResult();
 
