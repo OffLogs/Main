@@ -21,6 +21,11 @@ namespace OffLogs.Api.Frontend.Di.Autofac.Modules
                 .InstancePerLifetimeScope();
 
             builder
+                .RegisterType<JwtAuthService>()
+                .As<IJwtAuthService>()
+                .InstancePerLifetimeScope();
+
+            builder
                 .RegisterType<HttpContextAccessor>()
                 .As<IHttpContextAccessor>()
                 .InstancePerLifetimeScope();
