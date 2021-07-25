@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping
+        xmlns="urn:nhibernate-mapping-2.2"
+        namespace="OffLogs.Business.Db.Entity"
+        assembly="OffLogs.Business">
+
+  <sql-query name="Log.deleteSpoiled">
+    <![CDATA[
+      DELETE FROM logs as l
+      WHERE l.id IN (
+          SELECT DISTINCT il.id
+            FROM logs AS il
+            LEFT JOIN log_favorites as lf ON lf.log_id = il.id
+		        WHERE il.create_time <= :endTime
+              AND lf.id IS NULL
+        )
+    ]]>
+  </sql-query>
+</hibernate-mapping>
