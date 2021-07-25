@@ -1,0 +1,255 @@
+﻿@using ChartJs.Blazor
+@using ChartJs.Blazor.BarChart
+@using System.Drawing
+@using ChartJs.Blazor.Common
+@using ChartJs.Blazor.Common.Axes
+@using ChartJs.Blazor.Common.Axes.Ticks
+@using ChartJs.Blazor.Common.Enums
+@using ChartJs.Blazor.Common.Handlers
+@using ChartJs.Blazor.Common.Time
+@using ChartJs.Blazor.Util
+@using ChartJs.Blazor.Interop
+@using ChartJs.Blazor.PieChart
+@using System.Linq
+@using System.Collections.Generic
+@using ChartJs.Blazor.LineChart
+@using OffLogs.Web.Services.Http
+@using OffLogs.Api.Common.Requests.Board.Log
+@using OffLogs.Business.Common.Constants
+@using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log
+@using System.Timers
+@inject IApiService _apiService
+@inject ToastService _toastService
+@implements IAsyncDisposable
+
+@if (_isLoading)
+{
+    <Preloader />
+}
+else
+{
+    @if (_statistic != null && _statistic.Any())
+    {
+        <Chart Config="_config" @ref="_chart"></Chart>
+    }
+    else
+    { 
+        <Alert Type="BootstrapColorType.Info">Statistic information not found...</Alert>
+    }
+}
+
+@code {
+
+    [Parameter]
+    public long? ApplicationId { get; set; }
+
+    private bool _isLoading = false;
+    private LogStatisticForNowDto _statistic = null;
+
+    private LineConfig _config;
+    private Chart _chart;
+
+    private Timer _timer = new(10000);
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        ConfigureChart();
+
+        _timer.Elapsed += (sender, eventArgs) => OnTimerCallback();
+        _timer.Start();
+        OnTimerCallback();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        _ = InvokeAsync(async () =>
+        {
+            ConfigureChart();
+            _timer.Stop();
+            _timer.Start();
+            OnTimerCallback();
+        });
+    }
+
+    private void OnTimerCallback()
+    {
+        _ = InvokeAsync(async () =>
+        {
+            await LoadData();
+        });
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        _timer?.Dispose();
+        await Task.CompletedTask;
+    }
+
+    private async Task LoadData()
+    {
+        _isLoading = true;
+        try
+        {
+            _statistic = await _apiService.LogGetStatisticForNow(ApplicationId);
+            if (_statistic != null)
+            {
+                RebuildChart();
+            }
+        }
+        catch (Exception e)
+        {
+            _toastService.AddServerErrorMessage();
+            Console.WriteLine(e.Message, e);
+        }
+        finally
+        {
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private void RebuildChart()
+    {
+        FillSkippedTimeIntervals();
+
+        _config.Data.Labels.Clear();
+        _config.Data.Datasets.Clear();
+
+        var datasets = new Dictionary<LogLevel, Dataset<long>>();
+        datasets.Add(LogLevel.Error, CreateDataSet(LogLevel.Error));
+        datasets.Add(LogLevel.Fatal, CreateDataSet(LogLevel.Fatal));
+        datasets.Add(LogLevel.Warning, CreateDataSet(LogLevel.Warning));
+        datasets.Add(LogLevel.Debug, CreateDataSet(LogLevel.Debug));
+        datasets.Add(LogLevel.Information, CreateDataSet(LogLevel.Information));
+
+        foreach (var keyValue in datasets)
+        {
+            _config.Data.Datasets.Add(keyValue.Value);
+        }
+
+        var dataGroups = _statistic.GroupBy(i => i.TimeInterval).OrderBy(i => i.Key);
+        foreach (var dataGroup in dataGroups)
+        {
+            _config.Data.Labels.Add(dataGroup.Key.ToString("HH:mm:ss"));
+
+            foreach (var keyValue in datasets)
+            {
+                var datasetLogLevel = keyValue.Key;
+                var dataset = keyValue.Value;
+
+                var existStatistic = dataGroup.Where(i => i.LogLevel == datasetLogLevel).FirstOrDefault();
+                dataset.Add(
+                    existStatistic != null ? existStatistic.Count : 0
+                );
+            }
+        }
+
+        _chart?.Update();
+    }
+
+    private Color GetLevelColor(LogLevel level)
+    {
+        if (level == LogLevel.Error)
+            return ChartColor.Red;
+        if (level == LogLevel.Fatal)
+            return ChartColor.DarkRed;
+        if (level == LogLevel.Warning)
+            return ChartColor.Orange;
+        if (level == LogLevel.Debug)
+            return ChartColor.Yellow;
+        if (level == LogLevel.Information)
+            return ChartColor.Blue;
+        return ChartColor.Purple;
+    }
+
+    private LineDataset<long> CreateDataSet(LogLevel logLevel)
+    {
+        return new LineDataset<long>()
+        {
+            Label = logLevel.GetLabel(),
+            BackgroundColor = ColorUtil.FromDrawingColor(GetLevelColor(logLevel)),
+            BorderColor = ColorUtil.FromDrawingColor(GetLevelColor(logLevel)),
+            CubicInterpolationMode = CubicInterpolationMode.Default,
+            Fill = FillingMode.Disabled,
+            BorderJoinStyle = BorderJoinStyle.Miter
+        };
+    }
+
+    /// <summary>
+    /// Add empty time slots
+    /// </summary>
+    private void FillSkippedTimeIntervals()
+    {
+        if (_statistic.Count() == 0)
+        {
+            return;
+        }
+        var startTime = _statistic.Min(i => i.TimeInterval);
+        var endTime = _statistic.Max(i => i.TimeInterval);
+        var currentTime = startTime;
+        while (currentTime <= endTime)
+        {
+            if (!_statistic.Any(i => i.TimeInterval == currentTime))
+            {
+                _statistic.Add(new LogStatisticForNowItemDto() {
+                    LogLevel = LogLevel.Information,
+                    Count = 0,
+                    TimeInterval = currentTime
+                });
+            }
+            currentTime = currentTime.AddSeconds(5);
+        }
+    }
+
+    private void ConfigureChart()
+    {
+        _config = new LineConfig
+        {
+            Options = new LineOptions
+            {
+                Responsive = true,
+                Title = new OptionsTitle
+                {
+                    Display = true,
+                    Text = "Logs statistic"
+                },
+                Tooltips = new Tooltips
+                {
+                    Mode = InteractionMode.Nearest,
+                    Intersect = true
+                },
+                Hover = new Hover
+                {
+                    Mode = InteractionMode.Nearest,
+                    Intersect = true
+                },
+                Scales = new Scales
+                {
+                    XAxes = new List<CartesianAxis>
+                    {
+                        new CategoryAxis
+                        {
+                            ScaleLabel = new ScaleLabel
+                            {
+                                LabelString = "Time"
+                            }
+                        }
+                    },
+                    YAxes = new List<CartesianAxis>
+                    {
+                        new LinearCartesianAxis
+                        {
+                            ScaleLabel = new ScaleLabel
+                            {
+                                LabelString = "Count"
+                            }
+                        }
+                    }
+                }
+            }
+        };
+    }
+}

@@ -115,7 +115,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             );
             foreach (var actualListItem in list)
             {
-                Assert.True(actualListItem.TimeInterval > DateTime.UtcNow.AddMinutes(-2));
+                Assert.True(actualListItem.TimeInterval > DateTime.UtcNow.AddMinutes(-5));
             }
         }
     }

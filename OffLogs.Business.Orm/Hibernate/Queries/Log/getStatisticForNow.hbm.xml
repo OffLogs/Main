@@ -11,7 +11,7 @@
 		level AS levelId,
 		to_timestamp(floor((extract('epoch' from create_time) / 5 )) * 5) AT TIME ZONE 'UTC' as timeInterval
 		FROM logs
-		WHERE create_time > now() AT TIME ZONE 'UTC' - interval '2 minutes'
+		WHERE create_time > now() AT TIME ZONE 'UTC' - interval '5 minutes'
 		AND (:applicationId IS NULL OR logs.application_id = :applicationId)
 		GROUP BY timeInterval, level
 		ORDER BY timeInterval DESC
