@@ -21,8 +21,4 @@
     <ItemGroup>
       <ProjectReference Include="..\OffLogs.Business\OffLogs.Business.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="LogDeletion\" />
-    </ItemGroup>
 </Project>
