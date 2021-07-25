@@ -15,7 +15,11 @@ namespace OffLogs.Api.Frontend.Controllers
         ) : base(asyncRequestBuilder, commitPerformer)
         {
         }
-        
+
+        public FrontendApiControllerBase(IAsyncRequestBuilder asyncRequestBuilder) : base(asyncRequestBuilder)
+        {
+        }
+
         public override Func<Exception, IActionResult> Fail => ProcessFail;
 
         private static IActionResult ProcessFail(Exception exception)
