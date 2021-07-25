@@ -55,65 +55,27 @@ else
     {
         await base.OnInitializedAsync();
 
-        _ = InvokeAsync(async () =>
-        {
-            await LoadData();
-        });
-
-        _config = new LineConfig
-        {
-            Options = new LineOptions
-            {
-                Responsive = true,
-                Title = new OptionsTitle
-                {
-                    Display = true,
-                    Text = "Logs statistic"
-                },
-                Tooltips = new Tooltips
-                {
-                    Mode = InteractionMode.Nearest,
-                    Intersect = true
-                },
-                Hover = new Hover
-                {
-                    Mode = InteractionMode.Nearest,
-                    Intersect = true
-                },
-                Scales = new Scales
-                {
-                    XAxes = new List<CartesianAxis>
-                    {
-                        new CategoryAxis
-                        {
-                            ScaleLabel = new ScaleLabel
-                            {
-                                LabelString = "Time"
-                            }
-                        }
-                    },
-                    YAxes = new List<CartesianAxis>
-                    {
-                        new LinearCartesianAxis
-                        {
-                            ScaleLabel = new ScaleLabel
-                            {
-                                LabelString = "Count"
-                            }
-                        }
-                    }
-                }
-            }
-        };
-
+        ConfigureChart();
 
         _timer.Elapsed += (sender, eventArgs) => OnTimerCallback();
         _timer.Start();
+        OnTimerCallback();
     }
 
     protected override async Task OnParametersSetAsync()
     {
         await base.OnParametersSetAsync();
+        _ = InvokeAsync(async () =>
+        {
+            ConfigureChart();
+            _timer.Stop();
+            _timer.Start();
+            OnTimerCallback();
+        });
+    }
+
+    private void OnTimerCallback()
+    {
         _ = InvokeAsync(async () =>
         {
             await LoadData();
@@ -216,19 +178,15 @@ else
         };
     }
 
-    private void OnTimerCallback()
-    {
-        _ = InvokeAsync(async () =>
-        {
-            await LoadData();
-        });
-    }
-
     /// <summary>
     /// Add empty time slots
     /// </summary>
     private void FillSkippedTimeIntervals()
     {
+        if (_statistic.Count() == 0)
+        {
+            return;
+        }
         var startTime = _statistic.Min(i => i.TimeInterval);
         var endTime = _statistic.Max(i => i.TimeInterval);
         var currentTime = startTime;
@@ -244,5 +202,54 @@ else
             }
             currentTime = currentTime.AddSeconds(5);
         }
+    }
+
+    private void ConfigureChart()
+    {
+        _config = new LineConfig
+        {
+            Options = new LineOptions
+            {
+                Responsive = true,
+                Title = new OptionsTitle
+                {
+                    Display = true,
+                    Text = "Logs statistic"
+                },
+                Tooltips = new Tooltips
+                {
+                    Mode = InteractionMode.Nearest,
+                    Intersect = true
+                },
+                Hover = new Hover
+                {
+                    Mode = InteractionMode.Nearest,
+                    Intersect = true
+                },
+                Scales = new Scales
+                {
+                    XAxes = new List<CartesianAxis>
+                    {
+                        new CategoryAxis
+                        {
+                            ScaleLabel = new ScaleLabel
+                            {
+                                LabelString = "Time"
+                            }
+                        }
+                    },
+                    YAxes = new List<CartesianAxis>
+                    {
+                        new LinearCartesianAxis
+                        {
+                            ScaleLabel = new ScaleLabel
+                            {
+                                LabelString = "Count"
+                            }
+                        }
+                    }
+                }
+            }
+        };
     }
 }
