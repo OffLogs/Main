@@ -36,7 +36,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureWebHostDefaults(builder =>
                 {
-                    builder.UseStartup<OffLogs.Api.Frontend.Startup>()
+                    builder.UseStartup<ApiFrontendTestStartup>()
                         .UseContentRoot(Directory.GetCurrentDirectory())
                         .ConfigureTestServices(services => 
                         {
@@ -46,10 +46,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
                         })
                         .ConfigureTestContainer<Autofac.ContainerBuilder>(builder => {
                             // called after Startup.ConfigureContainer
-                            //builder.RegisterModule<DomainModule>();
-                            //builder.RegisterModule<DbModule>();
-                            //builder.RegisterModule<CommandsModule>();
-                            //builder.RegisterModule<QueriesModule>();
+                            var aaa = 123;
                         })
                         .ConfigureAppConfiguration(builder =>
                         {

@@ -18,6 +18,8 @@ namespace OffLogs.Api.Extensions
         public static void InitControllers(this IServiceCollection services)
         {
             services.AddControllers()
+                // We should provide correct assembly for the tests
+                .AddApplicationPart(typeof(ApiAssemblyMarker).Assembly)
                 .ConfigureApiBehaviorOptions(options =>
                 {
                     // Disable pre-model validation of the models

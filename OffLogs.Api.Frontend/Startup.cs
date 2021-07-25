@@ -18,7 +18,6 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using OffLogs.Api.Frontend.Di.Autofac.Modules;
-using OffLogs.Business.Di.Autofac.Modules;
 using OffLogs.Business.Extensions;
 using Serilog;
 
@@ -39,6 +38,8 @@ namespace OffLogs.Api.Frontend
             services.AddCors();
             services.AddHttpContextAccessor();
             services.AddControllers()
+                // We should provide correct assembly for the tests
+                .AddApplicationPart(typeof(ApiFrontendAssemblyMarker).Assembly)
                 .ConfigureApiBehaviorOptions(options =>
                 {
                     // Disable pre-model validation of the models
@@ -105,14 +106,11 @@ namespace OffLogs.Api.Frontend
                 });
         }
 
-        public void ConfigureContainer(ContainerBuilder containerBuilder)
+        public virtual void ConfigureContainer(ContainerBuilder containerBuilder)
         {
             containerBuilder
                 .RegisterModule<ApiModule>()
-                .RegisterModule<DomainModule>()
-                .RegisterModule<CommandsModule>()
-                .RegisterModule<QueriesModule>()
-                .RegisterModule<DbModule>();
+                .RegisterModule<KafkaModule>();
         }
         
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
