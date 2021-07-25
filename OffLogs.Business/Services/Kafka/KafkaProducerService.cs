@@ -18,8 +18,6 @@ namespace OffLogs.Business.Services.Kafka
         private readonly string _producerId;
         private readonly string _kafkaServers;
         private readonly string _logsTopicName;
-        private readonly CancellationTokenSource _tasksFactoryCancellationToken;
-        private readonly TaskFactory _tasksFactory;
 
         private IProducer<string, object> _producer;
         private IProducer<string, object> Producer
@@ -46,9 +44,6 @@ namespace OffLogs.Business.Services.Kafka
 
         public KafkaProducerService(IConfiguration configuration, ILogger<IKafkaProducerService> logger)
         {
-            _tasksFactoryCancellationToken = new CancellationTokenSource();
-            _tasksFactory = new TaskFactory(_tasksFactoryCancellationToken.Token);
-
             _configuration = configuration;
             _logger = logger;
 
@@ -73,30 +68,19 @@ namespace OffLogs.Business.Services.Kafka
         {
             _producer?.Dispose();
             _producer = null;
-            _tasksFactoryCancellationToken.Dispose();
         }
 
-        public Task ProduceLogMessageAsync(string applicationJwt, LogEntity logEntity, string clientIp = null)
+        public async Task ProduceLogMessageAsync(string applicationJwt, LogEntity logEntity, string clientIp = null)
         {
             var modelToSend = new LogMessageModel(applicationJwt, logEntity)
             {
                 ClientIp = clientIp
             };
-            _tasksFactory.StartNew(async () => {
-                try
-                {
-                    await Producer.ProduceAsync(_logsTopicName, new Message<string, object>
-                    {
-                        Key = modelToSend.Token,
-                        Value = modelToSend
-                    });
-                }
-                catch (Exception e)
-                {
-                    _logger.LogError(e.Message, e);
-                }
+            await Producer.ProduceAsync(_logsTopicName, new Message<string, object>
+            {
+                Key = modelToSend.Token,
+                Value = modelToSend
             });
-            return Task.CompletedTask;
         }
         
         public void Flush(CancellationToken cancellationToken = default)
