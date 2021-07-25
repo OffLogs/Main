@@ -1,5 +1,8 @@
+using Autofac;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OffLogs.Api.Frontend.Di.Autofac.Modules;
+using OffLogs.Business.Di.Autofac.Modules;
 
 namespace OffLogs.Api.Tests.Integration.Api.Frontend
 {
@@ -8,10 +11,15 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
         public ApiFrontendTestStartup(IConfiguration configuration) : base(configuration)
         {
         }
-        
-        public override void ConfigureServices(IServiceCollection services)
+
+        public override void ConfigureContainer(ContainerBuilder containerBuilder)
         {
-            base.ConfigureServices(services);
+            containerBuilder
+                .RegisterModule<ApiModule>()
+                .RegisterModule<DomainModule>()
+                .RegisterModule<DbModule>()
+                .RegisterModule<CommandsModule>()
+                .RegisterModule<QueriesModule>();
         }
     }
 }

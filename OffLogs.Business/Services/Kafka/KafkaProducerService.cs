@@ -9,7 +9,7 @@ using OffLogs.Business.Services.Kafka.Serializers;
 
 namespace OffLogs.Business.Services.Kafka
 {
-    public class KafkaProducerProducerService: IKafkaProducerService
+    public class KafkaProducerService: IKafkaProducerService
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger<IKafkaProducerService> _logger;
@@ -41,7 +41,7 @@ namespace OffLogs.Business.Services.Kafka
             }
         }
 
-        public KafkaProducerProducerService(IConfiguration configuration, ILogger<IKafkaProducerService> logger)
+        public KafkaProducerService(IConfiguration configuration, ILogger<IKafkaProducerService> logger)
         {
             _configuration = configuration;
             _logger = logger;
@@ -63,7 +63,7 @@ namespace OffLogs.Business.Services.Kafka
             LogDebug($"Init service: {_kafkaServers}");
         }
 
-        ~KafkaProducerProducerService()
+        ~KafkaProducerService()
         {
             _producer?.Dispose();
             _producer = null;
