@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using OffLogs.Business.Extensions;
 using System;
 using System.Net;
@@ -16,9 +17,9 @@ namespace OffLogs.Business.Notifications.Core.Emails.Service
 
         private char[] Separators = ";".ToCharArray(); // for splitting lists of emails
 
-        public EmailSendingService(SmtpSettings settings, ILogger<EmailSendingService> Logger)
+        public EmailSendingService(IConfiguration configuration, ILogger<EmailSendingService> Logger)
         {
-            _smtpSettings = settings;
+            _smtpSettings = new SmtpSettings(configuration);
             _defaultFromAddress = new MailAddress(_smtpSettings.EmailFrom, _smtpSettings.UserNameFrom);
             _credentials = new NetworkCredential(_smtpSettings.UserName, _smtpSettings.Password);
             _Logger = Logger;

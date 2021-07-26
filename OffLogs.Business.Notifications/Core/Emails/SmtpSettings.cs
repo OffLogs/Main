@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OffLogs.Business.Notifications.Core.Emails
 {
-    public class SmtpSettings
+    class SmtpSettings
     {
         public string Server { get; set; }
         public string UserName { get; set; }
@@ -15,5 +16,16 @@ namespace OffLogs.Business.Notifications.Core.Emails
         public string Password { get; set; }
         public int Port { get; set; }
         public bool EnableSsl { get; set; }
+
+        public SmtpSettings(IConfiguration configuration)
+        {
+            Server = configuration.GetValue<string>("Smtp:Server");
+            UserName = configuration.GetValue<string>("Smtp:UserName");
+            EmailFrom = configuration.GetValue<string>("Smtp:Password");
+            UserNameFrom = configuration.GetValue<string>("Smtp:From:Name");
+            EmailFrom = configuration.GetValue<string>("Smtp:From:Email");
+            Port = configuration.GetValue<int>("Smtp:Port");
+            EnableSsl = configuration.GetValue<bool>("Smtp:EnableSsl");
+        }
     }
 }
