@@ -14,18 +14,11 @@ namespace OffLogs.Business.Notifications.Core.Emails
     {
         private ConcurrentDictionary<string, EmailTemplateModel> _cachedTemplates; // cached email templates
 
-        private string _layoutName; // layout file name like "_EmailLayout.htm"
+        private string _layoutName = "_EmailLayout.htm"; // layout file name like "_EmailLayout.htm"
         private string _layoutTemplate; // cached content of the layout file
 
-        public EmailFactory(string layoutName)
+        public EmailFactory()
         {
-            Init(layoutName);
-        }
-
-        public void Init(string layoutName)
-        {
-            _layoutName = layoutName;
-
             // load cached layout
             _layoutTemplate = LoadFile(_layoutName); // load this only once, on initialization
 

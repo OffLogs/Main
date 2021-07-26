@@ -48,4 +48,8 @@
       </None>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Api\Main\Services\Notification\EmailsTests\" />
+    </ItemGroup>
+
 </Project>
