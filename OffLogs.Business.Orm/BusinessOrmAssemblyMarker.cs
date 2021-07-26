@@ -1,6 +1,6 @@
 ﻿namespace OffLogs.Business.Orm
 {
-    public class BusinessOrmAssemblyHandler
+    public class BusinessOrmAssemblyMarker
     {
         
     }
