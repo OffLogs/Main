@@ -1,27 +1,22 @@
 ﻿using Microsoft.Extensions.Logging;
 using OffLogs.Business.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace OffLogs.Business.Notifications.Core.Emails
+namespace OffLogs.Business.Notifications.Core.Emails.Service
 {
-    class EmailSender
+    public class EmailSendingService: IEmailSendingService
     {
         private readonly SmtpSettings _smtpSettings;
 
         private readonly MailAddress _defaultFromAddress;
         private readonly NetworkCredential _credentials;
-        private readonly ILogger<EmailSender> _Logger;
+        private readonly ILogger<EmailSendingService> _Logger;
 
         private char[] Separators = ";".ToCharArray(); // for splitting lists of emails
 
-        public EmailSender(SmtpSettings settings, ILogger<EmailSender> Logger)
+        public EmailSendingService(SmtpSettings settings, ILogger<EmailSendingService> Logger)
         {
             _smtpSettings = settings;
             _defaultFromAddress = new MailAddress(_smtpSettings.EmailFrom, _smtpSettings.UserNameFrom);
@@ -39,6 +34,17 @@ namespace OffLogs.Business.Notifications.Core.Emails
             {
                 collection.Add(em);
             }
+        }
+
+        // returns "" on success, or text of SMTP exceptions etc
+        public string SendEmail(
+            string to,
+            EmailBuilder emailBuilder,
+            string bcc
+        )
+        {
+            emailBuilder.Build();
+            return SendEmail(null, to, emailBuilder.Subject, emailBuilder.Body, null, bcc);
         }
 
         // returns "" on success, or text of SMTP exceptions etc
