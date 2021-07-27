@@ -1,7 +1,8 @@
 ﻿using Domain.Abstractions;
+using OffLogs.Business.Notifications.Core.Emails;
 using System;
 
-namespace OffLogs.Business.Notifications.Core.Emails.Service
+namespace OffLogs.Business.Notifications.Services
 {
     public interface IEmailSendingService : IDomainService
     {

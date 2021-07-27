@@ -5,7 +5,9 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Commands.Abstractions;
 using Notification.Abstractions;
+using OffLogs.Api.Tests.Integration.Core.Faker;
 using OffLogs.Api.Tests.Integration.Core.Service;
+using OffLogs.Business.Notifications.Services;
 using OffLogs.Business.Orm.Dto;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries.Entities.Log;
@@ -44,6 +46,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
 
         protected readonly IAccessPolicyService AccessPolicyService;
 
+        protected readonly FakeEmailSendingService EmailSendingService;
+
         public MyApiIntegrationTest(ApiCustomWebApplicationFactory factory)
         {
             _factory = factory;
@@ -61,10 +65,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
             ApplicationService = _factory.Services.GetService(typeof(IApplicationService)) as IApplicationService;
             AccessPolicyService = _factory.Services.GetService(typeof(IAccessPolicyService)) as IAccessPolicyService;
             LogShareService = _factory.Services.GetService(typeof(ILogShareService)) as ILogShareService;
+            EmailSendingService = _factory.Services.GetService(typeof(IEmailSendingService)) as FakeEmailSendingService;
         }
 
         public void Dispose()
         {
+            EmailSendingService.Reset();
             DbSessionProvider.PerformCommitAsync().Wait();
             GC.SuppressFinalize(this);
         }

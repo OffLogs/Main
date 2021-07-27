@@ -1,13 +1,14 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OffLogs.Business.Extensions;
+using OffLogs.Business.Notifications.Core.Emails;
 using System;
 using System.Net;
 using System.Net.Mail;
 
-namespace OffLogs.Business.Notifications.Core.Emails.Service
+namespace OffLogs.Business.Notifications.Services
 {
-    public class EmailSendingService: IEmailSendingService
+    public class EmailSendingService : IEmailSendingService
     {
         private readonly SmtpSettings _smtpSettings;
 

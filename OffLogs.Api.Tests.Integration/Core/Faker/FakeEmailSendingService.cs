@@ -1,5 +1,5 @@
 ﻿using OffLogs.Business.Notifications.Core.Emails;
-using OffLogs.Business.Notifications.Core.Emails.Service;
+using OffLogs.Business.Notifications.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,23 +8,24 @@ using System.Threading.Tasks;
 
 namespace OffLogs.Api.Tests.Integration.Core.Faker
 {
-    class FakeEmailSendingService : IEmailSendingService
+    public class FakeEmailSendingService : IEmailSendingService
     {
-        private bool _isSent = false;
+        public bool IsEmailSent = false;
 
         public void Reset()
         {
-            _isSent = false;
+            IsEmailSent = false;
         }
 
         public string SendEmail(string to, EmailBuilder emailBuilder, string bcc)
         {
-            return "";
+            emailBuilder.Build();
+            return SendEmail("", to, emailBuilder.Subject, emailBuilder.Body, null, bcc);
         }
 
         public string SendEmail(string to, string subject, string body, string bcc)
         {
-            return "";
+            return SendEmail("", to, subject, body, null, bcc);
         }
 
         public string SendEmail(
@@ -36,6 +37,7 @@ namespace OffLogs.Api.Tests.Integration.Core.Faker
             string bcc
         )
         {
+            IsEmailSent = true;
             return "";
         }
     }

@@ -55,7 +55,8 @@ namespace OffLogs.Business.Notifications.Core.Emails
         {
             var assembly = GetType().Assembly;
             var localeCode = LocalizationUtils.CultureCode().ToLower();
-            var resource = assembly.GetManifestResourceStream($"{assembly.GetName()}.Templates.Emails.{localeCode}.{templateName}");
+            var layoutResourcePath = $"{assembly.GetName().Name}.Templates.Emails.{localeCode}.{templateName}";
+            var resource = assembly.GetManifestResourceStream(layoutResourcePath);
             if (resource == null)
             {
                 throw new Exception($"Email template wasn't found: '{templateName}'");

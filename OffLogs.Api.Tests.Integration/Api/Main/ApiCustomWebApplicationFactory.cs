@@ -10,7 +10,6 @@ using Microsoft.Extensions.Hosting;
 using OffLogs.Api.Tests.Integration.Core.Faker;
 using OffLogs.Api.Tests.Integration.Core.Service;
 using OffLogs.Business.Helpers;
-using OffLogs.Business.Notifications.Core.Emails.Service;
 using OffLogs.Business.Services.Data;
 using Serilog;
 

@@ -6,7 +6,7 @@ using OffLogs.Api.Di.Autofac.Modules;
 using OffLogs.Api.Tests.Integration.Core.Faker;
 using OffLogs.Business;
 using OffLogs.Business.Di.Autofac.Modules;
-using OffLogs.Business.Notifications.Core.Emails.Service;
+using OffLogs.Business.Notifications.Services;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main
 {
