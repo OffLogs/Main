@@ -29,7 +29,6 @@ namespace OffLogs.Api.Tests.Unit.Notifications
             );
             var actualContext = (RegularLogsNotificationContext)activationResult.Unwrap();
 
-
             Assert.Equal(typeof(RegularLogsNotificationContext), actualContext.GetType());
         }
     }

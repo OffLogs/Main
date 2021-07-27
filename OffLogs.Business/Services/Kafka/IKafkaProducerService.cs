@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Domain.Abstractions;
+using Notification.Abstractions;
 using OffLogs.Business.Orm.Entities;
 
 namespace OffLogs.Business.Services.Kafka
@@ -39,5 +40,7 @@ namespace OffLogs.Business.Services.Kafka
         ///     Thrown if the operation is cancelled.
         /// </exception>
         void Flush(CancellationToken cancellationToken = default);
+
+        Task ProduceNotificationMessageAsync(INotificationContext notificationContext);
     }
 }

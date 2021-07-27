@@ -87,18 +87,18 @@ namespace OffLogs.Business.Services.Kafka
             });
         }
 
-        //public async Task ProduceNotificationMessageAsync(INotificationContext notificationContext)
-        //{
-        //    var modelToSend = new NotificationMessageDto<INotificationContext>()
-        //    {
-        //        ContextType = notificationContext.GetType().Namespace
-        //    };
-        //    await Producer.ProduceAsync(_logsTopicName, new Message<string, object>
-        //    {
-        //        Key = modelToSend.Token,
-        //        Value = modelToSend
-        //    });
-        //}
+        public async Task ProduceNotificationMessageAsync(INotificationContext notificationContext)
+        {
+            var modelToSend = new NotificationMessageDto<INotificationContext>()
+            {
+                ContextType = notificationContext.GetTypeAsString(),
+                NotificationContext = notificationContext
+            };
+            await Producer.ProduceAsync(_notificationsTopicName, new Message<string, object>
+            {
+                Value = modelToSend
+            });
+        }
 
         public void Flush(CancellationToken cancellationToken = default)
         {
