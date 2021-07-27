@@ -9,31 +9,32 @@ using Timer = System.Timers.Timer;
 using Commands.Abstractions;
 using Persistence.Transactions.Behaviors;
 using Queries.Abstractions;
+using System.Threading.Tasks;
+using System.Threading;
+using OffLogs.Business.Services.Kafka.Models;
 
 namespace OffLogs.Business.Services.Kafka
 {
-    public partial class KafkaConsumerService: IKafkaConsumerService
+    public abstract class KafkaConsumerService: IKafkaConsumerService, IDisposable
     {
         private readonly TimeSpan _defaultWaitTimeout = TimeSpan.FromSeconds(5);
-        
-        private readonly IConfiguration _configuration;
-        private readonly string _groupName;
-        private readonly string _clientId;
-        private readonly string _kafkaServers;
-        private readonly ILogger<IKafkaProducerService> _logger;
-        private readonly IJwtApplicationService _jwtApplicationService;
-        private readonly IAsyncCommandBuilder _commandBuilder;
-        private readonly IAsyncQueryBuilder _queryBuilder;
-        private readonly IDbSessionProvider _dbSessionProvider;
-        private readonly ConsumerConfig _config;
-        private readonly string _logsTopicName;
+
+        protected readonly IConfiguration _configuration;
+        protected readonly IAsyncCommandBuilder _commandBuilder;
+        protected readonly IAsyncQueryBuilder _queryBuilder;
+        protected readonly IDbSessionProvider _dbSessionProvider;
+        protected readonly ConsumerConfig _config;
         private readonly Timer _timerProcessedCounter;
         private long _processedLogsCounter;
+
+        protected readonly string _groupName;
+        protected readonly string _clientId;
+        protected readonly string _kafkaServers;
+        protected readonly ILogger<IKafkaProducerService> _logger;
 
         public KafkaConsumerService(
             IConfiguration configuration, 
             ILogger<IKafkaProducerService> logger,
-            IJwtApplicationService jwtApplicationService,
             IAsyncCommandBuilder commandBuilder,
             IAsyncQueryBuilder queryBuilder,
             IDbSessionProvider dbSessionProvider
@@ -41,14 +42,12 @@ namespace OffLogs.Business.Services.Kafka
         {
             _configuration = configuration;
             _logger = logger;
-            _jwtApplicationService = jwtApplicationService;
-            this._commandBuilder = commandBuilder;
+            _commandBuilder = commandBuilder;
             _queryBuilder = queryBuilder;
             _dbSessionProvider = dbSessionProvider;
             var kafkaSection = configuration.GetSection("Kafka");
             _groupName = kafkaSection.GetValue<string>("ConsumerGroup");
             _clientId = kafkaSection.GetValue<string>("ConsumerClientId");
-            _logsTopicName = kafkaSection.GetValue<string>("Topic:Logs");
             _kafkaServers = kafkaSection.GetValue<string>("Servers");
             
             _config = new ConsumerConfig
@@ -67,12 +66,12 @@ namespace OffLogs.Business.Services.Kafka
             _timerProcessedCounter.Start();
         }
 
-        ~KafkaConsumerService()
+        public void Dispose()
         {
             _timerProcessedCounter.Stop();
         }
 
-        private ConsumerBuilder<string, T> GetBuilder<T>()
+        protected ConsumerBuilder<string, T> GetBuilder<T>()
         {
             LogDebug($"Build new instance: {_kafkaServers}");
             var builder = new ConsumerBuilder<string, T>(_config);
@@ -100,10 +99,87 @@ namespace OffLogs.Business.Services.Kafka
                 LogDebug($"Processed messages counter: {counter}/{_timerProcessedCounter.Interval / 1000} sec");
             }
         }
-        
+
+        public async Task<long> ProcessMessagesAsync<TKafkaDto>(
+            string topicName,
+            bool isInfiniteLoop = true, 
+            CancellationToken? cancellationToken = null
+        ) where TKafkaDto: IKafkaDto
+        {
+            CancellationTokenSource cancellationTokenSource;
+            if (cancellationToken.HasValue)
+            {
+                cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken.Value);
+            }
+            else
+            {
+                cancellationTokenSource = new CancellationTokenSource();
+            }
+            var processedRecords = 0;
+            using (var consumer = GetBuilder<TKafkaDto>().Build())
+            {
+                LogDebug($"Subscribe to {topicName}");
+                consumer.Subscribe(topicName);
+
+                var startTime = DateTime.UtcNow;
+                if (!isInfiniteLoop)
+                {
+                    var task = Task.Run(() =>
+                    {
+                        while (true)
+                        {
+                            Thread.Sleep(100);
+                            var difference = DateTime.UtcNow - startTime;
+                            if (difference >= _defaultWaitTimeout)
+                            {
+                                cancellationTokenSource.Cancel();
+                                break;
+                            }
+                        }
+                    }, cancellationTokenSource.Token);
+                }
+                while (!cancellationTokenSource.IsCancellationRequested)
+                {
+                    try
+                    {
+                        var consumeResult = consumer.Consume(cancellationTokenSource.Token);
+                        if (consumeResult != null)
+                        {
+                            if (consumeResult.Message.Value != null)
+                            {
+                                await ProcessItemAsync(consumeResult.Message.Value);
+                            }
+
+                            // Increase global counter
+                            IncreaseProcessedMessagesCounter();
+                            consumer.StoreOffset(consumeResult);
+                            consumer.Commit();
+
+                            // Increase local counter
+                            processedRecords++;
+                        }
+                    }
+                    catch (OperationCanceledException e)
+                    {
+                        LogDebug($"Operation was cancelled via cancellation token");
+                        consumer.Close();
+                        // Cancellation token was canceled
+                        break;
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.LogError(e.Message, e);
+                    }
+                }
+            }
+            return await Task.FromResult(processedRecords);
+        }
+
         private void IncreaseProcessedMessagesCounter()
         {
             _processedLogsCounter++;
         }
+
+        protected abstract Task ProcessItemAsync(IKafkaDto dto);
     }
 }

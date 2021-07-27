@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OffLogs.Business.Services.Kafka.Models
 {
-    public class NotificationMessageDto<TConext> where TConext : INotificationContext
+    public class NotificationMessageDto<TConext> where TConext : INotificationContext, IKafkaDto
     {
         public string ContextType { get; set; }
         public TConext NotificationContext { get; set; }

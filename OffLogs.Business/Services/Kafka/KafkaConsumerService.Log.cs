@@ -2,6 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using Commands.Abstractions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Constants;
@@ -9,12 +11,37 @@ using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Orm.Queries.Entities.Log;
+using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Kafka.Models;
+using Persistence.Transactions.Behaviors;
+using Queries.Abstractions;
 
 namespace OffLogs.Business.Services.Kafka
 {
-    public partial class KafkaConsumerService
+    public partial class KafkaLogsConsumerService: KafkaConsumerService, IKafkaLogsConsumerService
     {
+        private readonly IJwtApplicationService _jwtApplicationService;
+        private readonly string _logsTopicName;
+
+        public KafkaLogsConsumerService(
+            IConfiguration configuration, 
+            ILogger<IKafkaProducerService> logger, 
+            IJwtApplicationService jwtApplicationService, 
+            IAsyncCommandBuilder commandBuilder, 
+            IAsyncQueryBuilder queryBuilder, 
+            IDbSessionProvider dbSessionProvider
+        ) : base(
+            configuration, 
+            logger, 
+            commandBuilder, 
+            queryBuilder, 
+            dbSessionProvider
+        )
+        {
+            _jwtApplicationService = jwtApplicationService;
+            _logsTopicName = configuration.GetValue<string>("Kafka:Topic:Logs");
+        }
+
         public async Task<long> ProcessLogsAsync(CancellationToken cancellationToken)
         {
             return await ProcessLogsAsync(true, cancellationToken);
@@ -140,6 +167,11 @@ namespace OffLogs.Business.Services.Kafka
             );
             await _commandBuilder.SaveAsync(request);
             _logger.LogError(logMessage);
+        }
+
+        protected override Task ProcessItemAsync(IKafkaDto dto)
+        {
+            
         }
     }
 }

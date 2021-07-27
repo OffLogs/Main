@@ -8,7 +8,7 @@ using OffLogs.Business.Orm.Entities;
 
 namespace OffLogs.Business.Services.Kafka.Models
 {
-    public sealed record LogMessageDto
+    public sealed record LogMessageDto: IKafkaDto
     {
         public string Token { get; set; }
         public string ApplicationJwtToken { get; set; }
