@@ -89,11 +89,7 @@ namespace OffLogs.Business.Services.Kafka
 
         public async Task ProduceNotificationMessageAsync(INotificationContext notificationContext)
         {
-            var modelToSend = new NotificationMessageDto<INotificationContext>()
-            {
-                ContextType = notificationContext.GetTypeAsString(),
-                NotificationContext = notificationContext
-            };
+            var modelToSend = NotificationMessageDto.Create(notificationContext);
             await Producer.ProduceAsync(_notificationsTopicName, new Message<string, object>
             {
                 Value = modelToSend

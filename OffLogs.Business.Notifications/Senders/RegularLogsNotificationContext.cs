@@ -11,7 +11,7 @@ namespace OffLogs.Business.Notifications.Senders
     {
         public RegularLogsNotificationContext() {}
 
-        public RegularLogsNotificationContext(int errorCounter = 0)
+        public RegularLogsNotificationContext(int errorCounter)
         {
             ErrorCounter = errorCounter;
         }

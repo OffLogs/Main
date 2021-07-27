@@ -7,10 +7,26 @@ using System.Threading.Tasks;
 
 namespace OffLogs.Business.Services.Kafka.Models
 {
-    public class NotificationMessageDto<TConext> : IKafkaDto 
-        where TConext : INotificationContext
+    public class NotificationMessageDto : IKafkaDto 
+        
     {
         public string ContextType { get; set; }
-        public TConext NotificationContext { get; set; }
+        public string ContextData { get; set; }
+
+        public NotificationMessageDto() { }
+
+        public static NotificationMessageDto Create<TContext>(TContext context) where TContext : INotificationContext
+        {
+            return new NotificationMessageDto()
+            {
+                ContextType = context.GetTypeAsString(),
+                ContextData = Newtonsoft.Json.JsonConvert.SerializeObject(context)
+            };
+        }
+
+        public object GetDeserializedData(Type type)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject(ContextData, type);
+        }
     }
 }
