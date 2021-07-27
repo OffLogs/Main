@@ -70,7 +70,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
 
         public void Dispose()
         {
-            EmailSendingService.Reset();
+            EmailSendingService?.Reset();
             DbSessionProvider.PerformCommitAsync().Wait();
             GC.SuppressFinalize(this);
         }

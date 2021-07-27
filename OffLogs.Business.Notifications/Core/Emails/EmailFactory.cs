@@ -54,7 +54,9 @@ namespace OffLogs.Business.Notifications.Core.Emails
         private string LoadFile(string templateName)
         {
             var assembly = GetType().Assembly;
-            var localeCode = LocalizationUtils.CultureCode().ToLower();
+            // TODO: Receive location from the config
+            //var localeCode = LocalizationUtils.CultureCode().ToLower();
+            var localeCode = "en";
             var layoutResourcePath = $"{assembly.GetName().Name}.Templates.Emails.{localeCode}.{templateName}";
             var resource = assembly.GetManifestResourceStream(layoutResourcePath);
             if (resource == null)
