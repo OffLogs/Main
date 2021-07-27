@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Domain.Abstractions;
 
-namespace OffLogs.Business.Services.Kafka
+namespace OffLogs.Business.Services.Kafka.Consumer
 {
     public interface IKafkaLogsConsumerService : IDomainService
     {

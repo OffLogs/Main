@@ -2,16 +2,16 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using OffLogs.Business.Services.Kafka;
+using OffLogs.Business.Services.Kafka.Consumer;
 
 namespace OffLogs.WorkerService.LogProcessing
 {
     public class LogProcessingService: ILogProcessingService
     {
         private readonly ILogger<LogProcessingService> _logger;
-        private readonly IKafkaConsumerService _kafkaConsumerService;
+        private readonly IKafkaLogsConsumerService _kafkaConsumerService;
 
-        public LogProcessingService(ILogger<LogProcessingService> logger, IKafkaConsumerService kafkaConsumerService)
+        public LogProcessingService(ILogger<LogProcessingService> logger, IKafkaLogsConsumerService kafkaConsumerService)
         {
             _logger = logger;
             _kafkaConsumerService = kafkaConsumerService;

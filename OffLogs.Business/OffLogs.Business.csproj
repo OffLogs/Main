@@ -34,7 +34,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Services\Kafka\Consumer\" />
       <Folder Include="Test" />
     </ItemGroup>
 

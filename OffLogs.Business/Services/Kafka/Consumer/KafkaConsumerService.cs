@@ -13,10 +13,10 @@ using System.Threading.Tasks;
 using System.Threading;
 using OffLogs.Business.Services.Kafka.Models;
 
-namespace OffLogs.Business.Services.Kafka
+namespace OffLogs.Business.Services.Kafka.Consumer
 {
-    public abstract class KafkaConsumerService<TKafkaDto>: IKafkaConsumerService, IDisposable
-        where TKafkaDto: IKafkaDto
+    public abstract class KafkaConsumerService<TKafkaDto> : IDisposable
+        where TKafkaDto : IKafkaDto
     {
         private readonly TimeSpan _defaultWaitTimeout = TimeSpan.FromSeconds(5);
 
@@ -34,7 +34,7 @@ namespace OffLogs.Business.Services.Kafka
         protected readonly ILogger<IKafkaProducerService> _logger;
 
         public KafkaConsumerService(
-            IConfiguration configuration, 
+            IConfiguration configuration,
             ILogger<IKafkaProducerService> logger,
             IAsyncCommandBuilder commandBuilder,
             IAsyncQueryBuilder queryBuilder,
@@ -50,7 +50,7 @@ namespace OffLogs.Business.Services.Kafka
             _groupName = kafkaSection.GetValue<string>("ConsumerGroup");
             _clientId = kafkaSection.GetValue<string>("ConsumerClientId");
             _kafkaServers = kafkaSection.GetValue<string>("Servers");
-            
+
             _config = new ConsumerConfig
             {
                 BootstrapServers = _kafkaServers,
@@ -89,7 +89,7 @@ namespace OffLogs.Business.Services.Kafka
         {
             _logger.LogDebug($"Kafka Consumer: {message}");
         }
-        
+
         private void OnProcessedCounterTimerTick(object sender, ElapsedEventArgs e)
         {
             if (_processedLogsCounter > 0)
@@ -103,7 +103,7 @@ namespace OffLogs.Business.Services.Kafka
 
         public async Task<long> ProcessMessagesAsync(
             string topicName,
-            bool isInfiniteLoop = true, 
+            bool isInfiniteLoop = true,
             CancellationToken? cancellationToken = null
         )
         {

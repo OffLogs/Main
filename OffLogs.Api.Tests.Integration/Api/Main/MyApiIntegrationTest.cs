@@ -17,6 +17,7 @@ using OffLogs.Business.Services.Entities.Log;
 using OffLogs.Business.Services.Entities.User;
 using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Kafka;
+using OffLogs.Business.Services.Kafka.Consumer;
 using OffLogs.Business.Services.Security;
 using Persistence.Transactions.Behaviors;
 using Queries.Abstractions;

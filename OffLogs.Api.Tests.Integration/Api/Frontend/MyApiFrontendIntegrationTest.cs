@@ -13,6 +13,7 @@ using Persistence.Transactions.Behaviors;
 using Queries.Abstractions;
 using Xunit;
 using System.Linq;
+using OffLogs.Business.Services.Kafka.Consumer;
 
 namespace OffLogs.Api.Tests.Integration.Api.Frontend
 {

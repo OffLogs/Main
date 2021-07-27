@@ -16,7 +16,7 @@ using OffLogs.Business.Services.Kafka.Models;
 using Persistence.Transactions.Behaviors;
 using Queries.Abstractions;
 
-namespace OffLogs.Business.Services.Kafka
+namespace OffLogs.Business.Services.Kafka.Consumer
 {
     public partial class KafkaLogsConsumerService : KafkaConsumerService<LogMessageDto>, IKafkaLogsConsumerService
     {
@@ -24,17 +24,17 @@ namespace OffLogs.Business.Services.Kafka
         private readonly string _logsTopicName;
 
         public KafkaLogsConsumerService(
-            IConfiguration configuration, 
-            ILogger<IKafkaProducerService> logger, 
-            IJwtApplicationService jwtApplicationService, 
-            IAsyncCommandBuilder commandBuilder, 
-            IAsyncQueryBuilder queryBuilder, 
+            IConfiguration configuration,
+            ILogger<IKafkaProducerService> logger,
+            IJwtApplicationService jwtApplicationService,
+            IAsyncCommandBuilder commandBuilder,
+            IAsyncQueryBuilder queryBuilder,
             IDbSessionProvider dbSessionProvider
         ) : base(
-            configuration, 
-            logger, 
-            commandBuilder, 
-            queryBuilder, 
+            configuration,
+            logger,
+            commandBuilder,
+            queryBuilder,
             dbSessionProvider
         )
         {
@@ -97,7 +97,7 @@ namespace OffLogs.Business.Services.Kafka
                 RequestLogType.Log,
                 messageModel.ClientIp,
                 messageModel,
-                messageModel.ApplicationJwtToken    
+                messageModel.ApplicationJwtToken
             );
             await _commandBuilder.SaveAsync(request);
             _logger.LogError(logMessage);
