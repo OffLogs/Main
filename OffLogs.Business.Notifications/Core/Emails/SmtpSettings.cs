@@ -21,7 +21,7 @@ namespace OffLogs.Business.Notifications.Core.Emails
         {
             Server = configuration.GetValue<string>("Smtp:Server");
             UserName = configuration.GetValue<string>("Smtp:UserName");
-            EmailFrom = configuration.GetValue<string>("Smtp:Password");
+            Password = configuration.GetValue<string>("Smtp:Password");
             UserNameFrom = configuration.GetValue<string>("Smtp:From:Name");
             EmailFrom = configuration.GetValue<string>("Smtp:From:Email");
             Port = configuration.GetValue<int>("Smtp:Port");
