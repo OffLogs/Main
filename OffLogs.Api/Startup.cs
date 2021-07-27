@@ -48,7 +48,7 @@ namespace OffLogs.Api
             services.InitSwaggerServices();
         }
 
-        public void ConfigureContainer(ContainerBuilder containerBuilder)
+        public virtual void ConfigureContainer(ContainerBuilder containerBuilder)
         {
             containerBuilder
                 .RegisterModule<ApiModule>()

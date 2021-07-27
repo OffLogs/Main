@@ -7,6 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Api\Main\Services\Notification\**" />
+      <EmbeddedResource Remove="Api\Main\Services\Notification\**" />
+      <None Remove="Api\Main\Services\Notification\**" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="Autofac" Version="6.2.0" />
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.8" />
@@ -27,6 +33,7 @@
     <ItemGroup>
       <ProjectReference Include="..\OffLogs.Api.Frontend\OffLogs.Api.Frontend.csproj" />
       <ProjectReference Include="..\OffLogs.Api\OffLogs.Api.csproj" />
+      <ProjectReference Include="..\OffLogs.Business.Notifications\OffLogs.Business.Notifications.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -46,10 +53,6 @@
       <None Update="xunit.runner.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Api\Main\Services\Notification\EmailsTests\" />
     </ItemGroup>
 
 </Project>

@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Commands.Abstractions;
+using Notification.Abstractions;
 using OffLogs.Api.Tests.Integration.Core.Service;
 using OffLogs.Business.Orm.Dto;
 using OffLogs.Business.Orm.Entities;
@@ -34,7 +35,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         protected readonly IDbSessionProvider DbSessionProvider;
         protected readonly IAsyncQueryBuilder QueryBuilder;
         protected readonly IAsyncCommandBuilder CommandBuilder;
-        
+        protected readonly IAsyncNotificationBuilder NotificationBuilder;
+
         protected readonly ILogService LogService;
         protected readonly ILogShareService LogShareService;
         protected readonly IUserService UserService;
@@ -51,6 +53,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
             DataFactory = _factory.Services.GetService(typeof(IDataFactoryService)) as IDataFactoryService;
             DataSeeder = _factory.Services.GetService(typeof(IDataSeederService)) as IDataSeederService;
             JwtAuthService = _factory.Services.GetService(typeof(IJwtAuthService)) as IJwtAuthService;
+            NotificationBuilder = _factory.Services.GetService(typeof(IAsyncNotificationBuilder)) as IAsyncNotificationBuilder;
             KafkaProducerService = _factory.Services.GetService(typeof(IKafkaProducerService)) as IKafkaProducerService;
             KafkaConsumerService = _factory.Services.GetService(typeof(IKafkaConsumerService)) as IKafkaConsumerService;
             LogService = _factory.Services.GetService(typeof(ILogService)) as ILogService;

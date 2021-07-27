@@ -1,5 +1,12 @@
+using Autofac;
+using Domain.Abstractions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OffLogs.Api.Di.Autofac.Modules;
+using OffLogs.Api.Tests.Integration.Core.Faker;
+using OffLogs.Business;
+using OffLogs.Business.Di.Autofac.Modules;
+using OffLogs.Business.Notifications.Core.Emails.Service;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main
 {
@@ -12,6 +19,28 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         public override void ConfigureServices(IServiceCollection services)
         {
             base.ConfigureServices(services);
+        }
+
+        public override void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder
+                .RegisterModule<ApiModule>()
+                .RegisterModule<DbModule>()
+                .RegisterModule<QueriesModule>()
+                .RegisterModule<CommandsModule>()
+                .RegisterModule<NotificationsModule>();
+
+            builder
+                .RegisterAssemblyTypes(typeof(BusinessAssemblyMarker).Assembly)
+                .AssignableTo<IDomainService>()
+                .AsImplementedInterfaces()
+                .InstancePerDependency();
+
+            // Register fakes
+            builder
+                .RegisterType<FakeEmailSendingService>()
+                .As<IEmailSendingService>()
+                .InstancePerLifetimeScope();
         }
     }
 }

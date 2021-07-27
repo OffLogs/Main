@@ -12,6 +12,7 @@ using OffLogs.Business.Services.Kafka;
 using Persistence.Transactions.Behaviors;
 using Queries.Abstractions;
 using Xunit;
+using System.Linq;
 
 namespace OffLogs.Api.Tests.Integration.Api.Frontend
 {
@@ -29,6 +30,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
         public MyApiFrontendIntegrationTest(ApiFrontendCustomWebApplicationFactory factory)
         {
             _factory = factory;
+
             DbSessionProvider = _factory.Services.GetService(typeof(IDbSessionProvider)) as IDbSessionProvider;
             KafkaProducerService = _factory.Services.GetService(typeof(IKafkaProducerService)) as IKafkaProducerService;
             KafkaConsumerService = _factory.Services.GetService(typeof(IKafkaConsumerService)) as IKafkaConsumerService;

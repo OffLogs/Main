@@ -34,13 +34,20 @@ namespace OffLogs.WorkerService.LogDeletion
             
             while (!stoppingToken.IsCancellationRequested)
             {
-                await _commandBuilder.ExecuteAsync(
-                    new LogDeleteSpoiledCommandContext(),
-                    stoppingToken
-                );
-                await _sessionProvider.PerformCommitAsync(stoppingToken);
+                try
+                {
+                    await _commandBuilder.ExecuteAsync(
+                        new LogDeleteSpoiledCommandContext(),
+                        stoppingToken
+                    );
+                    await _sessionProvider.PerformCommitAsync(stoppingToken);
 
-                _logger.LogInformation("Log deletion work is completed. Waiting for next time...");
+                    _logger.LogInformation("Log deletion work is completed. Waiting for next time...");
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e.Message, e);
+                }
 
                 // Wait 1 sec before connect again
                 Thread.Sleep(_timeout);
