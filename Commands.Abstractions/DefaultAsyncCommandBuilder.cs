@@ -8,12 +8,10 @@ namespace Commands.Abstractions
     {
         private readonly IAsyncCommandFactory _asyncCommandFactory;
 
-
         public DefaultAsyncCommandBuilder(IAsyncCommandFactory asyncCommandFactory)
         {
             _asyncCommandFactory = asyncCommandFactory ?? throw new ArgumentNullException(nameof(asyncCommandFactory));
         }
-
 
         public Task ExecuteAsync<TCommandContext>(
             TCommandContext commandContext,

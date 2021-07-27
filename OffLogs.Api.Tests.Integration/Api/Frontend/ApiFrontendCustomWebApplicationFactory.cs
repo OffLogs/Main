@@ -46,7 +46,6 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
                         })
                         .ConfigureTestContainer<Autofac.ContainerBuilder>(builder => {
                             // called after Startup.ConfigureContainer
-                            var aaa = 123;
                         })
                         .ConfigureAppConfiguration(builder =>
                         {

@@ -1,10 +1,13 @@
 using System.IO;
+using System.Linq;
+using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OffLogs.Api.Tests.Integration.Core.Faker;
 using OffLogs.Api.Tests.Integration.Core.Service;
 using OffLogs.Business.Helpers;
 using OffLogs.Business.Services.Data;
@@ -18,8 +21,6 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         {
             builder.ConfigureServices(services =>
             {
-                // Remove hosted services
-                
                 var sp = services.BuildServiceProvider();
                 using (var scope = sp.CreateScope())
                 {
@@ -39,7 +40,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureWebHostDefaults(builder =>
                 {
-                    builder.UseStartup<Startup>()
+                    builder.UseStartup<ApiTestStartup>()
                         .UseContentRoot(Directory.GetCurrentDirectory())
                         .ConfigureTestServices(services => 
                         {

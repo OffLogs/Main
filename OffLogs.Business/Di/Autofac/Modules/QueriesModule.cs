@@ -15,7 +15,7 @@ namespace OffLogs.Business.Di.Autofac.Modules
                 .InstancePerLifetimeScope();
 
             builder
-                .RegisterAssemblyTypes(typeof(BusinessOrmAssemblyHandler).Assembly)
+                .RegisterAssemblyTypes(typeof(BusinessOrmAssemblyMarker).Assembly)
                 .AsClosedTypesOf(typeof(IAsyncQuery<,>))
                 .InstancePerLifetimeScope();
 

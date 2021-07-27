@@ -4,7 +4,10 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Commands.Abstractions;
+using Notification.Abstractions;
+using OffLogs.Api.Tests.Integration.Core.Faker;
 using OffLogs.Api.Tests.Integration.Core.Service;
+using OffLogs.Business.Notifications.Services;
 using OffLogs.Business.Orm.Dto;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries.Entities.Log;
@@ -34,13 +37,16 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         protected readonly IDbSessionProvider DbSessionProvider;
         protected readonly IAsyncQueryBuilder QueryBuilder;
         protected readonly IAsyncCommandBuilder CommandBuilder;
-        
+        protected readonly IAsyncNotificationBuilder NotificationBuilder;
+
         protected readonly ILogService LogService;
         protected readonly ILogShareService LogShareService;
         protected readonly IUserService UserService;
         protected readonly IApplicationService ApplicationService;
 
         protected readonly IAccessPolicyService AccessPolicyService;
+
+        protected readonly FakeEmailSendingService EmailSendingService;
 
         public MyApiIntegrationTest(ApiCustomWebApplicationFactory factory)
         {
@@ -51,6 +57,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
             DataFactory = _factory.Services.GetService(typeof(IDataFactoryService)) as IDataFactoryService;
             DataSeeder = _factory.Services.GetService(typeof(IDataSeederService)) as IDataSeederService;
             JwtAuthService = _factory.Services.GetService(typeof(IJwtAuthService)) as IJwtAuthService;
+            NotificationBuilder = _factory.Services.GetService(typeof(IAsyncNotificationBuilder)) as IAsyncNotificationBuilder;
             KafkaProducerService = _factory.Services.GetService(typeof(IKafkaProducerService)) as IKafkaProducerService;
             KafkaConsumerService = _factory.Services.GetService(typeof(IKafkaConsumerService)) as IKafkaConsumerService;
             LogService = _factory.Services.GetService(typeof(ILogService)) as ILogService;
@@ -58,10 +65,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
             ApplicationService = _factory.Services.GetService(typeof(IApplicationService)) as IApplicationService;
             AccessPolicyService = _factory.Services.GetService(typeof(IAccessPolicyService)) as IAccessPolicyService;
             LogShareService = _factory.Services.GetService(typeof(ILogShareService)) as ILogShareService;
+            EmailSendingService = _factory.Services.GetService(typeof(IEmailSendingService)) as FakeEmailSendingService;
         }
 
         public void Dispose()
         {
+            EmailSendingService?.Reset();
             DbSessionProvider.PerformCommitAsync().Wait();
             GC.SuppressFinalize(this);
         }
