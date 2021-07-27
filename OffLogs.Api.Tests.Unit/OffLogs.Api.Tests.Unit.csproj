@@ -21,6 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\OffLogs.Business.Notifications\OffLogs.Business.Notifications.csproj" />
       <ProjectReference Include="..\OffLogs.Business\OffLogs.Business.csproj" />
     </ItemGroup>
 

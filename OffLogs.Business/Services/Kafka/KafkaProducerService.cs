@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Confluent.Kafka;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Notification.Abstractions;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Services.Kafka.Models;
 using OffLogs.Business.Services.Kafka.Serializers;
@@ -18,6 +19,7 @@ namespace OffLogs.Business.Services.Kafka
         private readonly string _producerId;
         private readonly string _kafkaServers;
         private readonly string _logsTopicName;
+        private readonly string _notificationsTopicName;
 
         private IProducer<string, object> _producer;
         private IProducer<string, object> Producer
@@ -49,9 +51,11 @@ namespace OffLogs.Business.Services.Kafka
 
             var kafkaSection = configuration.GetSection("Kafka");
             _producerId = kafkaSection.GetValue<string>("ProducerId");
-            _logsTopicName = kafkaSection.GetValue<string>("Topic:Logs");
             _kafkaServers = kafkaSection.GetValue<string>("Servers");
-            
+
+            _logsTopicName = kafkaSection.GetValue<string>("Topic:Logs");
+            _notificationsTopicName = kafkaSection.GetValue<string>("Topic:Notifications");
+
             _producerConfig = new ProducerConfig
             {
                 BootstrapServers = _kafkaServers,
@@ -72,7 +76,7 @@ namespace OffLogs.Business.Services.Kafka
 
         public async Task ProduceLogMessageAsync(string applicationJwt, LogEntity logEntity, string clientIp = null)
         {
-            var modelToSend = new LogMessageModel(applicationJwt, logEntity)
+            var modelToSend = new LogMessageDto(applicationJwt, logEntity)
             {
                 ClientIp = clientIp
             };
@@ -82,7 +86,20 @@ namespace OffLogs.Business.Services.Kafka
                 Value = modelToSend
             });
         }
-        
+
+        //public async Task ProduceNotificationMessageAsync(INotificationContext notificationContext)
+        //{
+        //    var modelToSend = new NotificationMessageDto<INotificationContext>()
+        //    {
+        //        ContextType = notificationContext.GetType().Namespace
+        //    };
+        //    await Producer.ProduceAsync(_logsTopicName, new Message<string, object>
+        //    {
+        //        Key = modelToSend.Token,
+        //        Value = modelToSend
+        //    });
+        //}
+
         public void Flush(CancellationToken cancellationToken = default)
         {
             Producer.Flush(cancellationToken);

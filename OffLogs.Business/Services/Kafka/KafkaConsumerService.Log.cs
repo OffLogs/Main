@@ -32,7 +32,7 @@ namespace OffLogs.Business.Services.Kafka
                 cancellationTokenSource = new CancellationTokenSource();
             }
             var processedRecords = 0;
-            using (var consumer = GetBuilder<LogMessageModel>().Build())
+            using (var consumer = GetBuilder<LogMessageDto>().Build())
             {
                 LogDebug($"Subscribe to {_logsTopicName}");
                 consumer.Subscribe(_logsTopicName);
@@ -91,7 +91,7 @@ namespace OffLogs.Business.Services.Kafka
             return await Task.FromResult(processedRecords);
         }
 
-        private async Task ProcessLogAsync(LogMessageModel messageModel)
+        private async Task ProcessLogAsync(LogMessageDto messageModel)
         {
             try
             {
@@ -130,7 +130,7 @@ namespace OffLogs.Business.Services.Kafka
             await Task.CompletedTask;
         }
 
-        private async Task LogMessageModel(LogMessageModel messageModel, string logMessage)
+        private async Task LogMessageModel(LogMessageDto messageModel, string logMessage)
         {
             var request = new RequestLogEntity(
                 RequestLogType.Log,
