@@ -23,7 +23,6 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Notifications.Emails
             var application = userModel.Applications.First();
 
             Assert.False(EmailSendingService.IsEmailSent);
-
             await NotificationBuilder.SendAsync(new RegularLogsNotificationContext());
 
             Assert.True(EmailSendingService.IsEmailSent);
