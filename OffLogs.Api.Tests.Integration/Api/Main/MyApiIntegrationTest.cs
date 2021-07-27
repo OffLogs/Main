@@ -33,7 +33,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         protected readonly IDataFactoryService DataFactory;
         protected readonly IDataSeederService DataSeeder;
         protected readonly IKafkaProducerService KafkaProducerService;
-        protected readonly IKafkaConsumerService KafkaConsumerService;
+        protected readonly IKafkaLogsConsumerService KafkaLogsConsumerService;
         protected readonly IDbSessionProvider DbSessionProvider;
         protected readonly IAsyncQueryBuilder QueryBuilder;
         protected readonly IAsyncCommandBuilder CommandBuilder;
@@ -59,7 +59,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
             JwtAuthService = _factory.Services.GetService(typeof(IJwtAuthService)) as IJwtAuthService;
             NotificationBuilder = _factory.Services.GetService(typeof(IAsyncNotificationBuilder)) as IAsyncNotificationBuilder;
             KafkaProducerService = _factory.Services.GetService(typeof(IKafkaProducerService)) as IKafkaProducerService;
-            KafkaConsumerService = _factory.Services.GetService(typeof(IKafkaConsumerService)) as IKafkaConsumerService;
+            KafkaLogsConsumerService = _factory.Services.GetService(typeof(IKafkaLogsConsumerService)) as IKafkaLogsConsumerService;
             LogService = _factory.Services.GetService(typeof(ILogService)) as ILogService;
             UserService = _factory.Services.GetService(typeof(IUserService)) as IUserService;
             ApplicationService = _factory.Services.GetService(typeof(IApplicationService)) as IApplicationService;

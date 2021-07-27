@@ -53,7 +53,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             
             // Process messages from Kafka
             KafkaProducerService.Flush();
-            await KafkaConsumerService.ProcessLogsAsync(false);
+            await KafkaLogsConsumerService.ProcessLogsAsync(false);
             
             var actualList = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(1, actualList.TotalCount);
@@ -103,7 +103,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             
             // Process messages from Kafka
             KafkaProducerService.Flush();
-            await KafkaConsumerService.ProcessLogsAsync(false);
+            await KafkaLogsConsumerService.ProcessLogsAsync(false);
             
             var actualList = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(1, actualList.TotalCount);
@@ -170,7 +170,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             
             // Process messages from Kafka
             KafkaProducerService.Flush();
-            await KafkaConsumerService.ProcessLogsAsync(false);
+            await KafkaLogsConsumerService.ProcessLogsAsync(false);
             
             var actualList = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(2, actualList.TotalCount);
@@ -221,7 +221,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             
             // Process messages from Kafka
             KafkaProducerService.Flush();
-            await KafkaConsumerService.ProcessLogsAsync(false);
+            await KafkaLogsConsumerService.ProcessLogsAsync(false);
             
             var actualList  = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(1, actualList.TotalCount);
@@ -302,7 +302,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             
             // Process messages from Kafka
             KafkaProducerService.Flush();
-            await KafkaConsumerService.ProcessLogsAsync(false);
+            await KafkaLogsConsumerService.ProcessLogsAsync(false);
             
             var actualList = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(1, actualList.TotalCount);

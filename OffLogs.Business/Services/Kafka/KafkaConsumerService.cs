@@ -15,7 +15,8 @@ using OffLogs.Business.Services.Kafka.Models;
 
 namespace OffLogs.Business.Services.Kafka
 {
-    public abstract class KafkaConsumerService: IKafkaConsumerService, IDisposable
+    public abstract class KafkaConsumerService<TKafkaDto>: IKafkaConsumerService, IDisposable
+        where TKafkaDto: IKafkaDto
     {
         private readonly TimeSpan _defaultWaitTimeout = TimeSpan.FromSeconds(5);
 
@@ -84,7 +85,7 @@ namespace OffLogs.Business.Services.Kafka
             return builder;
         }
 
-        private void LogDebug(string message)
+        protected void LogDebug(string message)
         {
             _logger.LogDebug($"Kafka Consumer: {message}");
         }
@@ -100,11 +101,11 @@ namespace OffLogs.Business.Services.Kafka
             }
         }
 
-        public async Task<long> ProcessMessagesAsync<TKafkaDto>(
+        public async Task<long> ProcessMessagesAsync(
             string topicName,
             bool isInfiniteLoop = true, 
             CancellationToken? cancellationToken = null
-        ) where TKafkaDto: IKafkaDto
+        )
         {
             CancellationTokenSource cancellationTokenSource;
             if (cancellationToken.HasValue)
@@ -180,6 +181,6 @@ namespace OffLogs.Business.Services.Kafka
             _processedLogsCounter++;
         }
 
-        protected abstract Task ProcessItemAsync(IKafkaDto dto);
+        protected abstract Task ProcessItemAsync(TKafkaDto dto);
     }
 }
