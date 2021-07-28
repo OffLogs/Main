@@ -11,11 +11,16 @@ namespace OffLogs.Business.Notifications.Senders
     {
         public RegularLogsNotificationContext() {}
 
-        public RegularLogsNotificationContext(int errorCounter)
+        public RegularLogsNotificationContext(
+            string to,
+            int errorCounter
+        )
         {
+            To = to;
             ErrorCounter = errorCounter;
         }
 
-        public int ErrorCounter { get; }
+        public string To { get; set; }
+        public int ErrorCounter { get; set; }
     }
 }

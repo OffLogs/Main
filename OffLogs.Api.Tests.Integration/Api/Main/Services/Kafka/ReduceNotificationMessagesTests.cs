@@ -17,7 +17,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
         [Fact]
         public async Task ShouldSendSeveralMessagesToKafka()
         {
-            var notificationContext = new RegularLogsNotificationContext(3);
+            var notificationContext = new RegularLogsNotificationContext("test@test.com", 3);
             await KafkaProducerService.ProduceNotificationMessageAsync(notificationContext);
         }
     }

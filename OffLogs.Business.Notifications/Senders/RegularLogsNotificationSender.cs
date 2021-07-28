@@ -27,7 +27,8 @@ namespace OffLogs.Business.Notifications.Senders
         )
         {
             var emailBuilder = _emailFactory.GetEmailBuilder("RegularLogsNotification.htm");
-            _emailSendingService.SendEmail("lampego@gmail.com", emailBuilder, null);
+            emailBuilder.AddPlaceholder("errorCount", commandContext.ErrorCounter.ToString());
+            _emailSendingService.SendEmail(commandContext.To, emailBuilder, null);
             // Some sending logic
             return Task.CompletedTask;
         }

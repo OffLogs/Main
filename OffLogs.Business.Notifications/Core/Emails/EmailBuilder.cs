@@ -21,7 +21,6 @@ namespace OffLogs.Business.Notifications.Core.Emails
                 _subjectBuilder = new TemplatedTextBuilder(subjectTemplate, 4096);
         }
 
-
         public void AddPlaceholder(string key, string value)
         {
             _bodyBuilder.AddPlaceholder(key, value);
