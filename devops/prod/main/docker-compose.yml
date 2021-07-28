@@ -18,6 +18,8 @@ services:
       - Kafka__Topic_Logs=${KAFKA_TOPIC_LOGS}
       - Kafka__Topic_Notification=${KAFKA_TOPIC_NOTIFICATION}
       - Kafka__ConsumerClientId=${KAFKA_CONSUMER_CLIENT_ID}
+      - Smtp__UserName=${SMTP_USERNAME}
+      - Smtp__Password=${SMTP_PASSWORD}
     ports:
       - 5051:80
   worker:
@@ -37,6 +39,8 @@ services:
       - Kafka__Topic__Logs=${KAFKA_TOPIC_LOGS}
       - Kafka__Topic__Notification=${KAFKA_TOPIC_NOTIFICATION}
       - Kafka__ConsumerClientId=${KAFKA_CONSUMER_CLIENT_ID}
+      - Smtp__UserName=${SMTP_USERNAME}
+      - Smtp__Password=${SMTP_PASSWORD}
     depends_on:
       - api
   web:
