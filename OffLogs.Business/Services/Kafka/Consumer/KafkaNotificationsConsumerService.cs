@@ -48,14 +48,20 @@ namespace OffLogs.Business.Services.Kafka.Consumer
         {
             try
             {
+                var errorMessage = $"Incorrect notification conext: {dto.ContextType}";
                 var contextType = GetContextType(dto);
-                //var notificationContext = dto.GetDeserializedData(contextType);
+                if (contextType == null)
+                {
+                    throw new Exception(errorMessage);
+                }
                 if (IsContext<RegularLogsNotificationContext>(contextType))
                 {
                     await _notificationBuilder.SendAsync(
                         dto.GetDeserializedData<RegularLogsNotificationContext>()
                     );
+                    return;
                 }
+                throw new Exception(errorMessage);
             }
             catch (Exception e)
             {
