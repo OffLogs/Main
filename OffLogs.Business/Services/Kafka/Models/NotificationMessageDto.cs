@@ -24,9 +24,9 @@ namespace OffLogs.Business.Services.Kafka.Models
             };
         }
 
-        public object GetDeserializedData(Type type)
+        public TConext GetDeserializedData<TConext>() where TConext: INotificationContext
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject(ContextData, type);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<TConext>(ContextData);
         }
     }
 }

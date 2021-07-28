@@ -16,10 +16,5 @@ namespace Notification.Abstractions
         {
             return _scope.Resolve<IAsyncNotification<TNotificationContext>>();
         }
-
-        public void Create(Type context)
-        {
-            _scope.Resolve(typeof());
-        }
     }
 }

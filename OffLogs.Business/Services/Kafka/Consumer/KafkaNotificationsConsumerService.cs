@@ -49,8 +49,13 @@ namespace OffLogs.Business.Services.Kafka.Consumer
             try
             {
                 var contextType = GetContextType(dto);
-                var notificationContext = dto.GetDeserializedData(contextType);
-                await _notificationBuilder.SendAsync(contextType);
+                //var notificationContext = dto.GetDeserializedData(contextType);
+                if (IsContext<RegularLogsNotificationContext>(contextType))
+                {
+                    await _notificationBuilder.SendAsync(
+                        dto.GetDeserializedData<RegularLogsNotificationContext>()
+                    );
+                }
             }
             catch (Exception e)
             {
@@ -66,6 +71,11 @@ namespace OffLogs.Business.Services.Kafka.Consumer
                 dto.ContextType
             );
             return activationResult.Unwrap().GetType();
+        }
+
+        private bool IsContext<TConext>(Type contextType) where TConext: INotificationContext
+        {
+            return contextType == typeof(TConext);
         }
     }
 }
