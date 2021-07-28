@@ -28,19 +28,20 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
                 .RegisterModule<DbModule>()
                 .RegisterModule<QueriesModule>()
                 .RegisterModule<CommandsModule>()
-                .RegisterModule<NotificationsModule>();
+                .RegisterModule<NotificationsModule>()
+                .RegisterModule<DomainModule>();
 
-            builder
-                .RegisterAssemblyTypes(typeof(BusinessAssemblyMarker).Assembly)
-                .AssignableTo<IDomainService>()
-                .AsImplementedInterfaces()
-                .InstancePerDependency();
+            //builder
+            //    .RegisterAssemblyTypes(typeof(BusinessAssemblyMarker).Assembly)
+            //    .AssignableTo<IDomainService>()
+            //    .AsImplementedInterfaces()
+            //    .InstancePerDependency();
 
-            // Register fakes
-            builder
-                .RegisterType<FakeEmailSendingService>()
-                .As<IEmailSendingService>()
-                .InstancePerLifetimeScope();
+            //// Register fakes
+            //builder
+            //    .RegisterType<FakeEmailSendingService>()
+            //    .As<IEmailSendingService>()
+            //    .InstancePerLifetimeScope();
         }
     }
 }
