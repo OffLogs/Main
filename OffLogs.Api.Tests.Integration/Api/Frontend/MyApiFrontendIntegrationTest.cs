@@ -13,6 +13,7 @@ using Persistence.Transactions.Behaviors;
 using Queries.Abstractions;
 using Xunit;
 using System.Linq;
+using OffLogs.Business.Services.Kafka.Consumer;
 
 namespace OffLogs.Api.Tests.Integration.Api.Frontend
 {
@@ -22,7 +23,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
         protected readonly ApiFrontendCustomWebApplicationFactory _factory;
         protected readonly IDataSeederService DataSeeder;
         protected readonly IKafkaProducerService KafkaProducerService;
-        protected readonly IKafkaConsumerService KafkaConsumerService;
+        protected readonly IKafkaLogsConsumerService KafkaLogsConsumerService;
         protected readonly IDbSessionProvider DbSessionProvider;
         protected readonly ILogService LogService;
         protected readonly IAsyncQueryBuilder QueryBuilder;
@@ -33,7 +34,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
 
             DbSessionProvider = _factory.Services.GetService(typeof(IDbSessionProvider)) as IDbSessionProvider;
             KafkaProducerService = _factory.Services.GetService(typeof(IKafkaProducerService)) as IKafkaProducerService;
-            KafkaConsumerService = _factory.Services.GetService(typeof(IKafkaConsumerService)) as IKafkaConsumerService;
+            KafkaLogsConsumerService = _factory.Services.GetService(typeof(IKafkaLogsConsumerService)) as IKafkaLogsConsumerService;
             LogService = _factory.Services.GetService(typeof(ILogService)) as ILogService;
             DataSeeder = _factory.Services.GetService(typeof(IDataSeederService)) as IDataSeederService;
             QueryBuilder = _factory.Services.GetService(typeof(IAsyncQueryBuilder)) as IAsyncQueryBuilder;

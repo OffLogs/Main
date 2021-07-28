@@ -1,4 +1,6 @@
-﻿namespace Notification.Abstractions
+﻿using System;
+
+namespace Notification.Abstractions
 {
     public interface IAsyncNotificationFactory
     {

@@ -16,6 +16,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Notifications.Emails
     {
         public RegularLogsNotificationSenderTests(ApiCustomWebApplicationFactory factory) : base(factory) { }
 
+        // TODO: Finish this test
         [Fact]
         public async Task ShouldSendNotification()
         {

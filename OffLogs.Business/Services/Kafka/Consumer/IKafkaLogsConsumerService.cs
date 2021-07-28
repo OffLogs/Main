@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using Domain.Abstractions;
 
-namespace OffLogs.Business.Services.Kafka
+namespace OffLogs.Business.Services.Kafka.Consumer
 {
-    public interface IKafkaConsumerService: IDomainService
+    public interface IKafkaLogsConsumerService : IDomainService
     {
         Task<long> ProcessLogsAsync(bool isInfiniteLoop = true, CancellationToken? cancellationToken = null);
         Task<long> ProcessLogsAsync(CancellationToken cancellationToken);

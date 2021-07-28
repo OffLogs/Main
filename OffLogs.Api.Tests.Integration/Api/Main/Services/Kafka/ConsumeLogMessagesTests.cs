@@ -28,7 +28,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             KafkaProducerService.Flush();
             
             // Receive 2 messages
-            var processedRecords = await KafkaConsumerService.ProcessLogsAsync(false);
+            var processedRecords = await KafkaLogsConsumerService.ProcessLogsAsync(false);
             Assert.True(processedRecords > 0);
 
             var existsLog = await QueryBuilder.For<LogEntity>()
@@ -55,7 +55,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             
             // Receive 2 messages
             var cancellationToken = new CancellationToken();
-            var processedRecords = await KafkaConsumerService.ProcessLogsAsync(false, cancellationToken);
+            var processedRecords = await KafkaLogsConsumerService.ProcessLogsAsync(false, cancellationToken);
             Assert.True(processedRecords > 0);
 
             var existsLog = await QueryBuilder.For<LogEntity>()
@@ -81,7 +81,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             KafkaProducerService.Flush();
 
             // Receive 2 messages
-            var processedRecords = await KafkaConsumerService.ProcessLogsAsync(false);
+            var processedRecords = await KafkaLogsConsumerService.ProcessLogsAsync(false);
             Assert.True(processedRecords >= logCounter);
             foreach (var expectedLog in logs)
             {
@@ -105,7 +105,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             KafkaProducerService.Flush();
             
             // Receive 2 messages
-            var processedRecords = await KafkaConsumerService.ProcessLogsAsync(false);
+            var processedRecords = await KafkaLogsConsumerService.ProcessLogsAsync(false);
             Assert.True(processedRecords > 0);
 
             var isExists = await QueryBuilder.For<bool>()

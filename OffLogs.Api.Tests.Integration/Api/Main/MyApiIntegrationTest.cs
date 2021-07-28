@@ -17,6 +17,7 @@ using OffLogs.Business.Services.Entities.Log;
 using OffLogs.Business.Services.Entities.User;
 using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Kafka;
+using OffLogs.Business.Services.Kafka.Consumer;
 using OffLogs.Business.Services.Security;
 using Persistence.Transactions.Behaviors;
 using Queries.Abstractions;
@@ -33,7 +34,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         protected readonly IDataFactoryService DataFactory;
         protected readonly IDataSeederService DataSeeder;
         protected readonly IKafkaProducerService KafkaProducerService;
-        protected readonly IKafkaConsumerService KafkaConsumerService;
+        protected readonly IKafkaLogsConsumerService KafkaLogsConsumerService;
+        protected readonly IKafkaNotificationsConsumerService KafkaNotificationsConsumerService;
         protected readonly IDbSessionProvider DbSessionProvider;
         protected readonly IAsyncQueryBuilder QueryBuilder;
         protected readonly IAsyncCommandBuilder CommandBuilder;
@@ -59,7 +61,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
             JwtAuthService = _factory.Services.GetService(typeof(IJwtAuthService)) as IJwtAuthService;
             NotificationBuilder = _factory.Services.GetService(typeof(IAsyncNotificationBuilder)) as IAsyncNotificationBuilder;
             KafkaProducerService = _factory.Services.GetService(typeof(IKafkaProducerService)) as IKafkaProducerService;
-            KafkaConsumerService = _factory.Services.GetService(typeof(IKafkaConsumerService)) as IKafkaConsumerService;
+            KafkaLogsConsumerService = _factory.Services.GetService(typeof(IKafkaLogsConsumerService)) as IKafkaLogsConsumerService;
+            KafkaNotificationsConsumerService = _factory.Services.GetService(typeof(IKafkaNotificationsConsumerService)) as IKafkaNotificationsConsumerService;
             LogService = _factory.Services.GetService(typeof(ILogService)) as ILogService;
             UserService = _factory.Services.GetService(typeof(IUserService)) as IUserService;
             ApplicationService = _factory.Services.GetService(typeof(IApplicationService)) as IApplicationService;
