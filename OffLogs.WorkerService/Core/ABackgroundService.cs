@@ -13,8 +13,6 @@ namespace OffLogs.WorkerService.Core
 {
     internal abstract class ABackgroundService: BackgroundService
     {
-        private readonly string _cronTabExpression = "* * * * *";
-
         protected readonly ILogger<ABackgroundService> _logger;
         private CancellationToken _cancelationToken;
         private readonly CrontabSchedule _crontabScheduler;
@@ -25,19 +23,13 @@ namespace OffLogs.WorkerService.Core
             get => DateTime.UtcNow > _nextTickTime;
         }
 
-        public ABackgroundService(
-            string cronTabExpression,
-            ILogger<ABackgroundService> logger
-        ) : this(logger) 
-        {
-            _cronTabExpression = cronTabExpression;
-        }
-
         public ABackgroundService(ILogger<ABackgroundService> logger)
         {
             _logger = logger;
-            _crontabScheduler = CrontabSchedule.Parse(_cronTabExpression);
-            _nextTickTime = DateTime.UtcNow;
+            _crontabScheduler = CrontabSchedule.Parse(
+                GetCrontabExpression()
+            );
+            UpdateNextTickTime();
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -69,6 +61,8 @@ namespace OffLogs.WorkerService.Core
             _nextTickTime = _crontabScheduler.GetNextOccurrence(DateTime.UtcNow, DateTime.MaxValue);
             _logger.LogDebug($"Processing Hosted Service. Next work scheduled at: {_nextTickTime}");
         }
+
+        protected virtual string GetCrontabExpression() => "* * * * *";
 
         protected abstract Task DoWorkAsync(CancellationToken cancellationToken);
     }

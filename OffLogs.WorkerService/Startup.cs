@@ -4,11 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NCrontab;
 using OffLogs.Business;
-using OffLogs.Business.Extensions;
-using OffLogs.WorkerService.LogDeletion;
-using OffLogs.WorkerService.LogProcessing;
 
 namespace OffLogs.WorkerService
 {

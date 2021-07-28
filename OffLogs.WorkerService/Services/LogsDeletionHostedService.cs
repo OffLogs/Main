@@ -19,13 +19,17 @@ namespace OffLogs.WorkerService.Services
             IAsyncCommandBuilder commandBuilder,
             IDbSessionProvider sessionProvider
         ) : base(
-            // At 00:00.
-            "0 0 * * *", 
             logger
         )
         {
             _commandBuilder = commandBuilder;
             _sessionProvider = sessionProvider;
+        }
+
+        protected override string GetCrontabExpression()
+        {
+            // At 00:00.
+            return "0 0 * * *";
         }
 
         protected override async Task DoWorkAsync(CancellationToken cancellationToken)

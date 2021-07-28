@@ -14,7 +14,7 @@ namespace OffLogs.WorkerService.Services
         public NotificationProcessingHostedService(
             ILogger<ABackgroundService> logger,
             IKafkaNotificationsConsumerService kafkaConsumerService
-        ) : base("* * * * *", logger)
+        ) : base(logger)
         {
             _kafkaConsumerService = kafkaConsumerService;
         }
