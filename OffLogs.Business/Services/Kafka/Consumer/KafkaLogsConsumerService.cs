@@ -21,6 +21,9 @@ namespace OffLogs.Business.Services.Kafka.Consumer
     public partial class KafkaLogsConsumerService : KafkaConsumerService<LogMessageDto>, IKafkaLogsConsumerService
     {
         private readonly IJwtApplicationService _jwtApplicationService;
+        private readonly IAsyncCommandBuilder _commandBuilder;
+        private readonly IAsyncQueryBuilder _queryBuilder;
+        private readonly IDbSessionProvider _dbSessionProvider;
         private readonly string _logsTopicName;
 
         public KafkaLogsConsumerService(
@@ -32,13 +35,14 @@ namespace OffLogs.Business.Services.Kafka.Consumer
             IDbSessionProvider dbSessionProvider
         ) : base(
             configuration,
-            logger,
-            commandBuilder,
-            queryBuilder,
-            dbSessionProvider
+            logger
         )
         {
+            ConsumerName = "LogsConsumer";
             _jwtApplicationService = jwtApplicationService;
+            _commandBuilder = commandBuilder;
+            _queryBuilder = queryBuilder;
+            _dbSessionProvider = dbSessionProvider;
             _logsTopicName = configuration.GetValue<string>("Kafka:Topic:Logs");
         }
 

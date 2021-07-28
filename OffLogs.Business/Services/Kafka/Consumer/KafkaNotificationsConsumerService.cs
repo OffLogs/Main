@@ -17,26 +17,21 @@ namespace OffLogs.Business.Services.Kafka.Consumer
     public partial class KafkaNotificationsConsumerService 
         : KafkaConsumerService<NotificationMessageDto>, IKafkaNotificationsConsumerService
     {
-        private readonly IJwtApplicationService _jwtApplicationService;
         private readonly string _logsTopicName;
+        private readonly IAsyncNotificationBuilder _notificationBuilder;
 
         public KafkaNotificationsConsumerService(
             IConfiguration configuration,
             ILogger<IKafkaProducerService> logger,
-            IJwtApplicationService jwtApplicationService,
-            IAsyncCommandBuilder commandBuilder,
-            IAsyncQueryBuilder queryBuilder,
-            IDbSessionProvider dbSessionProvider
+            IAsyncNotificationBuilder notificationBuilder
         ) : base(
             configuration,
-            logger,
-            commandBuilder,
-            queryBuilder,
-            dbSessionProvider
+            logger
         )
         {
-            _jwtApplicationService = jwtApplicationService;
+            ConsumerName = "NotificationsConsumer";
             _logsTopicName = configuration.GetValue<string>("Kafka:Topic:Notifications");
+            _notificationBuilder = notificationBuilder;
         }
 
         public async Task<long> ProcessNotificationsAsync(CancellationToken cancellationToken)
@@ -55,6 +50,7 @@ namespace OffLogs.Business.Services.Kafka.Consumer
             {
                 var contextType = GetContextType(dto);
                 var notificationContext = dto.GetDeserializedData(contextType);
+                await _notificationBuilder.SendAsync(contextType);
             }
             catch (Exception e)
             {

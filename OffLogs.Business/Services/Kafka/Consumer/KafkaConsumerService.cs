@@ -21,13 +21,11 @@ namespace OffLogs.Business.Services.Kafka.Consumer
         private readonly TimeSpan _defaultWaitTimeout = TimeSpan.FromSeconds(5);
 
         protected readonly IConfiguration _configuration;
-        protected readonly IAsyncCommandBuilder _commandBuilder;
-        protected readonly IAsyncQueryBuilder _queryBuilder;
-        protected readonly IDbSessionProvider _dbSessionProvider;
         protected readonly ConsumerConfig _config;
         private readonly Timer _timerProcessedCounter;
         private long _processedLogsCounter;
 
+        protected string ConsumerName;
         protected readonly string _groupName;
         protected readonly string _clientId;
         protected readonly string _kafkaServers;
@@ -35,17 +33,11 @@ namespace OffLogs.Business.Services.Kafka.Consumer
 
         public KafkaConsumerService(
             IConfiguration configuration,
-            ILogger<IKafkaProducerService> logger,
-            IAsyncCommandBuilder commandBuilder,
-            IAsyncQueryBuilder queryBuilder,
-            IDbSessionProvider dbSessionProvider
+            ILogger<IKafkaProducerService> logger
         )
         {
             _configuration = configuration;
             _logger = logger;
-            _commandBuilder = commandBuilder;
-            _queryBuilder = queryBuilder;
-            _dbSessionProvider = dbSessionProvider;
             var kafkaSection = configuration.GetSection("Kafka");
             _groupName = kafkaSection.GetValue<string>("ConsumerGroup");
             _clientId = kafkaSection.GetValue<string>("ConsumerClientId");
@@ -87,7 +79,7 @@ namespace OffLogs.Business.Services.Kafka.Consumer
 
         protected void LogDebug(string message)
         {
-            _logger.LogDebug($"Kafka Consumer: {message}");
+            _logger.LogDebug($"Kafka {ConsumerName} Consumer: {message}");
         }
 
         private void OnProcessedCounterTimerTick(object sender, ElapsedEventArgs e)
