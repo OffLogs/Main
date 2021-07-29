@@ -11,10 +11,16 @@ namespace OffLogs.Api.Tests.Integration.Core.Faker
     public class FakeEmailSendingService : IEmailSendingService
     {
         public bool IsEmailSent = false;
+        public string SentBody = "";
+        public string SentSubject = "";
+        public string SentTo = "";
 
         public void Reset()
         {
             IsEmailSent = false;
+            SentBody = "";
+            SentSubject = "";
+            SentTo = "";
         }
 
         public string SendEmail(string to, EmailBuilder emailBuilder, string bcc)
@@ -38,6 +44,9 @@ namespace OffLogs.Api.Tests.Integration.Core.Faker
         )
         {
             IsEmailSent = true;
+            SentBody = body;
+            SentSubject = subject;
+            SentTo = to;
             return "";
         }
     }
