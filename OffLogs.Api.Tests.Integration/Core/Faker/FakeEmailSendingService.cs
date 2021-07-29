@@ -49,5 +49,15 @@ namespace OffLogs.Api.Tests.Integration.Core.Faker
             SentTo = to;
             return "";
         }
+
+        public bool BodyContains(string text)
+        {
+            return $"{SentBody}".Contains(text);
+        }
+
+        public bool SubjectContains(string text)
+        {
+            return $"{SentSubject}".Contains(text);
+        }
     }
 }

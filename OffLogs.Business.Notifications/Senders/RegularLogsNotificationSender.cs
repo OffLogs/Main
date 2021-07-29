@@ -27,6 +27,7 @@ namespace OffLogs.Business.Notifications.Senders
         )
         {
             var emailBuilder = _emailFactory.GetEmailBuilder("RegularLogsNotification.htm");
+            emailBuilder.AddPlaceholder("errorCount", commandContext.ErrorCounter.ToString());
             _emailSendingService.SendEmail(commandContext.ToAddress, emailBuilder, null);
             // Some sending logic
             return Task.CompletedTask;

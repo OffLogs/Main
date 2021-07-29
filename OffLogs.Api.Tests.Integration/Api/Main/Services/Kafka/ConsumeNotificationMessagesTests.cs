@@ -9,7 +9,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
         public ConsumeNotificationMessagesTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
 
         [Fact]
-        public async Task ShouldSendMessageAndReceiveIt()
+        public async Task ShouldSendRegularLogsNotificationAndReceiveIt()
         {
             var toAddress = "test123@test.com";
             var dto = new RegularLogsNotificationContext()
