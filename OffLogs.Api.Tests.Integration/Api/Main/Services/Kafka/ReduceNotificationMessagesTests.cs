@@ -1,10 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using OffLogs.Api.Tests.Integration.Core;
-using OffLogs.Business.Common.Constants;
-using OffLogs.Business.Constants;
-using OffLogs.Business.Helpers;
+﻿using System.Threading.Tasks;
 using OffLogs.Business.Notifications.Senders;
 using Xunit;
 
@@ -17,7 +11,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
         [Fact]
         public async Task ShouldSendSeveralMessagesToKafka()
         {
-            var notificationContext = new RegularLogsNotificationContext(3);
+            var notificationContext = new RegularLogsNotificationContext();
             await KafkaProducerService.ProduceNotificationMessageAsync(notificationContext);
         }
     }
