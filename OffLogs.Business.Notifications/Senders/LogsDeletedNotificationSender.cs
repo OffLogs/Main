@@ -25,8 +25,8 @@ namespace OffLogs.Business.Notifications.Senders
         {
             var emailBuilder = _emailFactory.GetEmailBuilder("LogsDeletedNotification.htm");
             emailBuilder.AddPlaceholder("deletedLogsCount", commandContext.DeletedLogsCount.ToString());
+            emailBuilder.AddPlaceholder("completitionTime", commandContext.CompletitionTime.ToString("G"));
             _emailSendingService.SendEmail(commandContext.To, emailBuilder, null);
-            // Some sending logic
             return Task.CompletedTask;
         }
     }
