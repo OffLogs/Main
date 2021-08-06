@@ -9,15 +9,13 @@ namespace OffLogs.Business.Notifications.Senders
 {
     public class LogsDeletedNotificationContext : INotificationContext
     {
-        public LogsDeletedNotificationContext(string to, int deletedLogsCount, DateTime? completitionTime = null)
+        public LogsDeletedNotificationContext(string to, DateTime? completitionTime = null)
         {
             To = to;
-            DeletedLogsCount = deletedLogsCount;
             CompletitionTime = completitionTime ?? DateTime.UtcNow;
         }
 
         public string To { get; }
-        public int DeletedLogsCount { get; }
         public DateTime CompletitionTime { get; }
     }
 }

@@ -27,11 +27,10 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Notifications.Emails
             var application = userModel.Applications.First();
 
             Assert.False(EmailSendingService.IsEmailSent);
-            await NotificationBuilder.SendAsync(new LogsDeletedNotificationContext(sentTo, 3, expectedTime));
+            await NotificationBuilder.SendAsync(new LogsDeletedNotificationContext(sentTo, expectedTime));
 
             Assert.True(EmailSendingService.IsEmailSent);
             Assert.Equal(sentTo, EmailSendingService.SentTo);
-            Assert.Contains(": 3", EmailSendingService.SentBody);
             Assert.Contains(expectedTime.ToString("G"), EmailSendingService.SentBody);
         }
     }
