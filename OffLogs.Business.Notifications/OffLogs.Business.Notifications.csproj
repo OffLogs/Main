@@ -5,11 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Templates\Emails\en\LogsDeletedNotification.htm" />
     <None Remove="Templates\Emails\en\RegularLogsNotification.htm" />
     <None Remove="Templates\Emails\en\_EmailLayout.htm" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Templates\Emails\en\LogsDeletedNotification.htm" />
     <EmbeddedResource Include="Templates\Emails\en\RegularLogsNotification.htm" />
     <EmbeddedResource Include="Templates\Emails\en\_EmailLayout.htm" />
   </ItemGroup>
