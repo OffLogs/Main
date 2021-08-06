@@ -1,6 +1,9 @@
 ﻿using Commands.Abstractions;
 using Microsoft.Extensions.Logging;
+using Notification.Abstractions;
+using OffLogs.Business.Notifications.Senders;
 using OffLogs.Business.Orm.Commands.Entities.Log;
+using OffLogs.Business.Services;
 using OffLogs.WorkerService.Core;
 using Persistence.Transactions.Behaviors;
 using System;
@@ -13,17 +16,23 @@ namespace OffLogs.WorkerService.Services
     {
         private readonly IAsyncCommandBuilder _commandBuilder;
         private readonly IDbSessionProvider _sessionProvider;
+        private readonly IAsyncNotificationBuilder _notificationBuilder;
+        private readonly IConfigurationService _configurationService;
 
         public LogsDeletionHostedService(
             ILogger<ABackgroundService> logger,
             IAsyncCommandBuilder commandBuilder,
-            IDbSessionProvider sessionProvider
+            IDbSessionProvider sessionProvider,
+            IAsyncNotificationBuilder notificationBuilder,
+            IConfigurationService configurationService
         ) : base(
             logger
         )
         {
             _commandBuilder = commandBuilder;
             _sessionProvider = sessionProvider;
+            _notificationBuilder = notificationBuilder;
+            _configurationService = configurationService;
         }
 
         protected override string GetCrontabExpression()
@@ -43,7 +52,10 @@ namespace OffLogs.WorkerService.Services
                     cancellationToken
                 );
                 await _sessionProvider.PerformCommitAsync(cancellationToken);
-
+                await _notificationBuilder.SendAsync(new LogsDeletedNotificationContext(
+                    _configurationService.SupportEmail
+                ));
+                
                 _logger.LogInformation("Log deletion work is completed.");
             }
             catch (Exception e)

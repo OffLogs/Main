@@ -10,25 +10,22 @@ using System.Threading.Tasks;
 
 namespace OffLogs.Business.Notifications.Senders
 {
-    public class RegularLogsNotificationSender : IAsyncNotification<RegularLogsNotificationContext>
+    public class LogsDeletedNotificationSender : IAsyncNotification<LogsDeletedNotificationContext>
     {
         private readonly IEmailSendingService _emailSendingService;
         private readonly EmailFactory _emailFactory;
 
-        public RegularLogsNotificationSender(IEmailSendingService emailSendingService)
+        public LogsDeletedNotificationSender(IEmailSendingService emailSendingService)
         {
             _emailSendingService = emailSendingService;
             _emailFactory = new EmailFactory();
         }
 
-        public Task SendAsync(
-            RegularLogsNotificationContext commandContext, 
-            CancellationToken cancellationToken = default
-        )
+        public Task SendAsync(LogsDeletedNotificationContext commandContext, CancellationToken cancellationToken = default)
         {
-            var emailBuilder = _emailFactory.GetEmailBuilder("RegularLogsNotification.htm");
-            emailBuilder.AddPlaceholder("errorCount", commandContext.ErrorCounter.ToString());
-            _emailSendingService.SendEmail(commandContext.ToAddress, emailBuilder, null);
+            var emailBuilder = _emailFactory.GetEmailBuilder("LogsDeletedNotification.htm");
+            emailBuilder.AddPlaceholder("completitionTime", commandContext.CompletitionTime.ToString("G"));
+            _emailSendingService.SendEmail(commandContext.To, emailBuilder, null);
             return Task.CompletedTask;
         }
     }
