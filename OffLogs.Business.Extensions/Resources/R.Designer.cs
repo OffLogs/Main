@@ -115,7 +115,7 @@ namespace OffLogs.Business.Extensions.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to just now.
+        ///   Looks up a localized string similar to  just now.
         /// </summary>
         internal static string JustNow {
             get {

@@ -150,7 +150,4 @@
 	<data name="YearsAgo" xml:space="preserve">
     <value> {0} years ago</value>
   </data>
-	<data name="JustNow" xml:space="preserve">
-    <value>just now</value>
-  </data>
 </root>

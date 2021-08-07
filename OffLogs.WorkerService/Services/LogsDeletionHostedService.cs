@@ -9,6 +9,7 @@ using Persistence.Transactions.Behaviors;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using OffLogs.Business.Services.Kafka;
 
 namespace OffLogs.WorkerService.Services
 {
@@ -16,14 +17,14 @@ namespace OffLogs.WorkerService.Services
     {
         private readonly IAsyncCommandBuilder _commandBuilder;
         private readonly IDbSessionProvider _sessionProvider;
-        private readonly IAsyncNotificationBuilder _notificationBuilder;
+        private readonly IKafkaProducerService _producerService;
         private readonly IConfigurationService _configurationService;
 
         public LogsDeletionHostedService(
             ILogger<ABackgroundService> logger,
             IAsyncCommandBuilder commandBuilder,
             IDbSessionProvider sessionProvider,
-            IAsyncNotificationBuilder notificationBuilder,
+            IKafkaProducerService producerService,
             IConfigurationService configurationService
         ) : base(
             logger
@@ -31,8 +32,8 @@ namespace OffLogs.WorkerService.Services
         {
             _commandBuilder = commandBuilder;
             _sessionProvider = sessionProvider;
-            _notificationBuilder = notificationBuilder;
             _configurationService = configurationService;
+            _producerService = producerService;
         }
 
         protected override string GetCrontabExpression()
@@ -52,9 +53,9 @@ namespace OffLogs.WorkerService.Services
                     cancellationToken
                 );
                 await _sessionProvider.PerformCommitAsync(cancellationToken);
-                await _notificationBuilder.SendAsync(new LogsDeletedNotificationContext(
+                await _producerService.ProduceNotificationMessageAsync(new LogsDeletedNotificationContext(
                     _configurationService.SupportEmail
-                ));
+                ));                
                 
                 _logger.LogInformation("Log deletion work is completed.");
             }
