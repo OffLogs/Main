@@ -9,13 +9,16 @@ namespace OffLogs.Business.Notifications.Senders
 {
     public class LogsDeletedNotificationContext : INotificationContext
     {
+        // For Newtonsoft
+        public LogsDeletedNotificationContext() { }
+
         public LogsDeletedNotificationContext(string to, DateTime? completitionTime = null)
         {
             To = to;
             CompletitionTime = completitionTime ?? DateTime.UtcNow;
         }
 
-        public string To { get; }
-        public DateTime CompletitionTime { get; }
+        public string To { get; set; }
+        public DateTime CompletitionTime { get; set; }
     }
 }
