@@ -8,19 +8,28 @@ using System.Threading.Tasks;
 
 namespace OffLogs.Business.Services.Http.ThrottleRequests
 {
+    /// <summary>
+    /// The purpose of this service is validation maximum requests counter 
+    /// for some entities(such as Applications)
+    /// </summary>
     public class ThrottleRequestsService : IThrottleRequestsService
     {
-        private ConcurrentBag<RequestItemModel> _items = new ConcurrentBag<RequestItemModel>();
+        private ConcurrentBag<RequestItemModel> _items = new();
 
-        private readonly TimeSpan _countingPeriond = TimeSpan.FromMinutes(1);
+        private readonly TimeSpan _defaultCountingPeriond = TimeSpan.FromMinutes(1);
 
-        public Task CheckOrThowException(long itemId, int maxCounter = 500)
+        public Task<int> CheckOrThowExceptionAsync(long itemId, int maxCounter = 500)
         {
-            var item = FindOrCreate(itemId, maxCounter);
-            if (DateTime.Now - item.CountStartTime > _countingPeriond)
+            return CheckOrThowExceptionAsync(itemId, _defaultCountingPeriond, maxCounter);
+        }
+
+        public Task<int> CheckOrThowExceptionAsync(long itemId, TimeSpan countingPeriod, int maxCounter = 500)
+        {
+            var item = FindOrCreate(itemId, maxCounter, countingPeriod);
+            if (item.IsPeriodOver)
             {
                 item.ResetCounter();
-                return Task.CompletedTask;
+                return Task.FromResult(item.Counter);
             }
             if (item.IsCounterTooBig)
             {
@@ -28,15 +37,15 @@ namespace OffLogs.Business.Services.Http.ThrottleRequests
             }
             item.Increase();
 
-            return Task.CompletedTask;
+            return Task.FromResult(item.Counter);
         }
 
-        private RequestItemModel FindOrCreate(long itemId, int maxCounter)
+        private RequestItemModel FindOrCreate(long itemId, int maxCounter, TimeSpan countingPeriod)
         {
             var item = _items.FirstOrDefault(i => i.ItemId == itemId);
             if (item == null)
             {
-                item = new RequestItemModel(maxCounter);
+                item = new RequestItemModel(itemId, maxCounter, countingPeriod);
                 _items.Add(item);
             }
             return item;

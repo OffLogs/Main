@@ -15,6 +15,7 @@ using OffLogs.Business.Services.Data;
 using OffLogs.Business.Services.Entities.Application;
 using OffLogs.Business.Services.Entities.Log;
 using OffLogs.Business.Services.Entities.User;
+using OffLogs.Business.Services.Http.ThrottleRequests;
 using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Kafka;
 using OffLogs.Business.Services.Kafka.Consumer;
@@ -40,6 +41,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         protected readonly IAsyncQueryBuilder QueryBuilder;
         protected readonly IAsyncCommandBuilder CommandBuilder;
         protected readonly IAsyncNotificationBuilder NotificationBuilder;
+        protected readonly IThrottleRequestsService ThrottleRequestsService;
 
         protected readonly ILogService LogService;
         protected readonly ILogShareService LogShareService;
@@ -69,6 +71,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
             AccessPolicyService = _factory.Services.GetService(typeof(IAccessPolicyService)) as IAccessPolicyService;
             LogShareService = _factory.Services.GetService(typeof(ILogShareService)) as ILogShareService;
             EmailSendingService = _factory.Services.GetService(typeof(IEmailSendingService)) as FakeEmailSendingService;
+            ThrottleRequestsService = _factory.Services.GetService(typeof(IThrottleRequestsService)) as IThrottleRequestsService;
         }
 
         public void Dispose()

@@ -11,6 +11,11 @@ namespace OffLogs.Business.Services.Http.ThrottleRequests
         public long ItemId { get; set; }
 
         /// <summary>
+        /// The period during which the counter is increased
+        /// </summary>
+        public TimeSpan CountingPeriod { get; protected set; }
+
+        /// <summary>
         /// The time when requests counting was started
         /// </summary>
         public DateTime CountStartTime { get; protected set; }
@@ -24,10 +29,23 @@ namespace OffLogs.Business.Services.Http.ThrottleRequests
             get => Counter > MaxCounterValue; 
         }
 
+        public bool IsPeriodOver
+        {
+            get
+            {
+                lock (_lock)
+                {
+                    return DateTime.Now - CountStartTime > CountingPeriod;
+                }
+            }
+        }
+
         private object _lock = new { };
 
-        public RequestItemModel(int maxCounter)
+        public RequestItemModel(long itemId, int maxCounter, TimeSpan countingPeriod)
         {
+            ItemId = itemId;
+            CountingPeriod = countingPeriod;
             MaxCounterValue = maxCounter;
             Counter = 0;
             CountStartTime = DateTime.Now;
