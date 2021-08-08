@@ -8,6 +8,8 @@ namespace OffLogs.Business.Services.Http.ThrottleRequests
 {
     internal class RequestItemModel
     {
+        public RequestItemType Type { get; protected set; }
+
         public long ItemId { get; set; }
 
         /// <summary>
@@ -42,8 +44,9 @@ namespace OffLogs.Business.Services.Http.ThrottleRequests
 
         private object _lock = new { };
 
-        public RequestItemModel(long itemId, int maxCounter, TimeSpan countingPeriod)
+        public RequestItemModel(RequestItemType type, long itemId, int maxCounter, TimeSpan countingPeriod)
         {
+            Type = type;
             ItemId = itemId;
             CountingPeriod = countingPeriod;
             MaxCounterValue = maxCounter;

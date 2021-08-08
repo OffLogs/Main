@@ -18,14 +18,14 @@ namespace OffLogs.Business.Services.Http.ThrottleRequests
 
         private readonly TimeSpan _defaultCountingPeriond = TimeSpan.FromMinutes(1);
 
-        public Task<int> CheckOrThowExceptionAsync(long itemId, int maxCounter = 500)
+        public Task<int> CheckOrThowExceptionAsync(RequestItemType type, long itemId, int maxCounter = 500)
         {
-            return CheckOrThowExceptionAsync(itemId, _defaultCountingPeriond, maxCounter);
+            return CheckOrThowExceptionAsync(type, itemId, _defaultCountingPeriond, maxCounter);
         }
 
-        public Task<int> CheckOrThowExceptionAsync(long itemId, TimeSpan countingPeriod, int maxCounter = 500)
+        public Task<int> CheckOrThowExceptionAsync(RequestItemType type, long itemId, TimeSpan countingPeriod, int maxCounter = 500)
         {
-            var item = FindOrCreate(itemId, maxCounter, countingPeriod);
+            var item = FindOrCreate(type, itemId, maxCounter, countingPeriod);
             if (item.IsPeriodOver)
             {
                 item.ResetCounter();
@@ -40,12 +40,17 @@ namespace OffLogs.Business.Services.Http.ThrottleRequests
             return Task.FromResult(item.Counter);
         }
 
-        private RequestItemModel FindOrCreate(long itemId, int maxCounter, TimeSpan countingPeriod)
+        public void Clean()
         {
-            var item = _items.FirstOrDefault(i => i.ItemId == itemId);
+            _items.Clear();
+        }
+
+        private RequestItemModel FindOrCreate(RequestItemType type, long itemId, int maxCounter, TimeSpan countingPeriod)
+        {
+            var item = _items.FirstOrDefault(i => i.ItemId == itemId && i.Type == type);
             if (item == null)
             {
-                item = new RequestItemModel(itemId, maxCounter, countingPeriod);
+                item = new RequestItemModel(RequestItemType.Application, itemId, maxCounter, countingPeriod);
                 _items.Add(item);
             }
             return item;

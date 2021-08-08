@@ -45,6 +45,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
 
         public void Dispose()
         {
+            ThrottleRequestsService.Clean();
             DbSessionProvider.PerformCommitAsync().Wait();
             GC.SuppressFinalize(this);
         }

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OffLogs.Api.Frontend.Di.Autofac.Modules;
 using OffLogs.Business.Di.Autofac.Modules;
+using OffLogs.Business.Services.Http.ThrottleRequests;
 
 namespace OffLogs.Api.Tests.Integration.Api.Frontend
 {
@@ -14,6 +15,11 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
 
         public override void ConfigureContainer(ContainerBuilder containerBuilder)
         {
+            containerBuilder
+                .RegisterType<ThrottleRequestsService>()
+                .As<IThrottleRequestsService>()
+                .SingleInstance();
+
             containerBuilder
                 .RegisterModule<ApiModule>()
                 .RegisterModule<DomainModule>()

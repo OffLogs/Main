@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries;
+using OffLogs.Business.Services.Http.ThrottleRequests;
 using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
@@ -292,7 +293,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
 
             for (int i = 0; i < 500; i++)
             {
-                await ThrottleRequestsService.CheckOrThowExceptionAsync(user.ApplicationId);
+                await ThrottleRequestsService.CheckOrThowExceptionAsync(RequestItemType.Application, user.ApplicationId);
             }
 
             response = await PostRequestAsync(url, user.ApplicationApiToken, new { logs });

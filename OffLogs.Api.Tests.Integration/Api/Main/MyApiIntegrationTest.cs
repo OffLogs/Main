@@ -76,6 +76,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
 
         public void Dispose()
         {
+            ThrottleRequestsService.Clean();
             EmailSendingService?.Reset();
             DbSessionProvider.PerformCommitAsync().Wait();
             GC.SuppressFinalize(this);
