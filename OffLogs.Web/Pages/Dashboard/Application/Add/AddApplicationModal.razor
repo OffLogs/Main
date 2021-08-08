@@ -18,14 +18,15 @@
     Buttons="_modalButtons"
     OnClose="@(async () => { await Task.Yield(); _isShowAddModal = false; })"
     >
-    <EditForm Model="@_model" OnValidSubmit="@HandleSubmit">
+    <MyEditForm OnValidSubmit="@HandleSubmit" 
+                EditContext="@_editContext"
+                @ref="_editForm">
         <DataAnnotationsValidator />
         <ValidationSummary />
         <p>
             <CustomInputText Label="Name:" @bind-Value="_model.Name" />
         </p>
-        <MyButton IsSubmit="true" IsHidden="true" @ref="_btnSubmit"></MyButton>
-    </EditForm>
+    </MyEditForm>
 
 </ModalWindow>
 
@@ -33,21 +34,22 @@
 {
     [Parameter]
     public RenderFragment ChildContent { get; set; }
-    
+
     private AddRequest _model = new();
     private EditContext _editContext;
     private MyButton _btnSubmit;
-    
+    private MyEditForm _editForm;
+
     private bool _isShowAddModal = false;
-    
+
     private List<ModalButtonModel> _modalButtons = new ();
-    
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
 
         _editContext = new EditContext(_model);
-        
+
         var saveBtnModel = new ModalButtonModel(
             "Add",
             OnAddAction
@@ -59,13 +61,13 @@
             null,
             BootstrapColorType.Light
         ));
-        
+
         var applications = await _apiService.GetApplications(new GetListRequest()
         {
             Page = 1
         });
     }
-    
+
     private Task HandleSubmit()
     {
         var isValid = _editContext.Validate();
@@ -77,15 +79,15 @@
             }
             catch (Exception e)
             {
-                
+
                 Console.WriteLine(e.Message);
             }
         }
         return Task.CompletedTask;
     }
-    
+
     private void OnAddAction()
     {
-        _btnSubmit.Click();
+        _editForm.ClickAsync().Wait();
     }
 }
