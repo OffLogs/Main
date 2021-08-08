@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Domain.Abstractions;
 using OffLogs.Business.Notifications;
+using OffLogs.Business.Services.Http.ThrottleRequests;
 
 namespace OffLogs.Business.Di.Autofac.Modules
 {
@@ -8,6 +9,11 @@ namespace OffLogs.Business.Di.Autofac.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder
+                .RegisterType<ThrottleRequestsService>()
+                .As<IThrottleRequestsService>()
+                .SingleInstance();
+
             builder
                 .RegisterAssemblyTypes(typeof(BusinessAssemblyMarker).Assembly)
                 .AssignableTo<IDomainService>()

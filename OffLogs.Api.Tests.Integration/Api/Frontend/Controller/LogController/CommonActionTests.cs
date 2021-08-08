@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Orm.Entities;
@@ -264,6 +265,37 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             }
             var response = await PostRequestAsync(url, user.ApplicationApiToken, new { logs });
             // Assert
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Theory]
+        [InlineData("/log/add")]
+        public async Task ShouldThrowExceptionIfTooManyRequests(string url)
+        {
+            // Arrange
+            var user = await DataSeeder.CreateNewUser();
+
+            // Act
+            var logs = new List<object>()
+            {
+                new
+                {
+                    Timestamp = "2021-03-01T21:50:42.1440609+02:00",
+                    Level = SiteLogLevel.Information.GetValue(),
+                    Message = "This is Information message"
+                }
+            };
+
+            HttpResponseMessage response;
+            response = await PostRequestAsync(url, user.ApplicationApiToken, new { logs });
+            response.EnsureSuccessStatusCode();
+
+            for (int i = 0; i < 500; i++)
+            {
+                await ThrottleRequestsService.CheckOrThowExceptionAsync(user.ApplicationId);
+            }
+
+            response = await PostRequestAsync(url, user.ApplicationApiToken, new { logs });
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
     }

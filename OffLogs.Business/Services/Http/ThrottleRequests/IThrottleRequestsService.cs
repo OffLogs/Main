@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OffLogs.Business.Services.Http.ThrottleRequests
 {
-    public interface IThrottleRequestsService: IDomainService
+    public interface IThrottleRequestsService
     {
         Task<int> CheckOrThowExceptionAsync(long itemId, int maxCounter = 500);
 
