@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using OffLogs.Business.Notifications.Senders;
 using Xunit;
 
@@ -29,6 +30,27 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             Assert.True(EmailSendingService.IsEmailSent);
             Assert.Contains("Recent logs report", EmailSendingService.SentSubject);
             Assert.Contains("logs were received recently", EmailSendingService.SentBody);
+            Assert.Contains(toAddress, EmailSendingService.SentTo);
+        }
+
+        [Fact]
+        public async Task ShouldSendRegularLogsDeletedNotificationAndReceiveIt()
+        {
+            var toAddress = "test123@test.com";
+            var sentDate = DateTime.Now;
+            var dto = new LogsDeletedNotificationContext(toAddress, sentDate);
+
+            // Push 2 messages
+            await KafkaProducerService.ProduceNotificationMessageAsync(dto);
+            KafkaProducerService.Flush();
+
+            // Receive 2 messages
+            var processedRecords = await KafkaNotificationsConsumerService.ProcessNotificationsAsync(false);
+            Assert.True(processedRecords > 0);
+
+            Assert.True(EmailSendingService.IsEmailSent);
+            Assert.Contains("Logs deletion notification", EmailSendingService.SentSubject);
+            Assert.Contains(sentDate.ToString("G"), EmailSendingService.SentBody);
             Assert.Contains(toAddress, EmailSendingService.SentTo);
         }
     }
