@@ -13,14 +13,17 @@ namespace OffLogs.Business.Services.Api
     {
         private readonly IHttpContextAccessor _httpContext;
         private readonly IJwtAuthService _jwtAuthService;
+        private readonly IJwtApplicationService _jwtApplicationService;
 
         public RequestService(
             IHttpContextAccessor httpContext,
-            IJwtAuthService jwtAuthService
+            IJwtAuthService jwtAuthService,
+            IJwtApplicationService jwtApplicationService
         )
         {
             _httpContext = httpContext;
             _jwtAuthService = jwtAuthService;
+            _jwtApplicationService = jwtApplicationService;
         }
 
         public string GetApiToken()
@@ -31,6 +34,11 @@ namespace OffLogs.Business.Services.Api
         public long GetUserIdFromJwt()
         {
             return _jwtAuthService.GetUserId(GetApiToken());
+        }
+
+        public long GetApplicationIdFromJwt()
+        {
+            return _jwtApplicationService.GetApplicationId(GetApiToken()) ?? 0;
         }
     }
 }

@@ -14,6 +14,7 @@ using Queries.Abstractions;
 using Xunit;
 using System.Linq;
 using OffLogs.Business.Services.Kafka.Consumer;
+using OffLogs.Business.Services.Http.ThrottleRequests;
 
 namespace OffLogs.Api.Tests.Integration.Api.Frontend
 {
@@ -27,7 +28,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
         protected readonly IDbSessionProvider DbSessionProvider;
         protected readonly ILogService LogService;
         protected readonly IAsyncQueryBuilder QueryBuilder;
-        
+        protected readonly IThrottleRequestsService ThrottleRequestsService;
+
         public MyApiFrontendIntegrationTest(ApiFrontendCustomWebApplicationFactory factory)
         {
             _factory = factory;
@@ -38,10 +40,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
             LogService = _factory.Services.GetService(typeof(ILogService)) as ILogService;
             DataSeeder = _factory.Services.GetService(typeof(IDataSeederService)) as IDataSeederService;
             QueryBuilder = _factory.Services.GetService(typeof(IAsyncQueryBuilder)) as IAsyncQueryBuilder;
+            ThrottleRequestsService = _factory.Services.GetService(typeof(IThrottleRequestsService)) as IThrottleRequestsService;
         }
 
         public void Dispose()
         {
+            ThrottleRequestsService.Clean();
             DbSessionProvider.PerformCommitAsync().Wait();
             GC.SuppressFinalize(this);
         }

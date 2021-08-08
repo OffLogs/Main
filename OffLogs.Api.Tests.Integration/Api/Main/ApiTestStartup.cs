@@ -7,6 +7,7 @@ using OffLogs.Api.Tests.Integration.Core.Faker;
 using OffLogs.Business;
 using OffLogs.Business.Di.Autofac.Modules;
 using OffLogs.Business.Notifications.Services;
+using OffLogs.Business.Services.Http.ThrottleRequests;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main
 {
@@ -29,6 +30,11 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
                 .RegisterModule<QueriesModule>()
                 .RegisterModule<CommandsModule>()
                 .RegisterModule<NotificationsModule>();
+
+            builder
+                .RegisterType<ThrottleRequestsService>()
+                .As<IThrottleRequestsService>()
+                .SingleInstance();
 
             builder
                 .RegisterAssemblyTypes(typeof(BusinessAssemblyMarker).Assembly)

@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries;
+using OffLogs.Business.Services.Http.ThrottleRequests;
 using Serilog;
 using Xunit;
 
@@ -317,6 +319,41 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
                 var isSecondTrue = @"{""id"":50,""name"":""UsingInMemoryRepository""}" == property.Value;
                 Assert.True(isFirstTrue || isSecondTrue);
             }
+        }
+
+        [Theory]
+        [InlineData("/log/add/serilog")]
+        public async Task ShouldThrowExceptionIfTooManyRequests(string url)
+        {
+            // Arrange
+            var user = await DataSeeder.CreateNewUser();
+
+            // Act
+            var events = new List<object>()
+            {
+                new
+                {
+                    Timestamp = "2021-03-01T21:50:42.1422383+02:00",
+                    Level = "Warning",
+                    MessageTemplate = "This is Warning message",
+                    RenderedMessage = "This is Warning message"
+                }
+            };
+
+            HttpResponseMessage response;
+            response = await PostRequestAsync(url, user.ApplicationApiToken, new { events });
+            response.EnsureSuccessStatusCode();
+
+            for (int i = 0; i < 500; i++)
+            {
+                await ThrottleRequestsService.CheckOrThowExceptionAsync(
+                    RequestItemType.Application, 
+                    user.ApplicationId
+                );
+            }
+
+            response = await PostRequestAsync(url, user.ApplicationApiToken, new { events });
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
     }
 }
