@@ -17,6 +17,7 @@
 <ModalWindow
     IsShow="_isShowAddModal"
     Buttons="_modalButtons"
+    IsLoading="true"
     OnClose="@(async () => { await Task.Yield(); _isShowAddModal = false; })"
     >
     <MyEditForm OnValidSubmit="@HandleSubmit" 
