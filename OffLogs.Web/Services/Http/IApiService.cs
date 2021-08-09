@@ -14,17 +14,17 @@ namespace OffLogs.Web.Services.Http
         #endregion
 
         #region Application
-        Task<ApplicationDto> AddApplication(string name);
-        Task<ApplicationDto> UpdateApplication(long Id, string name);
-        Task<PaginatedListDto<ApplicationListItemDto>> GetApplications(Api.Common.Dto.RequestsAndResponses.Board.Application.GetListRequest request = null);
-        Task<ApplicationDto> GetApplication(long logId);
+        Task<ApplicationDto> AddApplicationAsync(string name);
+        Task<ApplicationDto> UpdateApplicationAsync(long Id, string name);
+        Task<PaginatedListDto<ApplicationListItemDto>> GetApplicationsAsync(Api.Common.Dto.RequestsAndResponses.Board.Application.GetListRequest request = null);
+        Task<ApplicationDto> GetApplicationAsync(long logId);
         #endregion
 
         #region Log
-        Task<LogDto> GetLog(long logId);
-        Task<bool> LogSetIsFavorite(long logId, bool isFavorite);
-        Task<LogStatisticForNowDto> LogGetStatisticForNow(long? applicationId = null);
-        Task<PaginatedListDto<LogListItemDto>> GetLogs(Api.Common.Dto.RequestsAndResponses.Board.Log.GetListRequest request);
+        Task<LogDto> GetLogAsync(long logId);
+        Task<bool> LogSetIsFavoriteAsync(long logId, bool isFavorite);
+        Task<LogStatisticForNowDto> LogGetStatisticForNowAsync(long? applicationId = null);
+        Task<PaginatedListDto<LogListItemDto>> GetLogsAsync(Api.Common.Dto.RequestsAndResponses.Board.Log.GetListRequest request);
         #endregion
     }
 }

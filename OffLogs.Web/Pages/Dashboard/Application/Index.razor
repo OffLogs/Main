@@ -8,13 +8,11 @@
 
 <h1>Your application</h1>
 
-<AddApplicationModal>
-    bbbb
-</AddApplicationModal>
+<AddApplicationModal OnAdded="OnApplicatioAdded"/>
 
 @if (_selectedApplicationId != null)
 {
-    <AppInfoModal ApplicationId="@_selectedApplicationId" />
+    <AppInfoModal ApplicationId="@_selectedApplicationId"/>
 }
 
 <table class="table table-hover w-table">
@@ -52,7 +50,7 @@
         {
             _currentPage++;
         }
-        var response = await _apiService.GetApplications(new GetListRequest()
+        var response = await _apiService.GetApplicationsAsync(new GetListRequest()
         {
             Page = _currentPage
         });
@@ -69,5 +67,16 @@
     private void OnCloseInfoModal()
     {
         _selectedApplicationId = null;
+    }
+
+    private Task OnApplicatioAdded(ApplicationDto application)
+    {
+        _applications.Add(new ApplicationListItemDto() { 
+            Id = application.Id,
+            CreateTime = application.CreateTime,
+            Name = application.Name,
+            UserId = application.UserId
+        });
+        return Task.CompletedTask;
     }
 }

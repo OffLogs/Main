@@ -93,7 +93,7 @@ else
         _isLoading = true;
         try
         {
-            _statistic = await _apiService.LogGetStatisticForNow(ApplicationId);
+            _statistic = await _apiService.LogGetStatisticForNowAsync(ApplicationId);
             if (_statistic != null)
             {
                 RebuildChart();

@@ -130,7 +130,7 @@
         }
         try
         {
-            var response = await _apiService.GetLogs(new GetListRequest()
+            var response = await _apiService.GetLogsAsync(new GetListRequest()
             {
                 ApplicationId = _selectedApplicationId.Value,
                 Page = _currentPage,
@@ -174,7 +174,7 @@
         _isLoading = true;
         try
         {
-            var response = await _apiService.GetApplications();
+            var response = await _apiService.GetApplicationsAsync();
             return response.Items.Select(record => new DropDownListItem()
             {
                 Id = $"{record.Id}",
