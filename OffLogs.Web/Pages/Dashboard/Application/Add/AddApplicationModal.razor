@@ -11,6 +11,7 @@
 @using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application
 @inject IApiService _apiService
 @inject ToastService _toastService
+@inject IApiService _apiService 
 
 <MyButton @onclick="() => _isShowAddModal = true">Add Application</MyButton>
 <ModalWindow
@@ -61,11 +62,6 @@
             null,
             BootstrapColorType.Light
         ));
-
-        var applications = await _apiService.GetApplications(new GetListRequest()
-        {
-            Page = 1
-        });
     }
 
     private Task HandleSubmit()
