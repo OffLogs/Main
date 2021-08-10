@@ -24,4 +24,7 @@
     <data name="Error_LogNotFound" xml:space="preserve">
         <value>Log not found!</value>
     </data>
+    <data name="Error_ApplicationDeletionError" xml:space="preserve">
+        <value>Application deletion error</value>
+    </data>
 </root>

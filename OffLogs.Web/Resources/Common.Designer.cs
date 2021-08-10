@@ -61,6 +61,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Application deletion error.
+        /// </summary>
+        internal static string Error_ApplicationDeletionError {
+            get {
+                return ResourceManager.GetString("Error_ApplicationDeletionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Log not found!.
         /// </summary>
         internal static string Error_LogNotFound {

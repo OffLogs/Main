@@ -4,15 +4,17 @@
 @using OffLogs.Web.Pages.Dashboard.Application.Info
 @using OffLogs.Api.Common.Dto.Entities
 @using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application
+@using OffLogs.Web.Resources
 @inject IApiService _apiService
+@inject ToastService _toastService
 
 <h1>Your application</h1>
 
-<AddApplicationModal OnAdded="OnApplicatioAdded"/>
+<AddApplicationModal OnAdded="OnApplicationAdded"/>
 <ConfirmationModal Title="Are you sure you want to uninstall this application?" 
-                   IsShow="_isShowDeleteModal"
+                   IsShow="@(_applicationForDeletion != null)"
                    OnOk="OnDeleteAppAsync"
-                   OnCancel="() => _isShowDeleteModal = false"/>
+                   OnCancel="@(() => _applicationForDeletion = null)"/>
 
 @if (_selectedApplicationId != null)
 {
@@ -31,10 +33,10 @@
         {
             <tr @onclick="@(async () => await OnClickRowAsync(application))">
                 <td>@application.Name</td>
-                <td>
+                <td @onclick:stopPropagation>
                     <MyButton IsSmall="true"
                               Type="BootstrapColorType.Danger"
-                              OnClick="@(async () => _isShowDeleteModal = true)">
+                              OnClick="@(() => _applicationForDeletion = application)">
                         X
                     </MyButton>
                 </td>
@@ -48,7 +50,7 @@
     private List<ApplicationListItemDto> _applications = new();
     private int _currentPage = 1;
     private long? _selectedApplicationId;
-    private bool _isShowDeleteModal = false;
+    private ApplicationListItemDto _applicationForDeletion = null;
 
     protected override async Task OnInitializedAsync()
     {
@@ -81,7 +83,7 @@
         _selectedApplicationId = null;
     }
 
-    private Task OnApplicatioAdded(ApplicationDto application)
+    private Task OnApplicationAdded(ApplicationDto application)
     {
         _applications.Add(new ApplicationListItemDto() {
             Id = application.Id,
@@ -92,14 +94,26 @@
         return Task.CompletedTask;
     }
 
-    private async Task OnDeleteAsync(long id)
-    {
-        await _apiService.DeleteApplicationAsync(id);
-    }
-
     private async Task OnDeleteAppAsync()
     {
-        _isShowDeleteModal = false;
-        await OnDeleteAsync(1);
+        _applicationForDeletion = _applicationForDeletion 
+                                  ?? throw new ArgumentNullException(nameof(_applicationForDeletion));
+        try
+        {
+            var applicationId = _applicationForDeletion.Id;
+            _applicationForDeletion = null;
+            _toastService.AddInfoMessage("Application deleting...");
+            await _apiService.DeleteApplicationAsync(applicationId);
+            _toastService.AddInfoMessage("Application is deleted");
+            _applications = _applications.Where(i => i.Id != applicationId).ToList();
+        }
+        catch (Exception e)
+        {
+            _toastService.AddErrorMessage(Common.Error_ApplicationDeletionError);
+        }
+        finally
+        {
+            StateHasChanged();
+        }
     }
 }
