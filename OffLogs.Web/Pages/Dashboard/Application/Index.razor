@@ -9,6 +9,10 @@
 <h1>Your application</h1>
 
 <AddApplicationModal OnAdded="OnApplicatioAdded"/>
+<ConfirmationModal Title="Are you sure you want to uninstall this application?" 
+                   IsShow="_isShowDeleteModal"
+                   OnOk="OnDeleteAppAsync"
+                   OnCancel="() => _isShowDeleteModal = false"/>
 
 @if (_selectedApplicationId != null)
 {
@@ -19,6 +23,7 @@
     <thead>
         <tr>
             <th>Name</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -26,8 +31,14 @@
         {
             <tr @onclick="@(async () => await OnClickRowAsync(application))">
                 <td>@application.Name</td>
+                <td>
+                    <MyButton IsSmall="true"
+                              Type="BootstrapColorType.Danger"
+                              OnClick="@(async () => _isShowDeleteModal = true)">
+                        X
+                    </MyButton>
+                </td>
             </tr>
-
         }
     </tbody>
 </table>
@@ -37,6 +48,7 @@
     private List<ApplicationListItemDto> _applications = new();
     private int _currentPage = 1;
     private long? _selectedApplicationId;
+    private bool _isShowDeleteModal = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -71,12 +83,23 @@
 
     private Task OnApplicatioAdded(ApplicationDto application)
     {
-        _applications.Add(new ApplicationListItemDto() { 
+        _applications.Add(new ApplicationListItemDto() {
             Id = application.Id,
             CreateTime = application.CreateTime,
             Name = application.Name,
             UserId = application.UserId
         });
         return Task.CompletedTask;
+    }
+
+    private async Task OnDeleteAsync(long id)
+    {
+        await _apiService.DeleteApplicationAsync(id);
+    }
+
+    private async Task OnDeleteAppAsync()
+    {
+        _isShowDeleteModal = false;
+        await OnDeleteAsync(1);
     }
 }

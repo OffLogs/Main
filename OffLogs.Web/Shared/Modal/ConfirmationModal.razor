@@ -1,0 +1,48 @@
+﻿@using OffLogs.Web.Core.Models.Modal
+
+<ModalWindow Buttons="_modalButtons" IsShow="IsShow" OnClose="OnCancelClicked">
+    @Title
+</ModalWindow>
+
+@code {
+    [Parameter]
+    public EventCallback OnOk { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    [Parameter]
+    public string Title { get; set; } = "Are you sure?";
+
+    [Parameter]
+    public bool IsShow { get; set; }
+
+    private List<ModalButtonModel> _modalButtons = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        var saveBtnModel = new ModalButtonModel(
+            "Ok",
+            OnOkClicked
+        );
+        saveBtnModel.IsCloseAfterAction = false;
+        _modalButtons.Add(saveBtnModel);
+        _modalButtons.Add(new(
+            "Cancel",
+            OnCancelClicked,
+            BootstrapColorType.Light
+        ));
+    }
+
+    private void OnOkClicked()
+    {
+        OnOk.InvokeAsync();
+    }
+
+    private void OnCancelClicked()
+    {
+        OnCancel.InvokeAsync();
+    }
+}
