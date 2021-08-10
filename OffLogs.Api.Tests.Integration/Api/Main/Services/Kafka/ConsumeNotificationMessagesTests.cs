@@ -53,5 +53,26 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             Assert.Contains(sentDate.ToString("G"), EmailSendingService.SentBody);
             Assert.Contains(toAddress, EmailSendingService.SentTo);
         }
+
+        [Fact]
+        public async Task ShouldSendRegularApplicationDeletedNotificationAndReceiveIt()
+        {
+            var toAddress = "test123@test.com";
+            var applicationName = "TestAppName";
+            var dto = new ApplicationDeletedNotificationContext(toAddress, applicationName);
+
+            // Push 2 messages
+            await KafkaProducerService.ProduceNotificationMessageAsync(dto);
+            KafkaProducerService.Flush();
+
+            // Receive 2 messages
+            var processedRecords = await KafkaNotificationsConsumerService.ProcessNotificationsAsync(false);
+            Assert.True(processedRecords > 0);
+
+            Assert.True(EmailSendingService.IsEmailSent);
+            Assert.Contains("Application has been deleted", EmailSendingService.SentSubject);
+            Assert.Contains(applicationName, EmailSendingService.SentBody);
+            Assert.Contains(toAddress, EmailSendingService.SentTo);
+        }
     }
 }
