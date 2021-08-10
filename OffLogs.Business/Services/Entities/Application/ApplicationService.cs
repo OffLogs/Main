@@ -105,12 +105,14 @@ namespace OffLogs.Business.Services.Entities.Application
             {
                 throw new ItemNotFoundException(nameof(ApplicationEntity));
             }
+
+            var userToNotify = application.SharedForUsers.ToList();
+            // add owner
+            userToNotify.Add(application.User);
+
             await _commandBuilder.ExecuteAsync(new ApplicationDeleteCommandContext(applicationId));
 
-            var sharedForList = application.SharedForUsers.ToList();
-            // add owner
-            sharedForList.Add(application.User);
-            foreach (var user in sharedForList)
+            foreach (var user in userToNotify)
             {
                 await _notificationBuilder.SendAsync(new ApplicationDeletedNotificationContext(
                     user.Email,
