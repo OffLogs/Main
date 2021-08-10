@@ -21,8 +21,10 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Application
         [Fact]
         public async Task ShouldDeleteOne()
         {
-            var userModel = await DataSeeder.CreateNewUser();
-            var application = userModel.Applications.First();
+            var user = await DataSeeder.CreateNewUser();
+            var user2 = await DataSeeder.CreateNewUser();
+            var application = user.Applications.First();
+            await ApplicationService.ShareForUser(application, user2);
 
             var log1 = await CreateLog(application, LogLevel.Error);
             await DbSessionProvider.PerformCommitAsync();

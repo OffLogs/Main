@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using OffLogs.Api.Common.Dto.Entities;
@@ -48,11 +49,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         [InlineData(Url)]
         public async Task CanDeleteApplication(string url)
         {
-            var applicationName = "NewApplicationName";
             var user1 = await DataSeeder.CreateNewUser();
 
             // Act
-            Assert.NotEqual(applicationName, user1.Application.Name);
             var response = await PostRequestAsync(url, user1.ApiToken, new DeleteRequest()
             {
                 Id = user1.ApplicationId
@@ -69,16 +68,40 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
 
         [Theory]
         [InlineData(Url)]
+        public async Task CanDeleteApplicationAndSendNotifications(string url)
+        {
+            var user1 = await DataSeeder.CreateNewUser();
+            var user2 = await DataSeeder.CreateNewUser();
+            var user3 = await DataSeeder.CreateNewUser();
+            await ApplicationService.ShareForUser(user1.Application, user2);
+            await ApplicationService.ShareForUser(user1.Application, user3);
+            await DbSessionProvider.PerformCommitAsync();
+
+            // Act
+            var response = await PostRequestAsync(url, user1.ApiToken, new DeleteRequest()
+            {
+                Id = user1.ApplicationId
+            });
+            // Assert
+            response.EnsureSuccessStatusCode();
+
+            await KafkaNotificationsConsumerService.ProcessNotificationsAsync(false);
+
+            Assert.Contains(EmailSendingService.SentMessages, m => m.To == user1.Email);
+            Assert.Contains(EmailSendingService.SentMessages, m => m.To == user2.Email);
+            Assert.Contains(EmailSendingService.SentMessages, m => m.To == user3.Email);
+        }
+
+        [Theory]
+        [InlineData(Url)]
         public async Task SharedUserShouldNotDeleteApplication(string url)
         {
-            var applicationName = "NewApplicationName";
             var user1 = await DataSeeder.CreateNewUser();
             var user2 = await DataSeeder.CreateNewUser();
 
             await ApplicationService.ShareForUser(user1.Application, user2);
 
             // Act
-            Assert.NotEqual(applicationName, user1.Application.Name);
             var response = await PostRequestAsync(url, user2.ApiToken, new DeleteRequest()
             {
                 Id = user1.ApplicationId

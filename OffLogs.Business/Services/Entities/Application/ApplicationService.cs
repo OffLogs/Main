@@ -11,6 +11,7 @@ using OffLogs.Business.Orm.Commands.Entities.Application;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Services.Jwt;
+using OffLogs.Business.Services.Kafka;
 using Queries.Abstractions;
 
 namespace OffLogs.Business.Services.Entities.Application
@@ -21,18 +22,21 @@ namespace OffLogs.Business.Services.Entities.Application
         private readonly IAsyncQueryBuilder _queryBuilder;
         private readonly IJwtApplicationService _jwtService;
         private readonly IAsyncNotificationBuilder _notificationBuilder;
+        private readonly IKafkaProducerService _kafkaProducer;
 
         public ApplicationService(
             IAsyncCommandBuilder commandBuilder,
             IAsyncQueryBuilder asyncQueryBuilder,
             IJwtApplicationService jwtService,
-            IAsyncNotificationBuilder notificationBuilder
+            IAsyncNotificationBuilder notificationBuilder,
+            IKafkaProducerService kafkaProducer
         )
         {
             _commandBuilder = commandBuilder;
             _queryBuilder = asyncQueryBuilder;
             _jwtService = jwtService;
             _notificationBuilder = notificationBuilder;
+            _kafkaProducer = kafkaProducer;
         }
 
         public async Task<ApplicationEntity> CreateNewApplication(UserEntity user,  string name)
@@ -114,7 +118,7 @@ namespace OffLogs.Business.Services.Entities.Application
 
             foreach (var user in userToNotify)
             {
-                await _notificationBuilder.SendAsync(new ApplicationDeletedNotificationContext(
+                await _kafkaProducer.ProduceNotificationMessageAsync(new ApplicationDeletedNotificationContext(
                     user.Email,
                     application.Name
                 ));
