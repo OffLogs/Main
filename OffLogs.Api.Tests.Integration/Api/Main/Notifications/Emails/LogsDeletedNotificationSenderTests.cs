@@ -30,8 +30,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Notifications.Emails
             await NotificationBuilder.SendAsync(new LogsDeletedNotificationContext(sentTo, expectedTime));
 
             Assert.True(EmailSendingService.IsEmailSent);
-            Assert.Equal(sentTo, EmailSendingService.SentTo);
-            Assert.Contains(expectedTime.ToString("G"), EmailSendingService.SentBody);
+            var sentMessage = EmailSendingService.SentMessages.First();
+            Assert.Equal(sentTo, sentMessage.To);
+            Assert.Contains(expectedTime.ToString("G"), sentMessage.Body);
         }
     }
 }

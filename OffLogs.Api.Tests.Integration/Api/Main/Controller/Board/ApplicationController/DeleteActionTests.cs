@@ -61,6 +61,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
             response.EnsureSuccessStatusCode();
 
             await DbSessionProvider.PerformCommitAsync();
+            DbSessionProvider.CurrentSession.Clear();
+
             var actualApplication = await QueryBuilder.FindByIdAsync<ApplicationEntity>(user1.ApplicationId);
             Assert.Null(actualApplication);
         }
