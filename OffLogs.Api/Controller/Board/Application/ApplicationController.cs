@@ -41,6 +41,12 @@ namespace OffLogs.Api.Business.Controller.Board.Application
         public Task<IActionResult> Add(AddRequest request)
             => this.RequestAsync().For<ApplicationDto>().With(request);
 
+        [HttpPost("delete")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public Task<IActionResult> Delete(DeleteRequest request)
+            => this.RequestAsync(request);
+
         [HttpPost("get")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

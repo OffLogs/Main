@@ -1,4 +1,5 @@
-﻿using OffLogs.Business.Notifications.Core.Emails;
+﻿using OffLogs.Api.Tests.Integration.Core.Faker.Models;
+using OffLogs.Business.Notifications.Core.Emails;
 using OffLogs.Business.Notifications.Services;
 using System;
 using System.Collections.Generic;
@@ -10,17 +11,15 @@ namespace OffLogs.Api.Tests.Integration.Core.Faker
 {
     public class FakeEmailSendingService : IEmailSendingService
     {
-        public bool IsEmailSent = false;
-        public string SentBody = "";
-        public string SentSubject = "";
-        public string SentTo = "";
-
+        public List<FakeEmailModel> SentMessages = new ();
+        public bool IsEmailSent
+        {
+            get => SentMessages.Any();
+        }
+        
         public void Reset()
         {
-            IsEmailSent = false;
-            SentBody = "";
-            SentSubject = "";
-            SentTo = "";
+            SentMessages = new ();
         }
 
         public string SendEmail(string to, EmailBuilder emailBuilder, string bcc)
@@ -43,21 +42,8 @@ namespace OffLogs.Api.Tests.Integration.Core.Faker
             string bcc
         )
         {
-            IsEmailSent = true;
-            SentBody = body;
-            SentSubject = subject;
-            SentTo = to;
+            SentMessages.Add(new FakeEmailModel(from, to, subject, body, cc, bcc));
             return "";
-        }
-
-        public bool BodyContains(string text)
-        {
-            return $"{SentBody}".Contains(text);
-        }
-
-        public bool SubjectContains(string text)
-        {
-            return $"{SentSubject}".Contains(text);
         }
     }
 }

@@ -72,12 +72,13 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
             LogShareService = _factory.Services.GetService(typeof(ILogShareService)) as ILogShareService;
             EmailSendingService = _factory.Services.GetService(typeof(IEmailSendingService)) as FakeEmailSendingService;
             ThrottleRequestsService = _factory.Services.GetService(typeof(IThrottleRequestsService)) as IThrottleRequestsService;
+
+            ThrottleRequestsService.Clean();
+            EmailSendingService?.Reset();
         }
 
         public void Dispose()
         {
-            ThrottleRequestsService.Clean();
-            EmailSendingService?.Reset();
             DbSessionProvider.PerformCommitAsync().Wait();
             GC.SuppressFinalize(this);
         }
