@@ -21,21 +21,18 @@ namespace OffLogs.Business.Services.Entities.Application
         private readonly IAsyncCommandBuilder _commandBuilder;
         private readonly IAsyncQueryBuilder _queryBuilder;
         private readonly IJwtApplicationService _jwtService;
-        private readonly IAsyncNotificationBuilder _notificationBuilder;
         private readonly IKafkaProducerService _kafkaProducer;
 
         public ApplicationService(
             IAsyncCommandBuilder commandBuilder,
             IAsyncQueryBuilder asyncQueryBuilder,
             IJwtApplicationService jwtService,
-            IAsyncNotificationBuilder notificationBuilder,
             IKafkaProducerService kafkaProducer
         )
         {
             _commandBuilder = commandBuilder;
             _queryBuilder = asyncQueryBuilder;
             _jwtService = jwtService;
-            _notificationBuilder = notificationBuilder;
             _kafkaProducer = kafkaProducer;
         }
 
