@@ -11,4 +11,6 @@
   right: 0;
   z-index: 1000;
 }
-/*# sourceMappingURL=MyButton.razor.css.map */
+.w-hidden-btn {
+  display: none;
+}

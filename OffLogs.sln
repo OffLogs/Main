@@ -49,11 +49,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Requests.Base", "Api.Re
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{C1F66C3D-CEAE-4297-ADF9-5113761C2420}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notification.Abstractions", "Notification.Abstractions\Notification.Abstractions.csproj", "{98AF2FF4-1123-4406-888A-8FDB5FF6460B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notification.Abstractions", "Notification.Abstractions\Notification.Abstractions.csproj", "{98AF2FF4-1123-4406-888A-8FDB5FF6460B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffLogs.Business.Notifications", "OffLogs.Business.Notifications\OffLogs.Business.Notifications.csproj", "{FA315BDC-8473-4F7F-9DA4-3C27942E3A50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffLogs.Business.Notifications", "OffLogs.Business.Notifications\OffLogs.Business.Notifications.csproj", "{FA315BDC-8473-4F7F-9DA4-3C27942E3A50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffLogs.Business.Extensions", "OffLogs.Business.Extensions\OffLogs.Business.Extensions.csproj", "{5E239F4D-876B-4453-A6FC-5CA5E337692E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffLogs.Business.Extensions", "OffLogs.Business.Extensions\OffLogs.Business.Extensions.csproj", "{5E239F4D-876B-4453-A6FC-5CA5E337692E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -176,7 +176,7 @@ Global
 		{5E239F4D-876B-4453-A6FC-5CA5E337692E} = {C1F66C3D-CEAE-4297-ADF9-5113761C2420}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		LessCompiler = 198917b0-a634-4f0d-a496-36161600daff
 		SolutionGuid = {63E75E79-B233-4DE6-B7BA-50C825A8C820}
+		LessCompiler = 198917b0-a634-4f0d-a496-36161600daff
 	EndGlobalSection
 EndGlobal

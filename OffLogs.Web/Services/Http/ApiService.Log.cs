@@ -13,7 +13,7 @@ namespace OffLogs.Web.Services.Http
 {
     public partial class ApiService
     {
-        public async Task<PaginatedListDto<LogListItemDto>> GetLogs(GetListRequest request)
+        public async Task<PaginatedListDto<LogListItemDto>> GetLogsAsync(GetListRequest request)
         {
             var response = await PostAuthorizedAsync<PaginatedListDto<LogListItemDto>>(MainApiUrl.LogList, request);
             if (response == null)
@@ -23,7 +23,7 @@ namespace OffLogs.Web.Services.Http
             return response;
         }
 
-        public async Task<LogDto> GetLog(long logId)
+        public async Task<LogDto> GetLogAsync(long logId)
         {
             var response = await PostAuthorizedAsync<LogDto>(
                 MainApiUrl.LogGet,
@@ -39,7 +39,7 @@ namespace OffLogs.Web.Services.Http
             return response;
         }
 
-        public async Task<bool> LogSetIsFavorite(long logId, bool isFavorite)
+        public async Task<bool> LogSetIsFavoriteAsync(long logId, bool isFavorite)
         {
             var response = await PostAuthorizedAsync<bool>(
                 MainApiUrl.LogSetIsFavorite,
@@ -52,7 +52,7 @@ namespace OffLogs.Web.Services.Http
             return response;
         }
 
-        public async Task<LogStatisticForNowDto> LogGetStatisticForNow(long? applicationId = null)
+        public async Task<LogStatisticForNowDto> LogGetStatisticForNowAsync(long? applicationId = null)
         {
             var response = await PostAuthorizedAsync<LogStatisticForNowDto>(
                 MainApiUrl.LogGetStatisticForNow,

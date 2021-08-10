@@ -4,7 +4,7 @@
 
 <button 
   id="@IdString"
-  class="btn btn@(IsOutlined ? "-outline" : "")-@Type.GetName() @(IsSmall ? "btn-sm" : "") @Class" 
+  class="btn btn@_classString" 
   @onclick="@OnClick" 
   type="@(IsSubmit ? @"submit" : "button")"
   disabled="@IsDisabled"
@@ -13,38 +13,60 @@
 </button>
 
 @code {
-  [Parameter]
-  public bool IsHidden { get; set; } = false;
-  
-  [Parameter]
-  public bool IsSubmit { get; set; } = false;
-  
-  [Parameter]
-  public bool IsDisabled { get; set; } = false;
-  
-  [Parameter]
-  public BootstrapColorType Type { get; set; } = BootstrapColorType.Primary;
-  
-  [Parameter]
-  public string Class { get; set; }
-  
-  [Parameter]
-  public RenderFragment ChildContent { get; set; }
+    [Parameter]
+    public bool IsHidden { get; set; } = false;
 
-  [Parameter]
-  public EventCallback<MouseEventArgs> OnClick { get; set; }
+    [Parameter]
+    public bool IsSubmit { get; set; } = false;
 
-  [Parameter]
-  public bool IsOutlined { get; set; } = false;
-  
-  [Parameter]
-  public bool IsSmall { get; set; } = false;
-  
-  private int _id = Randomizer.GetNumber();
-  private string IdString => $"js-my-button-{_id}";
+    [Parameter]
+    public bool IsDisabled { get; set; } = false;
 
-  public void Click()
-  {
-    _js.InvokeVoidAsync("clickOnElement", IdString);
-  }
+    [Parameter]
+    public BootstrapColorType Type { get; set; } = BootstrapColorType.Primary;
+
+    [Parameter]
+    public string Class { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    [Parameter]
+    public bool IsOutlined { get; set; } = false;
+
+    [Parameter]
+    public bool IsSmall { get; set; } = false;
+
+    private int _id = Randomizer.GetNumber();
+    private string IdString => $"js-my-button-{_id}";
+
+    private string _classString
+    {
+        get {
+            var result = "";
+            if (IsHidden)
+            {
+                return " w-hidden-btn";
+            }
+            if (IsOutlined)
+            {
+                result += "-outline";
+            }
+            result += $"-{Type.GetName()}";
+            if (IsSmall)
+            {
+                result += $" btn-sm";
+            }
+            result += $" {Class}";
+            return result;
+        }
+    }
+
+    public void Click()
+    {
+        _js.InvokeVoidAsync("clickOnElement", IdString);
+    }
 }

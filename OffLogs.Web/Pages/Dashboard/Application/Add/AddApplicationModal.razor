@@ -9,23 +9,27 @@
 @using OffLogs.Web.Constants
 @using OffLogs.Web.Services
 @using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application
+@using OffLogs.Api.Common.Dto.Entities
 @inject IApiService _apiService
 @inject ToastService _toastService
+@inject IApiService _apiService 
 
 <MyButton @onclick="() => _isShowAddModal = true">Add Application</MyButton>
 <ModalWindow
     IsShow="_isShowAddModal"
     Buttons="_modalButtons"
+    IsLoading="_isLoading"
     OnClose="@(async () => { await Task.Yield(); _isShowAddModal = false; })"
     >
-    <EditForm Model="@_model" OnValidSubmit="@HandleSubmit">
+    <MyEditForm OnValidSubmit="@HandleSubmit" 
+                EditContext="@_editContext"
+                @ref="_editForm">
         <DataAnnotationsValidator />
         <ValidationSummary />
         <p>
             <CustomInputText Label="Name:" @bind-Value="_model.Name" />
         </p>
-        <MyButton IsSubmit="true" IsHidden="true" @ref="_btnSubmit"></MyButton>
-    </EditForm>
+    </MyEditForm>
 
 </ModalWindow>
 
@@ -33,21 +37,26 @@
 {
     [Parameter]
     public RenderFragment ChildContent { get; set; }
-    
+
+    [Parameter]
+    public EventCallback<ApplicationDto> OnAdded { get; set; }
+
     private AddRequest _model = new();
     private EditContext _editContext;
     private MyButton _btnSubmit;
-    
+    private MyEditForm _editForm;
+    private bool _isLoading = false;
+
     private bool _isShowAddModal = false;
-    
+
     private List<ModalButtonModel> _modalButtons = new ();
-    
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
 
         _editContext = new EditContext(_model);
-        
+
         var saveBtnModel = new ModalButtonModel(
             "Add",
             OnAddAction
@@ -59,33 +68,35 @@
             null,
             BootstrapColorType.Light
         ));
-        
-        var applications = await _apiService.GetApplications(new GetListRequest()
-        {
-            Page = 1
-        });
     }
-    
-    private Task HandleSubmit()
+
+    private async Task HandleSubmit()
     {
         var isValid = _editContext.Validate();
         if (isValid)
         {
+            _isLoading = true;
             try
             {
-                _toastService.AddMessage(ToastMessageType.Error, "Test error");
+                var application = await _apiService.AddApplicationAsync(_model.Name);
+                await OnAdded.InvokeAsync(application);
+                _isShowAddModal = false;
+                _toastService.AddInfoMessage("New application was added");
             }
             catch (Exception e)
             {
-                
-                Console.WriteLine(e.Message);
+                _toastService.AddErrorMessage(e.Message);
             }
+            finally
+            {
+                _isLoading = false;
+            }
+            StateHasChanged();
         }
-        return Task.CompletedTask;
     }
-    
+
     private void OnAddAction()
     {
-        _btnSubmit.Click();
+        _editForm.ClickAsync().Wait();
     }
 }

@@ -12,7 +12,42 @@ namespace OffLogs.Web.Services.Http
 {
     public partial class ApiService
     {
-        public async Task<PaginatedListDto<ApplicationListItemDto>> GetApplications(GetListRequest request = null)
+        public async Task<ApplicationDto> AddApplicationAsync(string name)
+        {
+            var response = await PostAuthorizedAsync<ApplicationDto>(
+                MainApiUrl.ApplicationAdd,
+                new AddRequest()
+                {
+                    Name = name
+                }
+            );
+            if (response == null)
+            {
+                throw new ServerErrorException();
+            }
+
+            return response;
+        }
+
+        public async Task<ApplicationDto> UpdateApplicationAsync(long id, string name)
+        {
+            var response = await PostAuthorizedAsync<ApplicationDto>(
+                MainApiUrl.ApplicationUpdate,
+                new UpdateRequest()
+                {
+                    Id = id,
+                    Name = name
+                }
+            );
+            if (response == null)
+            {
+                throw new ServerErrorException();
+            }
+
+            return response;
+        }
+
+        public async Task<PaginatedListDto<ApplicationListItemDto>> GetApplicationsAsync(GetListRequest request = null)
         {
             if (request == null)
             {
@@ -32,7 +67,7 @@ namespace OffLogs.Web.Services.Http
             return response;
         }
 
-        public async Task<ApplicationDto> GetApplication(long logId)
+        public async Task<ApplicationDto> GetApplicationAsync(long logId)
         {
             var response = await PostAuthorizedAsync<ApplicationDto>(
                 MainApiUrl.ApplicationGetOne,

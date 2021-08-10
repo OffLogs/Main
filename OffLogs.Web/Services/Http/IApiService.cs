@@ -8,13 +8,23 @@ namespace OffLogs.Web.Services.Http
 {
     public interface IApiService
     {
+        #region User
         Task<Api.Common.Dto.RequestsAndResponses.Public.User.LoginResponseDto> LoginAsync(Api.Common.Dto.RequestsAndResponses.Public.User.LoginRequest model);
         Task<bool> CheckIsLoggedInAsync(string token);
-        Task<PaginatedListDto<ApplicationListItemDto>> GetApplications(Api.Common.Dto.RequestsAndResponses.Board.Application.GetListRequest request = null);
-        Task<ApplicationDto> GetApplication(long logId);
-        Task<PaginatedListDto<LogListItemDto>> GetLogs(Api.Common.Dto.RequestsAndResponses.Board.Log.GetListRequest request);
-        Task<LogDto> GetLog(long logId);
-        Task<bool> LogSetIsFavorite(long logId, bool isFavorite);
-        Task<LogStatisticForNowDto> LogGetStatisticForNow(long? applicationId = null);
+        #endregion
+
+        #region Application
+        Task<ApplicationDto> AddApplicationAsync(string name);
+        Task<ApplicationDto> UpdateApplicationAsync(long Id, string name);
+        Task<PaginatedListDto<ApplicationListItemDto>> GetApplicationsAsync(Api.Common.Dto.RequestsAndResponses.Board.Application.GetListRequest request = null);
+        Task<ApplicationDto> GetApplicationAsync(long logId);
+        #endregion
+
+        #region Log
+        Task<LogDto> GetLogAsync(long logId);
+        Task<bool> LogSetIsFavoriteAsync(long logId, bool isFavorite);
+        Task<LogStatisticForNowDto> LogGetStatisticForNowAsync(long? applicationId = null);
+        Task<PaginatedListDto<LogListItemDto>> GetLogsAsync(Api.Common.Dto.RequestsAndResponses.Board.Log.GetListRequest request);
+        #endregion
     }
 }
