@@ -109,6 +109,7 @@
         }
         catch (Exception e)
         {
+            Console.WriteLine(e);
             _toastService.AddErrorMessage(Common.Error_ApplicationDeletionError);
         }
         finally

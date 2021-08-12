@@ -47,21 +47,15 @@ namespace OffLogs.Web.Services.Http
             return response;
         }
 
-        public async Task<ApplicationDto> DeleteApplicationAsync(long id)
+        public async Task DeleteApplicationAsync(long id)
         {
-            var response = await PostAuthorizedAsync<ApplicationDto>(
+            await PostAuthorizedAsync<object>(
                 MainApiUrl.ApplicationDelete,
                 new DeleteRequest()
                 {
                     Id = id
                 }
             );
-            if (response == null)
-            {
-                throw new ServerErrorException();
-            }
-
-            return response;
         }
 
         public async Task<PaginatedListDto<ApplicationListItemDto>> GetApplicationsAsync(GetListRequest request = null)

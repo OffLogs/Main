@@ -15,7 +15,7 @@ namespace OffLogs.Web.Services.Http
         #endregion
 
         #region Application
-        Task<ApplicationDto> DeleteApplicationAsync(long id);
+        Task DeleteApplicationAsync(long id);
         Task<ApplicationDto> AddApplicationAsync(string name);
         Task<ApplicationDto> UpdateApplicationAsync(long Id, string name);
         Task<PaginatedListDto<ApplicationListItemDto>> GetApplicationsAsync(Api.Common.Dto.RequestsAndResponses.Board.Application.GetListRequest request = null);
