@@ -27,6 +27,7 @@
 
     <ItemGroup>
       <Folder Include="Pages\Dashboard\Home\" />
+      <Folder Include="Shared\Ui\Form\AutoComplete\" />
     </ItemGroup>
 
     <ItemGroup>
