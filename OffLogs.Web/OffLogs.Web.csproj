@@ -21,7 +21,6 @@
     <ItemGroup>
       <Folder Include="Core\Constants" />
       <Folder Include="Pages\Dashboard\Home\" />
-      <Folder Include="wwwroot\css\bootstrap" />
     </ItemGroup>
 
     <ItemGroup>
