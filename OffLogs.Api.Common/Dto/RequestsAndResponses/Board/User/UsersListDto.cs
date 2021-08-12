@@ -4,7 +4,7 @@ using OffLogs.Api.Common.Dto.Entities;
 
 namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.User
 {
-    public class SearchResponseDto : List<UserDto>, IResponse
+    public class UsersListDto : List<UserDto>, IResponse
     {
     }
 }

@@ -37,7 +37,7 @@ namespace OffLogs.Business.Orm.Queries.Entities.User
                 );
             }
             return await query
-                .Take(100)
+                .Take(10)
                 .ListAsync();
         }
     }

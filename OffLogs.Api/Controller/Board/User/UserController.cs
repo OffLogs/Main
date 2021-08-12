@@ -25,6 +25,6 @@ namespace OffLogs.Api.Business.Controller.Board.User
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public Task<IActionResult> AddCommonLog(SearchRequest request)
-            => this.RequestAsync().For<SearchResponseDto>().With(request);
+            => this.RequestAsync().For<UsersListDto>().With(request);
     }
 }

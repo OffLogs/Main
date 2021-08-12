@@ -11,6 +11,7 @@ namespace OffLogs.Web.Services.Http
         #region User
         Task<Api.Common.Dto.RequestsAndResponses.Public.User.LoginResponseDto> LoginAsync(Api.Common.Dto.RequestsAndResponses.Public.User.LoginRequest model);
         Task<bool> CheckIsLoggedInAsync(string token);
+        Task<Api.Common.Dto.RequestsAndResponses.Board.User.UsersListDto> FindUsers(string search);
         #endregion
 
         #region Application
