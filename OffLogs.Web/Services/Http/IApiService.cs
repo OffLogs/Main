@@ -2,6 +2,7 @@ using OffLogs.Api.Common.Dto;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Requests.Board.Log;
 using System.Threading.Tasks;
+using OffLogs.Business.Common.Constants.Permissions;
 
 
 namespace OffLogs.Web.Services.Http
@@ -11,6 +12,7 @@ namespace OffLogs.Web.Services.Http
         #region User
         Task<Api.Common.Dto.RequestsAndResponses.Public.User.LoginResponseDto> LoginAsync(Api.Common.Dto.RequestsAndResponses.Public.User.LoginRequest model);
         Task<bool> CheckIsLoggedInAsync(string token);
+        Task<Api.Common.Dto.RequestsAndResponses.Board.User.UsersListDto> FindUsers(string search);
         #endregion
 
         #region Application
@@ -26,6 +28,21 @@ namespace OffLogs.Web.Services.Http
         Task<bool> LogSetIsFavoriteAsync(long logId, bool isFavorite);
         Task<LogStatisticForNowDto> LogGetStatisticForNowAsync(long? applicationId = null);
         Task<PaginatedListDto<LogListItemDto>> GetLogsAsync(Api.Common.Dto.RequestsAndResponses.Board.Log.GetListRequest request);
+        #endregion
+        
+        #region Permissions
+
+        Task<bool> PermissionAddAccess(
+            PermissionAccessType accessType,
+            long recipientId,
+            long itemId
+        );
+
+        Task<bool> PermissionRemoveAccess(
+            PermissionAccessType accessType,
+            long recipientId,
+            long itemId
+        );
         #endregion
     }
 }

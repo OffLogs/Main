@@ -23,7 +23,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.PermissionCont
             {
                 AccessType = PermissionAccessType.ApplicationRead,
                 ItemId = user.ApplicationId,
-                RecepientId = user2.Id
+                RecipientId = user2.Id
             });
             // Assert
             Assert.True(response.StatusCode == HttpStatusCode.Unauthorized);
@@ -41,7 +41,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.PermissionCont
             {
                 AccessType = 0,
                 ItemId = user.ApplicationId,
-                RecepientId = user2.Id
+                RecipientId = user2.Id
             });
             // Assert
             Assert.True(response.StatusCode == HttpStatusCode.BadRequest);
@@ -59,7 +59,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.PermissionCont
             {
                 AccessType = PermissionAccessType.ApplicationRead,
                 ItemId = 0,
-                RecepientId = user2.Id
+                RecipientId = user2.Id
             });
             // Assert
             Assert.True(response.StatusCode == HttpStatusCode.BadRequest);
@@ -77,7 +77,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.PermissionCont
             {
                 AccessType = PermissionAccessType.ApplicationRead,
                 ItemId = 0,
-                RecepientId = user2.Id
+                RecipientId = user2.Id
             });
             // Assert
             Assert.True(response.StatusCode == HttpStatusCode.BadRequest);

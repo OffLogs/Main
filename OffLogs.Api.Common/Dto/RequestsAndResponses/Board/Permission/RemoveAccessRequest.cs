@@ -18,7 +18,7 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Permission
         /// Who will receive these permissions
         /// </summary>
         [IsPositive(AllowZero = true)]
-        public long RecepientId { get; set; }
+        public long RecipientId { get; set; }
 
         /// <summary>
         /// Item to be granted permissions 

@@ -11,7 +11,7 @@ using OffLogs.Business.Services.Entities.Application;
 using Queries.Abstractions;
 using ValidationException = OffLogs.Business.Exceptions.ValidationException;
 
-namespace OffLogs.Api.Business.Controller.Board.Permission.Actions
+namespace OffLogs.Api.Controller.Board.Permission.Actions
 {
     public class AddAccessRequestHandler : IAsyncRequestHandler<AddAccessRequest>
     {
@@ -45,7 +45,7 @@ namespace OffLogs.Api.Business.Controller.Board.Permission.Actions
 
         private async Task AddApplicationReadRights(AddAccessRequest request)
         {
-            var recepient = await _queryBuilder.FindByIdAsync<UserEntity>(request.RecepientId);
+            var recepient = await _queryBuilder.FindByIdAsync<UserEntity>(request.RecipientId);
             if (recepient == null)
                 throw new ItemNotFoundException(nameof(recepient));
             var application = await _queryBuilder.FindByIdAsync<ApplicationEntity>(request.ItemId);

@@ -5,6 +5,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Core\Constants\**" />
+      <Content Remove="Core\Constants\**" />
+      <EmbeddedResource Remove="Core\Constants\**" />
+      <None Remove="Core\Constants\**" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="BlazorDeferredRemove" Version="0.2.5" />
         <PackageReference Include="Blazored.LocalStorage" Version="4.1.2" />
         <PackageReference Include="ChartJs.Blazor.Fork" Version="2.0.2" />
@@ -19,9 +26,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Core\Constants" />
       <Folder Include="Pages\Dashboard\Home\" />
-      <Folder Include="wwwroot\css\bootstrap" />
+      <Folder Include="Shared\Ui\Form\AutoComplete\" />
     </ItemGroup>
 
     <ItemGroup>

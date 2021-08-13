@@ -11,7 +11,7 @@ using Queries.Abstractions;
 
 namespace OffLogs.Api.Business.Controller.Board.User.Actions
 {
-    public class SearchRequestHandler : IAsyncRequestHandler<SearchRequest, SearchResponseDto>
+    public class SearchRequestHandler : IAsyncRequestHandler<SearchRequest, UsersListDto>
     {
         private readonly IMapper _mapper;
         private readonly IAsyncQueryBuilder _queryBuilder;
@@ -28,13 +28,13 @@ namespace OffLogs.Api.Business.Controller.Board.User.Actions
             _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
         }
 
-        public async Task<SearchResponseDto> ExecuteAsync(SearchRequest request)
+        public async Task<UsersListDto> ExecuteAsync(SearchRequest request)
         {
             var userId = _requestService.GetUserIdFromJwt();
             var list = await _queryBuilder.For<ICollection<UserEntity>>()
                 .WithAsync(new UserSearchCriteria(request.Search, new long[] { userId }));
 
-            return _mapper.Map<SearchResponseDto>(list);
+            return _mapper.Map<UsersListDto>(list);
         }
     }
 }

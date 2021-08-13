@@ -1,0 +1,120 @@
+﻿@using System.Threading
+@using OffLogs.Web.Services.Http
+@using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.User
+@using Microsoft.Extensions.Logging
+@using OffLogs.Api.Common.Dto.Entities
+@inject ILogger<SelectUserDropDown> _logger
+@inject IApiService _apiService
+
+<div>
+    <input class="form-control"
+           type="text"
+           placeholder="Default input"
+           @bind:event="oninput"
+           @onblur="CloseDropDown"
+           @onfocus="() => OpenDropDown(false)"
+           @bind="SearchString" />
+    <div class="dropdown-menu @(_isListOpened ? " show" : "" )">
+        @foreach (var user in _users)
+        {
+            <a class="dropdown-item"
+               href="#"
+               @onclick="@(async () => await OnSelectUserAsync(user))"
+               @onclick:preventDefault="true">
+                @user.UserName
+            </a>
+        }
+        @if (!_users.Any())
+        {
+            <a class="dropdown-item"
+               href="#"
+               @onclick="@(async () => await OnSelectUserAsync(null))"
+               @onclick:preventDefault="true">
+                Items not found
+            </a>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback<UserDto> OnUserChanged { get; set; }
+
+    private bool _isLoading;
+    private bool _isQueued;
+    private bool _isListOpened = false;
+    private UsersListDto _users = new UsersListDto();
+
+    private string _searchString;
+    private string SearchString
+    {
+        get => _searchString;
+        set
+        {
+            _searchString = value;
+            OpenDropDown(true);
+            InvokeAsync(async () => await UpdateDropDownAsync());
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+    }
+
+    private void CloseDropDown() => _isListOpened = false;
+
+    private void OpenDropDown(bool isForce) => _isListOpened = isForce || _users.Any();
+
+    private async Task UpdateDropDownAsync()
+    {
+        if (string.IsNullOrEmpty(SearchString) || SearchString.Length <= 2)
+        {
+            _users.Clear();
+            await InvokeAsync(StateHasChanged);
+            return;
+        }
+
+        await LoadListAsync();
+    }
+
+    private async Task LoadListAsync()
+    {
+        if (_isLoading)
+        {
+            _isQueued = true;
+            return;
+        }
+
+        do
+        {
+            _isLoading = true;
+            _isQueued = false;
+            try
+            {
+                _users = await _apiService.FindUsers(SearchString);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message, e);
+            }
+            finally
+            {
+                _isLoading = false;
+            }
+        }
+        while (_isQueued);
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task OnSelectUserAsync(UserDto user)
+    {
+        CloseDropDown();
+        if (user != null)
+        {
+
+        }
+        await InvokeAsync(async () => await OnUserChanged.InvokeAsync(user));
+    }
+}

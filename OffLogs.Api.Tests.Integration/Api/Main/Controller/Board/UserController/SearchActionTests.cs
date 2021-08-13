@@ -40,7 +40,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.UserController
             });
             // Assert
             response.EnsureSuccessStatusCode();
-            var responseData = await response.GetJsonDataAsync<SearchResponseDto>();
+            var responseData = await response.GetJsonDataAsync<UsersListDto>();
             Assert.True(responseData.Count >= 1);
             Assert.Contains(responseData, u => u.Id == user2.Id);
         }
@@ -59,7 +59,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.UserController
             });
             // Assert
             response.EnsureSuccessStatusCode();
-            var responseData = await response.GetJsonDataAsync<SearchResponseDto>();
+            var responseData = await response.GetJsonDataAsync<UsersListDto>();
             Assert.True(responseData.Count >= 1);
             Assert.Contains(responseData, u => u.Id == user2.Id);
         }
@@ -77,7 +77,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.UserController
             });
             // Assert
             response.EnsureSuccessStatusCode();
-            var responseData = await response.GetJsonDataAsync<SearchResponseDto>();
+            var responseData = await response.GetJsonDataAsync<UsersListDto>();
             Assert.True(responseData.Count >= 0);
             Assert.DoesNotContain(responseData, u => u.Id == user1.Id);
         }
@@ -95,7 +95,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.UserController
             });
             // Assert
             response.EnsureSuccessStatusCode();
-            var responseData = await response.GetJsonDataAsync<SearchResponseDto>();
+            var responseData = await response.GetJsonDataAsync<UsersListDto>();
             Assert.True(responseData.Count >= 0);
             Assert.DoesNotContain(responseData, u => u.Id == user1.Id);
         }

@@ -1,0 +1,66 @@
+﻿@using OffLogs.Web.Services.Http
+@using Microsoft.AspNetCore.Components
+@using OffLogs.Web.Core.Models.Modal
+@inject IApiService _apiService
+@inject ToastService _toastService
+
+<ModalWindow
+    IsShow="_isShowModal"
+    Buttons="_modalButtons"
+    IsLoading="_isLoading"
+    OnClose="@(async () => { await Task.Yield(); _isShowModal = false; })"
+    >
+    
+
+</ModalWindow>
+
+@code {
+    [Parameter]
+    public EventCallback OnClosed { get; set; }
+    
+    private List<ModalButtonModel> _modalButtons = new ();
+    private bool _isShowModal = false;
+    private bool _isLoading = false;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        var saveBtnModel = new ModalButtonModel(
+            "Add",
+            OnClickSave
+        );
+        saveBtnModel.IsCloseAfterAction = false;
+        _modalButtons.Add(saveBtnModel);
+        _modalButtons.Add(new (
+            "Cancel",
+            null,
+            BootstrapColorType.Light
+        ));
+    }
+
+    private void OnClickSave()
+    {
+        InvokeAsync(async () => await SaveSharedUsersAsync());
+    }
+
+    private async Task SaveSharedUsersAsync()
+    {
+        _isLoading = true;
+        try
+        {
+            // await _apiService.AddApplicationAsync(_model.Name);
+
+            _toastService.AddInfoMessage("New application was added");
+        }
+        catch (Exception e)
+        {
+            _toastService.AddErrorMessage(e.Message);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+        await InvokeAsync(StateHasChanged);
+    }
+}
