@@ -1,5 +1,6 @@
 ﻿@using OffLogs.Web.Services.Http
 @using Microsoft.AspNetCore.Components
+@using OffLogs.Api.Common.Dto.Entities
 @using OffLogs.Web.Core.Models.Modal
 @inject IApiService _apiService
 @inject ToastService _toastService
@@ -8,19 +9,24 @@
     IsShow="_isShowModal"
     Buttons="_modalButtons"
     IsLoading="_isLoading"
-    OnClose="@(async () => { await Task.Yield(); _isShowModal = false; })"
-    >
+    OnClose="@(async () => { await Task.Yield(); _isShowModal = false; })">
     
-
+    @foreach(var user in _application.)
+    
 </ModalWindow>
 
 @code {
+    [Parameter]
+    public long ApplicationId { get; set; }
+    
     [Parameter]
     public EventCallback OnClosed { get; set; }
     
     private List<ModalButtonModel> _modalButtons = new ();
     private bool _isShowModal = false;
     private bool _isLoading = false;
+    private long _applicationId;
+    private ApplicationDto _application;
     
     protected override async Task OnInitializedAsync()
     {
@@ -37,8 +43,19 @@
             null,
             BootstrapColorType.Light
         ));
+        _applicationId = ApplicationId;
     }
 
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        if (_applicationId != ApplicationId)
+        {
+            _applicationId = ApplicationId;
+            await LoadApplicationAsync();
+        }
+    }
+    
     private void OnClickSave()
     {
         InvokeAsync(async () => await SaveSharedUsersAsync());
@@ -56,6 +73,24 @@
         catch (Exception e)
         {
             _toastService.AddErrorMessage(e.Message);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+        await InvokeAsync(StateHasChanged);
+    }
+    
+    private async Task LoadApplicationAsync()
+    {
+        _isLoading = true;
+        try
+        {
+            _application = await _apiService.GetApplicationAsync(_applicationId);
+        }
+        catch (Exception e)
+        {
+            _toastService.AddServerErrorMessage();
         }
         finally
         {
