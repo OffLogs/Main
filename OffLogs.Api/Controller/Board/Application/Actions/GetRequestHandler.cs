@@ -4,6 +4,7 @@ using Api.Requests.Abstractions;
 using AutoMapper;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application;
+using OffLogs.Business.Common.Dto;
 using OffLogs.Business.Exceptions;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries;
@@ -44,12 +45,19 @@ namespace OffLogs.Api.Business.Controller.Board.Application.Actions
         public async Task<ApplicationDto> ExecuteAsync(GetRequest request)
         {
             var userId = _requestService.GetUserIdFromJwt();
-            if (!await _accessPolicyService.HasReadAccessAsync<ApplicationEntity>(request.Id, userId))
+            var isReadAccess = await _accessPolicyService.HasReadAccessAsync<ApplicationEntity>(request.Id, userId);
+            if (!isReadAccess)
             {
                 throw new DataPermissionException();
             }
             var application = await _queryBuilder.FindByIdAsync<ApplicationEntity>(request.Id);
-            return _mapper.Map<ApplicationDto>(application);
+            var isWriteAccess = await _accessPolicyService.HasWriteAccessAsync<ApplicationEntity>(application.Id, userId);
+            var dto = _mapper.Map<ApplicationDto>(application);
+            dto.Permissions = new PermissionInfoDto(
+                isReadAccess,
+                isWriteAccess
+            );
+            return dto;
         }
     }
 }

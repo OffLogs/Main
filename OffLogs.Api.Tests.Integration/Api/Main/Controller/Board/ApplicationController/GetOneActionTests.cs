@@ -12,6 +12,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
     {
         public GetOneActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
 
+        #region Common
         [Theory]
         [InlineData(MainApiUrl.ApplicationGetOne)]
         public async Task OnlyAuthorizedUsersCanGetApplications(string url)
@@ -80,5 +81,47 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
             Assert.Equal(user1.Application.Name, responseData.Name);
             Assert.Equal(user1.Application.ApiToken, responseData.ApiToken);
         }
+        #endregion
+
+        #region Permissions
+        [Theory]
+        [InlineData(MainApiUrl.ApplicationGetOne)]
+        public async Task OwnerShouldReceiveIsWriteAccessAsTrue(string url)
+        {
+            var user1 = await DataSeeder.CreateNewUser();
+
+            // Act
+            var response = await PostRequestAsync(url, user1.ApiToken, new GetRequest()
+            {
+                Id = user1.ApplicationId
+            });
+            // Assert
+            var responseData = await response.GetJsonDataAsync<ApplicationDto>();
+            Assert.Equal(user1.Application.Id, responseData.Id);
+            Assert.True(responseData.Permissions.IsReadAccess);
+            Assert.True(responseData.Permissions.IsWriteAccess);
+        }
+
+        [Theory]
+        [InlineData(MainApiUrl.ApplicationGetOne)]
+        public async Task SharedUserShouldReceiveIsReadAccessAsTrue(string url)
+        {
+            var user1 = await DataSeeder.CreateNewUser();
+            var user2 = await DataSeeder.CreateNewUser();
+
+            await ApplicationService.ShareForUser(user1.Application, user2);
+
+            // Act
+            var response = await PostRequestAsync(url, user2.ApiToken, new GetRequest()
+            {
+                Id = user1.ApplicationId
+            });
+            // Assert
+            var responseData = await response.GetJsonDataAsync<ApplicationDto>();
+            Assert.Equal(user1.Application.Id, responseData.Id);
+            Assert.True(responseData.Permissions.IsReadAccess);
+            Assert.False(responseData.Permissions.IsWriteAccess);
+        }
+        #endregion
     }
 }
