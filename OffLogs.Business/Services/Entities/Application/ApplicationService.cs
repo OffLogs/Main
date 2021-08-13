@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Commands.Abstractions;
 using Domain.Abstractions;
 using Notification.Abstractions;
+using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Exceptions;
 using OffLogs.Business.Notifications.Senders;
 using OffLogs.Business.Orm.Commands.Context;
@@ -73,6 +74,11 @@ namespace OffLogs.Business.Services.Entities.Application
             if (application.SharedForUsers.Any(u => u.Id == user.Id))
             {
                 throw new PermissionException("This user already has access right for this application");
+            }
+
+            if (application.SharedForUsers.Count >= GlobalConstants.ApplicationMaxShares)
+            {
+                throw new PermissionException($"You can not share application more than {GlobalConstants.ApplicationMaxShares} users");
             }
             application.SharedForUsers.Add(user);
             await _commandBuilder.SaveAsync(application);
