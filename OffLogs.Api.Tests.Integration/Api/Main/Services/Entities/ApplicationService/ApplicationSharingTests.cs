@@ -57,5 +57,21 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.ApplicationSe
                 await ApplicationService.ShareForUser(user1.Application, user1);
             });
         }
+        
+        [Fact]
+        public async Task ShouldNotShareApplicationMoreThan20Users()
+        {
+            var user1 = await DataSeeder.CreateNewUser();
+
+            int sharesCount = 0;
+            await Assert.ThrowsAsync<PermissionException>(async () => {
+                for (sharesCount = 0; sharesCount < GlobalConstants.ApplicationMaxShares + 1; sharesCount++)
+                {
+                    var user2 = await DataSeeder.CreateNewUser();
+                    await ApplicationService.ShareForUser(user1.Application, user2);    
+                }
+            });
+            Assert.True(sharesCount == 20);
+        }
     }
 }

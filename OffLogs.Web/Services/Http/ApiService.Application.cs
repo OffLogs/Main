@@ -1,6 +1,7 @@
 ﻿using OffLogs.Api.Common.Dto;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.User;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Web.Core.Exceptions;
 using System;
@@ -85,6 +86,23 @@ namespace OffLogs.Web.Services.Http
                 new GetRequest()
                 {
                     Id = logId
+                }
+            );
+            if (response == null)
+            {
+                throw new ServerErrorException();
+            }
+
+            return response;
+        }
+
+        public async Task<UsersListDto> ApplicationGetSharedUsersAsync(long applicationId)
+        {
+            var response = await PostAuthorizedAsync<UsersListDto>(
+                MainApiUrl.ApplicationGetSharedUser,
+                new GetSharedUsersRequest()
+                {
+                    Id = applicationId
                 }
             );
             if (response == null)

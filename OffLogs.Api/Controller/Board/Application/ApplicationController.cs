@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using OffLogs.Api.Common.Dto;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.User;
 using Persistence.Transactions.Behaviors;
 
 namespace OffLogs.Api.Business.Controller.Board.Application
@@ -52,5 +53,11 @@ namespace OffLogs.Api.Business.Controller.Board.Application
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public Task<IActionResult> GetOne(GetRequest request)
             => this.RequestAsync().For<ApplicationDto>().With(request);
+
+        [HttpPost("get-shared-users")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public Task<IActionResult> GetSharedUsers(GetSharedUsersRequest request)
+            => this.RequestAsync().For<UsersListDto>().With(request);
     }
 }
