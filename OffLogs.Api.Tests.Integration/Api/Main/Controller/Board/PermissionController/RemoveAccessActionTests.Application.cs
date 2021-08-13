@@ -24,7 +24,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.PermissionCont
             {
                 AccessType = PermissionAccessType.ApplicationRead,
                 ItemId = user.ApplicationId,
-                RecepientId = user2.Id
+                RecipientId = user2.Id
             });
             response.EnsureSuccessStatusCode();
 
@@ -49,7 +49,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.PermissionCont
             {
                 AccessType = PermissionAccessType.ApplicationRead,
                 ItemId = user.ApplicationId,
-                RecepientId = user2.Id
+                RecipientId = user2.Id
             });
             // Assert
             Assert.True(response.StatusCode == HttpStatusCode.BadRequest);

@@ -11,7 +11,7 @@ using OffLogs.Business.Services.Entities.Application;
 using Queries.Abstractions;
 using ValidationException = OffLogs.Business.Exceptions.ValidationException;
 
-namespace OffLogs.Api.Business.Controller.Board.Permission.Actions
+namespace OffLogs.Api.Controller.Board.Permission.Actions
 {
     public class RemoveAccessRequestHandler : IAsyncRequestHandler<RemoveAccessRequest>
     {
@@ -45,14 +45,14 @@ namespace OffLogs.Api.Business.Controller.Board.Permission.Actions
 
         private async Task RemoveApplicationReadRights(RemoveAccessRequest request)
         {
-            var recepient = await _queryBuilder.FindByIdAsync<UserEntity>(request.RecepientId);
-            if (recepient == null)
-                throw new ItemNotFoundException(nameof(recepient));
+            var recipient = await _queryBuilder.FindByIdAsync<UserEntity>(request.RecipientId);
+            if (recipient == null)
+                throw new ItemNotFoundException(nameof(recipient));
             var application = await _queryBuilder.FindByIdAsync<ApplicationEntity>(request.ItemId);
             if (application == null)
                 throw new ItemNotFoundException(nameof(application));
 
-            await _applicationService.RemoveShareForUser(application, recepient);
+            await _applicationService.RemoveShareForUser(application, recipient);
         }
     }
 }
