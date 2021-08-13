@@ -12,6 +12,7 @@ namespace OffLogs.Business.Common.Constants
         public const string ApplicationList = "/board/application/list";
         public const string ApplicationAdd = "/board/application/add";
         public const string ApplicationGetOne = "/board/application/get";
+        public const string ApplicationGetSharedUser = "/board/application/get-shared-users";
         public const string ApplicationUpdate = "/board/application/update";
         public const string ApplicationDelete = "/board/application/delete";
 

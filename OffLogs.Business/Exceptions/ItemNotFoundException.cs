@@ -12,5 +12,9 @@ namespace OffLogs.Business.Exceptions
         public ItemNotFoundException(string name) : base($"Item not found: {name}")
         {
         }
+
+        public ItemNotFoundException(long id) : this(id.ToString())
+        {
+        }
     }
 }

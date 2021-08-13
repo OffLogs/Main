@@ -3,7 +3,7 @@ using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Requests.Board.Log;
 using System.Threading.Tasks;
 using OffLogs.Business.Common.Constants.Permissions;
-
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.User;
 
 namespace OffLogs.Web.Services.Http
 {
@@ -21,6 +21,7 @@ namespace OffLogs.Web.Services.Http
         Task<ApplicationDto> UpdateApplicationAsync(long Id, string name);
         Task<PaginatedListDto<ApplicationListItemDto>> GetApplicationsAsync(Api.Common.Dto.RequestsAndResponses.Board.Application.GetListRequest request = null);
         Task<ApplicationDto> GetApplicationAsync(long logId);
+        Task<UsersListDto> ApplicationGetSharedUsersAsync(long applicationId);
         #endregion
 
         #region Log
