@@ -84,4 +84,8 @@ a,
   width: 64px;
   height: 64px;
 }
+/** Helpers */
+.w-cursor-pointer {
+  cursor: pointer;
+}
 /*# sourceMappingURL=app.css.map */

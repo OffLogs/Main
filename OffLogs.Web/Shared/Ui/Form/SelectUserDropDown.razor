@@ -9,9 +9,8 @@
 <div>
     <input class="form-control"
            type="text"
-           placeholder="Default input"
+           placeholder="Enter user name"
            @bind:event="oninput"
-           @onblur="CloseDropDown"
            @onfocus="() => OpenDropDown(false)"
            @bind="SearchString" />
     <div class="dropdown-menu @(_isListOpened ? " show" : "" )">
@@ -20,7 +19,7 @@
             <a class="dropdown-item"
                href="#"
                @onclick="@(async () => await OnSelectUserAsync(user))"
-               @onclick:preventDefault="true">
+               @onclick:preventDefault>
                 @user.UserName
             </a>
         }
@@ -29,7 +28,7 @@
             <a class="dropdown-item"
                href="#"
                @onclick="@(async () => await OnSelectUserAsync(null))"
-               @onclick:preventDefault="true">
+               @onclick:preventDefault>
                 Items not found
             </a>
         }
@@ -43,7 +42,7 @@
     private bool _isLoading;
     private bool _isQueued;
     private bool _isListOpened = false;
-    private UsersListDto _users = new UsersListDto();
+    private UsersListDto _users = new();
 
     private string _searchString;
     private string SearchString
@@ -63,7 +62,11 @@
 
     }
 
-    private void CloseDropDown() => _isListOpened = false;
+    private Task CloseDropDownAsync()
+    {
+        _isListOpened = false;
+        return Task.CompletedTask;
+    }
 
     private void OpenDropDown(bool isForce) => _isListOpened = isForce || _users.Any();
 
@@ -108,13 +111,15 @@
         await InvokeAsync(StateHasChanged);
     }
 
-    private async Task OnSelectUserAsync(UserDto user)
+    private Task OnSelectUserAsync(UserDto user)
     {
-        CloseDropDown();
+        CloseDropDownAsync();
         if (user != null)
         {
-
+            
         }
-        await InvokeAsync(async () => await OnUserChanged.InvokeAsync(user));
+        _searchString = "";
+        InvokeAsync(() => OnUserChanged.InvokeAsync(user));
+        return InvokeAsync(StateHasChanged);
     }
 }

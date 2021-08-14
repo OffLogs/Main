@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -6,6 +7,7 @@ using Blazored.LocalStorage;
 using Newtonsoft.Json;
 using OffLogs.Api.Common.Dto;
 using OffLogs.Api.Common.Dto.Entities;
+using OffLogs.Api.Common.Dto.RequestsAndResponses;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
 using OffLogs.Business.Common.Constants;
@@ -25,7 +27,7 @@ namespace OffLogs.Web.Services.Http
             _localStorage = localStorage;
         }
 
-        private async Task<TResponse> RequestAsync<TResponse>(string requestUri, string jwtToken, object data, HttpMethod httpMethod)
+        private async Task<string> RequestAsync(string requestUri, string jwtToken, object data, HttpMethod httpMethod)
         {
             // create request object
             var request = new HttpRequestMessage(httpMethod, requestUri);
@@ -44,10 +46,24 @@ namespace OffLogs.Web.Services.Http
             var responseString = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
-                return JsonConvert.DeserializeObject<TResponse>(responseString);
+                return responseString;
             }
 
-            throw new HttpResponseStatusException(response.StatusCode, "Add message");
+            BadResponseDto badResponse = null;
+            try
+            {
+                badResponse = JsonConvert.DeserializeObject<BadResponseDto>(responseString);
+            }
+            finally
+            {
+                throw new HttpResponseStatusException(response.StatusCode, badResponse?.Message ?? "Server error");
+            }
+        }
+        
+        private async Task<TResponse> RequestAsync<TResponse>(string requestUri, string jwtToken, object data, HttpMethod httpMethod)
+        {
+            var responseString = await RequestAsync(requestUri, jwtToken, data, httpMethod);
+            return JsonConvert.DeserializeObject<TResponse>(responseString);
         }
 
         private async Task<TResponse> PostAsync<TResponse>(string requestUri, object data, string jwtToken = null)
@@ -65,30 +81,24 @@ namespace OffLogs.Web.Services.Http
             );
         }
         
+        private async Task PostAuthorizedAsync(string requestUri, object data)
+        {
+            await RequestAsync(
+                requestUri, 
+                await _localStorage.GetItemAsync<string>(AuthorizationService.AuthKey), 
+                data, 
+                HttpMethod.Post
+            );
+        }
+        
         private async Task<TResponse> GetAsync<TResponse>(string requestUri, object data, string jwtToken = null)
         {
             return await RequestAsync<TResponse>(requestUri, jwtToken, data, HttpMethod.Get);
-        }  
-        
-        public async Task<LoginResponseDto> LoginAsync(LoginRequest model)
-        {
-            var response = await PostAsync<LoginResponseDto>(MainApiUrl.Login, model);
-            if (response == null)
-            {
-                throw new ServerErrorException();
-            }
-
-            return response;
         }
         
-        public async Task<bool> CheckIsLoggedInAsync(string token)
+        private async Task<string> GetAsync(string requestUri, object data, string jwtToken = null)
         {
-            var response = await GetAsync<object>(MainApiUrl.UserCheckIsLoggedIn, null, token);
-            if (response == null)
-            {
-                throw new ServerErrorException();
-            }
-            return true;
+            return await RequestAsync(requestUri, jwtToken, data, HttpMethod.Get);
         }
     }
 }
