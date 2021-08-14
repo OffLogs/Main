@@ -15,6 +15,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
     {
         public GetListActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
 
+        #region Common
         [Theory]
         [InlineData(MainApiUrl.ApplicationList)]
         public async Task OnlyAuthorizedUsersCanReceiveList(string url)
@@ -128,5 +129,47 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
             Assert.Equal(1, responseData.TotalPages);
             Assert.Equal(17, responseData.Items.Count);
         }
+        #endregion
+        
+        #region Permissions
+        [Theory]
+        [InlineData(MainApiUrl.ApplicationList)]
+        public async Task ListShouldContainSharedApplicationsWithCorrectPermissions(string url)
+        {
+            var user = await DataSeeder.CreateNewUser();
+            var user2 = await DataSeeder.CreateNewUser();
+            await ApplicationService.ShareForUser(user2.Application, user);
+            var user3 = await DataSeeder.CreateNewUser();
+            await ApplicationService.ShareForUser(user3.Application, user);
+            
+            // Act
+            var response = await PostRequestAsync(url, user.ApiToken, new GetListRequest()
+            {
+                Page = 1
+            });
+            response.EnsureSuccessStatusCode();
+            // Assert
+            var responseData = await response.GetJsonDataAsync<PaginatedListDto<ApplicationListItemDto>>();
+            Assert.Equal(3, responseData.Items.Count);
+            Assert.Contains(
+                responseData.Items, 
+                dto => dto.Id == user.ApplicationId 
+                    && dto.Permissions.IsHasReadAccess 
+                    && dto.Permissions.IsHasWriteAccess
+            );
+            Assert.Contains(
+                responseData.Items, 
+                dto => dto.Id == user2.ApplicationId
+                       && dto.Permissions.IsHasReadAccess 
+                       && !dto.Permissions.IsHasWriteAccess
+            );
+            Assert.Contains(
+                responseData.Items, 
+                dto => dto.Id == user3.ApplicationId
+                       && dto.Permissions.IsHasReadAccess 
+                       && !dto.Permissions.IsHasWriteAccess
+            );
+        }
+        #endregion
     }
 }

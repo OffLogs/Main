@@ -98,8 +98,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
             // Assert
             var responseData = await response.GetJsonDataAsync<ApplicationDto>();
             Assert.Equal(user1.Application.Id, responseData.Id);
-            Assert.True(responseData.Permissions.IsReadAccess);
-            Assert.True(responseData.Permissions.IsWriteAccess);
+            Assert.True(responseData.Permissions.IsHasReadAccess);
+            Assert.True(responseData.Permissions.IsHasWriteAccess);
         }
 
         [Theory]
@@ -119,8 +119,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
             // Assert
             var responseData = await response.GetJsonDataAsync<ApplicationDto>();
             Assert.Equal(user1.Application.Id, responseData.Id);
-            Assert.True(responseData.Permissions.IsReadAccess);
-            Assert.False(responseData.Permissions.IsWriteAccess);
+            Assert.True(responseData.Permissions.IsHasReadAccess);
+            Assert.False(responseData.Permissions.IsHasWriteAccess);
         }
         #endregion
     }
