@@ -9,9 +9,8 @@
 <div>
     <input class="form-control"
            type="text"
-           placeholder="Default input"
+           placeholder="Enter user name"
            @bind:event="oninput"
-           @onblur="CloseDropDown"
            @onfocus="() => OpenDropDown(false)"
            @bind="SearchString" />
     <div class="dropdown-menu @(_isListOpened ? " show" : "" )">
@@ -20,8 +19,7 @@
             <a class="dropdown-item"
                href="#"
                @onclick="@(async () => await OnSelectUserAsync(user))"
-               @onclick:preventDefault
-               @onclick:stopPropagation>
+               @onclick:preventDefault>
                 @user.UserName
             </a>
         }
@@ -30,8 +28,7 @@
             <a class="dropdown-item"
                href="#"
                @onclick="@(async () => await OnSelectUserAsync(null))"
-               @onclick:preventDefault
-               @onclick:stopPropagation>
+               @onclick:preventDefault>
                 Items not found
             </a>
         }
@@ -65,9 +62,10 @@
 
     }
 
-    private void CloseDropDown()
+    private Task CloseDropDownAsync()
     {
-        // _isListOpened = false;
+        _isListOpened = false;
+        return Task.CompletedTask;
     }
 
     private void OpenDropDown(bool isForce) => _isListOpened = isForce || _users.Any();
@@ -113,14 +111,14 @@
         await InvokeAsync(StateHasChanged);
     }
 
-    private async Task OnSelectUserAsync(UserDto user)
+    private Task OnSelectUserAsync(UserDto user)
     {
-        _logger.LogDebug($"11111 {user.UserName}");
-        CloseDropDown();
+        CloseDropDownAsync();
         if (user != null)
         {
 
         }
-        await InvokeAsync(async () => await OnUserChanged.InvokeAsync(user));
+        InvokeAsync(() => OnUserChanged.InvokeAsync(user));
+        return Task.CompletedTask;
     }
 }

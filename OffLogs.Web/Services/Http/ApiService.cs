@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -6,6 +7,7 @@ using Blazored.LocalStorage;
 using Newtonsoft.Json;
 using OffLogs.Api.Common.Dto;
 using OffLogs.Api.Common.Dto.Entities;
+using OffLogs.Api.Common.Dto.RequestsAndResponses;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
 using OffLogs.Business.Common.Constants;
@@ -47,7 +49,15 @@ namespace OffLogs.Web.Services.Http
                 return JsonConvert.DeserializeObject<TResponse>(responseString);
             }
 
-            throw new HttpResponseStatusException(response.StatusCode, "Add message");
+            BadResponseDto badResponse = null;
+            try
+            {
+                badResponse = JsonConvert.DeserializeObject<BadResponseDto>(responseString);
+            }
+            finally
+            {
+                throw new HttpResponseStatusException(response.StatusCode, badResponse?.Message ?? "Server error");
+            }
         }
 
         private async Task<TResponse> PostAsync<TResponse>(string requestUri, object data, string jwtToken = null)

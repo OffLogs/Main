@@ -3,6 +3,7 @@
 @using Microsoft.Extensions.Logging
 @using OffLogs.Api.Common.Dto.Entities
 @using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.User
+@using OffLogs.Business.Common.Constants.Permissions
 @using OffLogs.Web.Core.Models.Modal
 @inject ILogger<ShareApplicationModal> _logger
 @inject IApiService _apiService
@@ -82,31 +83,49 @@
     
     private void OnClickSave()
     {
-        InvokeAsync(async () => await SaveSharedUsersAsync());
+        // InvokeAsync(async () => await SaveSharedUsersAsync());
     }
 
-    private async Task OnUserSelectedAsync(UserDto user)
+    private Task OnUserSelectedAsync(UserDto user)
     {
-        _logger.LogDebug(user.UserName);
-        await Task.CompletedTask;
+        InvokeAsync(async () => await ShareForUserAsync(user));
+        return Task.CompletedTask;
     }
 
-    private async Task SaveSharedUsersAsync()
+    private async Task ShareForUserAsync(UserDto user)
     {
-        _isLoading = true;
         try
         {
-            // await _apiService.AddApplicationAsync(_model.Name);
+            await _apiService.PermissionAddAccess(
+                PermissionAccessType.ApplicationRead,
+                user.Id,
+                _applicationId
+            );
 
-            _toastService.AddInfoMessage("New application was added");
+            _toastService.AddInfoMessage($"Application was shared for {user.UserName}");
         }
         catch (Exception e)
         {
             _toastService.AddErrorMessage(e.Message);
         }
-        finally
+        await InvokeAsync(StateHasChanged);
+    }
+    
+    private async Task RemoveShareForUserAsync(UserDto user)
+    {
+        try
         {
-            _isLoading = false;
+            await _apiService.PermissionRemoveAccess(
+                PermissionAccessType.ApplicationRead,
+                user.Id,
+                _applicationId
+            );
+
+            _toastService.AddInfoMessage($"User access to the application has been removed");
+        }
+        catch (Exception e)
+        {
+            _toastService.AddErrorMessage(e.Message);
         }
         await InvokeAsync(StateHasChanged);
     }
