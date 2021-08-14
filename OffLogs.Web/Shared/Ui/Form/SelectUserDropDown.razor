@@ -116,9 +116,10 @@
         CloseDropDownAsync();
         if (user != null)
         {
-
+            
         }
+        _searchString = "";
         InvokeAsync(() => OnUserChanged.InvokeAsync(user));
-        return Task.CompletedTask;
+        return InvokeAsync(StateHasChanged);
     }
 }
