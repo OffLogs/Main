@@ -50,7 +50,7 @@ namespace OffLogs.Web.Services.Http
 
         public async Task DeleteApplicationAsync(long id)
         {
-            await PostAuthorizedAsync<object>(
+            await PostAuthorizedAsync(
                 MainApiUrl.ApplicationDelete,
                 new DeleteRequest()
                 {

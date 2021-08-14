@@ -22,7 +22,7 @@ namespace OffLogs.Web.Services.Http
             long itemId
         )
         {
-            var response = await PostAuthorizedAsync<object>(
+            await PostAuthorizedAsync(
                 MainApiUrl.PermissionAddAccess, 
                 new AddAccessRequest { 
                     AccessType = accessType,
@@ -30,10 +30,6 @@ namespace OffLogs.Web.Services.Http
                     ItemId = itemId
                 }
             );
-            if (response == null)
-            {
-                throw new ServerErrorException();
-            }
             return true;
         }
         
@@ -43,7 +39,7 @@ namespace OffLogs.Web.Services.Http
             long itemId
         )
         {
-            var response = await PostAuthorizedAsync<object>(
+            await PostAuthorizedAsync(
                 MainApiUrl.PermissionRemoveAccess, 
                 new RemoveAccessRequest { 
                     AccessType = accessType,
@@ -51,10 +47,6 @@ namespace OffLogs.Web.Services.Http
                     ItemId = itemId
                 }
             );
-            if (response == null)
-            {
-                throw new ServerErrorException();
-            }
             return true;
         }
     }
