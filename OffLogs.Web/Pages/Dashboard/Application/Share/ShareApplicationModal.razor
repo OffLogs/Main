@@ -1,19 +1,45 @@
 ﻿@using OffLogs.Web.Services.Http
 @using Microsoft.AspNetCore.Components
+@using Microsoft.Extensions.Logging
 @using OffLogs.Api.Common.Dto.Entities
+@using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.User
 @using OffLogs.Web.Core.Models.Modal
+@inject ILogger<ShareApplicationModal> _logger
 @inject IApiService _apiService
 @inject ToastService _toastService
 
 <ModalWindow
-    IsShow="_isShowModal"
+    IsShow="IsShowModal"
     Buttons="_modalButtons"
     IsLoading="_isLoading"
-    OnClose="@(async () => { await Task.Yield(); _isShowModal = false; })">
+    OnClose="OnClosed">
+    
+    <ul class="list-group">
+        <OffLogs.Web.Shared.Ui.Form.SelectUserDropDown
+            OnUserChanged="OnUserSelectedAsync"
+        />
+        <hr/>
+        @foreach (var user in _sharedUsers)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                @user.UserName
+                <MyButton IsSmall="true"></MyButton>
+            </li>
+        }
+        @if (!_sharedUsers.Any())
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                This application was not shared yet
+            </li>
+        }
+    </ul>
     
 </ModalWindow>
 
 @code {
+    [Parameter]
+    public bool IsShowModal { get; set; }
+    
     [Parameter]
     public long ApplicationId { get; set; }
     
@@ -21,10 +47,9 @@
     public EventCallback OnClosed { get; set; }
     
     private List<ModalButtonModel> _modalButtons = new ();
-    private bool _isShowModal = false;
     private bool _isLoading = false;
     private long _applicationId;
-    private ApplicationDto _application;
+    private UsersListDto _sharedUsers = new();
     
     protected override async Task OnInitializedAsync()
     {
@@ -33,15 +58,16 @@
         var saveBtnModel = new ModalButtonModel(
             "Add",
             OnClickSave
-        );
-        saveBtnModel.IsCloseAfterAction = false;
+        )
+        {
+            IsCloseAfterAction = false
+        };
         _modalButtons.Add(saveBtnModel);
         _modalButtons.Add(new (
             "Cancel",
             null,
             BootstrapColorType.Light
         ));
-        _applicationId = ApplicationId;
     }
 
     protected override async Task OnParametersSetAsync()
@@ -50,13 +76,19 @@
         if (_applicationId != ApplicationId)
         {
             _applicationId = ApplicationId;
-            await LoadApplicationAsync();
+            await LoadSharedUsersAsync();
         }
     }
     
     private void OnClickSave()
     {
         InvokeAsync(async () => await SaveSharedUsersAsync());
+    }
+
+    private async Task OnUserSelectedAsync(UserDto user)
+    {
+        _logger.LogDebug(user.UserName);
+        await Task.CompletedTask;
     }
 
     private async Task SaveSharedUsersAsync()
@@ -79,12 +111,19 @@
         await InvokeAsync(StateHasChanged);
     }
     
-    private async Task LoadApplicationAsync()
+    private async Task LoadSharedUsersAsync()
     {
         _isLoading = true;
         try
         {
-            _application = await _apiService.GetApplicationAsync(_applicationId);
+            if (_applicationId > 0)
+            {
+                _sharedUsers = await _apiService.ApplicationGetSharedUsersAsync(_applicationId);    
+            }
+            else
+            {
+                _sharedUsers = new();
+            }
         }
         catch (Exception e)
         {

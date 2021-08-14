@@ -1,7 +1,16 @@
 ﻿@page "/dashboard"
+@using Microsoft.Extensions.Logging
+@inject ILogger<Index> _logger
 
 <h1>Home page</h1>
 
-<OffLogs.Web.Shared.Ui.Form.SelectUserDropDown/>
-
 <OffLogs.Web.Shared.Components.LogStatisticChart/>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _logger.LogDebug("Dashboard is initialized");
+    }
+
+}

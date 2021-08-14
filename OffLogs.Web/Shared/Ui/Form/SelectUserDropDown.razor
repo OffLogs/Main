@@ -20,7 +20,8 @@
             <a class="dropdown-item"
                href="#"
                @onclick="@(async () => await OnSelectUserAsync(user))"
-               @onclick:preventDefault="true">
+               @onclick:preventDefault
+               @onclick:stopPropagation>
                 @user.UserName
             </a>
         }
@@ -29,7 +30,8 @@
             <a class="dropdown-item"
                href="#"
                @onclick="@(async () => await OnSelectUserAsync(null))"
-               @onclick:preventDefault="true">
+               @onclick:preventDefault
+               @onclick:stopPropagation>
                 Items not found
             </a>
         }
@@ -43,7 +45,7 @@
     private bool _isLoading;
     private bool _isQueued;
     private bool _isListOpened = false;
-    private UsersListDto _users = new UsersListDto();
+    private UsersListDto _users = new();
 
     private string _searchString;
     private string SearchString
@@ -63,7 +65,10 @@
 
     }
 
-    private void CloseDropDown() => _isListOpened = false;
+    private void CloseDropDown()
+    {
+        // _isListOpened = false;
+    }
 
     private void OpenDropDown(bool isForce) => _isListOpened = isForce || _users.Any();
 
@@ -110,6 +115,7 @@
 
     private async Task OnSelectUserAsync(UserDto user)
     {
+        _logger.LogDebug($"11111 {user.UserName}");
         CloseDropDown();
         if (user != null)
         {
