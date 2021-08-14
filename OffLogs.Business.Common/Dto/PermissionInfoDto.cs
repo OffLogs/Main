@@ -8,13 +8,13 @@ namespace OffLogs.Business.Common.Dto
 {
     public class PermissionInfoDto
     {
-        public PermissionInfoDto(bool isReadAccess, bool isWriteAccess)
+        public PermissionInfoDto(bool isHasReadAccess, bool isHasWriteAccess)
         {
-            IsReadAccess = isReadAccess;
-            IsWriteAccess = isWriteAccess;
+            IsHasReadAccess = isHasReadAccess;
+            IsHasWriteAccess = isHasWriteAccess;
         }
 
-        public bool IsReadAccess { get; set; }
-        public bool IsWriteAccess { get; set; }
+        public bool IsHasReadAccess { get; set; }
+        public bool IsHasWriteAccess { get; set; }
     }
 }
