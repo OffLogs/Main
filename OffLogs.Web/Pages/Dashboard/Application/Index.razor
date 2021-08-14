@@ -14,7 +14,7 @@
 <AddApplicationModal OnAdded="OnApplicationAdded"/>
 <ShareApplicationModal OnClosed="@(() => _applicationForSharing = null)" 
                        IsShowModal="@(_applicationForSharing != null)"
-                       ApplicationId="@(_applicationForSharing?.Id ?? 0)"/>
+                       Application="@_applicationForSharing"/>
 <ConfirmationModal Title="Are you sure you want to uninstall this application?" 
                    IsShow="@(_applicationForDeletion != null)"
                    OnOk="OnDeleteAppAsync"
@@ -39,10 +39,11 @@
                 <td>@application.Name</td>
                 <td @onclick:stopPropagation>
                     <MyButton IsSmall="true"
-                              Type="BootstrapColorType.Success"
-                              OnClick="@(() => _applicationForSharing = application)">
-                        <Icon IconType="supervisor_account" />
+                        Type="BootstrapColorType.Secondary"
+                        OnClick="@(() => _applicationForSharing = application)">
+                        Share
                     </MyButton>
+                    
                     <MyButton IsSmall="true"
                               Type="BootstrapColorType.Danger"
                               OnClick="@(() => _applicationForDeletion = application)">

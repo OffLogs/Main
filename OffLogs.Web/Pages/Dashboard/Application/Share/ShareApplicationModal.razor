@@ -5,6 +5,7 @@
 @using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.User
 @using OffLogs.Business.Common.Constants.Permissions
 @using OffLogs.Web.Core.Models.Modal
+@using System.Runtime.InteropServices
 @inject ILogger<ShareApplicationModal> _logger
 @inject IApiService _apiService
 @inject ToastService _toastService
@@ -13,6 +14,7 @@
     IsShow="IsShowModal"
     Buttons="_modalButtons"
     IsLoading="_isLoading"
+    Title="@Title"
     OnClose="OnClosed">
     
     <ul class="list-group">
@@ -24,7 +26,9 @@
         {
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 @user.UserName
-                <MyButton IsSmall="true"></MyButton>
+                <Icon IconType="delete_forever"
+                      Class="w-cursor-pointer"
+                      @onclick="@(async () => await OnDeleteShareAsync(user))"/>
             </li>
         }
         @if (!_sharedUsers.Any())
@@ -42,30 +46,23 @@
     public bool IsShowModal { get; set; }
     
     [Parameter]
-    public long ApplicationId { get; set; }
+    public ApplicationListItemDto? Application { get; set; }
     
     [Parameter]
     public EventCallback OnClosed { get; set; }
     
     private List<ModalButtonModel> _modalButtons = new ();
     private bool _isLoading = false;
-    private long _applicationId;
+    private ApplicationListItemDto _application;
     private UsersListDto _sharedUsers = new();
-    
+
+    private string Title => $"Share with people: {_application?.Name}";
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-
-        var saveBtnModel = new ModalButtonModel(
-            "Add",
-            OnClickSave
-        )
-        {
-            IsCloseAfterAction = false
-        };
-        _modalButtons.Add(saveBtnModel);
         _modalButtons.Add(new (
-            "Cancel",
+            "Close",
             null,
             BootstrapColorType.Light
         ));
@@ -74,16 +71,11 @@
     protected override async Task OnParametersSetAsync()
     {
         await base.OnParametersSetAsync();
-        if (_applicationId != ApplicationId)
+        if (Application != null && _application != Application)
         {
-            _applicationId = ApplicationId;
+            _application = Application;
             await LoadSharedUsersAsync();
         }
-    }
-    
-    private void OnClickSave()
-    {
-        // InvokeAsync(async () => await SaveSharedUsersAsync());
     }
 
     private Task OnUserSelectedAsync(UserDto user)
@@ -92,6 +84,12 @@
         return Task.CompletedTask;
     }
 
+    private Task OnDeleteShareAsync(UserDto user)
+    {
+        InvokeAsync(async () => await DeleteShareForUserAsync(user));
+        return Task.CompletedTask;
+    }
+    
     private async Task ShareForUserAsync(UserDto user)
     {
         try
@@ -99,10 +97,11 @@
             await _apiService.PermissionAddAccess(
                 PermissionAccessType.ApplicationRead,
                 user.Id,
-                _applicationId
+                _application.Id
             );
 
             _toastService.AddInfoMessage($"Application was shared for {user.UserName}");
+            InvokeAsync(async () => await LoadSharedUsersAsync());
         }
         catch (Exception e)
         {
@@ -111,17 +110,17 @@
         await InvokeAsync(StateHasChanged);
     }
     
-    private async Task RemoveShareForUserAsync(UserDto user)
+    private async Task DeleteShareForUserAsync(UserDto user)
     {
         try
         {
             await _apiService.PermissionRemoveAccess(
                 PermissionAccessType.ApplicationRead,
                 user.Id,
-                _applicationId
+                _application.Id
             );
-
             _toastService.AddInfoMessage($"User access to the application has been removed");
+            InvokeAsync(async () => await LoadSharedUsersAsync());
         }
         catch (Exception e)
         {
@@ -135,9 +134,9 @@
         _isLoading = true;
         try
         {
-            if (_applicationId > 0)
+            if (_application != null)
             {
-                _sharedUsers = await _apiService.ApplicationGetSharedUsersAsync(_applicationId);    
+                _sharedUsers = await _apiService.ApplicationGetSharedUsersAsync(_application.Id);    
             }
             else
             {
