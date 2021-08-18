@@ -2,6 +2,7 @@
 using Autofac;
 using Microsoft.AspNetCore.Http;
 using OffLogs.Business.Services.Api;
+using OffLogs.Business.Services.Http.ThrottleRequests;
 using OffLogs.Business.Services.Jwt;
 
 namespace OffLogs.Api.Frontend.Di.Autofac.Modules
@@ -24,6 +25,11 @@ namespace OffLogs.Api.Frontend.Di.Autofac.Modules
                 .RegisterType<JwtAuthService>()
                 .As<IJwtAuthService>()
                 .InstancePerLifetimeScope();
+
+            builder
+                .RegisterType<ThrottleRequestsService>()
+                .As<IThrottleRequestsService>()
+                .SingleInstance();
 
             builder
                 .RegisterType<HttpContextAccessor>()
