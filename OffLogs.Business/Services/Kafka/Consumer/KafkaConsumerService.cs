@@ -140,7 +140,12 @@ namespace OffLogs.Business.Services.Kafka.Consumer
                         {
                             if (consumeResult.Message.Value != null)
                             {
+                                var startProcessingTime = DateTime.Now;
                                 await ProcessItemAsync(consumeResult.Message.Value);
+                                var processingTime = DateTime.Now - startProcessingTime;
+                                _logger.LogDebug(
+                                    $"Kafka message processing time: {processingTime.TotalMilliseconds} ms"
+                                );
                             }
 
                             // Increase global counter
