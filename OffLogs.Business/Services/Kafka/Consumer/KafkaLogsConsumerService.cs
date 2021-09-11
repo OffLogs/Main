@@ -60,6 +60,7 @@ namespace OffLogs.Business.Services.Kafka.Consumer
         {
             try
             {
+                using var _ = _dbSessionProvider;
                 // 1. Validate JWT token
                 var applicationId = _jwtApplicationService.GetApplicationId(dto.ApplicationJwtToken);
                 if (!applicationId.HasValue)
@@ -78,23 +79,14 @@ namespace OffLogs.Business.Services.Kafka.Consumer
 
                 // 2. Save log
                 var entity = dto.GetEntity();
-                var startProcessingTime = DateTime.Now;
                 var isExists = await _queryBuilder.For<bool>()
                     .WithAsync(new LogIsExistsByTokenCriteria(entity.Token));
-                _logger.LogDebug(
-                    $"Kafka logs processing. IsExists time: {(DateTime.Now - startProcessingTime).TotalMilliseconds} ms"
-                );
                 if (isExists)
                 {
                     return;
                 }
                 entity.Application = application;
-                startProcessingTime = DateTime.Now;
                 await _commandBuilder.SaveAsync(entity);
-                await _dbSessionProvider.PerformCommitAsync();
-                _logger.LogDebug(
-                    $"Kafka logs processing. Saving time: {(DateTime.Now - startProcessingTime).TotalMilliseconds} ms"
-                );
             }
             catch (Exception e)
             {

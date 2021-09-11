@@ -105,6 +105,7 @@ namespace OffLogs.Business.Orm.Connection
             }
             if (_session != null)
             {
+                _session.Close();
                 _session.Dispose();
                 _session = null;
             }
