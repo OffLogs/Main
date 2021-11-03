@@ -55,6 +55,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffLogs.Business.Notificati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffLogs.Business.Extensions", "OffLogs.Business.Extensions\OffLogs.Business.Extensions.csproj", "{5E239F4D-876B-4453-A6FC-5CA5E337692E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffLogs.Business.Common.Tests.Unit", "OffLogs.Business.Common.Tests.Unit\OffLogs.Business.Common.Tests.Unit.csproj", "{FF82C060-7ED1-4D54-84DB-60131F091718}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +155,10 @@ Global
 		{5E239F4D-876B-4453-A6FC-5CA5E337692E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E239F4D-876B-4453-A6FC-5CA5E337692E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E239F4D-876B-4453-A6FC-5CA5E337692E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF82C060-7ED1-4D54-84DB-60131F091718}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF82C060-7ED1-4D54-84DB-60131F091718}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF82C060-7ED1-4D54-84DB-60131F091718}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF82C060-7ED1-4D54-84DB-60131F091718}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -174,6 +180,7 @@ Global
 		{98AF2FF4-1123-4406-888A-8FDB5FF6460B} = {5BC5768D-9450-4026-8178-DBCA739DCB0E}
 		{FA315BDC-8473-4F7F-9DA4-3C27942E3A50} = {C1F66C3D-CEAE-4297-ADF9-5113761C2420}
 		{5E239F4D-876B-4453-A6FC-5CA5E337692E} = {C1F66C3D-CEAE-4297-ADF9-5113761C2420}
+		{FF82C060-7ED1-4D54-84DB-60131F091718} = {94C8D1CA-2DF9-4F3E-B08A-E7F49E9E050F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {63E75E79-B233-4DE6-B7BA-50C825A8C820}
