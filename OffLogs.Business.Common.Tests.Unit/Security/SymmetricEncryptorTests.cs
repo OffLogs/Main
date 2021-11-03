@@ -1,5 +1,6 @@
 using System.Text;
 using OffLogs.Business.Common.Encryption;
+using OffLogs.Business.Common.Security;
 using Org.BouncyCastle.Crypto;
 using Xunit;
 

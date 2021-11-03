@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Security.Cryptography.X509Certificates;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Security;
 
-namespace OffLogs.Business.Common.Encryption
+namespace OffLogs.Business.Common.Security
 {
     public class SymmetricEncryptor
     {

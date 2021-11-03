@@ -4,6 +4,7 @@ using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.OpenSsl;
 using Xunit;
+using AsymmetricEncryptor = OffLogs.Business.Common.Security.AsymmetricEncryptor;
 
 namespace OffLogs.Business.Common.Tests.Unit.Encryption
 {

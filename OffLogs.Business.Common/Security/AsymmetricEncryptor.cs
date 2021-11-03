@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography;
-using OffLogs.Business.Common.Encryption.BouncyCastle;
-using Org.BouncyCastle.Asn1;
-using Org.BouncyCastle.Asn1.Pkcs;
-using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Crypto.Parameters;
@@ -13,7 +8,7 @@ using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.X509;
 
-namespace OffLogs.Business.Common.Encryption
+namespace OffLogs.Business.Common.Security
 {
     public partial class AsymmetricEncryptor
     {
@@ -41,7 +36,7 @@ namespace OffLogs.Business.Common.Encryption
             PublicKey = (RsaKeyParameters)publicKey;
         }
         
-        public static AsymmetricEncryptor GenerateKeyPair()
+        public static Security.AsymmetricEncryptor GenerateKeyPair()
         {
             var randomGenerator = new SecureRandom();
             var keyParameters = new KeyGenerationParameters(randomGenerator, RsaKeyLength);
@@ -55,19 +50,19 @@ namespace OffLogs.Business.Common.Encryption
             {
                 throw new Exception($"Failed key generation. Key length {RsaKeyLength}");
             }
-            return new AsymmetricEncryptor(keyPair);
+            return new Security.AsymmetricEncryptor(keyPair);
         }
         
-        public static AsymmetricEncryptor FromPrivateKeyBytes(byte[] privateKeyBytes)
+        public static Security.AsymmetricEncryptor FromPrivateKeyBytes(byte[] privateKeyBytes)
         {
             var privateKey = (RsaPrivateCrtKeyParameters)PrivateKeyFactory.CreateKey(privateKeyBytes);
             var publicKey = new RsaKeyParameters(false, privateKey.Modulus, privateKey.PublicExponent);
-            return new AsymmetricEncryptor(publicKey, privateKey);
+            return new Security.AsymmetricEncryptor(publicKey, privateKey);
         }
         
-        public static AsymmetricEncryptor FromPublicKeyBytes(byte[] publicKey)
+        public static Security.AsymmetricEncryptor FromPublicKeyBytes(byte[] publicKey)
         {
-            return new AsymmetricEncryptor(
+            return new Security.AsymmetricEncryptor(
                 PublicKeyFactory.CreateKey(publicKey)
             );
         }
