@@ -1,22 +1,17 @@
-using System;
-using System.Security.Cryptography;
 using System.Text;
-using Microsoft.Extensions.Logging;
-using Moq;
 using OffLogs.Business.Common.Encryption;
-using OffLogs.Business.Common.Extensions;
 using Org.BouncyCastle.Crypto;
 using Xunit;
 
-namespace OffLogs.Business.Common.Tests.Unit.Encryption.RsaEncryption
+namespace OffLogs.Business.Common.Tests.Unit.Encryption
 {
     public class RsaEncryptionServiceTests
     {
-        private RsaEncryptor _encryptor;
+        private AsymmetricEncryptor _encryptor;
 
         public RsaEncryptionServiceTests()
         {
-            _encryptor = RsaEncryptor.GenerateKeyPair();
+            _encryptor = AsymmetricEncryptor.GenerateKeyPair();
         }
 
         [Fact]
@@ -69,7 +64,7 @@ namespace OffLogs.Business.Common.Tests.Unit.Encryption.RsaEncryption
 
             Assert.Throws<InvalidCipherTextException>(() =>
             {
-                var encryptor2 = RsaEncryptor.GenerateKeyPair();
+                var encryptor2 = AsymmetricEncryptor.GenerateKeyPair();
                 encryptor2.DecryptData(encrypted);
             });
         }
@@ -104,7 +99,7 @@ namespace OffLogs.Business.Common.Tests.Unit.Encryption.RsaEncryption
             var dataBytes = Encoding.UTF8.GetBytes(dataString);
             var sign = _encryptor.SignData(dataBytes);
             
-            var encryptor2 = RsaEncryptor.GenerateKeyPair();
+            var encryptor2 = AsymmetricEncryptor.GenerateKeyPair();
             var isValidSign = encryptor2.VerifySign(dataBytes, sign);
             Assert.False(isValidSign);
         }

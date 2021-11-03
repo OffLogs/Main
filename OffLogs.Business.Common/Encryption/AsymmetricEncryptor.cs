@@ -9,7 +9,7 @@ using Org.BouncyCastle.Security;
 
 namespace OffLogs.Business.Common.Encryption
 {
-    public class RsaEncryptor
+    public class AsymmetricEncryptor
     {
         private static readonly int RsaKeyLength = 2048;
         
@@ -20,17 +20,17 @@ namespace OffLogs.Business.Common.Encryption
         public AsymmetricKeyParameter PrivateKey { get; }
         public AsymmetricKeyParameter PublicKey { get; }
 
-        public RsaEncryptor(AsymmetricCipherKeyPair pair) : this(pair.Public, pair.Private)
+        public AsymmetricEncryptor(AsymmetricCipherKeyPair pair) : this(pair.Public, pair.Private)
         {
         }
 
-        public RsaEncryptor(AsymmetricKeyParameter publicKey, AsymmetricKeyParameter privateKey = null)
+        public AsymmetricEncryptor(AsymmetricKeyParameter publicKey, AsymmetricKeyParameter privateKey = null)
         {
             PrivateKey = privateKey;
             PublicKey = publicKey;
         }
         
-        public static RsaEncryptor GenerateKeyPair()
+        public static AsymmetricEncryptor GenerateKeyPair()
         {
             var randomGenerator = new SecureRandom();
             var keyParameters = new KeyGenerationParameters(randomGenerator, RsaKeyLength);
@@ -44,7 +44,7 @@ namespace OffLogs.Business.Common.Encryption
             {
                 throw new Exception($"Failed key generation. Key length {RsaKeyLength}");
             }
-            return new RsaEncryptor(keyPair);
+            return new AsymmetricEncryptor(keyPair);
         }
 
         public byte[] EncryptData(byte[] data)
