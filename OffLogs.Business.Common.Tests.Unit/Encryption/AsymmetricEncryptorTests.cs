@@ -1,6 +1,8 @@
 using System.Text;
 using OffLogs.Business.Common.Encryption;
 using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.OpenSsl;
 using Xunit;
 
 namespace OffLogs.Business.Common.Tests.Unit.Encryption
@@ -14,10 +16,12 @@ namespace OffLogs.Business.Common.Tests.Unit.Encryption
             _encryptor = AsymmetricEncryptor.GenerateKeyPair();
         }
 
+        #region Common
         [Fact]
         public void ShouldCreateKeyPair()
         {
             Assert.NotNull(_encryptor.PrivateKey);
+            Assert.NotNull(_encryptor.PublicKey);
             Assert.NotNull(_encryptor.PrivateKey);
         }
         
@@ -103,5 +107,107 @@ namespace OffLogs.Business.Common.Tests.Unit.Encryption
             var isValidSign = encryptor2.VerifySign(dataBytes, sign);
             Assert.False(isValidSign);
         }
+        #endregion
+
+        #region PEM
+
+        [Fact]
+        public void ShouldGeneratePemFile()
+        {
+            var pem = _encryptor.CreatePem("some password");
+            Assert.NotEmpty(pem);
+            Assert.Contains("PUBLIC KEY", pem);
+            Assert.Contains("PRIVATE KEY", pem);
+        }
+
+        [Fact]
+        public void ShouldReadPemFile()
+        {
+            var actualPassword = "some password";
+            
+            var actualPem = _encryptor.CreatePem(actualPassword);
+            var actualEncryptor = AsymmetricEncryptor.ReadFromPem(actualPem, actualPassword);
+            Assert.NotNull(actualEncryptor.PrivateKey);
+            Assert.NotNull(actualEncryptor.PublicKey);
+            
+            Assert.Equal(_encryptor.PrivateKey, actualEncryptor.PrivateKey);
+            Assert.Equal(_encryptor.PublicKey, actualEncryptor.PublicKey);
+        }
+        
+        [Fact]
+        public void ShouldNotReadPemFileIfPasswordIncorrect()
+        {
+            var actualPem = _encryptor.CreatePem("some password");
+            Assert.Throws<PemException>(() =>
+            {
+                AsymmetricEncryptor.ReadFromPem(actualPem, "wrong password");
+            });
+        }
+        
+        #endregion
+
+        #region Binary Conversion
+
+        [Fact]
+        public void ShouldReceivePrivateKeyBytes()
+        {
+            var bytes = _encryptor.GetPrivateKeyBytes();
+            Assert.NotNull(bytes);
+            Assert.NotEmpty(bytes);
+        }
+        
+        [Fact]
+        public void ShouldReceivePublicKeyBytes()
+        {
+            var bytes = _encryptor.GetPublicKeyBytes();
+            Assert.NotNull(bytes);
+            Assert.NotEmpty(bytes);
+        }
+
+        [Fact]
+        public void ShouldExportAndImportPrivateKey()
+        {
+            var privateKey = _encryptor.GetPrivateKeyBytes();
+
+            var newEncryptor = AsymmetricEncryptor.FromPrivateKeyBytes(privateKey);
+            
+            Assert.Equal(newEncryptor.PrivateKey, _encryptor.PrivateKey);
+            Assert.Equal(newEncryptor.PublicKey, _encryptor.PublicKey);
+        }
+        
+        [Fact]
+        public void ShouldExportPrivateKeyImportPrivateKeyAndValidateSign()
+        {
+            var dataString = "some data";
+            var dataBytes = Encoding.UTF8.GetBytes(dataString);
+            
+            var privateKey = _encryptor.GetPrivateKeyBytes();
+
+            var signEncryptor = AsymmetricEncryptor.FromPrivateKeyBytes(privateKey);
+            var signChecker = AsymmetricEncryptor.FromPrivateKeyBytes(privateKey);
+            
+            var sign = signEncryptor.SignData(dataBytes);
+            
+            Assert.True(signChecker.VerifySign(dataBytes, sign));
+        }
+        
+        [Fact]
+        public void ShouldExportPrivateAndPublicKeyImportTheirAndValidateSign()
+        {
+            var dataString = "some data";
+            var dataBytes = Encoding.UTF8.GetBytes(dataString);
+            
+            var publicKey = _encryptor.GetPublicKeyBytes();
+            var privateKey = _encryptor.GetPrivateKeyBytes();
+
+            var signEncryptor = AsymmetricEncryptor.FromPrivateKeyBytes(privateKey);
+            var signChecker = AsymmetricEncryptor.FromPublicKeyBytes(publicKey);
+            
+            var sign = signEncryptor.SignData(dataBytes);
+            
+            Assert.True(signChecker.VerifySign(dataBytes, sign));
+        }
+        
+        #endregion
     }
 }

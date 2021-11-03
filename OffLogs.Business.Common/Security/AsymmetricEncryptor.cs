@@ -2,14 +2,20 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
+using OffLogs.Business.Common.Encryption.BouncyCastle;
+using Org.BouncyCastle.Asn1;
+using Org.BouncyCastle.Asn1.Pkcs;
+using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Security;
+using Org.BouncyCastle.X509;
 
 namespace OffLogs.Business.Common.Encryption
 {
-    public class AsymmetricEncryptor
+    public partial class AsymmetricEncryptor
     {
         private static readonly int RsaKeyLength = 2048;
         
@@ -17,17 +23,22 @@ namespace OffLogs.Business.Common.Encryption
         private const string SignatureAlgorithm = "SHA512WITHRSA";
         private const int DefaultRsaBlockSize = 190;
 
-        public AsymmetricKeyParameter PrivateKey { get; }
-        public AsymmetricKeyParameter PublicKey { get; }
+        public RsaPrivateCrtKeyParameters PrivateKey { get; }
+        public RsaKeyParameters PublicKey { get; }
 
+        #region Initialization
+        
         public AsymmetricEncryptor(AsymmetricCipherKeyPair pair) : this(pair.Public, pair.Private)
         {
         }
 
         public AsymmetricEncryptor(AsymmetricKeyParameter publicKey, AsymmetricKeyParameter privateKey = null)
         {
-            PrivateKey = privateKey;
-            PublicKey = publicKey;
+            if (privateKey != null)
+            {
+                PrivateKey = (RsaPrivateCrtKeyParameters)privateKey;    
+            }
+            PublicKey = (RsaKeyParameters)publicKey;
         }
         
         public static AsymmetricEncryptor GenerateKeyPair()
@@ -46,6 +57,22 @@ namespace OffLogs.Business.Common.Encryption
             }
             return new AsymmetricEncryptor(keyPair);
         }
+        
+        public static AsymmetricEncryptor FromPrivateKeyBytes(byte[] privateKeyBytes)
+        {
+            var privateKey = (RsaPrivateCrtKeyParameters)PrivateKeyFactory.CreateKey(privateKeyBytes);
+            var publicKey = new RsaKeyParameters(false, privateKey.Modulus, privateKey.PublicExponent);
+            return new AsymmetricEncryptor(publicKey, privateKey);
+        }
+        
+        public static AsymmetricEncryptor FromPublicKeyBytes(byte[] publicKey)
+        {
+            return new AsymmetricEncryptor(
+                PublicKeyFactory.CreateKey(publicKey)
+            );
+        }
+        
+        #endregion
 
         public byte[] EncryptData(byte[] data)
         {
@@ -59,22 +86,19 @@ namespace OffLogs.Business.Common.Encryption
         public byte[] DecryptData(byte[] data)
         {
             if (PrivateKey == null) throw new ArgumentNullException(nameof(PrivateKey));
-            var rsaKeyParameters = (RsaKeyParameters)PrivateKey;
-            
             var cipher = CipherUtilities.GetCipher(Algorithm);
-            cipher.Init(false, rsaKeyParameters);
+            cipher.Init(false, PrivateKey);
             
-            int blockSize = rsaKeyParameters.Modulus.BitLength / 8;
+            int blockSize = PrivateKey.Modulus.BitLength / 8;
             return ApplyCipher(data, cipher, blockSize);
         }
         
         public byte[] SignData(byte[] data)
         {
             if (PrivateKey == null) throw new ArgumentNullException(nameof(PrivateKey));
-            var rsaKeyParameters = (RsaKeyParameters)PrivateKey;
-            
+ 
             var signer = SignerUtilities.GetSigner(SignatureAlgorithm);
-            signer.Init(true, rsaKeyParameters);
+            signer.Init(true, PrivateKey);
             signer.BlockUpdate(data, 0, data.Length);
             return signer.GenerateSignature();
         }
@@ -82,10 +106,9 @@ namespace OffLogs.Business.Common.Encryption
         public bool VerifySign(byte[] data, byte[] sign)
         {
             if (PublicKey == null) throw new ArgumentNullException(nameof(PublicKey));
-            var rsaKeyParameters = (RsaKeyParameters)PublicKey;
-            
+
             var signer = SignerUtilities.GetSigner(SignatureAlgorithm);
-            signer.Init(false, rsaKeyParameters);
+            signer.Init(false, PublicKey);
             signer.BlockUpdate(data, 0, data.Length);
 
             return signer.VerifySignature(sign);
@@ -118,5 +141,23 @@ namespace OffLogs.Business.Common.Encryption
 
             return outputBytes.ToArray();
         }
+
+        #region Byte Conversion
+
+        public byte[] GetPrivateKeyBytes()
+        {
+            if (PrivateKey == null) throw new ArgumentNullException(nameof(PrivateKey));
+
+            var privateKeyInfo = PrivateKeyInfoFactory.CreatePrivateKeyInfo(PrivateKey);
+            return privateKeyInfo.GetEncoded();
+        }
+        
+        public byte[] GetPublicKeyBytes()
+        {
+            var publicKeyInfo = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(PublicKey);
+            return publicKeyInfo.GetEncoded();
+        }
+
+        #endregion
     }
 }
