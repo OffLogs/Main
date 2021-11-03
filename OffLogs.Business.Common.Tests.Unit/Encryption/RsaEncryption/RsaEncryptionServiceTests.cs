@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using OffLogs.Business.Common.Encryption;
 using OffLogs.Business.Common.Extensions;
+using Org.BouncyCastle.Crypto;
 using Xunit;
 
 namespace OffLogs.Business.Common.Tests.Unit.Encryption.RsaEncryption
@@ -47,6 +48,46 @@ namespace OffLogs.Business.Common.Tests.Unit.Encryption.RsaEncryption
         }
         
         [Fact]
+        public void ShouldThrowExceptionIfDecryptionDataLengthIsIncorrect()
+        {
+            var dataString = "some data";
+            var dataBytes = Encoding.UTF8.GetBytes(dataString);
+            var encrypted = _encryptor.EncryptData(dataBytes);
+
+            Assert.Throws<InvalidCipherTextException>(() =>
+            {
+                _encryptor.DecryptData(new byte[]{ 1, 2 });
+            });
+        }
+        
+        [Fact]
+        public void ShouldThrowExceptionIfDecryptionDataIsIncorrect()
+        {
+            var dataString = "some data";
+            var dataBytes = Encoding.UTF8.GetBytes(dataString);
+            var encrypted = _encryptor.EncryptData(dataBytes);
+
+            Assert.Throws<InvalidCipherTextException>(() =>
+            {
+                var encryptor2 = RsaEncryptor.GenerateKeyPair();
+                encryptor2.DecryptData(encrypted);
+            });
+        }
+        
+        [Fact]
+        public void ShouldNotDecryptData()
+        {
+            var dataString = "some data";
+            var dataBytes = Encoding.UTF8.GetBytes(dataString);
+            var encrypted = _encryptor.EncryptData(dataBytes);
+
+            Assert.Throws<InvalidCipherTextException>(() =>
+            {
+                _encryptor.DecryptData(new byte[]{ 1, 2 });
+            });
+        }
+        
+        [Fact]
         public void ShouldSignDataAndValidateThisSign()
         {
             var dataString = "some data";
@@ -54,6 +95,18 @@ namespace OffLogs.Business.Common.Tests.Unit.Encryption.RsaEncryption
             var sign = _encryptor.SignData(dataBytes);
             var isValidSign = _encryptor.VerifySign(dataBytes, sign);
             Assert.True(isValidSign);
+        }
+        
+        [Fact]
+        public void SignShouldNotBeCorrect()
+        {
+            var dataString = "some data";
+            var dataBytes = Encoding.UTF8.GetBytes(dataString);
+            var sign = _encryptor.SignData(dataBytes);
+            
+            var encryptor2 = RsaEncryptor.GenerateKeyPair();
+            var isValidSign = encryptor2.VerifySign(dataBytes, sign);
+            Assert.False(isValidSign);
         }
     }
 }
