@@ -61,15 +61,15 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Log
                 {
                     new()
                     {
-                        Key = "TEST_PROP",
-                        Value = "TEST_VALUE",
+                        EncryptedKey = "TEST_PROP",
+                        EncryptedValue = "TEST_VALUE",
                     }
                 },
                 new List<LogTraceEntity>()
                 {
                     new()
                     {
-                        Trace = "TestTrace",
+                        EncryptedTrace = "TestTrace",
                         CreateTime = DateTime.UtcNow
                     }
                 }

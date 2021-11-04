@@ -19,8 +19,8 @@ namespace OffLogs.Api.Profiles
                     member => member.MapFrom(
                         entity => entity.Properties.Select(
                             property => new KeyValuePair<string, string>(
-                                property.Key,
-                                property.Value
+                                property.EncryptedKey,
+                                property.EncryptedValue
                             )
                         )
                     )
@@ -29,7 +29,7 @@ namespace OffLogs.Api.Profiles
                     s => s.Traces,
                     member => member.MapFrom(
                         entity => entity.Traces.Select(
-                            trace => trace.Trace
+                            trace => trace.EncryptedTrace
                         )
                     )
                 )
@@ -44,8 +44,8 @@ namespace OffLogs.Api.Profiles
                     member => member.MapFrom(
                         entity => entity.Properties.Select(
                             property => new KeyValuePair<string, string>(
-                                property.Key,
-                                property.Value
+                                property.EncryptedKey,
+                                property.EncryptedValue
                             )
                         )
                     )
@@ -54,7 +54,7 @@ namespace OffLogs.Api.Profiles
                     s => s.Traces,
                     member => member.MapFrom(
                         entity => entity.Traces.Select(
-                            trace => trace.Trace
+                            trace => trace.EncryptedTrace
                         )
                     )
                 );

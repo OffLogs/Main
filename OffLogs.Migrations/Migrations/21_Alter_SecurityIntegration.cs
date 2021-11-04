@@ -9,6 +9,8 @@ namespace OffLogs.Migrations.Migrations
         public override void Up()
         {
             Alter.Table("users")
+                .AlterColumn("user_name").AsString(100).Nullable()
+                .AddColumn("status").AsInt16().NotNullable().WithDefaultValue(1)
                 .AddColumn("public_key").AsBinary().NotNullable();
             Delete.Column("password_hash").FromTable("users");
             Delete.Column("password_salt").FromTable("users");

@@ -45,6 +45,14 @@ namespace OffLogs.Business.Orm.Entities
         public virtual string ApiToken { get; set; }
         
         [Property(NotNull = true)]
+        [Column(Name = "public_key", SqlType = "bytea", NotNull = true)]
+        public virtual byte[] PublicKey { get; set; }
+        
+        [Property(NotNull = true)]
+        [Column(Name = "encrypted_private_key", SqlType = "bytea", NotNull = true)]
+        public virtual byte[] EncryptedPrivateKey { get; set; }
+        
+        [Property(NotNull = true)]
         [Column(Name = "create_time", SqlType = "datetime", NotNull = true)]
         public virtual DateTime CreateTime { get; set; }
         

@@ -20,7 +20,7 @@ namespace OffLogs.Business.Services.Data
                     (faker) => faker.Internet.Email()
                 )
                 .RuleFor(
-                    entity => entity.PasswordHash,
+                    entity => entity.PublicKey,
                     (faker) => faker.Random.Bytes(32)
                 )
                 .RuleFor(
@@ -87,7 +87,7 @@ namespace OffLogs.Business.Services.Data
         {
             return new Faker<LogTraceEntity>()
                 .RuleFor(
-                    entity => entity.Trace,
+                    entity => entity.EncryptedTrace,
                     (faker) => faker.Lorem.Sentence()
                 )
                 .RuleFor(
@@ -100,11 +100,11 @@ namespace OffLogs.Business.Services.Data
         {
             return new Faker<LogPropertyEntity>()
                 .RuleFor(
-                    entity => entity.Key,
+                    entity => entity.EncryptedKey,
                     (faker) => faker.Random.Word()
                 )
                 .RuleFor(
-                    entity => entity.Value,
+                    entity => entity.EncryptedValue,
                     (faker) => faker.Random.Word()
                 )
                 .RuleFor(

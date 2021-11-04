@@ -315,8 +315,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             Assert.True(actualLog.Properties.Count == 2);
             foreach (var property in actualLog.Properties)
             {
-                var isFirstTrue = "\"{\\\"Id\\\": 50, \\\"Name\\\": \\\"UsingInMemoryRepository\\\"}\"" == property.Value;
-                var isSecondTrue = @"{""id"":50,""name"":""UsingInMemoryRepository""}" == property.Value;
+                var isFirstTrue = "\"{\\\"Id\\\": 50, \\\"Name\\\": \\\"UsingInMemoryRepository\\\"}\"" == property.EncryptedValue;
+                var isSecondTrue = @"{""id"":50,""name"":""UsingInMemoryRepository""}" == property.EncryptedValue;
                 Assert.True(isFirstTrue || isSecondTrue);
             }
         }

@@ -25,7 +25,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.User
             Assert.NotNull(newUser);
             Assert.Equal(expectedUserName, newUser.UserName);
             Assert.Equal(expectedEmail, newUser.Email);
-            Assert.True(newUser.PasswordHash.Length > 0);
+            Assert.True(newUser.PublicKey.Length > 0);
             Assert.True(newUser.PasswordSalt.Length > 0);
         }
     }

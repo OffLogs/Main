@@ -22,12 +22,12 @@ namespace OffLogs.Business.Orm.Entities
         public virtual LogEntity Log { get; set; }
         
         [Property(NotNull = true)]
-        [Column(Name = "key", Length = 200, NotNull = true)]
-        public virtual string Key { get; set; }
+        [Column(Name = "encrypted_key", SqlType = "bytea", NotNull = true)]
+        public virtual byte[] EncryptedKey { get; set; }
         
         [Property(NotNull = true)]
-        [Column(Name = "value", Length = 2048, NotNull = true)]
-        public virtual string Value { get; set; }
+        [Column(Name = "encrypted_value", SqlType = "bytea", NotNull = true)]
+        public virtual byte[] EncryptedValue { get; set; }
         
         [Property(NotNull = true)]
         [Column(Name = "create_time", SqlType = "datetime", NotNull = true)]
@@ -35,23 +35,23 @@ namespace OffLogs.Business.Orm.Entities
         
         public LogPropertyEntity() {}
 
-        public LogPropertyEntity(string key, string value)
+        public LogPropertyEntity(byte[] encryptedKey, byte[] encryptedValue)
         {
-            Key = key;
-            Value = value;
+            EncryptedKey = encryptedKey;
+            EncryptedValue = encryptedValue;
             CreateTime = DateTime.UtcNow;
         }
         
-        public LogPropertyEntity(string key, object value)
+        public LogPropertyEntity(byte[] encryptedKey, object value)
         {
-            Key = key;
+            EncryptedKey = encryptedKey;
             try
             {
-                Value = JsonConvert.SerializeObject(value);
+                EncryptedValue = JsonConvert.SerializeObject(value);
             }
             catch (Exception)
             {
-                Value = "";
+                EncryptedValue = "";
             }
             CreateTime = DateTime.UtcNow;
         }

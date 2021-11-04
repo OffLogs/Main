@@ -39,7 +39,7 @@ namespace OffLogs.Api.Controller.Public.User.Actions
                 request.Password, 
                 existsUser.PasswordSalt
             );
-            if (!passwordHash.CompareTo(existsUser.PasswordHash))
+            if (!passwordHash.CompareTo(existsUser.PublicKey))
             {
                 throw new UserNotAuthorizedException();
             }

@@ -47,7 +47,7 @@ namespace OffLogs.Business.Services.Entities.User
                 Email = email,
                 Password = password,
                 PasswordSalt = passwordSalt,
-                PasswordHash = passwordHash,
+                PublicKey = passwordHash,
                 CreateTime = DateTime.UtcNow,
                 UpdateTime = DateTime.UtcNow
             };

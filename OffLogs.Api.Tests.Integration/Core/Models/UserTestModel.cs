@@ -31,7 +31,7 @@ namespace OffLogs.Api.Tests.Integration.Core.Models
             UserName = entity.UserName;
             Email = entity.Email;
             Password = entity.Password;
-            PasswordHash = entity.PasswordHash;
+            PublicKey = entity.PublicKey;
             PasswordSalt = entity.PasswordSalt;
             CreateTime = entity.CreateTime;
             UpdateTime = entity.UpdateTime;
