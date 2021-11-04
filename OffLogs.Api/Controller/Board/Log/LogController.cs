@@ -10,7 +10,7 @@ using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log;
 using OffLogs.Api.Common.Requests.Board.Log;
 using Persistence.Transactions.Behaviors;
 
-namespace OffLogs.Api.Business.Controller.Board.Log
+namespace OffLogs.Api.Controller.Board.Log
 {
     [Authorize]
     [Route("/board/[controller]")]

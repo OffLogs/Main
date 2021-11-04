@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using OffLogs.Api.Common.Dto.RequestsAndResponses;
 using Persistence.Transactions.Behaviors;
 
-namespace OffLogs.Api.Business.Controller
+namespace OffLogs.Api.Controller
 {
     public class MainApiControllerBase: ApiControllerBase
     {

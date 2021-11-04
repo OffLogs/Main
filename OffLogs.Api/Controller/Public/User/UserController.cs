@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
 using Persistence.Transactions.Behaviors;
 
-namespace OffLogs.Api.Business.Controller.Public.User
+namespace OffLogs.Api.Controller.Public.User
 {
     [Route("/[controller]")]
     [ApiController]

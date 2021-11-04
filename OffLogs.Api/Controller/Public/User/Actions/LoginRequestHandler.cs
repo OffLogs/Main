@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Api.Requests.Abstractions;
-using Microsoft.AspNetCore.Http;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
 using OffLogs.Api.Exceptions;
 using OffLogs.Business.Common.Extensions;
@@ -10,7 +9,7 @@ using OffLogs.Business.Orm.Queries.Entities.User;
 using OffLogs.Business.Services.Jwt;
 using Queries.Abstractions;
 
-namespace OffLogs.Api.Business.Controller.Public.User.Actions
+namespace OffLogs.Api.Controller.Public.User.Actions
 {
     public class LoginRequestHandler : IAsyncRequestHandler<LoginRequest, LoginResponseDto>
     {

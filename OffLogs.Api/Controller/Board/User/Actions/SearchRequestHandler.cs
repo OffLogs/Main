@@ -9,7 +9,7 @@ using OffLogs.Business.Orm.Queries.Entities.User;
 using OffLogs.Business.Services.Api;
 using Queries.Abstractions;
 
-namespace OffLogs.Api.Business.Controller.Board.User.Actions
+namespace OffLogs.Api.Controller.Board.User.Actions
 {
     public class SearchRequestHandler : IAsyncRequestHandler<SearchRequest, UsersListDto>
     {

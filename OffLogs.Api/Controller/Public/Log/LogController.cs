@@ -2,7 +2,6 @@
 using AspNetCore.ApiControllers.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using OffLogs.Api.Business.Controller;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.Log;
 using Persistence.Transactions.Behaviors;
 using System;
