@@ -30,7 +30,7 @@ steps:
       failTaskOnFailedTests: true
 
   - task: DotNetCoreCLI@2
-    displayName: Unit Tests
+    displayName: Api Unit Tests
     inputs:
       command: test
       projects: '**OffLogs.Api.Tests.Unit/*.csproj'
@@ -41,5 +41,20 @@ steps:
     inputs:
       testResultsFormat: xUnit
       testResultsFiles: "**OffLogs.Api.Tests.Unit/*.xml"
+      mergeTestResults: true
+      failTaskOnFailedTests: true
+
+  - task: DotNetCoreCLI@2
+    displayName: Business Common Unit Tests
+    inputs:
+      command: test
+      projects: '**OffLogs.Business.Common.Tests.Unit/*.csproj'
+      arguments: '--logger --configuration $(buildConfiguration) --verbosity=normal'
+        
+  - task: PublishTestResults@2
+    displayName: "Publish Test Results"
+    inputs:
+      testResultsFormat: xUnit
+      testResultsFiles: "**OffLogs.Business.Common.Tests.Unit/*.xml"
       mergeTestResults: true
       failTaskOnFailedTests: true
