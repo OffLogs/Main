@@ -6,11 +6,7 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User
     public class RegistrationStep2Request : IRequest<RegistrationStep2ResponseDto>
     {
         [Required]
-        [StringLength(200)]
-        public string UserName { get; set; }
-
-        [Required]
-        [StringLength(200)]
+        [StringLength(32, MinimumLength = 6)]
         public string Password { get; set; }
     }
 }

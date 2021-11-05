@@ -3,14 +3,15 @@ using Api.Requests.Abstractions;
 
 namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User
 {
-    public class RegistrationStep1Request : IRequest<RegistrationStep1ResponseDto>
+    public class RegistrationStep1Request : IRequest
     {
         [Required]
-        [StringLength(200)]
-        public string UserName { get; set; }
+        [EmailAddress]
+        public string Email { get; set; }
 
+        // TODO: Added reCaptcha validator
         [Required]
-        [StringLength(200)]
-        public string Password { get; set; }
+        [StringLength(512)]
+        public string ReCaptcha { get; set; }
     }
 }

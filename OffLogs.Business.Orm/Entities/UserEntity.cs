@@ -25,6 +25,10 @@ namespace OffLogs.Business.Orm.Entities
         [Column(Name = "public_key", SqlType = "bytea", NotNull = true)]
         public virtual byte[] PublicKey { get; set; }
         
+        [Property(NotNull = false)]
+        [Column(Name = "verification_token", Length = 512, NotNull = false)]
+        public virtual string VerificationToken { get; set; }
+        
         [Property(NotNull = true)]
         [Column(Name = "status", SqlType = "int", NotNull = true)]
         public virtual UserStatus Status { get; set; }
@@ -52,8 +56,6 @@ namespace OffLogs.Business.Orm.Entities
            Column = "log_id"
        )]
         public virtual ICollection<LogEntity> FavoriteLogs { get; set; } = new List<LogEntity>();
-
-        public virtual string Password { get; set; }
 
         public UserEntity() {}
     }

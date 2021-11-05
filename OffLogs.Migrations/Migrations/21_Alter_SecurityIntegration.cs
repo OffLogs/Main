@@ -11,7 +11,8 @@ namespace OffLogs.Migrations.Migrations
             Alter.Table("users")
                 .AlterColumn("user_name").AsString(100).Nullable()
                 .AddColumn("status").AsInt16().NotNullable().WithDefaultValue(1)
-                .AddColumn("public_key").AsBinary().NotNullable();
+                .AddColumn("public_key").AsBinary().NotNullable()
+                .AddColumn("verification_token").AsString(512).Nullable();
             Delete.Column("password_hash").FromTable("users");
             Delete.Column("password_salt").FromTable("users");
             

@@ -40,9 +40,7 @@ namespace OffLogs.Api.Controller.Public.User
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public Task<IActionResult> RegistrationStep1([FromBody] RegistrationStep1Request request)
-            => this.RequestAsync()
-                .For<RegistrationStep1ResponseDto>()
-                .With(request);
+            => this.RequestAsync(request);
         
         [HttpPost("registration/step2")]
         [ProducesResponseType(StatusCodes.Status200OK)]

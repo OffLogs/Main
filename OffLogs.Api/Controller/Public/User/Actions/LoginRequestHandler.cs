@@ -27,25 +27,26 @@ namespace OffLogs.Api.Controller.Public.User.Actions
 
         public async Task<LoginResponseDto> ExecuteAsync(LoginRequest request)
         {
-            var existsUser = await _queryBuilder.For<UserEntity>()
-                .WithAsync(new UserGetByCriteria(request.UserName));
-            
-        
-            if (existsUser == null)
-            {
-                throw new UserNotAuthorizedException();
-            }
-            var passwordHash = SecurityUtil.GeneratePasswordHash(
-                request.Password, 
-                existsUser.PasswordSalt
-            );
-            if (!passwordHash.CompareTo(existsUser.PublicKey))
-            {
-                throw new UserNotAuthorizedException();
-            }
+            // var existsUser = await _queryBuilder.For<UserEntity>()
+            //     .WithAsync(new UserGetByCriteria(request.UserName));
+            //
+            //
+            // if (existsUser == null)
+            // {
+            //     throw new UserNotAuthorizedException();
+            // }
+            // var passwordHash = SecurityUtil.GeneratePasswordHash(
+            //     request.Password, 
+            //     existsUser.PasswordSalt
+            // );
+            // if (!passwordHash.CompareTo(existsUser.PublicKey))
+            // {
+            //     throw new UserNotAuthorizedException();
+            // }
             return new LoginResponseDto()
             {
-                Token = _jwtAuthService.BuildJwt(existsUser.Id)
+                // Token = _jwtAuthService.BuildJwt(existsUser.Id)
+                Token = ""
             };
         }
     }

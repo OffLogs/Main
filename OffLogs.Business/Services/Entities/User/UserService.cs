@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Commands.Abstractions;
 using Microsoft.Extensions.Logging;
 using Npgsql;
+using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Utils;
 using OffLogs.Business.Helpers;
 using OffLogs.Business.Orm.Commands.Context;
@@ -30,26 +31,24 @@ namespace OffLogs.Business.Services.Entities.User
             _queryBuilder = queryBuilder;
         }
 
-        public async Task<UserEntity> CreateNewUser(string userName,  string email)
+        public async Task<UserEntity> CreatePendingUser(string email)
         {
-            userName = FormatUtil.ClearUserName(userName);
+            var userName = FormatUtil.ClearUserName(email);
             var existsUser = await _queryBuilder.For<UserEntity>()
                 .WithAsync(new UserGetByCriteria(userName, email));
             if (existsUser != null)
                 throw new EntityIsExistException();
-            
-            var password = SecurityUtil.GeneratePassword(8);
-            var passwordSalt = SecurityUtil.GenerateSalt();
-            var passwordHash = SecurityUtil.GeneratePasswordHash(password, passwordSalt);
-            var user = new UserEntity()
+
+            var verificationToken = SecurityUtil.GetTimeBasedToken() + SecurityUtil.GetRandomString(12);
+            var user = new UserEntity
             {
                 UserName = FormatUtil.ClearUserName(userName),
-                Email = email,
-                Password = password,
-                PasswordSalt = passwordSalt,
-                PublicKey = passwordHash,
+                Email = email.Trim().ToLower(),
+                PublicKey = Array.Empty<byte>(),
+                Status = UserStatus.Pending,
+                VerificationToken = verificationToken,
                 CreateTime = DateTime.UtcNow,
-                UpdateTime = DateTime.UtcNow
+                UpdateTime = DateTime.UtcNow,
             };
             await _commandBuilder.SaveAsync(user);
             return user;

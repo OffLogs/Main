@@ -14,8 +14,8 @@ namespace OffLogs.Business.Orm.Queries.Entities.User
             string email = null
         )
         {
-            UserName = userName;
-            Email = email;
+            UserName = userName?.Trim().ToLower();
+            Email = email?.Trim().ToLower();
 
             if (string.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Email))
                 throw new ArgumentNullException(nameof(UserName));
