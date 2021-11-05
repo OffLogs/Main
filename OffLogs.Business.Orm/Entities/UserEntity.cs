@@ -33,6 +33,10 @@ namespace OffLogs.Business.Orm.Entities
         [Column(Name = "status", SqlType = "int", NotNull = true)]
         public virtual UserStatus Status { get; set; }
 
+        [Property(NotNull = false)]
+        [Column(Name = "verification_time", SqlType = "datetime", NotNull = false)]
+        public virtual DateTime? VerificationTime { get; set; }
+        
         [Property(NotNull = true)]
         [Column(Name = "create_time", SqlType = "datetime", NotNull = true)]
         public virtual DateTime CreateTime { get; set; }
@@ -57,6 +61,8 @@ namespace OffLogs.Business.Orm.Entities
        )]
         public virtual ICollection<LogEntity> FavoriteLogs { get; set; } = new List<LogEntity>();
 
+        public bool IsVerificated => VerificationTime.HasValue;
+        
         public UserEntity() {}
     }
 }

@@ -6,6 +6,8 @@ namespace OffLogs.Api.Tests.Integration.Core.Models
 {
     public class UserTestModel: UserEntity
     {
+        public string PemFilePassword { get; }
+        public string PemFile { get; }
         public List<ApplicationEntity> Applications { get; set; } = new();
         
         public string ApiToken { get; set; }
@@ -25,14 +27,18 @@ namespace OffLogs.Api.Tests.Integration.Core.Models
             get => Applications.First();
         }
         
-        public UserTestModel(UserEntity entity)
+        public UserTestModel(
+            UserEntity entity,
+            string pemFilePassword,
+            string pemFile
+        )
         {
+            PemFilePassword = pemFilePassword;
+            PemFile = pemFile;
             Id = entity.Id;
             UserName = entity.UserName;
             Email = entity.Email;
-            Password = entity.Password;
             PublicKey = entity.PublicKey;
-            PasswordSalt = entity.PasswordSalt;
             CreateTime = entity.CreateTime;
             UpdateTime = entity.UpdateTime;
         }

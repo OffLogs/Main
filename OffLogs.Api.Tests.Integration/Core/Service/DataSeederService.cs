@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Commands.Abstractions;
 using OffLogs.Api.Tests.Integration.Core.Models;
+using OffLogs.Business.Common.Utils;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Services.Data;
@@ -14,7 +15,7 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
 {
     public partial class DataSeederService: IDataSeederService
     {
-        private readonly IDataFactoryService _factory;
+        private readonly IDataFactoryService _dataFactory;
         private readonly IAsyncCommandBuilder _commandBuilder;
         private readonly IAsyncQueryBuilder _queryBuilder;
         private readonly IJwtAuthService _jwtAuthService;
@@ -22,7 +23,7 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
         private readonly IApplicationService _applicationService;
 
         public DataSeederService(
-            IDataFactoryService factoryService, 
+            IDataFactoryService dataFactoryService, 
             IAsyncCommandBuilder commandBuilder, 
             IJwtAuthService jwtAuthService,
             IUserService userService,
@@ -30,7 +31,7 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
             IAsyncQueryBuilder queryBuilder
         )
         {
-            _factory = factoryService;
+            _dataFactory = dataFactoryService;
             _commandBuilder = commandBuilder;
             _jwtAuthService = jwtAuthService;
             _userService = userService;
@@ -38,24 +39,30 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
             _queryBuilder = queryBuilder;
         }
 
-        public async Task<UserTestModel> CreateNewUser()
+        public async Task<UserTestModel> CreateNewUser(string userName = null, string email = null)
         {
-            var fakeUser = _factory.UserFactory().Generate();
-            var user = new UserTestModel(
-                await _userService.CreateNewUser(fakeUser.UserName, fakeUser.Email)    
+            var fakeUser = _dataFactory.UserFactory().Generate();
+            fakeUser.UserName ??= userName;
+            fakeUser.Email ??= email;
+            var user = await _userService.CreatePendingUser(fakeUser.Email);
+            var pemFilePassword = SecurityUtil.GeneratePassword();
+            var (activatedUser, pemFile) = await _userService.ActivateUser(
+                user.Id, 
+                pemFilePassword
             );
-            var fakeApplication = _factory.ApplicationFactory(user).Generate();
-            var application = await _applicationService.CreateNewApplication(user, fakeApplication.Name);
-            user.Applications.Add(
+            var userModel = new UserTestModel(activatedUser, pemFilePassword, pemFile);
+            var fakeApplication = _dataFactory.ApplicationFactory(userModel).Generate();
+            var application = await _applicationService.CreateNewApplication(userModel, fakeApplication.Name);
+            userModel.Applications.Add(
                 application
             );
-            user.ApiToken = _jwtAuthService.BuildJwt(user.Id);
-            return user;
+            userModel.ApiToken = _jwtAuthService.BuildJwt(userModel.Id);
+            return userModel;
         }
 
         public async Task<List<ApplicationEntity>> CreateApplicationsAsync(UserEntity user, int counter = 1)
         {
-            var factory = _factory.ApplicationFactory(user);
+            var factory = _dataFactory.ApplicationFactory(user);
             var result = new List<ApplicationEntity>();
             for (int i = 1; i <= counter; i++)
             {

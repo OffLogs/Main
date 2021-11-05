@@ -4,11 +4,13 @@ using Commands.Abstractions;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 using OffLogs.Business.Common.Constants;
+using OffLogs.Business.Common.Security;
 using OffLogs.Business.Common.Utils;
 using OffLogs.Business.Helpers;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Exceptions;
+using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Orm.Queries.Entities.User;
 using Queries.Abstractions;
 
@@ -31,9 +33,9 @@ namespace OffLogs.Business.Services.Entities.User
             _queryBuilder = queryBuilder;
         }
 
-        public async Task<UserEntity> CreatePendingUser(string email)
+        public async Task<UserEntity> CreatePendingUser(string email, string userName = null)
         {
-            var userName = FormatUtil.ClearUserName(email);
+            userName ??= FormatUtil.ClearUserName(email);
             var existsUser = await _queryBuilder.For<UserEntity>()
                 .WithAsync(new UserGetByCriteria(userName, email));
             if (existsUser != null)
@@ -52,6 +54,31 @@ namespace OffLogs.Business.Services.Entities.User
             };
             await _commandBuilder.SaveAsync(user);
             return user;
+        }
+        
+        public async Task<(UserEntity, string)> ActivateUser(
+            long userId, 
+            string privateKeyPassword
+        )
+        {
+            var user = await _queryBuilder.For<UserEntity>()
+                .WithAsync(new FindByIdCriteria(userId));
+            if (user == null)
+                throw new EntityIsNotExistException();
+            if (user.IsVerificated)
+                throw new Exception("User already activated");
+            
+            // Generate private key
+            var keyGenerator = AsymmetricEncryptor.GenerateKeyPair();
+            
+            user.Status = UserStatus.Active;
+            user.VerificationTime = DateTime.Now;
+            user.VerificationToken = null;
+            user.PublicKey = keyGenerator.GetPublicKeyBytes();
+            await _commandBuilder.SaveAsync(user);
+
+            var pemFileContent = keyGenerator.CreatePem(privateKeyPassword);
+            return (user, pemFileContent);
         }
         
         // public async Task DeleteByUserName(string userName)

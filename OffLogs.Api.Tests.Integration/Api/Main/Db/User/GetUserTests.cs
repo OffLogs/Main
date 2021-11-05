@@ -19,14 +19,13 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.User
         {
             await CommandBuilder.ExecuteAsync(new UserDeleteCommandContext(expectedUserName));
 
-            await UserService.CreateNewUser(expectedUserName, expectedEmail);
+            await DataSeeder.CreateNewUser(expectedUserName, expectedEmail);
             var newUser = await QueryBuilder.For<UserEntity>()
                 .WithAsync(new UserGetByCriteria(expectedUserName));
             Assert.NotNull(newUser);
             Assert.Equal(expectedUserName, newUser.UserName);
             Assert.Equal(expectedEmail, newUser.Email);
             Assert.True(newUser.PublicKey.Length > 0);
-            Assert.True(newUser.PasswordSalt.Length > 0);
         }
     }
 }
