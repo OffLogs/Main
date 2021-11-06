@@ -5,6 +5,7 @@ using Commands.Abstractions;
 using Domain.Abstractions;
 using Notification.Abstractions;
 using OffLogs.Business.Common.Constants;
+using OffLogs.Business.Common.Security;
 using OffLogs.Business.Exceptions;
 using OffLogs.Business.Notifications.Senders;
 using OffLogs.Business.Orm.Commands.Context;
@@ -38,10 +39,20 @@ namespace OffLogs.Business.Services.Entities.Application
         }
 
         public async Task<ApplicationEntity> CreateNewApplication(UserEntity user,  string name)
-        {   
+        {
+            var userEncryptor = AsymmetricEncryptor.FromPublicKeyBytes(user.PublicKey);
+            
             var application = new ApplicationEntity(user, name);
+            
+            // Application keys encryption
+            var applicationEncryptor = AsymmetricEncryptor.GenerateKeyPair();
+            application.PublicKey = applicationEncryptor.GetPublicKeyBytes();
+            application.EncryptedPrivateKey = userEncryptor.EncryptData(
+                applicationEncryptor.GetPrivateKeyBytes()
+            );
+            
             await _commandBuilder.SaveAsync(application);
-            application.ApiToken = _jwtService.BuildJwt(application.Id);
+            application.ApiToken = _jwtService.BuildJwt(application);
             await _commandBuilder.SaveAsync(application);
             return application;
         }

@@ -1,4 +1,5 @@
 using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using OffLogs.Business.Orm.Entities;
 
 namespace OffLogs.Business.Services.Jwt
 {
@@ -29,12 +31,13 @@ namespace OffLogs.Business.Services.Jwt
             _audience = _configuration.GetValue<string>("App:Application:Audience");
         }
 
-        public string BuildJwt(long applicationId)
+        public string BuildJwt(ApplicationEntity application)
         {
             var claims = new List<Claim>
             {
                 new(ClaimTypes.System, "Application"),
-                new(ClaimTypes.NameIdentifier, applicationId.ToString())
+                new(ClaimTypes.NameIdentifier, application.Id.ToString()),
+                new(ClaimTypes.Rsa, Convert.ToBase64String(application.PublicKey)),
             };
             
             var signingCredentials =
@@ -59,6 +62,21 @@ namespace OffLogs.Business.Services.Jwt
                 var jwt = new JwtSecurityToken(jwtString);
                 var applicationId = jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
                 return applicationId != null ? int.Parse(applicationId) : null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+        
+        public byte[]? GetApplicationPublicKey(string jwtString)
+        {
+            jwtString = jwtString ?? throw new ArgumentNullException(nameof(jwtString));
+            try
+            {   
+                var jwt = new JwtSecurityToken(jwtString);
+                var publicKeyBase64 = jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Rsa)?.Value;
+                return publicKeyBase64 != null ? Convert.FromBase64String(publicKeyBase64) : null;
             }
             catch (Exception)
             {
