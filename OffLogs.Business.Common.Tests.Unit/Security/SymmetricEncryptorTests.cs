@@ -42,5 +42,16 @@ namespace OffLogs.Business.Common.Tests.Unit.Encryption
             var decryptedString = Encoding.UTF8.GetString(decrypted);
             Assert.Equal(decryptedString, dataString);
         }
+        
+        [Fact]
+        public void ShouldDecryptStringData()
+        {
+            var dataString = "some data";
+            var encrypted = _encryptor.EncryptData(dataString);
+
+            var decrypted = _encryptor.DecryptData(encrypted);
+            var decryptedString = Encoding.UTF8.GetString(decrypted);
+            Assert.Equal(decryptedString, dataString);
+        }
     }
 }

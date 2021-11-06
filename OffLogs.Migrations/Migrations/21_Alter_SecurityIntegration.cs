@@ -33,6 +33,7 @@ namespace OffLogs.Migrations.Migrations
                 .AddColumn("encrypted_private_key").AsBinary().NotNullable();
                 
             Alter.Table("logs")
+                .AddColumn("encrypted_symmetric_key").AsBinary().NotNullable()
                 .AddColumn("encrypted_message").AsBinary().NotNullable();
             Delete.Column("message").FromTable("logs");
             

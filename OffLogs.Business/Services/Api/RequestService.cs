@@ -40,5 +40,10 @@ namespace OffLogs.Business.Services.Api
         {
             return _jwtApplicationService.GetApplicationId(GetApiToken()) ?? 0;
         }
+        
+        public byte[]? GetApplicationPublicKeyFromJwt()
+        {
+            return _jwtApplicationService.GetApplicationPublicKey(GetApiToken());
+        }
     }
 }

@@ -52,6 +52,10 @@ namespace OffLogs.Business.Orm.Entities
         public virtual byte[] EncryptedMessage { get; set; }
         
         [Property(NotNull = true)]
+        [Column(Name = "encrypted_symmetric_key", SqlType = "bytea", NotNull = true)]
+        public virtual byte[] EncryptedSymmetricKey { get; set; }
+        
+        [Property(NotNull = true)]
         [Column(Name = "log_time", SqlType = "datetime")]
         public virtual DateTime LogTime { get; set; }
         

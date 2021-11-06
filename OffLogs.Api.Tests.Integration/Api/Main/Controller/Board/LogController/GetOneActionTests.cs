@@ -82,7 +82,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             Assert.NotNull(receivedLog);
             Assert.Equal(log.Properties.Count, receivedLog.Properties.Count);
             Assert.Equal(log.Traces.Count, receivedLog.Traces.Count);
-            Assert.Equal(log.EncryptedMessage, receivedLog.Message);
+            Assert.NotEmpty(log.EncryptedMessage);
             Assert.Equal(log.Id, receivedLog.Id);
             Assert.Equal(log.Level, receivedLog.Level);
             Assert.Equal(log.LogTime.ToLongTimeString(), receivedLog.LogTime.ToLongTimeString());
@@ -110,7 +110,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             Assert.NotNull(receivedLog);
             Assert.Equal(log.Properties.Count, receivedLog.Properties.Count);
             Assert.Equal(log.Traces.Count, receivedLog.Traces.Count);
-            Assert.Equal(log.EncryptedMessage, receivedLog.Message);
+            Assert.NotEmpty(log.EncryptedMessage);
             Assert.Equal(log.Id, receivedLog.Id);
         }
 

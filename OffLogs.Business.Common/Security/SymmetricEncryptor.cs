@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Security;
@@ -40,6 +41,13 @@ namespace OffLogs.Business.Common.Security
         {
             var key = _keyGenerator.GenerateKey();
             return new SymmetricEncryptor(key);
+        }
+        
+        public byte[] EncryptData(string data)
+        {
+            return EncryptData(
+                Encoding.UTF8.GetBytes(data)
+            );
         }
         
         public byte[] EncryptData(byte[] data)

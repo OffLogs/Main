@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Api.Requests.Abstractions;
 using Microsoft.AspNetCore.Http;
+using OffLogs.Business.Common.Security;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Services.Api;
 using OffLogs.Business.Services.Http.ThrottleRequests;
@@ -35,17 +36,26 @@ namespace OffLogs.Api.Frontend.Controllers.Log.Actions.Log
         {
             await _throttleRequestsService.CheckOrThowExceptionAsync(
                 RequestItemType.Application,
-                _requestService.GetApplicationIdFromJwt()    
+                _requestService.GetApplicationIdFromJwt()
             );
 
             var token = _requestService.GetApiToken();
             var clientIp = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
+
+            var applicationEncryptor = AsymmetricEncryptor.FromPublicKeyBytes(
+                _requestService.GetApplicationPublicKeyFromJwt()    
+            );
+            var logSymmetricEncryptor = SymmetricEncryptor.GenerateKey();
+            var encryptedSymmetricKey = applicationEncryptor.EncryptData(
+                logSymmetricEncryptor.Key.GetKey()
+            );
             
             foreach (var log in request.Logs)
             {
                 var logEntity = new LogEntity()
                 {
-                    EncryptedMessage = log.Message,
+                    EncryptedSymmetricKey = encryptedSymmetricKey,
+                    EncryptedMessage = logSymmetricEncryptor.EncryptData(log.Message),
                     Level = log.LogLevel,
                     LogTime = log.Timestamp
                 };
@@ -53,14 +63,17 @@ namespace OffLogs.Api.Frontend.Controllers.Log.Actions.Log
                 {
                     foreach (var property in log.Properties)
                     {
-                        logEntity.AddProperty(new LogPropertyEntity(property.Key, property.Value));
+                        var encryptedKey = logSymmetricEncryptor.EncryptData(property.Key);
+                        var encryptedValue = logSymmetricEncryptor.EncryptData(property.Value);
+                        logEntity.AddProperty(new LogPropertyEntity(encryptedKey, encryptedValue));
                     }
                 }
                 if (log.Traces != null)
                 {
                     foreach (var trace in log.Traces)
                     {
-                        logEntity.AddTrace(new LogTraceEntity(trace));
+                        var encryptedTrace = logSymmetricEncryptor.EncryptData(trace);
+                        logEntity.AddTrace(new LogTraceEntity(encryptedTrace));
                     }
                 }
                 await _kafkaProducerService.ProduceLogMessageAsync(token, logEntity, clientIp);

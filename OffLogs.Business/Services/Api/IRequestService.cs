@@ -11,5 +11,6 @@ namespace OffLogs.Business.Services.Api
         string GetApiToken();
         long GetUserIdFromJwt();
         long GetApplicationIdFromJwt();
+        byte[]? GetApplicationPublicKeyFromJwt();
     }
 }
