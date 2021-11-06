@@ -2,6 +2,7 @@ using System;
 using Domain.Abstractions;
 using Newtonsoft.Json;
 using NHibernate.Mapping.Attributes;
+using OffLogs.Business.Common.Security;
 
 namespace OffLogs.Business.Orm.Entities
 {
@@ -42,16 +43,18 @@ namespace OffLogs.Business.Orm.Entities
             CreateTime = DateTime.UtcNow;
         }
         
-        public LogPropertyEntity(byte[] encryptedKey, object value)
+        public LogPropertyEntity(byte[] encryptedKey, AsymmetricEncryptor encryptor, object value)
         {
             EncryptedKey = encryptedKey;
             try
             {
-                EncryptedValue = JsonConvert.SerializeObject(value);
+                EncryptedValue = encryptor.EncryptData(
+                    JsonConvert.SerializeObject(value)
+                );
             }
             catch (Exception)
             {
-                EncryptedValue = "";
+                EncryptedValue = Array.Empty<byte>();
             }
             CreateTime = DateTime.UtcNow;
         }

@@ -49,7 +49,7 @@ namespace OffLogs.Business.Orm.Entities
                
         [Property(NotNull = true)]
         [Column(Name = "encrypted_message", SqlType = "bytea", NotNull = true)]
-        public virtual byte[] Message { get; set; }
+        public virtual byte[] EncryptedMessage { get; set; }
         
         [Property(NotNull = true)]
         [Column(Name = "log_time", SqlType = "datetime")]

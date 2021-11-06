@@ -8,5 +8,9 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User
         [Required]
         [StringLength(32, MinimumLength = 6)]
         public string Password { get; set; }
+        
+        [Required]
+        [StringLength(512, MinimumLength = 10)]
+        public string Token { get; set; }
     }
 }

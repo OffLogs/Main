@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Crypto.Parameters;
@@ -68,6 +69,13 @@ namespace OffLogs.Business.Common.Security
         }
         
         #endregion
+
+        public byte[] EncryptData(string data)
+        {
+            return EncryptData(
+                Encoding.UTF8.GetBytes(data)
+            );
+        }
 
         public byte[] EncryptData(byte[] data)
         {

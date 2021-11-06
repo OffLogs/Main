@@ -44,7 +44,7 @@ namespace OffLogs.Api.Frontend.Controllers.Log.Actions.Log
             {
                 var logEntity = new LogEntity()
                 {
-                    Message = log.RenderedMessage,
+                    EncryptedMessage = log.RenderedMessage,
                     Level = log.LogLevel.ToLogLevel(),
                     LogTime = log.Timestamp
                 };

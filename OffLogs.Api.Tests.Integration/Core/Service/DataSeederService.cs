@@ -39,7 +39,7 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
             _queryBuilder = queryBuilder;
         }
 
-        public async Task<UserTestModel> CreateNewUser(string userName = null, string email = null)
+        public async Task<UserTestModel> CreateActivatedUser(string userName = null, string email = null)
         {
             var fakeUser = _dataFactory.UserFactory().Generate();
             fakeUser.UserName ??= userName;

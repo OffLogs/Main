@@ -19,7 +19,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Log
         [Fact]
         public async Task ShouldAddNewErrorLog()
         {
-            var userModel = await DataSeeder.CreateNewUser();
+            var userModel = await DataSeeder.CreateActivatedUser();
             var application = userModel.Applications.First();
 
             var log = await CreateLog(application, LogLevel.Error);
@@ -37,7 +37,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Log
         [Fact]
         public async Task ShouldReceiveLogsList()
         {
-            var userModel = await DataSeeder.CreateNewUser();
+            var userModel = await DataSeeder.CreateActivatedUser();
             var application = userModel.Applications.First();
 
             await CreateLog(application, LogLevel.Error);

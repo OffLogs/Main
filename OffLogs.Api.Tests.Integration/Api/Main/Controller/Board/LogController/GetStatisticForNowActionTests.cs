@@ -18,7 +18,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData(MainApiUrl.LogGetStatisticForNow)]
         public async Task OnlyAuthorizedUsersCanReceiveData(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
 
             // Act
             var response = await PostRequestAsAnonymousAsync(url, new GetLogStatisticForNowRequest()
@@ -33,8 +33,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData(MainApiUrl.LogGetStatisticForNow)]
         public async Task OnlyOwnerCanReceiveApplications(string url)
         {
-            var user1 = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
 
             // Act
             var response = await PostRequestAsync(url, user1.ApiToken, new GetLogStatisticForNowRequest()
@@ -49,10 +49,10 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData(MainApiUrl.LogGetStatisticForNow)]
         public async Task ShouldReceiveStatisticForOwnersApplication(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Error, 3);
 
-            var user2 = await DataSeeder.CreateNewUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
             await DataSeeder.CreateLogsAsync(user2.ApplicationId, LogLevel.Error, 2);
 
             // Act
@@ -76,7 +76,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         {
             var expectedCounter = 7;
 
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             await DataSeeder.CreateLogsAsync(user.Application.Id, LogLevel.Error, expectedCounter);
             await DataSeeder.CreateLogsAsync(user.Application.Id, LogLevel.Information, expectedCounter);
             await DataSeeder.CreateLogsAsync(user.Application.Id, LogLevel.Warning, expectedCounter);

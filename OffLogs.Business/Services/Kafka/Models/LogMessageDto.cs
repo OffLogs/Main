@@ -31,7 +31,7 @@ namespace OffLogs.Business.Services.Kafka.Models
             ApplicationJwtToken = applicationJwt;
             Token = logEntity.Token;
             LogLevel = logEntity.Level;
-            Message = logEntity.Message;
+            Message = logEntity.EncryptedMessage;
             LogTime = logEntity.LogTime;
             Traces = logEntity.Traces;
             Properties = logEntity.Properties;
@@ -43,7 +43,7 @@ namespace OffLogs.Business.Services.Kafka.Models
             {
                 Token = Token,
                 Level = LogLevel,
-                Message = Message,
+                EncryptedMessage = Message,
                 LogTime = LogTime,
                 CreateTime = DateTime.UtcNow
             };

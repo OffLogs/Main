@@ -57,7 +57,7 @@ namespace OffLogs.Business.Services.Entities.Log
             var log = new LogEntity()
             {
                 Application = application,
-                Message = message,
+                EncryptedMessage = message,
                 Level = level,
                 LogTime = timestamp
             };

@@ -34,7 +34,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Public.UserControlle
         public async Task ShouldReturnSuccess(string url)
         {
             // Arrange
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
 
             // Act
             var response = await GetRequestAsync(url, user.ApiToken);

@@ -30,8 +30,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         [InlineData(Url)]
         public async Task CanNotUpdateForOtherUser(string url)
         {
-            var user1 = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
 
             // Act
             var response = await PostRequestAsync(url, user1.ApiToken, new UpdateRequest()
@@ -48,7 +48,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         public async Task CanUpdateApplication(string url)
         {
             var applicationName = "NewApplicationName";
-            var user1 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
 
             // Act
             Assert.NotEqual(applicationName, user1.Application.Name);
@@ -67,8 +67,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         public async Task SharedUserShouldNotUpdateApplication(string url)
         {
             var applicationName = "NewApplicationName";
-            var user1 = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
 
             await ApplicationService.ShareForUser(user1.Application, user2);
 

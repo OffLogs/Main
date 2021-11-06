@@ -19,7 +19,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Notifications.Emails
         [Fact]
         public async Task ShouldSendNotification()
         {
-            var userModel = await DataSeeder.CreateNewUser();
+            var userModel = await DataSeeder.CreateActivatedUser();
             var application = userModel.Applications.First();
 
             Assert.False(EmailSendingService.IsEmailSent);

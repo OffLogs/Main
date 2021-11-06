@@ -20,7 +20,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         [InlineData(MainApiUrl.ApplicationGetSharedUser)]
         public async Task OnlyAuthorizedUsersCanReceiveList(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             await DbSessionProvider.PerformCommitAsync();
 
             // Act
@@ -36,8 +36,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         [InlineData(MainApiUrl.ApplicationGetSharedUser)]
         public async Task ShouldNotReceiveListIfUserHasReadOnlyAccess(string url)
         {
-            var user1 = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
             await ApplicationService.ShareForUser(user1.Application, user2);
 
             // Act
@@ -53,12 +53,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         [InlineData(MainApiUrl.ApplicationGetSharedUser)]
         public async Task ShouldNotReceiveList(string url)
         {
-            var user1 = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
             await ApplicationService.ShareForUser(user1.Application, user2);
-            var user3 = await DataSeeder.CreateNewUser();
+            var user3 = await DataSeeder.CreateActivatedUser();
             await ApplicationService.ShareForUser(user1.Application, user3);
-            var user4 = await DataSeeder.CreateNewUser();
+            var user4 = await DataSeeder.CreateActivatedUser();
             await ApplicationService.ShareForUser(user1.Application, user4);
 
             // Act

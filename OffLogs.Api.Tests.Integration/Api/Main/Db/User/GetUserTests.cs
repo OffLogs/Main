@@ -19,7 +19,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.User
         {
             await CommandBuilder.ExecuteAsync(new UserDeleteCommandContext(expectedUserName));
 
-            await DataSeeder.CreateNewUser(expectedUserName, expectedEmail);
+            await DataSeeder.CreateActivatedUser(expectedUserName, expectedEmail);
             var newUser = await QueryBuilder.For<UserEntity>()
                 .WithAsync(new UserGetByCriteria(expectedUserName));
             Assert.NotNull(newUser);

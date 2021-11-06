@@ -17,7 +17,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData(MainApiUrl.LogShare)]
         public async Task OnlyAuthorizedUsersCanDoIt(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             var logs = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information);
             
             // Act
@@ -33,9 +33,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData(MainApiUrl.LogShare)]
         public async Task OtherUsersShouldNotShareLog(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             var logs = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information);
-            var user2 = await DataSeeder.CreateNewUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
 
             // Act
             var response = await PostRequestAsync(url, user2.ApiToken, new LogShareRequest()
@@ -50,7 +50,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData(MainApiUrl.LogShare)]
         public async Task OwnerShouldShareLog(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             var logs = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information);
             var log = logs.First();
             Assert.False(log.LogShares.Any());
@@ -75,9 +75,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData(MainApiUrl.LogShare)]
         public async Task UsersWithReadOnlyAccessCanDoIt(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             var logs = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information);
-            var user2 = await DataSeeder.CreateNewUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
 
             await ApplicationService.ShareForUser(user.Application, user2);
 

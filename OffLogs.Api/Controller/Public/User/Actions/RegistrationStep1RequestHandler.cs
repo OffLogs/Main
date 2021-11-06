@@ -35,7 +35,7 @@ namespace OffLogs.Api.Controller.Public.User.Actions
 
         public async Task ExecuteAsync(RegistrationStep1Request request)
         {
-            var currentUser = _queryBuilder.For<UserGetByQuery>()
+            var currentUser = await _queryBuilder.For<UserGetByQuery>()
                 .WithAsync(new UserGetByCriteria(null, request.Email));
             if (currentUser != null)
             {

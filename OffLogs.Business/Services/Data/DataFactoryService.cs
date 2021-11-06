@@ -66,7 +66,7 @@ namespace OffLogs.Business.Services.Data
         {
             return new Faker<LogEntity>()
                 .RuleFor(
-                    entity => entity.Message,
+                    entity => entity.EncryptedMessage,
                     (faker) => faker.Lorem.Sentence()
                 )
                 .RuleFor(

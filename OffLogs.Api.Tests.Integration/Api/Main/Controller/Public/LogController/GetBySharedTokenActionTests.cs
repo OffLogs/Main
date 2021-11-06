@@ -42,7 +42,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Public.LogController
         public async Task ShouldNotLoginIfPasswordIsIncorrect(string url)
         {
             // Arrange
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             var logs = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Debug);
             var log = logs.First();
             var logShare = await LogShareService.Share(log);
@@ -57,7 +57,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Public.LogController
             var actualLog = await response.GetJsonDataAsync<LogSharedDto>();
             Assert.Equal(log.Id, actualLog.Id);
             Assert.Equal(log.Level, actualLog.Level);
-            Assert.Equal(log.Message, actualLog.Message);
+            Assert.Equal(log.EncryptedMessage, actualLog.Message);
             Assert.Equal(log.Properties.Count, actualLog.Properties.Count);
             Assert.Equal(log.Traces.Count, actualLog.Traces.Count);
         }

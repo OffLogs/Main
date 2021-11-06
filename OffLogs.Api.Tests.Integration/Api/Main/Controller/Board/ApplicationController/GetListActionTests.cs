@@ -20,7 +20,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         [InlineData(MainApiUrl.ApplicationList)]
         public async Task OnlyAuthorizedUsersCanReceiveList(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             await DbSessionProvider.PerformCommitAsync();
 
             // Act
@@ -36,8 +36,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         [InlineData(MainApiUrl.ApplicationList)]
         public async Task OnlyOwnerCanReceiveApplications(string url)
         {
-            var user1 = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
 
             // Act
             var response = await PostRequestAsync(url, user1.ApiToken, new GetListRequest()
@@ -61,10 +61,10 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         [InlineData(MainApiUrl.ApplicationList)]
         public async Task ShouldReceiveLogsList(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             await DataSeeder.CreateApplicationsAsync(user, 3);
 
-            var user2 = await DataSeeder.CreateNewUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
             await DataSeeder.CreateApplicationsAsync(user2, 2);
 
             // Act
@@ -83,7 +83,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         [InlineData(MainApiUrl.ApplicationList)]
         public async Task ShouldReceiveMoreThanOnePages(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             await DataSeeder.CreateApplicationsAsync(user, 25);
 
             // Act
@@ -103,16 +103,16 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         [InlineData(MainApiUrl.ApplicationList)]
         public async Task ApplicationListShouldContainSharedApplications(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             await DataSeeder.CreateApplicationsAsync(user, 10);
 
-            var user2 = await DataSeeder.CreateNewUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
             foreach (var applicationOfUser2 in await DataSeeder.CreateApplicationsAsync(user2, 3))
             {
                 await ApplicationService.ShareForUser(applicationOfUser2, user);
             }
 
-            var user3 = await DataSeeder.CreateNewUser();
+            var user3 = await DataSeeder.CreateActivatedUser();
             foreach (var applicationOfUser3 in await DataSeeder.CreateApplicationsAsync(user3, 3))
             {
                 await ApplicationService.ShareForUser(applicationOfUser3, user);
@@ -136,10 +136,10 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         [InlineData(MainApiUrl.ApplicationList)]
         public async Task ListShouldContainSharedApplicationsWithCorrectPermissions(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
             await ApplicationService.ShareForUser(user2.Application, user);
-            var user3 = await DataSeeder.CreateNewUser();
+            var user3 = await DataSeeder.CreateActivatedUser();
             await ApplicationService.ShareForUser(user3.Application, user);
             
             // Act

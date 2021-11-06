@@ -18,7 +18,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Log
         [Fact]
         public async Task ShouldAddNewLogsWithUniqToken()
         {
-            var userModel = await DataSeeder.CreateNewUser();
+            var userModel = await DataSeeder.CreateActivatedUser();
             var application = userModel.Applications.First();
 
             var logs = new List<LogEntity>();
@@ -36,7 +36,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Log
         [Fact]
         public async Task ShouldAddNewLogWithUniqToken()
         {
-            var userModel = await DataSeeder.CreateNewUser();
+            var userModel = await DataSeeder.CreateActivatedUser();
             var application = userModel.Applications.First();
 
             var logs = await DataSeeder.CreateLogsAsync(application.Id, LogLevel.Error, 10);

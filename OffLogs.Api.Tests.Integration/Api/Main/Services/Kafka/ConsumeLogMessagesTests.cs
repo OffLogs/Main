@@ -18,7 +18,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
         [Fact]
         public async Task ShouldSendMessageAndReceiveIt()
         {
-            var userModel = await DataSeeder.CreateNewUser();
+            var userModel = await DataSeeder.CreateActivatedUser();
             var application = userModel.Applications.First();
 
             var log1 = await DataSeeder.MakeLogAsync(application, LogLevel.Error);
@@ -34,7 +34,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             var existsLog = await QueryBuilder.For<LogEntity>()
                 .WithAsync(new LogGetByTokenCriteria(log1.Token));
             Assert.NotNull(existsLog);
-            Assert.Equal(log1.Message, existsLog.Message);
+            Assert.Equal(log1.EncryptedMessage, existsLog.EncryptedMessage);
             Assert.Equal(log1.Level, existsLog.Level);
             Assert.Equal(log1.LogTime.ToLongDateString(), existsLog.LogTime.ToLongDateString());
             Assert.Equal(log1.Traces.Count, existsLog.Traces.Count);
@@ -44,7 +44,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
         [Fact]
         public async Task ShouldSendMessageAndReceiveItWithCancellationToken()
         {
-            var userModel = await DataSeeder.CreateNewUser();
+            var userModel = await DataSeeder.CreateActivatedUser();
             var application = userModel.Applications.First();
 
             var log1 = await DataSeeder.MakeLogAsync(application, LogLevel.Error);
@@ -66,7 +66,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
         [Fact]
         public async Task ShouldSendFewMessagesAndReceiveIt()
         {
-            var userModel = await DataSeeder.CreateNewUser();
+            var userModel = await DataSeeder.CreateActivatedUser();
             var application = userModel.Applications.First();
 
             var logCounter = 10;
@@ -94,7 +94,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
         [Fact]
         public async Task ShouldNotProcessLogsIfApplicationJwtIsIncorrect()
         {
-            var userModel = await DataSeeder.CreateNewUser();
+            var userModel = await DataSeeder.CreateActivatedUser();
             var application = userModel.Applications.First();
 
             var log1 = await DataSeeder.MakeLogAsync(application, LogLevel.Error);

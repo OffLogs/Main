@@ -33,8 +33,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         [InlineData(Url)]
         public async Task CanNotDeleteForOtherUser(string url)
         {
-            var user1 = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
 
             // Act
             var response = await PostRequestAsync(url, user1.ApiToken, new DeleteRequest()
@@ -49,7 +49,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         [InlineData(Url)]
         public async Task CanDeleteApplication(string url)
         {
-            var user1 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
 
             // Act
             var response = await PostRequestAsync(url, user1.ApiToken, new DeleteRequest()
@@ -70,9 +70,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         [InlineData(Url)]
         public async Task CanDeleteApplicationAndSendNotifications(string url)
         {
-            var user1 = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
-            var user3 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
+            var user3 = await DataSeeder.CreateActivatedUser();
             await ApplicationService.ShareForUser(user1.Application, user2);
             await ApplicationService.ShareForUser(user1.Application, user3);
             await DbSessionProvider.PerformCommitAsync();
@@ -96,8 +96,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         [InlineData(Url)]
         public async Task SharedUserShouldNotDeleteApplication(string url)
         {
-            var user1 = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
 
             await ApplicationService.ShareForUser(user1.Application, user2);
 

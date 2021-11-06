@@ -21,7 +21,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
         public async Task ShouldAddWarningLog(string url)
         {
             // Arrange
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
 
             var list = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(0, list.TotalCount);
@@ -60,7 +60,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             var actualList = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(1, actualList.TotalCount);
             var actualLog = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.First().Id);
-            Assert.NotEmpty(actualLog.Message);
+            Assert.NotEmpty(actualLog.EncryptedMessage);
             Assert.NotNull(actualLog.Level);
             Assert.True(actualLog.CreateTime > System.DateTime.UtcNow.AddMinutes(-1));
             Assert.True(actualLog.Properties.Count  > 0);
@@ -72,7 +72,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
         public async Task ShouldAddFatalLog(string url)
         {
             // Arrange
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
 
             var list = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(0, list.TotalCount);
@@ -110,7 +110,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             var actualList = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(1, actualList.TotalCount);
             var actualLog = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.First().Id);
-            Assert.NotEmpty(actualLog.Message);
+            Assert.NotEmpty(actualLog.EncryptedMessage);
             Assert.NotNull(actualLog.Level);
             Assert.True(actualLog.CreateTime > System.DateTime.UtcNow.AddMinutes(-1));
             Assert.True(actualLog.Properties.Count  > 0);
@@ -122,7 +122,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
         public async Task ShouldAddInformationLog(string url)
         {
             // Arrange
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
 
             var list = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(0, list.TotalCount);
@@ -177,7 +177,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             var actualList = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(2, actualList.TotalCount);
             var actualLog = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.First().Id);
-            Assert.NotEmpty(actualLog.Message);
+            Assert.NotEmpty(actualLog.EncryptedMessage);
             Assert.NotNull(actualLog.Level);
             Assert.True(actualLog.CreateTime > System.DateTime.UtcNow.AddMinutes(-1));
             Assert.True(actualLog.Properties.Count  > 0);
@@ -189,7 +189,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
         public async Task ShouldAddErrorLog(string url)
         {
             // Arrange
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
 
             var list = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(0, list.TotalCount);
@@ -228,7 +228,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             var actualList  = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(1, actualList.TotalCount);
             var actualLog = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.First().Id);
-            Assert.NotEmpty(actualLog.Message);
+            Assert.NotEmpty(actualLog.EncryptedMessage);
             Assert.NotNull(actualLog.Level);
             Assert.True(actualLog.CreateTime > System.DateTime.UtcNow.AddMinutes(-1));
             Assert.True(actualLog.Properties.Count == 9);
@@ -240,7 +240,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
         public async Task ShouldNotContainLotOfItems(string url)
         {
             // Arrange
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
 
             // Act
             var events = new List<object>();
@@ -277,7 +277,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             // Arrange
             var property1 = @"{""Id"": 50, ""Name"": ""UsingInMemoryRepository""}";
             var property2 = new { Id = 50, Name = "UsingInMemoryRepository" };
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
 
             var list = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(0, list.TotalCount);
@@ -309,7 +309,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             var actualList = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(1, actualList.TotalCount);
             var actualLog = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.First().Id);
-            Assert.NotEmpty(actualLog.Message);
+            Assert.NotEmpty(actualLog.EncryptedMessage);
             Assert.NotNull(actualLog.Level);
             Assert.True(actualLog.CreateTime > System.DateTime.UtcNow.AddMinutes(-1));
             Assert.True(actualLog.Properties.Count == 2);
@@ -326,7 +326,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
         public async Task ShouldThrowExceptionIfTooManyRequests(string url)
         {
             // Arrange
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
 
             // Act
             var events = new List<object>()

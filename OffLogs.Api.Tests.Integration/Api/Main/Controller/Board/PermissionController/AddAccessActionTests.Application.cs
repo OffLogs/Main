@@ -14,8 +14,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.PermissionCont
         [InlineData(MainApiUrl.PermissionAddAccess)]
         public async Task ShouldGrantPermissionsOnApplication(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
 
             // Act
             var response = await PostRequestAsync(url, user.ApiToken, new AddAccessRequest()
@@ -35,8 +35,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.PermissionCont
         [InlineData(MainApiUrl.PermissionAddAccess)]
         public async Task ShouldNotGrantPermissionsOnApplicationIfItAlreadyGranted(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
 
             await ApplicationService.ShareForUser(user.Application, user2);
 

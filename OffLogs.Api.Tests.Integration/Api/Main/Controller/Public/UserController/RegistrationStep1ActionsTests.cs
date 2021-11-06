@@ -16,7 +16,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Public.UserControlle
         public async Task ShouldFailIfIncorrectEmail(string url)
         {
             // Arrange
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             
             // Act
             var response = await PostRequestAsAnonymousAsync(url, new RegistrationStep1Request()
@@ -33,7 +33,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Public.UserControlle
         public async Task ShouldNotRegisterIfExists(string url)
         {
             // Arrange
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             
             // Act
             var response = await PostRequestAsAnonymousAsync(url, new RegistrationStep1Request()
@@ -51,7 +51,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Public.UserControlle
         {
             var newUser = DataFactory.UserFactory().Generate();
             // Arrange
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
 
             // Act
             var response = await PostRequestAsAnonymousAsync(url, new RegistrationStep1Request

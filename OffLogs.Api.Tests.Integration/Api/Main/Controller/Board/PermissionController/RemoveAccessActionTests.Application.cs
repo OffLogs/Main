@@ -14,8 +14,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.PermissionCont
         [InlineData(MainApiUrl.PermissionRemoveAccess)]
         public async Task ShouldRemovePermissionsOnApplication(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
 
             await ApplicationService.ShareForUser(user.Application, user2);
 
@@ -41,8 +41,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.PermissionCont
         [InlineData(MainApiUrl.PermissionRemoveAccess)]
         public async Task ShouldNotRemovePermissionsOnApplicationIfItAlreadyRemoved(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
 
             // Act
             var response = await PostRequestAsync(url, user.ApiToken, new RemoveAccessRequest()
