@@ -77,7 +77,8 @@ namespace OffLogs.Business.Services.Entities.Log
             LogLevel level,
             DateTime timestamp,
             IDictionary<string, object> properties = null,
-            ICollection<string> traces = null
+            ICollection<string> traces = null,
+            string clientIp = null
         )
         {
             var log = await AssembleLog(
@@ -88,7 +89,7 @@ namespace OffLogs.Business.Services.Entities.Log
                 properties,
                 traces
             );
-            await _kafkaProducerService.ProduceLogMessageAsync(log);
+            await _kafkaProducerService.ProduceLogMessageAsync(log, clientIp);
             return log;
         }
         

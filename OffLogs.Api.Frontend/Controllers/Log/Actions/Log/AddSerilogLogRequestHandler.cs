@@ -2,35 +2,36 @@
 using System.Threading.Tasks;
 using Api.Requests.Abstractions;
 using Microsoft.AspNetCore.Http;
+using NHibernate.Mapping;
 using OffLogs.Business.Common.Security;
 using OffLogs.Business.Extensions;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Services.Api;
+using OffLogs.Business.Services.Entities.Log;
 using OffLogs.Business.Services.Http.ThrottleRequests;
 using OffLogs.Business.Services.Jwt;
-using OffLogs.Business.Services.Kafka;
 using Queries.Abstractions;
 
 namespace OffLogs.Api.Frontend.Controllers.Log.Actions.Log
 {
     public class AddSerilogLogRequestHandler : IAsyncRequestHandler<AddSerilogLogsRequest>
     {
-        private readonly IKafkaProducerService _kafkaProducerService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IRequestService _requestService;
         private readonly IThrottleRequestsService _throttleRequestsService;
+        private readonly ILogService _logService;
 
         public AddSerilogLogRequestHandler(
-            IKafkaProducerService kafkaProducerService,
             IHttpContextAccessor httpContextAccessor,
             IRequestService requestService,
-            IThrottleRequestsService throttleRequestsService
+            IThrottleRequestsService throttleRequestsService,
+            ILogService logService
         )
         {
-            _kafkaProducerService = kafkaProducerService;
             _httpContextAccessor = httpContextAccessor;
             _requestService = requestService;
             _throttleRequestsService = throttleRequestsService;
+            _logService = logService;
         }
 
         public async Task ExecuteAsync(AddSerilogLogsRequest request)
@@ -40,47 +41,23 @@ namespace OffLogs.Api.Frontend.Controllers.Log.Actions.Log
                 _requestService.GetApplicationIdFromJwt()
             );
 
-            var applicationEncryptor = AsymmetricEncryptor.FromPublicKeyBytes(
-                _requestService.GetApplicationPublicKeyFromJwt()    
+            var application = new ApplicationEntity(
+                _requestService.GetApplicationIdFromJwt()
             );
-            var logSymmetricEncryptor = SymmetricEncryptor.GenerateKey();
-            var encryptedSymmetricKey = applicationEncryptor.EncryptData(
-                logSymmetricEncryptor.Key.GetKey()
-            );
-            
-            var token = _requestService.GetApiToken();
+
             var clientIp = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
             foreach (var log in request.Events)
             {
-                var logEntity = new LogEntity()
-                {
-                    EncryptedSymmetricKey = encryptedSymmetricKey,
-                    EncryptedMessage = logSymmetricEncryptor.EncryptData(log.RenderedMessage),
-                    Level = log.LogLevel.ToLogLevel(),
-                    LogTime = log.Timestamp
-                };
-                if (log.Properties != null)
-                {
-                    foreach (var property in log.Properties)
-                    {
-                        var encryptedKey = logSymmetricEncryptor.EncryptData(property.Key);
-                        var encryptedValue = logSymmetricEncryptor.EncryptData(
-                            property.Value?.GetAsJson()
-                        );
-                        logEntity.AddProperty(new LogPropertyEntity(encryptedKey, encryptedValue));
-                    }
-                }
-
                 var traces = log.Exception?.Split("\n");
-                if (traces != null)
-                {
-                    foreach (var trace in traces)
-                    {
-                        var encryptedTrace = logSymmetricEncryptor.EncryptData(trace);
-                        logEntity.AddTrace(new LogTraceEntity(encryptedTrace));
-                    }
-                }
-                await _kafkaProducerService.ProduceLogMessageAsync(token, logEntity, clientIp); 
+                await _logService.AddToKafkaAsync(
+                    application,
+                    log.RenderedMessage,
+                    log.LogLevel.ToLogLevel(),
+                    log.Timestamp,
+                    log.Properties,
+                    traces,
+                    clientIp
+                );
             }
         }
     }

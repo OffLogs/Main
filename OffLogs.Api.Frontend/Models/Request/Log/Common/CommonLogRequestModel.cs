@@ -23,7 +23,7 @@ namespace OffLogs.Api.Frontend.Models.Request.Log.Common
         [StringArrayLength(512)]
         public List<string> Traces { get; set; } = new();
 
-        public Dictionary<string, string> Properties { get; set; } = new();
+        public Dictionary<string, object> Properties { get; set; } = new();
         
         [JsonIgnore]
         public LogLevel LogLevel

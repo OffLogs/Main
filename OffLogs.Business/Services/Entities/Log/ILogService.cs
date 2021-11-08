@@ -20,6 +20,16 @@ namespace OffLogs.Business.Services.Entities.Log
             ICollection<string> traces = null
         );
 
+        Task<LogEntity> AddToKafkaAsync(
+            ApplicationEntity application,  
+            string message,
+            LogLevel level,
+            DateTime timestamp,
+            IDictionary<string, object> properties = null,
+            ICollection<string> traces = null,
+            string clientIp = null
+        );
+        
         Task<bool> SetIsFavoriteAsync(long userId, long logId, bool isFavorite);
     }
 }
