@@ -74,9 +74,9 @@ namespace OffLogs.Business.Services.Kafka
             _producer = null;
         }
 
-        public async Task ProduceLogMessageAsync(string applicationJwt, LogEntity logEntity, string clientIp = null)
+        public async Task ProduceLogMessageAsync(LogEntity logEntity, string clientIp = null)
         {
-            var modelToSend = new LogMessageDto(applicationJwt, logEntity)
+            var modelToSend = new LogMessageDto(logEntity)
             {
                 ClientIp = clientIp
             };

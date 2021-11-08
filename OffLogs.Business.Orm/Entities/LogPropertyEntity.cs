@@ -42,21 +42,5 @@ namespace OffLogs.Business.Orm.Entities
             EncryptedValue = encryptedValue;
             CreateTime = DateTime.UtcNow;
         }
-        
-        public LogPropertyEntity(byte[] encryptedKey, AsymmetricEncryptor encryptor, object value)
-        {
-            EncryptedKey = encryptedKey;
-            try
-            {
-                EncryptedValue = encryptor.EncryptData(
-                    JsonConvert.SerializeObject(value)
-                );
-            }
-            catch (Exception)
-            {
-                EncryptedValue = Array.Empty<byte>();
-            }
-            CreateTime = DateTime.UtcNow;
-        }
     }
 }

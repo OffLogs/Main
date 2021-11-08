@@ -12,12 +12,12 @@ namespace OffLogs.Business.Services.Entities.Log
         Task<LogEntity> AddAsync(LogEntity log);
 
         Task<LogEntity> AddAsync(
-            ApplicationEntity application,
+            ApplicationEntity application,  
             string message,
             LogLevel level,
             DateTime timestamp,
-            ICollection<LogPropertyEntity> properties = null,
-            ICollection<LogTraceEntity> traces = null
+            IDictionary<string, object> properties = null,
+            ICollection<string> traces = null
         );
 
         Task<bool> SetIsFavoriteAsync(long userId, long logId, bool isFavorite);

@@ -61,16 +61,7 @@ namespace OffLogs.Business.Services.Kafka.Consumer
             try
             {
                 using var _ = _dbSessionProvider;
-                // 1. Validate JWT token
-                var applicationId = _jwtApplicationService.GetApplicationId(dto.ApplicationJwtToken);
-                if (!applicationId.HasValue)
-                {
-                    await LogMessageModel(dto, "Found log model with error!");
-                    return;
-                }
-                var application = await _queryBuilder.FindByIdAsync<ApplicationEntity>(
-                    applicationId.Value
-                );
+                var application = await _queryBuilder.FindByIdAsync<ApplicationEntity>(dto.ApplicationId);
                 if (application == null)
                 {
                     await LogMessageModel(dto, "Application not found for the log message model!");
@@ -101,7 +92,7 @@ namespace OffLogs.Business.Services.Kafka.Consumer
                 RequestLogType.Log,
                 messageModel.ClientIp,
                 messageModel,
-                messageModel.ApplicationJwtToken
+                messageModel.ApplicationId.ToString()
             );
             await _commandBuilder.SaveAsync(request);
             _logger.LogError(logMessage);

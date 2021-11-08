@@ -57,7 +57,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Public.LogController
             var actualLog = await response.GetJsonDataAsync<LogSharedDto>();
             Assert.Equal(log.Id, actualLog.Id);
             Assert.Equal(log.Level, actualLog.Level);
-            Assert.Equal(log.EncryptedMessage, actualLog.Message);
+            Assert.NotEmpty(log.EncryptedMessage);
             Assert.Equal(log.Properties.Count, actualLog.Properties.Count);
             Assert.Equal(log.Traces.Count, actualLog.Traces.Count);
         }

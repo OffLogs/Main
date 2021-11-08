@@ -1,7 +1,6 @@
 using System;
 using Bogus;
 using OffLogs.Business.Common.Constants;
-using OffLogs.Business.Constants;
 using OffLogs.Business.Orm.Entities;
 
 namespace OffLogs.Business.Services.Data
@@ -24,8 +23,8 @@ namespace OffLogs.Business.Services.Data
                     (faker) => faker.Random.Bytes(32)
                 )
                 .RuleFor(
-                    entity => entity.PasswordSalt,
-                    (faker) => faker.Random.Bytes(32)
+                    entity => entity.IsVerificated,
+                    () => true
                 )
                 .RuleFor(
                     entity => entity.CreateTime,
@@ -67,7 +66,7 @@ namespace OffLogs.Business.Services.Data
             return new Faker<LogEntity>()
                 .RuleFor(
                     entity => entity.EncryptedMessage,
-                    (faker) => faker.Lorem.Sentence()
+                    (faker) => faker.Random.Bytes(32)
                 )
                 .RuleFor(
                     entity => entity.Level,
@@ -88,7 +87,7 @@ namespace OffLogs.Business.Services.Data
             return new Faker<LogTraceEntity>()
                 .RuleFor(
                     entity => entity.EncryptedTrace,
-                    (faker) => faker.Lorem.Sentence()
+                    (faker) => faker.Random.Bytes(32)
                 )
                 .RuleFor(
                     entity => entity.CreateTime,
@@ -101,11 +100,11 @@ namespace OffLogs.Business.Services.Data
             return new Faker<LogPropertyEntity>()
                 .RuleFor(
                     entity => entity.EncryptedKey,
-                    (faker) => faker.Random.Word()
+                    (faker) => faker.Random.Bytes(32)
                 )
                 .RuleFor(
                     entity => entity.EncryptedValue,
-                    (faker) => faker.Random.Word()
+                    (faker) => faker.Random.Bytes(32)
                 )
                 .RuleFor(
                     entity => entity.CreateTime,
