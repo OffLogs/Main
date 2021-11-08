@@ -22,7 +22,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             var log = await DataSeeder.MakeLogAsync(application, LogLevel.Error);
             for (int i = 0; i < 10; i++)
             {
-                await KafkaProducerService.ProduceLogMessageAsync(userModel.ApplicationApiToken, log);
+                await KafkaProducerService.ProduceLogMessageAsync(log);
             }
         }
     }

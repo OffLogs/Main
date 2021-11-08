@@ -24,7 +24,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             var log1 = await DataSeeder.MakeLogAsync(application, LogLevel.Error);
             
             // Push 2 messages
-            await KafkaProducerService.ProduceLogMessageAsync(userModel.ApplicationApiToken, log1);
+            await KafkaProducerService.ProduceLogMessageAsync(log1);
             KafkaProducerService.Flush();
             
             // Receive 2 messages
@@ -50,7 +50,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             var log1 = await DataSeeder.MakeLogAsync(application, LogLevel.Error);
             
             // Push 2 messages
-            await KafkaProducerService.ProduceLogMessageAsync(userModel.ApplicationApiToken, log1);
+            await KafkaProducerService.ProduceLogMessageAsync(log1);
             KafkaProducerService.Flush();
             
             // Receive 2 messages
@@ -76,7 +76,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             {
                 var log = await DataSeeder.MakeLogAsync(application, LogLevel.Error);
                 logs.Add(log);
-                await KafkaProducerService.ProduceLogMessageAsync(userModel.ApplicationApiToken, log);
+                await KafkaProducerService.ProduceLogMessageAsync(log);
             }
             KafkaProducerService.Flush();
 
@@ -91,30 +91,30 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             }
         }
         
-        [Fact]
-        public async Task ShouldNotProcessLogsIfApplicationJwtIsIncorrect()
-        {
-            var userModel = await DataSeeder.CreateActivatedUser();
-            var application = userModel.Applications.First();
-
-            var log1 = await DataSeeder.MakeLogAsync(application, LogLevel.Error);
-
-            var fakeJwt = SecurityUtil.GetTimeBasedToken();
-            // Push 2 messages
-            await KafkaProducerService.ProduceLogMessageAsync(fakeJwt, log1);
-            KafkaProducerService.Flush();
-            
-            // Receive 2 messages
-            var processedRecords = await KafkaLogsConsumerService.ProcessLogsAsync(false);
-            Assert.True(processedRecords > 0);
-
-            var isExists = await QueryBuilder.For<bool>()
-                .WithAsync(new LogIsExistsByTokenCriteria(log1.Token));
-            Assert.False(isExists);
-
-            var requestLog = await QueryBuilder.For<RequestLogEntity>()
-                .WithAsync(new RequestLogGetByTokenCriteria(fakeJwt));
-            Assert.NotNull(requestLog);
-        }
+        // [Fact]
+        // public async Task ShouldNotProcessLogsIfApplicationJwtIsIncorrect()
+        // {
+        //     var userModel = await DataSeeder.CreateActivatedUser();
+        //     var application = userModel.Applications.First();
+        //
+        //     var log1 = await DataSeeder.MakeLogAsync(application, LogLevel.Error);
+        //
+        //     var fakeJwt = SecurityUtil.GetTimeBasedToken();
+        //     // Push 2 messages
+        //     await KafkaProducerService.ProduceLogMessageAsync(fakeJwt, log1);
+        //     KafkaProducerService.Flush();
+        //     
+        //     // Receive 2 messages
+        //     var processedRecords = await KafkaLogsConsumerService.ProcessLogsAsync(false);
+        //     Assert.True(processedRecords > 0);
+        //
+        //     var isExists = await QueryBuilder.For<bool>()
+        //         .WithAsync(new LogIsExistsByTokenCriteria(log1.Token));
+        //     Assert.False(isExists);
+        //
+        //     var requestLog = await QueryBuilder.For<RequestLogEntity>()
+        //         .WithAsync(new RequestLogGetByTokenCriteria(fakeJwt));
+        //     Assert.NotNull(requestLog);
+        // }
     }
 }

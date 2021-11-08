@@ -57,22 +57,11 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Log
                 "SomeMessage",
                 level,
                 DateTime.UtcNow,
-                new List<LogPropertyEntity>()
+                new Dictionary<string, object>()
                 {
-                    new()
-                    {
-                        EncryptedKey = new byte[] { 1 },
-                        EncryptedValue = new byte[] { 2 },
-                    }
+                    { "property", "value" }
                 },
-                new List<LogTraceEntity>()
-                {
-                    new()
-                    {
-                        EncryptedTrace = new byte[] { 3 },
-                        CreateTime = DateTime.UtcNow
-                    }
-                }
+                new List<string> { "trace" }
             );
         }
     }

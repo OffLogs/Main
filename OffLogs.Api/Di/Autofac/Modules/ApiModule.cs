@@ -1,7 +1,6 @@
 ﻿using Api.Requests.Abstractions;
 using Autofac;
 using Microsoft.AspNetCore.Http;
-using OffLogs.Api.Business;
 using OffLogs.Business.Services.Api;
 
 namespace OffLogs.Api.Di.Autofac.Modules
