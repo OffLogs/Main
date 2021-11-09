@@ -70,12 +70,6 @@ namespace OffLogs.Business.Services.Kafka.Consumer
 
                 // 2. Save log
                 var entity = dto.GetEntity();
-                var isExists = await _queryBuilder.For<bool>()
-                    .WithAsync(new LogIsExistsByTokenCriteria(entity.Token));
-                if (isExists)
-                {
-                    return;
-                }
                 entity.Application = application;
                 await _commandBuilder.SaveAsync(entity);
             }

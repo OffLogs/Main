@@ -69,6 +69,10 @@ namespace OffLogs.Business.Services.Data
                     (faker) => faker.Random.Bytes(32)
                 )
                 .RuleFor(
+                    entity => entity.EncryptedSymmetricKey,
+                    (faker) => faker.Random.Bytes(32)
+                )
+                .RuleFor(
                     entity => entity.Level,
                     () => level
                 )

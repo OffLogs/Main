@@ -225,6 +225,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             
             // Process messages from Kafka
             KafkaProducerService.Flush();
+            await DbSessionProvider.PerformCommitAsync();
             await KafkaLogsConsumerService.ProcessLogsAsync(false);
             
             var actualList = await GetLogsList(user.Applications.First().Id, 1);

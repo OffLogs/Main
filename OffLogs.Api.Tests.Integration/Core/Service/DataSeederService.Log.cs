@@ -26,7 +26,6 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
             logPropertyFactory.GenerateLazy(3)
                 .ToList()
                 .ForEach(log.AddProperty);
-
             return await Task.FromResult(log);
         }
         

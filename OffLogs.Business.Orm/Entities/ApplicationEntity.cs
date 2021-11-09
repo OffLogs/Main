@@ -6,11 +6,11 @@ using NHibernate.Mapping.Attributes;
 namespace OffLogs.Business.Orm.Entities
 {
     [Class(Table = "applications")]
-    public sealed class ApplicationEntity: IEntity
+    public class ApplicationEntity: IEntity
     {
         [Id(Name = "Id", Generator = "native")]
         [Column(Name = "id", SqlType = "bigint", NotNull = true)]
-        public long Id { get; set; }
+        public virtual long Id { get; set; }
         
         [ManyToOne(
             ClassType = typeof(UserEntity), 
@@ -18,7 +18,7 @@ namespace OffLogs.Business.Orm.Entities
             Lazy = Laziness.False,
             Cascade = "delete-orphan"
         )]
-        public UserEntity User { get; set; }
+        public virtual UserEntity User { get; set; }
 
         [Set(
             Table = "application_users",
@@ -34,37 +34,38 @@ namespace OffLogs.Business.Orm.Entities
             ClassType = typeof(UserEntity),
             Column = "user_id"
         )]
-        public ICollection<UserEntity> SharedForUsers { get; set; } = new List<UserEntity>();
+        public virtual ICollection<UserEntity> SharedForUsers { get; set; } = new List<UserEntity>();
 
         [Property(NotNull = true)]
         [Column(Name = "name", Length = 200, NotNull = true)]
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
         
         [Property(NotNull = true)]
         [Column(Name = "api_token", Length = 2048, NotNull = true)]
-        public string ApiToken { get; set; }
+        public virtual string ApiToken { get; set; }
         
         [Property(NotNull = true)]
         [Column(Name = "public_key", SqlType = "bytea", NotNull = true)]
-        public byte[] PublicKey { get; set; }
+        public virtual byte[] PublicKey { get; set; }
         
         [Property(NotNull = true)]
         [Column(Name = "encrypted_private_key", SqlType = "bytea", NotNull = true)]
-        public byte[] EncryptedPrivateKey { get; set; }
+        public virtual byte[] EncryptedPrivateKey { get; set; }
         
         [Property(NotNull = true)]
         [Column(Name = "create_time", SqlType = "datetime", NotNull = true)]
-        public DateTime CreateTime { get; set; }
+        public virtual DateTime CreateTime { get; set; }
         
         [Property(NotNull = true)]
         [Column(Name = "update_time", SqlType = "datetime", NotNull = true)]
-        public DateTime UpdateTime { get; set; }
+        public virtual DateTime UpdateTime { get; set; }
         
         public ApplicationEntity() {}
 
-        public ApplicationEntity(long id)
+        public ApplicationEntity(long id, byte[] publicKey)
         {
             Id = id;
+            PublicKey = publicKey ?? throw new ArgumentNullException(nameof(publicKey));
         }
         
         public ApplicationEntity(UserEntity user, string name)

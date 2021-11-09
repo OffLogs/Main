@@ -27,7 +27,7 @@ namespace OffLogs.Business.Notifications.Senders
         )
         {
             var emailBuilder = _emailFactory.GetEmailBuilder("RegistrationNotification.htm");
-            emailBuilder.AddPlaceholder("verificationToken", commandContext.VerificationUrl);
+            emailBuilder.AddPlaceholder("verificationUrl", commandContext.VerificationUrl);
             _emailSendingService.SendEmail(commandContext.ToAddress, emailBuilder, null);
             return Task.CompletedTask;
         }

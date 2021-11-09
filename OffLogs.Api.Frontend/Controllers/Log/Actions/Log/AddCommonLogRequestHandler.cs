@@ -40,7 +40,8 @@ namespace OffLogs.Api.Frontend.Controllers.Log.Actions.Log
             );
 
             var application = new ApplicationEntity(
-                _requestService.GetApplicationIdFromJwt()
+                _requestService.GetApplicationIdFromJwt(),
+                _requestService.GetApplicationPublicKeyFromJwt()
             );
             var clientIp = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
 

@@ -60,8 +60,8 @@ namespace OffLogs.Business.Orm.Entities
            Column = "log_id"
        )]
         public virtual ICollection<LogEntity> FavoriteLogs { get; set; } = new List<LogEntity>();
-
-        public bool IsVerificated => VerificationTime.HasValue;
+        
+        public virtual bool IsVerificated => VerificationTime.HasValue;
         
         public UserEntity() {}
     }
