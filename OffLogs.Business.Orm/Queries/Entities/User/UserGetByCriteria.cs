@@ -8,6 +8,7 @@ namespace OffLogs.Business.Orm.Queries.Entities.User
     {
         public string UserName { get; }
         public string Email { get; }
+        public byte[] PublicKey { get; }
 
         public UserGetByCriteria(
             string userName = null, 
@@ -19,6 +20,11 @@ namespace OffLogs.Business.Orm.Queries.Entities.User
 
             if (string.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Email))
                 throw new ArgumentNullException(nameof(UserName));
+        }
+        
+        public UserGetByCriteria(byte[] publicKey)
+        {
+            PublicKey = publicKey ?? throw new ArgumentNullException(nameof(publicKey));
         }
     }
 }

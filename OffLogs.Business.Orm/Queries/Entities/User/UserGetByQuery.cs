@@ -17,8 +17,12 @@ namespace OffLogs.Business.Orm.Queries.Entities.User
         public override async Task<UserEntity> AskAsync(UserGetByCriteria criterion, CancellationToken cancellationToken = default)
         {
             return await TransactionProvider.CurrentSession.Query<UserEntity>()
-                .Where(q => q.UserName == criterion.UserName || q.Email == criterion.Email)
-                .FirstOrDefaultAsync(cancellationToken);
+                .Where(
+                    q => q.UserName == criterion.UserName 
+                         || q.Email == criterion.Email
+                         || q.PublicKey == criterion.PublicKey
+                )
+            .FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

@@ -26,6 +26,9 @@
     <data name="Error_IncorrectConstantValue" xml:space="preserve">
         <value>Field "{0}" contains incorrect constant value!</value>
     </data>
+    <data name="Error_IncorrectBase64" xml:space="preserve">
+        <value>Field "{0}" contains incorrect Base64 value!</value>
+    </data>
     <data name="Error_FieldMayContainOnlyPositiveDigits" xml:space="preserve">
         <value>Field "{0}" may contain only positive digits!</value>
     </data>

@@ -61,9 +61,9 @@ namespace OffLogs.Business.Common.Security
             return new Security.AsymmetricEncryptor(publicKey, privateKey);
         }
         
-        public static Security.AsymmetricEncryptor FromPublicKeyBytes(byte[] publicKey)
+        public static AsymmetricEncryptor FromPublicKeyBytes(byte[] publicKey)
         {
-            return new Security.AsymmetricEncryptor(
+            return new AsymmetricEncryptor(
                 PublicKeyFactory.CreateKey(publicKey)
             );
         }
@@ -96,6 +96,13 @@ namespace OffLogs.Business.Common.Security
             return ApplyCipher(data, cipher, blockSize);
         }
         
+        public byte[] SignData(string data)
+        {
+            return SignData(
+                Encoding.UTF8.GetBytes(data)
+            );
+        }
+        
         public byte[] SignData(byte[] data)
         {
             if (PrivateKey == null) throw new ArgumentNullException(nameof(PrivateKey));
@@ -104,6 +111,11 @@ namespace OffLogs.Business.Common.Security
             signer.Init(true, PrivateKey);
             signer.BlockUpdate(data, 0, data.Length);
             return signer.GenerateSignature();
+        }
+        
+        public bool VerifySign(string data, byte[] sign)
+        {
+            return VerifySign(Encoding.UTF8.GetBytes(data), sign);
         }
         
         public bool VerifySign(byte[] data, byte[] sign)
