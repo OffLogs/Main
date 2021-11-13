@@ -25,6 +25,7 @@ namespace OffLogs.Api.Tests.Unit.Services.Kafka
             };
             expectedEntity.Level = LogLevel.Debug;
             expectedEntity.EncryptedMessage = new byte[] { 111 };
+            expectedEntity.EncryptedSymmetricKey = new byte[] { 0x46 };
             expectedEntity.LogTime = DateTime.Now;
             expectedEntity.Traces = new List<LogTraceEntity>()
             {
@@ -49,6 +50,9 @@ namespace OffLogs.Api.Tests.Unit.Services.Kafka
             Assert.Equal(expectedEntity.Level, actualEntity.Level);
             Assert.True(
                 expectedEntity.EncryptedMessage.CompareTo(actualEntity.EncryptedMessage)
+            );
+            Assert.True(
+                expectedEntity.EncryptedSymmetricKey.CompareTo(actualEntity.EncryptedSymmetricKey)
             );
             Assert.Equal(expectedEntity.LogTime, actualEntity.LogTime);
             Assert.True(

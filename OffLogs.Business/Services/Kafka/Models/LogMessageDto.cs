@@ -12,15 +12,11 @@ namespace OffLogs.Business.Services.Kafka.Models
         public string Token { get; set; }
         public long ApplicationId { get; set; }
         public string ClientIp { get; set; }
-        
         public LogLevel LogLevel { get; set; }
-        
         public string Message { get; set; }
-        
+        public string EncryptedSymmetricKey { get; set; }
         public DateTime LogTime { get; set; }
-
         public IDictionary<string, string> Properties { get; set; } = new Dictionary<string, string>();
-        
         public ICollection<string> Traces { get; set; } = new List<string>();
 
         public LogMessageDto() {}
@@ -34,6 +30,7 @@ namespace OffLogs.Business.Services.Kafka.Models
             Token = logEntity.Token;
             LogLevel = logEntity.Level;
             Message = Convert.ToBase64String(logEntity.EncryptedMessage);
+            EncryptedSymmetricKey = Convert.ToBase64String(logEntity.EncryptedSymmetricKey);
             LogTime = logEntity.LogTime;
             Traces = logEntity.Traces.Select(
                 encryptedTrace => Convert.ToBase64String(encryptedTrace.EncryptedTrace)
@@ -51,6 +48,7 @@ namespace OffLogs.Business.Services.Kafka.Models
                 Token = Token,
                 Level = LogLevel,
                 EncryptedMessage = Convert.FromBase64String(Message),
+                EncryptedSymmetricKey = Convert.FromBase64String(EncryptedSymmetricKey),
                 LogTime = LogTime,
                 CreateTime = DateTime.UtcNow,
                 Application = new ApplicationEntity()
