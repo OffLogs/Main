@@ -11,7 +11,7 @@
 *.userprefs
 
 # Build results
-Offlogs.*/[Dd]ebug/
+(Offlogs|Api|AspNetCore|Commands|Domain|Notification|Persistance|Queries).*/[Dd]ebug/
 Offlogs.*/[Dd]ebugPublic/
 Offlogs.*/[Rr]elease/
 Offlogs.*/[Rr]eleases/
