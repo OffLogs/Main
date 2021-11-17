@@ -15,6 +15,8 @@
         <PackageReference Include="BlazorDeferredRemove" Version="0.2.5" />
         <PackageReference Include="Blazored.LocalStorage" Version="4.1.5" />
         <PackageReference Include="ChartJs.Blazor.Fork" Version="2.0.2" />
+        <PackageReference Include="Fluxor.Blazor.Web" Version="4.2.1" />
+        <PackageReference Include="Fluxor.Blazor.Web.ReduxDevTools" Version="4.2.1" />
         <PackageReference Include="Majorsoft.Blazor.WebAssembly.Logging.Console" Version="1.5.0" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.8" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.8" PrivateAssets="all" />

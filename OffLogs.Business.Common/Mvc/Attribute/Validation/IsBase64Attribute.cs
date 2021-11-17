@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using OffLogs.Business.Common.Resources;
+using OffLogs.Business.Common.Utils;
 
 namespace OffLogs.Business.Common.Mvc.Attribute.Validation
 {
@@ -16,13 +17,7 @@ namespace OffLogs.Business.Common.Mvc.Attribute.Validation
             if (value is string)
             {
                 var base64 = value.ToString();
-
-                byte[] buffer = new byte[((base64.Length * 3) + 3) / 4 -
-                                         (base64.Length > 0 && base64[base64.Length - 1] == '=' ?
-                                             base64.Length > 1 && base64[base64.Length - 2] == '=' ?
-                                                 2 : 1 : 0)];
-                var isNotBase64 = Convert.TryFromBase64String(base64, buffer, out _);
-                if (!isNotBase64)
+                if (!Base64Utils.IsValidBase64(base64))
                 {
                     return new ValidationResult(String.Format(RG.Error_IncorrectBase64, validationContext.DisplayName));    
                 }
