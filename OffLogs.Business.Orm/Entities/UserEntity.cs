@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Domain.Abstractions;
 using NHibernate.Mapping.Attributes;
+using OffLogs.Business.Common.Constants;
 
 namespace OffLogs.Business.Orm.Entities
 {
@@ -13,20 +14,28 @@ namespace OffLogs.Business.Orm.Entities
         public virtual long Id { get; set; }
         
         [Property(NotNull = true)]
-        [Column(Name = "user_name", Length = 200, NotNull = true)]
+        [Column(Name = "user_name", Length = 200, NotNull = false)]
         public virtual string UserName { get; set; }
         
-        [Property(NotNull = true)]
+        [Property(NotNull = false)]
         [Column(Name = "email", Length = 200, NotNull = true)]
         public virtual string Email { get; set; }
         
         [Property(NotNull = true)]
-        [Column(Name = "password_hash", SqlType = "bytea", NotNull = true)]
-        public virtual byte[] PasswordHash { get; set; }
+        [Column(Name = "public_key", SqlType = "bytea", NotNull = true)]
+        public virtual byte[] PublicKey { get; set; }
+        
+        [Property(NotNull = false)]
+        [Column(Name = "verification_token", Length = 512, NotNull = false)]
+        public virtual string VerificationToken { get; set; }
         
         [Property(NotNull = true)]
-        [Column(Name = "password_salt", SqlType = "bytea", NotNull = true)]
-        public virtual byte[] PasswordSalt { get; set; }
+        [Column(Name = "status", SqlType = "int", NotNull = true)]
+        public virtual UserStatus Status { get; set; }
+
+        [Property(NotNull = false)]
+        [Column(Name = "verification_time", SqlType = "datetime", NotNull = false)]
+        public virtual DateTime? VerificationTime { get; set; }
         
         [Property(NotNull = true)]
         [Column(Name = "create_time", SqlType = "datetime", NotNull = true)]
@@ -51,9 +60,9 @@ namespace OffLogs.Business.Orm.Entities
            Column = "log_id"
        )]
         public virtual ICollection<LogEntity> FavoriteLogs { get; set; } = new List<LogEntity>();
-
-        public virtual string Password { get; set; }
-
+        
+        public virtual bool IsVerificated => VerificationTime.HasValue;
+        
         public UserEntity() {}
     }
 }

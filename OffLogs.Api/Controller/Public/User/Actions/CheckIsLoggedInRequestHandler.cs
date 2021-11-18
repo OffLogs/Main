@@ -2,7 +2,7 @@
 using Api.Requests.Abstractions;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
 
-namespace OffLogs.Api.Business.Controller.Public.User.Actions
+namespace OffLogs.Api.Controller.Public.User.Actions
 {
     public class CheckIsLoggedInRequestHandle : IAsyncRequestHandler<CheckIsLoggedInRequest>
     {

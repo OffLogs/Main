@@ -22,8 +22,8 @@ namespace OffLogs.Business.Orm.Entities
         public virtual LogEntity Log { get; set; }
         
         [Property(NotNull = true)]
-        [Column(Name = "trace", Length = 2048, NotNull = true)]
-        public virtual string Trace { get; set; }
+        [Column(Name = "encrypted_trace", SqlType = "bytea", NotNull = true)]
+        public virtual byte[] EncryptedTrace { get; set; }
         
         [Property(NotNull = true)]
         [Column(Name = "create_time", SqlType = "datetime", NotNull = true)]
@@ -31,9 +31,9 @@ namespace OffLogs.Business.Orm.Entities
         
         public LogTraceEntity() {}
 
-        public LogTraceEntity(string trace)
+        public LogTraceEntity(byte[] encryptedTrace)
         {
-            Trace = trace;
+            EncryptedTrace = encryptedTrace;
             CreateTime = DateTime.UtcNow;
         }
     }

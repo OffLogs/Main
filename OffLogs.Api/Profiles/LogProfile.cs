@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using NHibernate.Criterion;
@@ -19,8 +20,8 @@ namespace OffLogs.Api.Profiles
                     member => member.MapFrom(
                         entity => entity.Properties.Select(
                             property => new KeyValuePair<string, string>(
-                                property.Key,
-                                property.Value
+                                Convert.ToBase64String(property.EncryptedKey),
+                                Convert.ToBase64String(property.EncryptedValue)
                             )
                         )
                     )
@@ -29,7 +30,7 @@ namespace OffLogs.Api.Profiles
                     s => s.Traces,
                     member => member.MapFrom(
                         entity => entity.Traces.Select(
-                            trace => trace.Trace
+                            trace => Convert.ToBase64String(trace.EncryptedTrace)
                         )
                     )
                 )
@@ -44,8 +45,8 @@ namespace OffLogs.Api.Profiles
                     member => member.MapFrom(
                         entity => entity.Properties.Select(
                             property => new KeyValuePair<string, string>(
-                                property.Key,
-                                property.Value
+                                Convert.ToBase64String(property.EncryptedKey),
+                                Convert.ToBase64String(property.EncryptedValue)
                             )
                         )
                     )
@@ -54,7 +55,7 @@ namespace OffLogs.Api.Profiles
                     s => s.Traces,
                     member => member.MapFrom(
                         entity => entity.Traces.Select(
-                            trace => trace.Trace
+                            trace => Convert.ToBase64String(trace.EncryptedTrace)
                         )
                     )
                 );

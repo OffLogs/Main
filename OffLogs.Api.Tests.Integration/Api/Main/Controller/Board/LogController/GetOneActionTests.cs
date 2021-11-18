@@ -17,7 +17,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData(MainApiUrl.LogGet)]
         public async Task OnlyAuthorizedUsersCanReceiveLog(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             var logs = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information);
             
             // Act
@@ -33,7 +33,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData(MainApiUrl.LogGet)]
         public async Task ShouldReturnErrorIfLogNotFound(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             
             // Act
             var response = await PostRequestAsync(url, user.ApiToken, new GetRequest()
@@ -48,9 +48,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData(MainApiUrl.LogGet)]
         public async Task OnlyOwnerCanReceiveLog(string url)
         {
-            var user1 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
             
-            var user2 = await DataSeeder.CreateNewUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
             var logs = await DataSeeder.CreateLogsAsync(user2.ApplicationId, LogLevel.Information);
             var log = logs.First();
             
@@ -67,7 +67,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData(MainApiUrl.LogGet)]
         public async Task ShouldReceiveLog(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             var logs = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Debug, 1);
             var log = logs.First();
             
@@ -82,7 +82,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             Assert.NotNull(receivedLog);
             Assert.Equal(log.Properties.Count, receivedLog.Properties.Count);
             Assert.Equal(log.Traces.Count, receivedLog.Traces.Count);
-            Assert.Equal(log.Message, receivedLog.Message);
+            Assert.NotEmpty(log.EncryptedMessage);
             Assert.Equal(log.Id, receivedLog.Id);
             Assert.Equal(log.Level, receivedLog.Level);
             Assert.Equal(log.LogTime.ToLongTimeString(), receivedLog.LogTime.ToLongTimeString());
@@ -93,8 +93,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData(MainApiUrl.LogGet)]
         public async Task ShouldReceiveLogFromSharedApplication(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
             var logs = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Debug, 1);
             var log = logs.First();
             await ApplicationService.ShareForUser(user.Application, user2);
@@ -110,7 +110,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             Assert.NotNull(receivedLog);
             Assert.Equal(log.Properties.Count, receivedLog.Properties.Count);
             Assert.Equal(log.Traces.Count, receivedLog.Traces.Count);
-            Assert.Equal(log.Message, receivedLog.Message);
+            Assert.NotEmpty(log.EncryptedMessage);
             Assert.Equal(log.Id, receivedLog.Id);
         }
 
@@ -118,7 +118,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData(MainApiUrl.LogGet)]
         public async Task ShouldReceiveSharedTokensWithLog(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             var logs = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Debug, 1);
             var log = logs.First();
 

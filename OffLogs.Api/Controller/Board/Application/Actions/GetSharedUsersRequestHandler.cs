@@ -1,23 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Api.Requests.Abstractions;
 using AutoMapper;
-using OffLogs.Api.Common.Dto;
-using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.User;
 using OffLogs.Business.Exceptions;
-using OffLogs.Business.Orm.Dto;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries;
-using OffLogs.Business.Orm.Queries.Entities.Application;
 using OffLogs.Business.Services.Api;
-using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Security;
 using Queries.Abstractions;
 
-namespace OffLogs.Api.Business.Controller.Board.Application.Actions
+namespace OffLogs.Api.Controller.Board.Application.Actions
 {
     public class GetSharedUsersRequestHandler : IAsyncRequestHandler<GetSharedUsersRequest, UsersListDto>
     {

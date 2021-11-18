@@ -14,19 +14,18 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
 
         public async Task<LogEntity> MakeLogAsync(ApplicationEntity application, LogLevel level)
         {
-            var logFactory = _factory.LogFactory(level);
+            var logFactory = _dataFactory.LogFactory(level);
             var log = logFactory.Generate();
             log.Application = application;
                 
-            var logTraceFactory = _factory.LogTraceFactory();
+            var logTraceFactory = _dataFactory.LogTraceFactory();
             logTraceFactory.GenerateLazy(4)
                 .ToList()
                 .ForEach(log.AddTrace);
-            var logPropertyFactory = _factory.LogPropertyFactory();
+            var logPropertyFactory = _dataFactory.LogPropertyFactory();
             logPropertyFactory.GenerateLazy(3)
                 .ToList()
                 .ForEach(log.AddProperty);
-
             return await Task.FromResult(log);
         }
         

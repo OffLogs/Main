@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Utils;
 using OffLogs.Business.Orm.Commands.Context;
@@ -25,7 +26,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.RequestLog
             var existsLog = await QueryBuilder.For<RequestLogEntity>()
                 .WithAsync(new RequestLogGetByTokenCriteria(token));
             Assert.True(existsLog.Id > 0);
-            Assert.NotNull(existsLog.CreateTime);
+            Assert.True(existsLog.CreateTime > DateTime.MinValue);
             Assert.Equal(RequestLogType.Log, existsLog.Type);
             Assert.Equal("\"{some data}\"", existsLog.Data);
             Assert.Equal(clientIp, existsLog.ClientIp);

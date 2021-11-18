@@ -15,7 +15,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.UserController
         [InlineData(MainApiUrl.UserSearch)]
         public async Task OnlyAuthorizedUsersCanReceiveList(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
 
             // Act
             var response = await PostRequestAsAnonymousAsync(url, new SearchRequest()
@@ -30,8 +30,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.UserController
         [InlineData(MainApiUrl.UserSearch)]
         public async Task ShouldReceiveUsersByUserName(string url)
         {
-            var user1 = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
 
             // Act
             var response = await PostRequestAsync(url, user1.ApiToken, new SearchRequest()
@@ -49,8 +49,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.UserController
         [InlineData(MainApiUrl.UserSearch)]
         public async Task ShouldReceiveUsersByEmail(string url)
         {
-            var user1 = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
 
             // Act
             var response = await PostRequestAsync(url, user1.ApiToken, new SearchRequest()
@@ -68,7 +68,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.UserController
         [InlineData(MainApiUrl.UserSearch)]
         public async Task ShouldReceiveUsersButNotCurrentByUserName(string url)
         {
-            var user1 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
 
             // Act
             var response = await PostRequestAsync(url, user1.ApiToken, new SearchRequest()
@@ -86,7 +86,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.UserController
         [InlineData(MainApiUrl.UserSearch)]
         public async Task ShouldReceiveUsersButNotCurrentByEmail(string url)
         {
-            var user1 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
 
             // Act
             var response = await PostRequestAsync(url, user1.ApiToken, new SearchRequest()

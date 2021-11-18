@@ -21,5 +21,16 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             var notificationContext = new LogsDeletedNotificationContext("test@test.com");
             await KafkaProducerService.ProduceNotificationMessageAsync(notificationContext);
         }
+        
+        [Fact]
+        public async Task ProduceRegistrationNotificationMessageToKafka()
+        {
+            var notificationContext = new RegistrationNotificationContext(
+                "test@test.com",
+                "https://font.url",
+                "someToken"
+            );
+            await KafkaProducerService.ProduceNotificationMessageAsync(notificationContext);
+        }
     }
 }

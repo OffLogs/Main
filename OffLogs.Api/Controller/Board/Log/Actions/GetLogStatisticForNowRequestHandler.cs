@@ -9,11 +9,10 @@ using OffLogs.Business.Exceptions;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries.Entities.Log;
 using OffLogs.Business.Services.Api;
-using OffLogs.Business.Services.Entities.Application;
 using OffLogs.Business.Services.Security;
 using Queries.Abstractions;
 
-namespace OffLogs.Api.Business.Controller.Board.Log.Actions
+namespace OffLogs.Api.Controller.Board.Log.Actions
 {
     public class GetLogStatisticForNowRequestHandler : IAsyncRequestHandler<GetLogStatisticForNowRequest, LogStatisticForNowDto>
     {

@@ -16,7 +16,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData("/board/log/setFavorite")]
         public async Task OnlyAuthorizedUsersCanSetAsFavorite(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             var logs = await DataSeeder.CreateLogsAsync(user.Applications.First().Id, LogLevel.Debug);
             
             // Act
@@ -32,10 +32,10 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData("/board/log/setFavorite")]
         public async Task OnlyOwnerCanSetAsFavorite(string url)
         {
-            var user1 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
             var logs = await DataSeeder.CreateLogsAsync(user1.Applications.First().Id, LogLevel.Debug);
             
-            var user2 = await DataSeeder.CreateNewUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
             
             // Act
             var response = await PostRequestAsync(url, user2.ApiToken, new SetIsFavoriteRequest()
@@ -51,7 +51,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData("/board/log/setFavorite")]
         public async Task ShouldSetAsFavorite(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             var logs = await DataSeeder.CreateLogsAsync(user.Applications.First().Id, LogLevel.Debug);
             
             var log = logs.First();

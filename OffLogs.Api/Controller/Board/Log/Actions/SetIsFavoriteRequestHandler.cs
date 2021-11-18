@@ -12,7 +12,7 @@ using OffLogs.Business.Services.Entities.Log;
 using OffLogs.Business.Services.Security;
 using Queries.Abstractions;
 
-namespace OffLogs.Api.Business.Controller.Board.Log.Actions
+namespace OffLogs.Api.Controller.Board.Log.Actions
 {
     public class SetIsFavoriteRequestHandler : IAsyncRequestHandler<SetIsFavoriteRequest>
     {

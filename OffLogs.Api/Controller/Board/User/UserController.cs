@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.User;
 using Persistence.Transactions.Behaviors;
 
-namespace OffLogs.Api.Business.Controller.Board.User
+namespace OffLogs.Api.Controller.Board.User
 {
     [Authorize]
     [Route("/board/[controller]")]

@@ -17,16 +17,15 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.User
         [Theory]
         [InlineData("some-user", "user@email.com")]
         [InlineData("some-user-2", "user1@email.com")]
-        public async Task ShouldCreateNewUser(string expectedUserName, string expectedEmail)
+        public async Task ShouldCreatePendingUser(string expectedUserName, string expectedEmail)
         {
             await DeleteUser(expectedUserName);
 
-            var newUser = await UserService.CreateNewUser(expectedUserName, expectedEmail);
-            Assert.True(newUser.Password.Length > 3);
+            var newUser = await UserService.CreatePendingUser(expectedEmail, expectedUserName);
+            Assert.True(newUser.VerificationToken.Length > 20);
             Assert.Equal(expectedUserName, newUser.UserName);
             Assert.Equal(expectedEmail, newUser.Email);
-            Assert.True(newUser.PasswordHash.Length > 0);
-            Assert.True(newUser.PasswordSalt.Length > 0);
+            Assert.True(newUser.PublicKey.Length > 0);
         }
 
         [Theory]
@@ -36,8 +35,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.User
         {
             await DeleteUser(expectedUserName);
 
-            await UserService.CreateNewUser(expectedUserName, email1);
-            await Assert.ThrowsAsync<EntityIsExistException>(() => UserService.CreateNewUser(expectedUserName, email2));
+            await UserService.CreatePendingUser(expectedUserName, email1);
+            await Assert.ThrowsAsync<EntityIsExistException>(() => UserService.CreatePendingUser(email2, expectedUserName));
         }
 
         [Theory]
@@ -47,10 +46,10 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.User
         {
             await DeleteUser(userName);
 
-            await UserService.CreateNewUser(userName, expectedEmail);
+            await UserService.CreatePendingUser(expectedEmail, userName);
             await Assert.ThrowsAsync<EntityIsExistException>(async () =>
             {
-                await UserService.CreateNewUser(userName2, expectedEmail);
+                await UserService.CreatePendingUser(expectedEmail, userName2);
             });
         }
 

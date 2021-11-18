@@ -3,11 +3,14 @@ using System.Threading.Tasks;
 using Commands.Abstractions;
 using Microsoft.Extensions.Logging;
 using Npgsql;
+using OffLogs.Business.Common.Constants;
+using OffLogs.Business.Common.Security;
 using OffLogs.Business.Common.Utils;
 using OffLogs.Business.Helpers;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Exceptions;
+using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Orm.Queries.Entities.User;
 using Queries.Abstractions;
 
@@ -30,29 +33,52 @@ namespace OffLogs.Business.Services.Entities.User
             _queryBuilder = queryBuilder;
         }
 
-        public async Task<UserEntity> CreateNewUser(string userName,  string email)
+        public async Task<UserEntity> CreatePendingUser(string email, string userName = null)
         {
-            userName = FormatUtil.ClearUserName(userName);
+            userName ??= FormatUtil.ClearUserName(email);
             var existsUser = await _queryBuilder.For<UserEntity>()
                 .WithAsync(new UserGetByCriteria(userName, email));
             if (existsUser != null)
                 throw new EntityIsExistException();
-            
-            var password = SecurityUtil.GeneratePassword(8);
-            var passwordSalt = SecurityUtil.GenerateSalt();
-            var passwordHash = SecurityUtil.GeneratePasswordHash(password, passwordSalt);
-            var user = new UserEntity()
+
+            var verificationToken = SecurityUtil.GetTimeBasedToken() + SecurityUtil.GetRandomString(12);
+            var user = new UserEntity
             {
                 UserName = FormatUtil.ClearUserName(userName),
-                Email = email,
-                Password = password,
-                PasswordSalt = passwordSalt,
-                PasswordHash = passwordHash,
+                Email = email.Trim().ToLower(),
+                PublicKey = Array.Empty<byte>(),
+                Status = UserStatus.Pending,
+                VerificationToken = verificationToken,
                 CreateTime = DateTime.UtcNow,
-                UpdateTime = DateTime.UtcNow
+                UpdateTime = DateTime.UtcNow,
             };
             await _commandBuilder.SaveAsync(user);
             return user;
+        }
+        
+        public async Task<(UserEntity, string)> ActivateUser(
+            long userId, 
+            string privateKeyPassword
+        )
+        {
+            var user = await _queryBuilder.For<UserEntity>()
+                .WithAsync(new FindByIdCriteria(userId));
+            if (user == null)
+                throw new EntityIsNotExistException();
+            if (user.IsVerificated)
+                throw new Exception("User already activated");
+            
+            // Generate private key
+            var keyGenerator = AsymmetricEncryptor.GenerateKeyPair();
+            
+            user.Status = UserStatus.Active;
+            user.VerificationTime = DateTime.Now;
+            user.VerificationToken = null;
+            user.PublicKey = keyGenerator.GetPublicKeyBytes();
+            await _commandBuilder.SaveAsync(user);
+
+            var pemFileContent = keyGenerator.CreatePem(privateKeyPassword);
+            return (user, pemFileContent);
         }
         
         // public async Task DeleteByUserName(string userName)

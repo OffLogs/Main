@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Api.Requests.Abstractions;
-using AutoMapper;
-using Notification.Abstractions;
-using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application;
 using OffLogs.Business.Exceptions;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Services.Api;
 using OffLogs.Business.Services.Entities.Application;
 using OffLogs.Business.Services.Security;
-using Queries.Abstractions;
 
-namespace OffLogs.Api.Business.Controller.Board.Application.Actions
+namespace OffLogs.Api.Controller.Board.Application.Actions
 {
     public class DeleteRequestHandler : IAsyncRequestHandler<DeleteRequest>
     {

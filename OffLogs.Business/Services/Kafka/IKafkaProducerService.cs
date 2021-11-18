@@ -8,7 +8,7 @@ namespace OffLogs.Business.Services.Kafka
 {
     public interface IKafkaProducerService: IDomainService
     {
-        Task ProduceLogMessageAsync(string applicationJwt, LogEntity logEntity, string clientIp = null);
+        Task ProduceLogMessageAsync(LogEntity logEntity, string clientIp = null);
         
         /// <summary>
         ///     Wait until all outstanding produce requests and

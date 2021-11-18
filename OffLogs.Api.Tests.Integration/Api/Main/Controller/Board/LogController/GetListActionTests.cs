@@ -18,7 +18,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData(MainApiUrl.LogList)]
         public async Task OnlyAuthorizedUsersCanReceiveList(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
 
             // Act
             var response = await PostRequestAsAnonymousAsync(url, new GetListRequest()
@@ -34,8 +34,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData(MainApiUrl.LogList)]
         public async Task OnlyOwnerCanReceiveApplications(string url)
         {
-            var user1 = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
 
             // Act
             var response = await PostRequestAsync(url, user1.ApiToken, new GetListRequest()
@@ -51,10 +51,10 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData(MainApiUrl.LogList)]
         public async Task ShouldReceiveLogsList(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Error, 3);
 
-            var user2 = await DataSeeder.CreateNewUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
             await DataSeeder.CreateLogsAsync(user2.ApplicationId, LogLevel.Error, 2);
 
             // Act
@@ -74,7 +74,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData(MainApiUrl.LogList)]
         public async Task ShouldReceiveMoreThanOnePages(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information, 25);
 
             // Act
@@ -94,7 +94,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData(MainApiUrl.LogList)]
         public async Task ShouldReceiveOrderedList(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             var logs1 = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information);
             var logs2 = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information);
 
@@ -116,7 +116,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData(MainApiUrl.LogList)]
         public async Task ShouldReceiveOrderedListFilteredByLogLevel(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information, 3);
             await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Debug, 7);
 
@@ -141,7 +141,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData(MainApiUrl.LogList)]
         public async Task ShouldReceiveCorrectIsFavoriteValue(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             var logs = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information, 3);            
             await LogService.SetIsFavoriteAsync(user.Id, logs.First().Id, true);
             await LogService.SetIsFavoriteAsync(user.Id, logs.Last().Id, true);
@@ -163,8 +163,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         [InlineData(MainApiUrl.LogList)]
         public async Task ShouldReceiveLogsForSharedApplications(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
 
             await ApplicationService.ShareForUser(user2.Application, user);
 

@@ -21,8 +21,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Application
         [Fact]
         public async Task ShouldDeleteOne()
         {
-            var user = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
             var application = user.Applications.First();
             await ApplicationService.ShareForUser(application, user2);
 

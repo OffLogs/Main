@@ -20,8 +20,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.ApplicationSe
         [Fact]
         public async Task ShouldShareApplicationForOtherUser()
         {
-            var user1 = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
 
             await ApplicationService.ShareForUser(user2.Application, user1);
 
@@ -38,8 +38,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.ApplicationSe
         [Fact]
         public async Task ShouldNotShareAppForOneUserTwice()
         {
-            var user1 = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
 
             await ApplicationService.ShareForUser(user2.Application, user1);
 
@@ -51,7 +51,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.ApplicationSe
         [Fact]
         public async Task ShouldNotShareApplicationToTheOnwer()
         {
-            var user1 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
 
             await Assert.ThrowsAsync<PermissionException>(async () => {
                 await ApplicationService.ShareForUser(user1.Application, user1);
@@ -61,13 +61,13 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.ApplicationSe
         [Fact]
         public async Task ShouldNotShareApplicationMoreThan20Users()
         {
-            var user1 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
 
             int sharesCount = 0;
             await Assert.ThrowsAsync<PermissionException>(async () => {
                 for (sharesCount = 0; sharesCount < GlobalConstants.ApplicationMaxShares + 1; sharesCount++)
                 {
-                    var user2 = await DataSeeder.CreateNewUser();
+                    var user2 = await DataSeeder.CreateActivatedUser();
                     await ApplicationService.ShareForUser(user1.Application, user2);    
                 }
             });

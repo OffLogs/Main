@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Versioning;
 using System.Security.Cryptography;
 using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.Asn1.X509;
@@ -121,33 +122,39 @@ namespace OffLogs.Business.Common.Encryption.BouncyCastle
             throw new ArgumentException("Unsupported algorithm specified", "privateKey");
         }
 
+        [SupportedOSPlatform("windows")]
         public static RSA ToRSA(RsaKeyParameters rsaKey)
         {
             // TODO This appears to not work for private keys (when no CRT info)
             return CreateRSAProvider(ToRSAParameters(rsaKey));
         }
 
+        [SupportedOSPlatform("windows")]
         public static RSA ToRSA(RsaKeyParameters rsaKey, CspParameters csp)
         {
             // TODO This appears to not work for private keys (when no CRT info)
             return CreateRSAProvider(ToRSAParameters(rsaKey), csp);
         }
 
+        [SupportedOSPlatform("windows")]
         public static RSA ToRSA(RsaPrivateCrtKeyParameters privKey)
         {
             return CreateRSAProvider(ToRSAParameters(privKey));
         }
 
+        [SupportedOSPlatform("windows")]
         public static RSA ToRSA(RsaPrivateCrtKeyParameters privKey, CspParameters csp)
         {
             return CreateRSAProvider(ToRSAParameters(privKey), csp);
         }
 
+        [SupportedOSPlatform("windows")]
         public static RSA ToRSA(RsaPrivateKeyStructure privKey)
         {
             return CreateRSAProvider(ToRSAParameters(privKey));
         }
 
+        [SupportedOSPlatform("windows")]
         public static RSA ToRSA(RsaPrivateKeyStructure privKey, CspParameters csp)
         {
             return CreateRSAProvider(ToRSAParameters(privKey), csp);
@@ -208,6 +215,7 @@ namespace OffLogs.Business.Common.Encryption.BouncyCastle
             return padded;
         }
 
+        [SupportedOSPlatform("windows")]
         private static RSA CreateRSAProvider(RSAParameters rp)
         {
             CspParameters csp = new CspParameters();
@@ -217,6 +225,7 @@ namespace OffLogs.Business.Common.Encryption.BouncyCastle
             return rsaCsp;
         }
 
+        [SupportedOSPlatform("windows")]
         private static RSA CreateRSAProvider(RSAParameters rp, CspParameters csp)
         {
             RSACryptoServiceProvider rsaCsp = new RSACryptoServiceProvider(csp);

@@ -20,7 +20,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Log
         [Fact]
         public async Task ShouldDeleteOneLog()
         {
-            var userModel = await DataSeeder.CreateNewUser();
+            var userModel = await DataSeeder.CreateActivatedUser();
             var application = userModel.Applications.First();
 
             var log1 = await CreateLog(application, LogLevel.Error);
@@ -43,7 +43,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Log
         [Fact]
         public async Task ShouldDeleteSpoiledLogs()
         {
-            var userModel = await DataSeeder.CreateNewUser();
+            var userModel = await DataSeeder.CreateActivatedUser();
             var application = userModel.Applications.First();
 
             var log1 = await CreateLog(application, LogLevel.Error);
@@ -81,7 +81,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Log
         [Fact]
         public async Task ShouldNotDeleteFavoriteLogs()
         {
-            var userModel = await DataSeeder.CreateNewUser();
+            var userModel = await DataSeeder.CreateActivatedUser();
             var application = userModel.Applications.First();
 
             var log1 = await CreateLog(application, LogLevel.Error);
@@ -107,22 +107,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Log
                 "SomeMessage",
                 level,
                 DateTime.UtcNow,
-                new List<LogPropertyEntity>()
+                new Dictionary<string, object>()
                 {
-                    new()
-                    {
-                        Key = "TEST_PROP",
-                        Value = "TEST_VALUE",
-                    }
+                    { "property", "value" }
                 },
-                new List<LogTraceEntity>()
-                {
-                    new()
-                    {
-                        Trace = "TestTrace",
-                        CreateTime = DateTime.UtcNow
-                    }
-                }
+                new List<string>()
+                { "trace" }
             );
         }
     }

@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
+using Fluxor;
 using Majorsoft.Blazor.WebAssembly.Logging.Console;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +18,7 @@ namespace OffLogs.Web
     {
         public static async Task Main(string[] args)
         {
+            var currentAssembly = typeof(Program).Assembly;
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
@@ -37,11 +39,17 @@ namespace OffLogs.Web
             builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
             builder.Services.AddSingleton<ToastService>();
             
+            // Store
+            builder.Services.AddFluxor(
+                options => options.ScanAssemblies(currentAssembly)
+            );
+            
+#if DEBUG
             // Init logger
             builder.Logging.AddBrowserConsole()
                 .SetMinimumLevel(LogLevel.Debug) //Setting LogLevel is optional
                 .AddFilter("Microsoft", LogLevel.Information); //System logs can be filtered.
-
+#endif
             await builder.Build().RunAsync();
         }
     }

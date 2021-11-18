@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
 using Persistence.Transactions.Behaviors;
 
-namespace OffLogs.Api.Business.Controller.Public.User
+namespace OffLogs.Api.Controller.Public.User
 {
     [Route("/[controller]")]
     [ApiController]
@@ -23,7 +23,6 @@ namespace OffLogs.Api.Business.Controller.Public.User
         [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public Task<IActionResult> CheckIsLoggedIn([FromBody] LoginRequest request)
             => this.RequestAsync()
                 .For<LoginResponseDto>()
@@ -36,5 +35,19 @@ namespace OffLogs.Api.Business.Controller.Public.User
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public Task<IActionResult> CheckIsLoggedIn([FromQuery] CheckIsLoggedInRequest request)
             => this.RequestAsync(request);
+        
+        [HttpPost("registration/step1")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public Task<IActionResult> RegistrationStep1([FromBody] RegistrationStep1Request request)
+            => this.RequestAsync(request);
+        
+        [HttpPost("registration/step2")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public Task<IActionResult> RegistrationStep2([FromBody] RegistrationStep2Request request)
+            => this.RequestAsync()
+                .For<RegistrationStep2ResponseDto>()
+                .With(request);
     }
 }

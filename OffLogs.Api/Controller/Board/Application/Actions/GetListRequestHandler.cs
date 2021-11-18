@@ -16,7 +16,7 @@ using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Security;
 using Queries.Abstractions;
 
-namespace OffLogs.Api.Business.Controller.Board.Application.Actions
+namespace OffLogs.Api.Controller.Board.Application.Actions
 {
     public class GetListRequestHandler : IAsyncRequestHandler<GetListRequest, PaginatedListDto<ApplicationListItemDto>>
     {

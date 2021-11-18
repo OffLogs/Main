@@ -48,8 +48,12 @@ namespace OffLogs.Business.Orm.Entities
         public virtual LogLevel Level { get; set; }
                
         [Property(NotNull = true)]
-        [Column(Name = "message", Length = 2048, NotNull = true)]
-        public virtual string Message { get; set; }
+        [Column(Name = "encrypted_message", SqlType = "bytea", NotNull = true)]
+        public virtual byte[] EncryptedMessage { get; set; }
+        
+        [Property(NotNull = true)]
+        [Column(Name = "encrypted_symmetric_key", SqlType = "bytea", NotNull = true)]
+        public virtual byte[] EncryptedSymmetricKey { get; set; }
         
         [Property(NotNull = true)]
         [Column(Name = "log_time", SqlType = "datetime")]

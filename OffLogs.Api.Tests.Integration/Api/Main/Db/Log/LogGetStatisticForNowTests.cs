@@ -22,7 +22,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Log
         public async Task ShouldReceiveLogStatisticWithoutApplication()
         {
             var expectedCounter = 15;
-            var userModel = await DataSeeder.CreateNewUser();
+            var userModel = await DataSeeder.CreateActivatedUser();
             var application = userModel.Applications.First();
 
             await DataSeeder.CreateLogsAsync(application.Id, LogLevel.Error, expectedCounter);
@@ -45,7 +45,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Log
         public async Task ShouldReceiveLogStatisticForApplication()
         {
             var expectedCounter = 13;
-            var userModel = await DataSeeder.CreateNewUser();
+            var userModel = await DataSeeder.CreateActivatedUser();
             var application = userModel.Applications.First();
 
             await DataSeeder.CreateLogsAsync(application.Id, LogLevel.Error, expectedCounter);

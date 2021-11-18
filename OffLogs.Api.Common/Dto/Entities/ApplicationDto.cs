@@ -10,6 +10,8 @@ namespace OffLogs.Api.Common.Dto.Entities
         public long UserId { get; set; }
         public string Name { get; set; }
         public string ApiToken { get; set; }
+        public string PublicKeyBase64 { get; set; }
+        public string EncryptedPrivateKeyBase64 { get; set; }
         public DateTime CreateTime { get; set; }
         public PermissionInfoDto Permissions { get; set; }
 

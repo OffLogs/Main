@@ -28,10 +28,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
 
         [Theory]
         [InlineData(Url)]
-        public async Task CanAddApplication(string url)
+        public async Task ShouldAddApplication(string url)
         {
-            var user1 = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
 
             // Act
             var response = await PostRequestAsync(url, user1.ApiToken, new AddRequest()
@@ -42,6 +41,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
             var responseData = await response.GetJsonDataAsync<ApplicationDto>();
             Assert.True(responseData.Id > 0);
             Assert.NotEmpty(responseData.Name);
+            Assert.NotEmpty(responseData.PublicKeyBase64);
+            Assert.NotEmpty(responseData.EncryptedPrivateKeyBase64);
             Assert.Equal(user1.Id, responseData.UserId);
         }
     }

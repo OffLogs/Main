@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using OffLogs.Api.Common.Dto.Entities;
@@ -17,7 +18,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         [InlineData(MainApiUrl.ApplicationGetOne)]
         public async Task OnlyAuthorizedUsersCanGetApplications(string url)
         {
-            var user = await DataSeeder.CreateNewUser();
+            var user = await DataSeeder.CreateActivatedUser();
             // Act
             var response = await PostRequestAsAnonymousAsync(url, new GetRequest()
             {
@@ -31,8 +32,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         [InlineData(MainApiUrl.ApplicationGetOne)]
         public async Task ShouldNotGetForOtherUser(string url)
         {
-            var user1 = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
 
             // Act
             var response = await PostRequestAsync(url, user1.ApiToken, new GetRequest()
@@ -47,7 +48,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         [InlineData(MainApiUrl.ApplicationGetOne)]
         public async Task ShouldReceiveApplication(string url)
         {
-            var user1 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
 
             // Act
             var response = await PostRequestAsync(url, user1.ApiToken, new GetRequest()
@@ -59,14 +60,22 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
             Assert.Equal(user1.Application.Id, responseData.Id);
             Assert.Equal(user1.Application.Name, responseData.Name);
             Assert.Equal(user1.Application.ApiToken, responseData.ApiToken);
+            Assert.Equal(
+                Convert.ToBase64String(user1.Application.PublicKey), 
+                responseData.PublicKeyBase64
+            );
+            Assert.Equal(
+                Convert.ToBase64String(user1.Application.EncryptedPrivateKey), 
+                responseData.EncryptedPrivateKeyBase64
+            );
         }
 
         [Theory]
         [InlineData(MainApiUrl.ApplicationGetOne)]
         public async Task SharedUserShouldReceiveApplication(string url)
         {
-            var user1 = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
 
             await ApplicationService.ShareForUser(user1.Application, user2);
 
@@ -88,7 +97,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         [InlineData(MainApiUrl.ApplicationGetOne)]
         public async Task OwnerShouldReceiveIsWriteAccessAsTrue(string url)
         {
-            var user1 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
 
             // Act
             var response = await PostRequestAsync(url, user1.ApiToken, new GetRequest()
@@ -106,8 +115,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         [InlineData(MainApiUrl.ApplicationGetOne)]
         public async Task SharedUserShouldReceiveIsReadAccessAsTrue(string url)
         {
-            var user1 = await DataSeeder.CreateNewUser();
-            var user2 = await DataSeeder.CreateNewUser();
+            var user1 = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
 
             await ApplicationService.ShareForUser(user1.Application, user2);
 

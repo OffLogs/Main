@@ -1,7 +1,6 @@
 using System;
 using Bogus;
 using OffLogs.Business.Common.Constants;
-using OffLogs.Business.Constants;
 using OffLogs.Business.Orm.Entities;
 
 namespace OffLogs.Business.Services.Data
@@ -20,12 +19,12 @@ namespace OffLogs.Business.Services.Data
                     (faker) => faker.Internet.Email()
                 )
                 .RuleFor(
-                    entity => entity.PasswordHash,
+                    entity => entity.PublicKey,
                     (faker) => faker.Random.Bytes(32)
                 )
                 .RuleFor(
-                    entity => entity.PasswordSalt,
-                    (faker) => faker.Random.Bytes(32)
+                    entity => entity.IsVerificated,
+                    () => true
                 )
                 .RuleFor(
                     entity => entity.CreateTime,
@@ -66,8 +65,12 @@ namespace OffLogs.Business.Services.Data
         {
             return new Faker<LogEntity>()
                 .RuleFor(
-                    entity => entity.Message,
-                    (faker) => faker.Lorem.Sentence()
+                    entity => entity.EncryptedMessage,
+                    (faker) => faker.Random.Bytes(32)
+                )
+                .RuleFor(
+                    entity => entity.EncryptedSymmetricKey,
+                    (faker) => faker.Random.Bytes(32)
                 )
                 .RuleFor(
                     entity => entity.Level,
@@ -87,8 +90,8 @@ namespace OffLogs.Business.Services.Data
         {
             return new Faker<LogTraceEntity>()
                 .RuleFor(
-                    entity => entity.Trace,
-                    (faker) => faker.Lorem.Sentence()
+                    entity => entity.EncryptedTrace,
+                    (faker) => faker.Random.Bytes(32)
                 )
                 .RuleFor(
                     entity => entity.CreateTime,
@@ -100,12 +103,12 @@ namespace OffLogs.Business.Services.Data
         {
             return new Faker<LogPropertyEntity>()
                 .RuleFor(
-                    entity => entity.Key,
-                    (faker) => faker.Random.Word()
+                    entity => entity.EncryptedKey,
+                    (faker) => faker.Random.Bytes(32)
                 )
                 .RuleFor(
-                    entity => entity.Value,
-                    (faker) => faker.Random.Word()
+                    entity => entity.EncryptedValue,
+                    (faker) => faker.Random.Bytes(32)
                 )
                 .RuleFor(
                     entity => entity.CreateTime,

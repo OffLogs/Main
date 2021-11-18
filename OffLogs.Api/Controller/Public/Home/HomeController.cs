@@ -7,7 +7,7 @@ using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.Home;
 using OffLogs.Business.Mvc.Attribute.Auth;
 using Persistence.Transactions.Behaviors;
 
-namespace OffLogs.Api.Business.Controller.Public.Home
+namespace OffLogs.Api.Controller.Public.Home
 {
     [ApiController]
     [Route("/[controller]")]
