@@ -15,8 +15,7 @@ pipeline {
     }
     
     post {
-        always {
-            
+        always {           
         }
     }
 }
