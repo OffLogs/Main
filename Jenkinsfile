@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'mcr.microsoft.com/dotnet/sdk:5.0-focal'
+            image 'mcr.microsoft.com/dotnet/sdk:5.0'
         }
     }
     
@@ -22,9 +22,9 @@ pipeline {
         
         stage('Preparing') {
             steps {
-                sh 'apt update'
-                sh 'apt install -y apt-transport-https wget ca-certificates'
-                sh 'apt upgrade -y'
+                sh 'apt-get update'
+                sh 'apt-get install -y apt-transport-https wget ca-certificates'
+                sh 'apt-get upgrade -y'
             }
         }
         
