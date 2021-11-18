@@ -17,12 +17,14 @@ pipeline {
     stages {
         stage('Info') {
             steps {
+                updateGitlabCommitStatus name: 'build', state: 'created'
                 echo 'Current user ${USER}'
             }
         }
         
         stage('Preparing') {
             steps {
+                updateGitlabCommitStatus name: 'build', state: 'preparing'
                 sh 'apt-get update'
                 sh 'apt-get install -y apt-transport-https wget ca-certificates'
                 sh 'apt-get upgrade -y'
@@ -31,22 +33,35 @@ pipeline {
         
         stage('Build') {
             steps {
+                updateGitlabCommitStatus name: 'build', state: 'pending'
                 sh 'echo "{}" > appsettings.Local.json'
                 sh 'echo "{}" > OffLogs.Api.Tests.Integration/appsettings.Local.json'
                 sh 'echo "{}" > OffLogs.Migrations/appsettings.Local.json'
                 sh 'echo "{}" > OffLogs.Console/appsettings.Local.json'
                 sh 'dotnet restore'
                 sh 'dotnet build'
-                gitlabCommitStatus(name: 'test') {
-                    sh 'dotnet test --logger trx --results-directory /var/temp ./OffLogs.Api.Tests.Unit'
-                }
             }
         }
         
         stage('Test') {
             steps {
-                echo 'Hello 1'
-                echo 'Hello 1'
+                updateGitlabCommitStatus name: 'build', state: 'running'
+                sh 'dotnet test --logger trx --results-directory /var/temp ./OffLogs.Api.Tests.Unit'
+            }
+        }
+        
+        post {
+            success {
+                updateGitlabCommitStatus name: 'build', state: 'success'
+            }
+            failure {
+                updateGitlabCommitStatus name: 'build', state: 'failed'
+            }
+            aborted {
+                updateGitlabCommitStatus name: 'build', state: 'canceled'
+            }
+            unsuccessful {
+                updateGitlabCommitStatus name: 'build', state: 'canceled'
             }
         }
     }
