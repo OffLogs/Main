@@ -32,6 +32,7 @@ pipeline {
         
         stage('Build') {
             steps {
+                updateGitlabCommitStatus name: 'build', state: 'running'
                 sh 'echo "{}" > appsettings.Local.json'
                 sh 'echo "{}" > OffLogs.Api.Tests.Integration/appsettings.Local.json'
                 sh 'echo "{}" > OffLogs.Migrations/appsettings.Local.json'
@@ -43,7 +44,6 @@ pipeline {
         
         stage('Test') {
             steps {
-                updateGitlabCommitStatus name: 'build', state: 'running'
                 sh 'dotnet test --logger trx --results-directory /var/temp ./OffLogs.Api.Tests.Unit'
             }
         }
