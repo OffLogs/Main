@@ -2,6 +2,7 @@ pipeline {
     agent {
         docker {
             image 'mcr.microsoft.com/dotnet/sdk:5.0'
+            args '-u root --privileged'
         }
     }
     
@@ -22,7 +23,7 @@ pipeline {
         
         stage('Preparing') {
             steps {
-                sh 'sudo apt-get update'
+                sh 'apt-get update'
                 sh 'apt-get install -y apt-transport-https wget ca-certificates'
                 sh 'apt-get upgrade -y'
             }
