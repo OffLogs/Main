@@ -22,6 +22,7 @@ pipeline {
                 sh 'dotnet build'
             }
         }
+        
         stage('Test') {
             steps {
                 echo 'Hello 1'
