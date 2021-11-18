@@ -17,14 +17,13 @@ pipeline {
     stages {
         stage('Info') {
             steps {
-                updateGitlabCommitStatus name: 'build', state: 'created'
                 echo 'Current user ${USER}'
             }
         }
         
         stage('Preparing') {
             steps {
-                updateGitlabCommitStatus name: 'build', state: 'preparing'
+                updateGitlabCommitStatus name: 'build', state: 'pending'
                 sh 'apt-get update'
                 sh 'apt-get install -y apt-transport-https wget ca-certificates'
                 sh 'apt-get upgrade -y'
@@ -33,7 +32,6 @@ pipeline {
         
         stage('Build') {
             steps {
-                updateGitlabCommitStatus name: 'build', state: 'pending'
                 sh 'echo "{}" > appsettings.Local.json'
                 sh 'echo "{}" > OffLogs.Api.Tests.Integration/appsettings.Local.json'
                 sh 'echo "{}" > OffLogs.Migrations/appsettings.Local.json'
