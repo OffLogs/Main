@@ -22,7 +22,7 @@ pipeline {
         
         stage('Preparing') {
             steps {
-                sh 'apt-get update'
+                sh 'sudo apt-get update'
                 sh 'apt-get install -y apt-transport-https wget ca-certificates'
                 sh 'apt-get upgrade -y'
             }
