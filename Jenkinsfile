@@ -7,7 +7,9 @@ pipeline {
     
     stages {
         stage('Info') {
-            echo 'Current user ${USER}'
+            steps {
+                echo 'Current user ${USER}'
+            }
         }
     
         stage('Build') {
