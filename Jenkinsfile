@@ -1,13 +1,16 @@
 pipeline {
     agent {
         docker {
-            image 'mcr.microsoft.com/dotnet/sdk:5.0'
+            image 'mcr.microsoft.com/dotnet/sdk:5.0-focal'
         }
     }
     
     environment {
         DOTNET_CLI_HOME = "/tmp/DOTNET_CLI_HOME"
         HOME = '/tmp'
+        ASPNETCORE_ENVIRONMENT = "Development"
+        DOTNET_USE_POLLING_FILE_WATCHER = true  
+        ASPNETCORE_URLS = "http://+:80" 
     }
     
     stages {
@@ -16,7 +19,15 @@ pipeline {
                 echo 'Current user ${USER}'
             }
         }
-    
+        
+        stage('Preparing') {
+            steps {
+                sh 'apt update'
+                sh 'apt install -y apt-transport-https wget ca-certificates'
+                sh 'apt upgrade -y'
+            }
+        }
+        
         stage('Build') {
             steps {
                 sh 'echo "{}" > appsettings.Local.json'
