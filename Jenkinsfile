@@ -6,6 +6,10 @@ pipeline {
     }
     
     stages {
+        stage('Info') {
+            echo 'Current user ${USER}'
+        }
+    
         stage('Build') {
             steps {
                 sh 'echo "{}" > appsettings.Local.json'
