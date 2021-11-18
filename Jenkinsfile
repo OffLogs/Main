@@ -37,7 +37,9 @@ pipeline {
                 sh 'echo "{}" > OffLogs.Console/appsettings.Local.json'
                 sh 'dotnet restore'
                 sh 'dotnet build'
-                sh 'dotnet test --logger trx --results-directory /var/temp ./OffLogs.Api.Tests.Unit'
+                gitlabCommitStatus {
+                    sh 'dotnet test --logger trx --results-directory /var/temp ./OffLogs.Api.Tests.Unit'
+                }
             }
         }
         
