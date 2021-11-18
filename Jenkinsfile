@@ -5,6 +5,9 @@ pipeline {
         }
     }
     
+    environment {
+        DOTNET_CLI_HOME = "/tmp/DOTNET_CLI_HOME"
+    }
     
     stages {
         stage('Info') {
@@ -23,6 +26,7 @@ pipeline {
                 sh 'dotnet build'
             }
         }
+        
         stage('Test') {
             steps {
                 echo 'Hello 1'
