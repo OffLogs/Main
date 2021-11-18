@@ -49,20 +49,20 @@ pipeline {
                 sh 'dotnet test --logger trx --results-directory /var/temp ./OffLogs.Api.Tests.Unit'
             }
         }
-        
-        post {
-            success {
-                updateGitlabCommitStatus name: 'build', state: 'success'
-            }
-            failure {
-                updateGitlabCommitStatus name: 'build', state: 'failed'
-            }
-            aborted {
-                updateGitlabCommitStatus name: 'build', state: 'canceled'
-            }
-            unsuccessful {
-                updateGitlabCommitStatus name: 'build', state: 'canceled'
-            }
+    }
+    
+    post {
+        success {
+            updateGitlabCommitStatus name: 'build', state: 'success'
+        }
+        failure {
+            updateGitlabCommitStatus name: 'build', state: 'failed'
+        }
+        aborted {
+            updateGitlabCommitStatus name: 'build', state: 'canceled'
+        }
+        unsuccessful {
+            updateGitlabCommitStatus name: 'build', state: 'canceled'
         }
     }
 }
