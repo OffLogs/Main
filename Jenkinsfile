@@ -53,12 +53,15 @@ pipeline {
         success {
             updateGitlabCommitStatus name: 'build', state: 'success'
         }
+        
         failure {
             updateGitlabCommitStatus name: 'build', state: 'failed'
         }
+        
         aborted {
             updateGitlabCommitStatus name: 'build', state: 'canceled'
         }
+        
         unsuccessful {
             updateGitlabCommitStatus name: 'build', state: 'canceled'
         }
