@@ -23,6 +23,11 @@ pipeline {
     }
     
     stages {
+        node {
+            sleep 10
+            echo 'Hello node'
+        }
+    
         stage('Info') {
             steps {
                 echo 'Current user ${USER}'
