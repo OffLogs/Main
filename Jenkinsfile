@@ -7,6 +7,10 @@ pipeline {
         }
     }
     
+    options { 
+        disableConcurrentBuilds() 
+    }
+    
     environment {
         TZ = "UTC"
         DOTNET_CLI_HOME = "/tmp/DOTNET_CLI_HOME"
@@ -55,7 +59,16 @@ pipeline {
         stage('Prepare OS') {
             steps {
                 updateGitlabCommitStatus name: 'prepairing_os', state: 'running'
+                
+                // Time
                 sh 'ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone'
+                
+                // Fix: The configured user limit (128) on the number of inotify instances 
+                // has been reached, or the per-process limit on the number of open file descriptors has been reached.
+                sh 'echo "fs.inotify.max_user_watches=524288" >> /etc/sysctl.conf'
+                sh 'echo "fs.inotify.max_user_instances=524288" >> /etc/sysctl.conf'
+                sh 'sysctl -p'
+
                 sh 'apt-get update'
                 sh 'apt-get install -y apt-transport-https wget ca-certificates apt-transport-https debconf-utils net-tools sudo netcat'
                 sh 'apt-get install -y default-jre'
