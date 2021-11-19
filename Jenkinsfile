@@ -147,6 +147,7 @@ pipeline {
                 sh 'dotnet test --logger trx --results-directory /var/temp ./OffLogs.Api.Tests.Integration'
             }
         }
+        
     }
     
     post {
