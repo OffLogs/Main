@@ -9,6 +9,11 @@ pipeline {
     
     options { 
         disableConcurrentBuilds() 
+        gitlabBuilds(builds: ['prepairing_os', 'prepairing_soft', 'build', 'test'])
+    }
+    
+    triggers {
+        gitlab(triggerOnPush: true, triggerOnMergeRequest: true, branchFilterType: 'All')
     }
     
     environment {
@@ -44,14 +49,6 @@ pipeline {
         Hibernate__IsShowSql = "false"
         
         PATH = "$PATH:$KAFKA_HOME/bin"
-    }
-    
-    options {
-        gitlabBuilds(builds: ['prepairing_os', 'prepairing_soft', 'build', 'test'])
-    }
-    
-    triggers {
-        gitlab(triggerOnPush: true, triggerOnMergeRequest: true, branchFilterType: 'All')
     }
     
     stages {
