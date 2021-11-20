@@ -25,8 +25,13 @@ namespace OffLogs.Business.Orm.Commands.Entities.User
             CancellationToken cancellationToken = default
         )
         {
+            var email = commandContext.Email ?? "";
+            var userName = commandContext.UserName ?? "";
             await _sessionProvider.CurrentSession.Query<UserEntity>()
-                .Where(u => u.UserName == commandContext.UserName.ToLower())
+                .Where(
+                    u => u.UserName == userName.Trim().ToLower()
+                        || u.Email == email.Trim().ToLower()
+                )
                 .DeleteAsync(cancellationToken);
         }
     }

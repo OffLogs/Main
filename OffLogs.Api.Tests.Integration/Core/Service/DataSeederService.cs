@@ -43,12 +43,11 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
             _logService = logService;
         }
 
-        public async Task<UserTestModel> CreateActivatedUser(string userName = null, string email = null)
+        public async Task<UserTestModel> CreateActivatedUser(string email = null)
         {
             var fakeUser = _dataFactory.UserFactory().Generate();
-            fakeUser.UserName ??= userName;
-            fakeUser.Email ??= email;
-            var user = await _userService.CreatePendingUser(fakeUser.Email);
+            email ??= fakeUser.Email;
+            var user = await _userService.CreatePendingUser(email);
             var pemFilePassword = SecurityUtil.GeneratePassword();
             var (activatedUser, pemFile) = await _userService.ActivateUser(
                 user.Id, 

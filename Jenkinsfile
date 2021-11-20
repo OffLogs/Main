@@ -161,8 +161,8 @@ pipeline {
         stage('Unit Tests') {
             steps {
                 updateGitlabCommitStatus name: 'test', state: 'running'
-                // sh 'dotnet test --logger trx --results-directory /tmp/test ./OffLogs.Api.Tests.Unit'
-                // sh 'dotnet test --logger trx --results-directory /tmp/test ./OffLogs.Business.Common.Tests.Unit'
+                sh 'dotnet test --logger trx --results-directory /tmp/test ./OffLogs.Api.Tests.Unit'
+                sh 'dotnet test --logger trx --results-directory /tmp/test ./OffLogs.Business.Common.Tests.Unit'
             }
         }
         

@@ -24,7 +24,7 @@ namespace OffLogs.Business.Notifications.Senders
         public Task SendAsync(ApplicationDeletedNotificationContext commandContext, CancellationToken cancellationToken = default)
         {
             var emailBuilder = _emailFactory.GetEmailBuilder("ApplicationDeletedNotification.htm");
-            emailBuilder.AddPlaceholder("{{name}}", commandContext.Name);
+            emailBuilder.AddPlaceholder("name", commandContext.Name);
             _emailSendingService.SendEmail(commandContext.To, emailBuilder, null);
             return Task.CompletedTask;
         }

@@ -60,7 +60,8 @@ namespace OffLogs.Business.Services.Kafka
             {
                 BootstrapServers = _kafkaServers,
                 ClientId = _producerId, 
-                Acks = Acks.Leader,
+                // Do not change this. Because the tests is related from it
+                Acks = Acks.All,
                 MessageSendMaxRetries = 2000,
                 SecurityProtocol = SecurityProtocol.Plaintext
             };

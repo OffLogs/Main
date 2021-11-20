@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Api.Requests.Abstractions;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
-using OffLogs.Api.Exceptions;
+using OffLogs.Business.Common.Exceptions.Api;
 using OffLogs.Business.Common.Security;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries.Entities.User;

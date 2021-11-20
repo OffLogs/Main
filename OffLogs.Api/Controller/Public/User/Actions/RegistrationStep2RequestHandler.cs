@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Api.Requests.Abstractions;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
-using OffLogs.Api.Exceptions;
 using OffLogs.Business.Common.Extensions;
 using OffLogs.Business.Common.Security;
 using OffLogs.Business.Common.Utils;

@@ -4,6 +4,11 @@ namespace OffLogs.Business.Notifications.Senders
 {
     public class RegistrationNotificationContext : INotificationContext
     {
+        public string ToAddress { get; set; }
+        public string FrontendUrl { get; set; }
+        public string VerificationToken { get; set; }
+        public string VerificationUrl { get; set; }
+        
         public RegistrationNotificationContext() {}
 
         public RegistrationNotificationContext(
@@ -13,10 +18,9 @@ namespace OffLogs.Business.Notifications.Senders
         )
         {
             ToAddress = toAddress;
-            VerificationUrl = $"{frontendUrl}/registration/verification/{verificationToken}";
+            FrontendUrl = frontendUrl;
+            VerificationToken = verificationToken;
+            VerificationUrl = $"{FrontendUrl}/registration/verification/{VerificationToken}";
         }
-
-        public string ToAddress { get; }
-        public string VerificationUrl { get; }
     }
 }

@@ -19,9 +19,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.User
         [Fact]
         public async Task ShouldActivatePendingUser()
         {
-            var expectedUser = DataFactory.UserFactory().Generate();
-            var newUser = await UserService.CreatePendingUser(expectedUser.Email);
-            Assert.False(newUser.IsVerificated);
+            var newUser = DataFactory.UserFactory().Generate();
+            var expectedUser = await UserService.CreatePendingUser(newUser.Email);
+            Assert.False(expectedUser.IsVerificated);
             
             var (actualUser, pemFile) = await UserService.ActivateUser(
                 expectedUser.Id,
@@ -49,9 +49,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.User
         [Fact]
         public async Task ShouldNotActivateUserIfItAlreadyActivated()
         {
-            var expectedUser = DataFactory.UserFactory().Generate();
-            var newUser = await UserService.CreatePendingUser(expectedUser.Email);
-            Assert.False(newUser.IsVerificated);
+            var newUser = DataFactory.UserFactory().Generate();
+            var expectedUser = await UserService.CreatePendingUser(newUser.Email);
+            Assert.False(expectedUser.IsVerificated);
             
             await UserService.ActivateUser(
                 expectedUser.Id,

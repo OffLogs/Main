@@ -25,7 +25,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.User
             Assert.True(newUser.VerificationToken.Length > 20);
             Assert.Equal(expectedUserName, newUser.UserName);
             Assert.Equal(expectedEmail, newUser.Email);
-            Assert.True(newUser.PublicKey.Length > 0);
+            Assert.Empty(newUser.PublicKey);
         }
 
         [Theory]
@@ -34,8 +34,10 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.User
         public async Task ShouldNotCreateNewUserWithSameUserName(string expectedUserName, string email1, string email2)
         {
             await DeleteUser(expectedUserName);
+            await DeleteUser(null, email1);
+            await DeleteUser(null, email2);
 
-            await UserService.CreatePendingUser(expectedUserName, email1);
+            await UserService.CreatePendingUser(email1, expectedUserName);
             await Assert.ThrowsAsync<EntityIsExistException>(() => UserService.CreatePendingUser(email2, expectedUserName));
         }
 
@@ -53,9 +55,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.User
             });
         }
 
-        private async Task DeleteUser(string userName)
+        private async Task DeleteUser(string userName, string email = null)
         {
-            await CommandBuilder.ExecuteAsync(new UserDeleteCommandContext(userName));
+            await CommandBuilder.ExecuteAsync(new UserDeleteCommandContext(userName, email));
         }
     }
 }

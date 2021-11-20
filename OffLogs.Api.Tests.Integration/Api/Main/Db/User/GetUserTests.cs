@@ -13,17 +13,16 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.User
         public GetUserTests(ApiCustomWebApplicationFactory factory) : base(factory) { }
 
         [Theory]
-        [InlineData("some-get-user", "user-get@email.com")]
-        [InlineData("some-get-user-2", "user-get-2@email.com")]
-        public async Task ShouldCreateNewUser(string expectedUserName, string expectedEmail)
+        [InlineData("user-get@email.com")]
+        [InlineData("user-get-2@email.com")]
+        public async Task ShouldCreateNewUser(string expectedEmail)
         {
-            await CommandBuilder.ExecuteAsync(new UserDeleteCommandContext(expectedUserName));
+            await CommandBuilder.ExecuteAsync(new UserDeleteCommandContext(null, expectedEmail));
 
-            await DataSeeder.CreateActivatedUser(expectedUserName, expectedEmail);
+            await DataSeeder.CreateActivatedUser(expectedEmail);
             var newUser = await QueryBuilder.For<UserEntity>()
-                .WithAsync(new UserGetByCriteria(expectedUserName));
+                .WithAsync(new UserGetByCriteria(null, expectedEmail));
             Assert.NotNull(newUser);
-            Assert.Equal(expectedUserName, newUser.UserName);
             Assert.Equal(expectedEmail, newUser.Email);
             Assert.True(newUser.PublicKey.Length > 0);
         }

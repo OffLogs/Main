@@ -30,6 +30,7 @@ namespace OffLogs.Business.Notifications.Core.Emails
 
         public void AddPlaceholder(string key, string value)
         {
+            key = "{" + key + "}";
             int i = _template.Length - 1;
             int cnt = 0;
             // just a stupid protection from bugs leading to the endless loop - no more than 10 iterations, 

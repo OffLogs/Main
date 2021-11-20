@@ -97,7 +97,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             Assert.True(EmailSendingService.IsEmailSent);
 
             var sentMessage = EmailSendingService.SentMessages.First();
-            Assert.Contains("Application has been deleted", sentMessage.Subject);
+            Assert.Contains("OffLogs verification", sentMessage.Subject);
             Assert.Contains(notificationContext.VerificationUrl, sentMessage.Body);
             Assert.Contains(toAddress, sentMessage.To);
         }

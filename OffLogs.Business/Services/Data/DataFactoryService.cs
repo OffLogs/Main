@@ -52,6 +52,14 @@ namespace OffLogs.Business.Services.Data
                     (faker) => faker.Date.Past()
                 )
                 .RuleFor(
+                    entity => entity.PublicKey,
+                    (faker) => faker.Random.Bytes(100)
+                )
+                .RuleFor(
+                    entity => entity.EncryptedPrivateKey,
+                    (faker) => faker.Random.Bytes(100)
+                )
+                .RuleFor(
                     entity => entity.UpdateTime,
                     (faker) => faker.Date.Past()
                 )
