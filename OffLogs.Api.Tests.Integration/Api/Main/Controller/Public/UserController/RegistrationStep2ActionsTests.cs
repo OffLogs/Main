@@ -66,7 +66,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Public.UserControlle
             var response = await PostRequestAsAnonymousAsync(url, new RegistrationStep2Request()
             {
                 Token = user.VerificationToken,
-                Password = SecurityUtil.GeneratePassword(),
+                Password = password
             });
             // Assert
             response.EnsureSuccessStatusCode();
