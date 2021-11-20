@@ -5,6 +5,7 @@ using System.Reflection;
 using FluentMigrator.Runner;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OffLogs.Business.Common.Utils;
 using OffLogs.Migrations.Migrations;
 
 namespace OffLogs.Migrations
@@ -17,8 +18,9 @@ namespace OffLogs.Migrations
         
         static void Main(string[] args)
         {
+            var basePath = AssemblyUtils.GetAssemblyPath();
             Configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
+                .SetBasePath(basePath)
                 .AddJsonFile("appsettings.json")
                 .AddJsonFile("appsettings.Local.json", true)
                 .AddEnvironmentVariables()
