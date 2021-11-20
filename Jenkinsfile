@@ -45,7 +45,7 @@ pipeline {
         
         // OffLogs
         ConnectionStrings__DefaultConnection = "User ID=postgres;Password=postgres;Host=localhost;Port=5432;Database=postgres;Pooling=true;"
-        Kafka__Servers = "kafka:9094"
+        Kafka__Servers = "localhost:9094"
         Hibernate__IsShowSql = "false"
         
         PATH = "$PATH:$KAFKA_HOME/bin"
