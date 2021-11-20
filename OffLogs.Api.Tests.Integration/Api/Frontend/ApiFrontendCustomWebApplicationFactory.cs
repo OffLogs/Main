@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OffLogs.Api.Tests.Integration.Core.Service;
+using OffLogs.Business.Common.Utils;
 using OffLogs.Business.Di.Autofac.Modules;
 using OffLogs.Business.Extensions;
 using OffLogs.Business.Helpers;
@@ -37,7 +38,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
                 .ConfigureWebHostDefaults(builder =>
                 {
                     builder.UseStartup<ApiFrontendTestStartup>()
-                        .UseContentRoot(Directory.GetCurrentDirectory())
+                        .UseContentRoot(AssemblyUtils.GetAssemblyPath())
+                        .UseSerilog()
                         .ConfigureTestServices(services => 
                         {
                             services.AddScoped<IDataFactoryService, DataFactoryService>();

@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OffLogs.Api.Tests.Integration.Core.Faker;
 using OffLogs.Api.Tests.Integration.Core.Service;
+using OffLogs.Business.Common.Utils;
 using OffLogs.Business.Helpers;
 using OffLogs.Business.Services.Data;
 using Serilog;
@@ -41,7 +42,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
                 .ConfigureWebHostDefaults(builder =>
                 {
                     builder.UseStartup<ApiTestStartup>()
-                        .UseContentRoot(Directory.GetCurrentDirectory())
+                        .UseSerilog()
+                        .UseContentRoot(AssemblyUtils.GetAssemblyPath())
                         .ConfigureTestServices(services => 
                         {
                             services.AddHttpContextAccessor();
