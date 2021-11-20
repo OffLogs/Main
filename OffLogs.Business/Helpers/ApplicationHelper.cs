@@ -3,6 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using OffLogs.Business.Common.Utils;
 
 namespace OffLogs.Business.Helpers
 {
@@ -27,7 +28,8 @@ namespace OffLogs.Business.Helpers
 
         public static IConfigurationBuilder ConfigureConfigurationProvider(this IConfigurationBuilder builder)
         {
-            return builder.SetBasePath(Directory.GetCurrentDirectory())
+            var basePath = AssemblyUtils.GetAssemblyPath();
+            return builder.SetBasePath(basePath)
                 .AddJsonFile("appsettings.json")
                 .AddJsonFile($"appsettings.${HostingEnvironment}.json", true)
                 .AddJsonFile($"appsettings.Local.json", optional: true)
