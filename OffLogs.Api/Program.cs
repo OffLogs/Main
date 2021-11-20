@@ -41,9 +41,7 @@ namespace OffLogs.Api
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args)
-#if !TEST && !DEBUG
                 .UseSerilog(Log.Logger)
-#endif
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureAppConfiguration(config =>
                 {

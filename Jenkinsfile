@@ -9,7 +9,7 @@ pipeline {
     
     options { 
         disableConcurrentBuilds() 
-        gitlabBuilds(builds: ['prepairing_os', 'prepairing_soft', 'build', 'test'])
+        gitlabBuilds(builds: ['prepairing_os', 'prepairing_soft', 'apply_migrations', 'build', 'test'])
     }
     
     triggers {
@@ -57,18 +57,21 @@ pipeline {
             steps {
                 updateGitlabCommitStatus name: 'prepairing_os', state: 'running'
                 
-                // Time
+                echo 'Configure time'
                 sh 'ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone'
                 
-                // Fix: The configured user limit (128) on the number of inotify instances 
-                // has been reached, or the per-process limit on the number of open file descriptors has been reached.
+                echo 'Fix error: The configured user limit (128) on the number of inotify instances has been reached'
                 sh 'echo "fs.inotify.max_user_watches=524288" >> /etc/sysctl.conf'
                 sh 'echo "fs.inotify.max_user_instances=524288" >> /etc/sysctl.conf'
                 sh 'sysctl -p'
 
+                echo 'Run updated'
                 sh 'apt-get update'
                 sh 'apt-get install -y apt-transport-https wget ca-certificates apt-transport-https debconf-utils net-tools sudo netcat'
                 sh 'apt-get install -y default-jre'
+                
+                echo 'Create dirs'
+                sh 'mkdir /tmp/test'
             }
         }
         
@@ -144,17 +147,28 @@ pipeline {
             }
         }
         
+        stage('Apply Migration') {
+            steps {
+                updateGitlabCommitStatus name: 'apply_migrations', state: 'success'
+            
+                echo 'Apply migrations'
+                sh 'dotnet run --project="./OffLogs.Migrations/OffLogs.Migrations.csproj"'
+                
+                updateGitlabCommitStatus name: 'apply_migrations', state: 'success'
+            }
+        }
+        
         stage('Unit Tests') {
             steps {
                 updateGitlabCommitStatus name: 'test', state: 'running'
-                sh 'dotnet test --logger trx --results-directory /var/temp ./OffLogs.Api.Tests.Unit'
-                sh 'dotnet test --logger trx --results-directory /var/temp ./OffLogs.Business.Common.Tests.Unit'
+                sh 'dotnet test --logger trx --results-directory /tmp/test ./OffLogs.Api.Tests.Unit'
+                sh 'dotnet test --logger trx --results-directory /tmp/test ./OffLogs.Business.Common.Tests.Unit'
             }
         }
         
         stage('Integration Tests') {
             steps {
-                sh 'dotnet test --logger trx --results-directory /var/temp ./OffLogs.Api.Tests.Integration'
+                sh 'dotnet test --logger trx --results-directory /tmp/test ./OffLogs.Api.Tests.Integration'
             }
         }
         
