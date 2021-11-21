@@ -9,7 +9,7 @@ node('master') {
     }
     
     stage('Save Docker image') {
-        sh 'docker save -o test.tar offlogs-production-web'
+        sh 'docker save -o image.tar offlogs-production-web'
     }
     
     stage('Publish stash') {
@@ -20,6 +20,8 @@ node('production') {
     stage('Unstash') {
         unstash 'target'
         sh 'ls -sh'
+        sh 'docker load --input image.tar'
+        sh 'docker image ls'
     }
 
     stage('Run') {
