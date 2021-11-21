@@ -5,6 +5,7 @@ node('master') {
     }
     
     stage('Build Docker image') {
+        sh 'df -h'
         sh 'docker build --tag="offlogs-production-web" --file="devops/publish/Dockerfile" .'
     }
     
