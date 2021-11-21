@@ -6,7 +6,7 @@ COPY . /app
 
 # Configure time
 ENV TZ = "UTC"
-RUN 'ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone'
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Fix error: The configured user limit (128) on the number of inotify instances has been reached
 RUN echo "fs.inotify.max_user_watches=524288" >> /etc/sysctl.conf

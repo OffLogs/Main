@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'ubuntu:focal'
-            args '-u root --privileged'
+            args '-u root'
             reuseNode true
         }
     }
