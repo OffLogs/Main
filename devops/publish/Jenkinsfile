@@ -6,6 +6,9 @@ node('master') {
     
     stage('Build Docker image') {
         sh 'docker build --tag="offlogs-production-web" --file="devops/publish/Dockerfile" .'
+    }
+    
+    stage('Save Docker image') {
         sh 'docker save -o test.tar offlogs-production-web'
     }
     
