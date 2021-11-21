@@ -23,7 +23,7 @@ RUN apt-get install -y apt-transport-https wget ca-certificates apt-transport-ht
 
 # Configure time
 ENV TZ = "UTC"
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && dpkg-reconfigure -f noninteractive tzdata
 
 # Assign permissions
 RUN chmod -R 700 $KAFKA_HOME
