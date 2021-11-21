@@ -13,7 +13,7 @@ node('master') {
     }
     
     stage('Publish stash') {
-        stash 'target', includes: "**/*.tar"
+        stash name: 'target', includes: "**/*.tar"
     }
 }
 node('production') {
