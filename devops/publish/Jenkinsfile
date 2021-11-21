@@ -3,7 +3,7 @@ node('master') {
         checkout scm
         sh 'ls -sh'
         // git credentialsId: 'jenkins-root', url: 'git@gitlab.com:lampego/offlogs.git'
-        sh 'docker build --label="offlogs-production-web" --file=./devops/publish/Dockerfile'
+        sh 'docker build --label="offlogs-production-web" --file="devops/publish/Dockerfile" .'
         sh 'docker save -o test.tar offlogs-production-web'
         stash 'publish-stash'
     }
