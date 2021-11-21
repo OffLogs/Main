@@ -16,14 +16,14 @@ namespace OffLogs.Business.Services.Http.ThrottleRequests
     {
         private ConcurrentBag<RequestItemModel> _items = new();
 
-        private readonly TimeSpan _defaultCountingPeriond = TimeSpan.FromMinutes(1);
+        private readonly TimeSpan _defaultCountingPeriod = TimeSpan.FromMinutes(1);
 
-        public Task<int> CheckOrThowExceptionAsync(RequestItemType type, long itemId, int maxCounter = 500)
+        public Task<int> CheckOrThrowExceptionAsync(RequestItemType type, long itemId, int maxCounter = 500)
         {
-            return CheckOrThowExceptionAsync(type, itemId, _defaultCountingPeriond, maxCounter);
+            return CheckOrThrowExceptionAsync(type, itemId, _defaultCountingPeriod, maxCounter);
         }
 
-        public Task<int> CheckOrThowExceptionAsync(RequestItemType type, long itemId, TimeSpan countingPeriod, int maxCounter = 500)
+        public Task<int> CheckOrThrowExceptionAsync(RequestItemType type, long itemId, TimeSpan countingPeriod, int maxCounter = 500)
         {
             var item = FindOrCreate(type, itemId, maxCounter, countingPeriod);
             if (item.IsPeriodOver)

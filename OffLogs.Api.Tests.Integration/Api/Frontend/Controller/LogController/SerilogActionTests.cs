@@ -347,7 +347,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
 
             for (int i = 0; i < 500; i++)
             {
-                await ThrottleRequestsService.CheckOrThowExceptionAsync(
+                await ThrottleRequestsService.CheckOrThrowExceptionAsync(
                     RequestItemType.Application, 
                     user.ApplicationId
                 );

@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using OffLogs.Api.Tests.Integration.Core;
 using OffLogs.Business.Orm.Commands.Entities.User;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries.Entities.User;

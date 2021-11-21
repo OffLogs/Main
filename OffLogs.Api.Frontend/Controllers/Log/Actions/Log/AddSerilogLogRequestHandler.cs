@@ -36,7 +36,7 @@ namespace OffLogs.Api.Frontend.Controllers.Log.Actions.Log
 
         public async Task ExecuteAsync(AddSerilogLogsRequest request)
         {
-            await _throttleRequestsService.CheckOrThowExceptionAsync(
+            await _throttleRequestsService.CheckOrThrowExceptionAsync(
                 RequestItemType.Application,
                 _requestService.GetApplicationIdFromJwt()
             );

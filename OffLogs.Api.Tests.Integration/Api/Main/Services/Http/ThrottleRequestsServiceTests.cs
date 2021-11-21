@@ -28,7 +28,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Http
             var itemId = ++_itemId;
             for (int i = 0; i <= 5 + 1; i++)
             {
-                var actualCounter = await ThrottleRequestsService.CheckOrThowExceptionAsync(_itemType, itemId);
+                var actualCounter = await ThrottleRequestsService.CheckOrThrowExceptionAsync(_itemType, itemId);
                 Assert.Equal(i + 1, actualCounter);
             }
         }
@@ -42,7 +42,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Http
             var actualCounter = 0;
             for (int i = 0; i <= 3; i++)
             {
-                actualCounter = await ThrottleRequestsService.CheckOrThowExceptionAsync(
+                actualCounter = await ThrottleRequestsService.CheckOrThrowExceptionAsync(
                     _itemType, 
                     itemId, 
                     period, 
@@ -52,7 +52,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Http
             }
             Thread.Sleep(period);
 
-            actualCounter = await ThrottleRequestsService.CheckOrThowExceptionAsync(
+            actualCounter = await ThrottleRequestsService.CheckOrThrowExceptionAsync(
                 _itemType, 
                 itemId,
                 period, 
@@ -71,7 +71,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Http
             await Assert.ThrowsAsync<TooManyRequestsException>(async () => {
                 for (int i = 0; i <= maxItemsCounter + 1; i++)
                 {
-                    actulatCounter = await ThrottleRequestsService.CheckOrThowExceptionAsync(
+                    actulatCounter = await ThrottleRequestsService.CheckOrThrowExceptionAsync(
                         _itemType, 
                         itemId, 
                         TimeSpan.FromSeconds(5), 
@@ -92,7 +92,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Http
             var actualCounter = 0;
             for (int i = 0; i <= 3; i++)
             {
-                actualCounter = await ThrottleRequestsService.CheckOrThowExceptionAsync(
+                actualCounter = await ThrottleRequestsService.CheckOrThrowExceptionAsync(
                     _itemType, 
                     itemId, 
                     period, 
@@ -102,7 +102,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Http
             Assert.Equal(4, actualCounter);
             ThrottleRequestsService.Clean();
 
-            actualCounter = await ThrottleRequestsService.CheckOrThowExceptionAsync(
+            actualCounter = await ThrottleRequestsService.CheckOrThrowExceptionAsync(
                 _itemType, 
                 itemId, 
                 period, 
@@ -120,7 +120,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Http
             var actualCounter = 0;
             for (int i = 0; i <= 3; i++)
             {
-                actualCounter = await ThrottleRequestsService.CheckOrThowExceptionAsync(
+                actualCounter = await ThrottleRequestsService.CheckOrThrowExceptionAsync(
                     RequestItemType.Application,
                     itemId,
                     period,
@@ -129,7 +129,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Http
             }
             Assert.Equal(4, actualCounter);
             
-            actualCounter = await ThrottleRequestsService.CheckOrThowExceptionAsync(
+            actualCounter = await ThrottleRequestsService.CheckOrThrowExceptionAsync(
                 RequestItemType.User,
                 itemId,
                 period,
