@@ -1,8 +1,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0
-WORKDIR /app
-USER root
+#USER root
 
 COPY . /app
+WORKDIR /app
 
 # Update
 RUN apt-get update
