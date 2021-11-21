@@ -1,4 +1,4 @@
-FROM ubuntu:focal AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0
 WORKDIR /app
 USER root
 
@@ -11,13 +11,7 @@ RUN apt-get install -y apt-transport-https wget ca-certificates apt-transport-ht
 
 # Configure time
 ENV TZ = "UTC"
-#RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-# Install .Net Core 5.0
-RUN 'wget https://packages.microsoft.com/config/ubuntu/20.10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb'
-RUN 'dpkg -i packages-microsoft-prod.deb'
-RUN apt-get update
-RUN apt-get install -y dotnet-sdk-5.0
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Assign permissions
 RUN chmod -R 700 $KAFKA_HOME
