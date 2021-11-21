@@ -1,11 +1,9 @@
 pipeline {
     agent {
-        docker {
-            dockerfile true
-            dir 'devops/test'
-            args '--privileged'
-            reuseNode true
-        }
+        dockerfile true
+        dir 'devops/test'
+        args '--privileged'
+        reuseNode true
     }
     
     options { 
