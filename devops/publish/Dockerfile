@@ -24,4 +24,4 @@ RUN ls
 RUN echo "{}" > OffLogs.Api/appsettings.Local.json
 #RUN echo "{}" > OffLogs.Migrations/appsettings.Local.json
 #RUN echo "{}" > OffLogs.Console/appsettings.Local.json
-RUN dotnet restore
+RUN dotnet build OffLogs.Api/
