@@ -4,11 +4,6 @@ USER root
 
 COPY . /app
 
-# Fix error: The configured user limit (128) on the number of inotify instances has been reached
-RUN echo "fs.inotify.max_user_watches=524288" >> /etc/sysctl.conf
-RUN echo "fs.inotify.max_user_instances=524288" >> /etc/sysctl.conf
-RUN sysctl -p
-
 # Install .Net Core 5.0
 RUN 'wget https://packages.microsoft.com/config/ubuntu/20.10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb'
 RUN 'dpkg -i packages-microsoft-prod.deb'
