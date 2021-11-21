@@ -1,16 +1,27 @@
 node('master') {
-    stage('checkout') {
+    stage('Checkout') {
         checkout scm
         sh 'ls -sh'
-        // git credentialsId: 'jenkins-root', url: 'git@gitlab.com:lampego/offlogs.git'
+    }
+    
+    stage('Build Docker image') {
         sh 'docker build --tag="offlogs-production-web" --file="devops/publish/Dockerfile" .'
         sh 'docker save -o test.tar offlogs-production-web'
-        stash 'publish-stash'
+    }
+    
+    stage('Publish stash') {
+        sh 'docker build --tag="offlogs-production-web" --file="devops/publish/Dockerfile" .'
+        sh 'docker save -o test.tar offlogs-production-web'
+        stash 'target', includes: "**/*.tar"
     }
 }
 node('production') {
-    stage('build') {
-        unstash 'publish-stash'
+    stage('Unstash') {
+        unstash 'target'
         sh 'ls -sh'
+    }
+
+    stage('Run') {
+        
     }
 }
