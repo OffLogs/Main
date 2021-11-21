@@ -1,15 +1,16 @@
 pipeline {
     agent {
         docker {
-            image 'ubuntu:focal'
-            args '-u root --privileged'
+            dockerfile true
+            dir 'devops/test'
+            args '--privileged'
             reuseNode true
         }
     }
     
     options { 
         disableConcurrentBuilds() 
-        gitlabBuilds(builds: ['prepairing_os', 'prepairing_soft', 'apply_migrations', 'build', 'test'])
+        gitlabBuilds(builds: ['prepairing', 'apply_migrations', 'build', 'test'])
     }
     
     triggers {
@@ -17,13 +18,6 @@ pipeline {
     }
     
     environment {
-        TZ = "UTC"
-        DOTNET_CLI_HOME = "/tmp/DOTNET_CLI_HOME"
-        HOME = '/tmp'
-        ASPNETCORE_ENVIRONMENT = "Development"
-        DOTNET_USE_POLLING_FILE_WATCHER = true  
-        ASPNETCORE_URLS = "http://+:80" 
-        
         // Postgres
         POSTGRES_CONNECTION_RETRIES = 5
         POSTGRES_USER = "postgres"
@@ -52,49 +46,6 @@ pipeline {
     }
     
     stages {
-        
-        stage('Prepare OS') {
-            steps {
-                updateGitlabCommitStatus name: 'prepairing_os', state: 'running'
-                
-                echo 'Configure time'
-                sh 'ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone'
-                
-                echo 'Fix error: The configured user limit (128) on the number of inotify instances has been reached'
-                sh 'echo "fs.inotify.max_user_watches=524288" >> /etc/sysctl.conf'
-                sh 'echo "fs.inotify.max_user_instances=524288" >> /etc/sysctl.conf'
-                sh 'sysctl -p'
-
-                echo 'Run updated'
-                sh 'apt-get update'
-                sh 'apt-get install -y apt-transport-https wget ca-certificates apt-transport-https debconf-utils net-tools sudo netcat'
-                sh 'apt-get install -y default-jre'
-                
-                echo 'Create dirs'
-                sh 'mkdir /tmp/test'
-            }
-        }
-        
-        stage('Install .Net Core') {
-            steps {
-                echo 'Install .Net Core 5.0'
-                sh 'wget https://packages.microsoft.com/config/ubuntu/20.10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb'
-                sh 'dpkg -i packages-microsoft-prod.deb'
-                sh 'apt-get update'
-                sh 'apt-get install -y dotnet-sdk-5.0'
-            }
-        }
-        
-        stage('Assign permissions') {
-            steps {
-                sh 'chmod -R 700 $KAFKA_HOME'
-                sh 'chmod -R 700 ./devops/common/kafka/boot.sh'
-                sh 'chmod -R 700 ./devops/common/zookeeper/boot.sh'
-                
-                updateGitlabCommitStatus name: 'prepairing_os', state: 'success'
-            }
-        }
-        
         stage('System Info') {
             steps {
                 echo 'Current user $USER'
@@ -104,7 +55,7 @@ pipeline {
         
         stage('Init Zookeeper') {
             steps {
-                updateGitlabCommitStatus name: 'prepairing_soft', state: 'running'
+                updateGitlabCommitStatus name: 'prepairing', state: 'running'
                 
                 sh './devops/common/zookeeper/boot.sh &'
                 sh 'until nc -z localhost 2181; do sleep 1; done'
@@ -122,7 +73,6 @@ pipeline {
         
         stage('Init PostgreSQL') {
             steps {
-                sh 'apt-get install -y postgresql postgresql-client'
                 sh 'pg_ctlcluster 12 main start'
                 sh 'netstat -tulpn | grep LISTEN'
                 sh 'pg_isready'
@@ -130,18 +80,13 @@ pipeline {
                 sh 'PGPASSWORD=postgres psql -h localhost --username=$POSTGRES_USER --dbname=$POSTGRES_DATABASE -c "select 1"'
                 echo 'Postgre SQL is started'
                 
-                updateGitlabCommitStatus name: 'prepairing_soft', state: 'success'
+                updateGitlabCommitStatus name: 'prepairing', state: 'success'
             }
         }
         
         stage('Build') {
             steps {
                 updateGitlabCommitStatus name: 'build', state: 'running'
-                sh 'echo "{}" > appsettings.Local.json'
-                sh 'echo "{}" > OffLogs.Api.Tests.Integration/appsettings.Local.json'
-                sh 'echo "{}" > OffLogs.Migrations/appsettings.Local.json'
-                sh 'echo "{}" > OffLogs.Console/appsettings.Local.json'
-                sh 'dotnet restore'
                 sh 'dotnet build'
                 updateGitlabCommitStatus name: 'build', state: 'success'
             }
