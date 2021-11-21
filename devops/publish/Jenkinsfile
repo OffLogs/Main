@@ -1,7 +1,9 @@
 node('master') {
     stage('checkout') {
+        sh 'll'
+        sh 'll ./devops/publish'
         // git credentialsId: 'jenkins-root', url: 'git@gitlab.com:lampego/offlogs.git'
-        sh 'docker build - --label="offlogs-production-web" < devops/publish/Dockerfile'
+        sh 'docker build - --label="offlogs-production-web" < ./devops/publish/Dockerfile'
         sh 'docker save -o test.tar offlogs-production-web'
         stash 'publish-stash'
     }
