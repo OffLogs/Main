@@ -20,8 +20,8 @@ ENV ASPNETCORE_ENVIRONMENT = "Development"
 ENV DOTNET_USE_POLLING_FILE_WATCHER = true  
 ENV ASPNETCORE_URLS = "http://+:80" 
 
-RUN echo "{}" > appsettings.Local.json
-RUN echo "{}" > OffLogs.Api.Tests.Integration/appsettings.Local.json
-RUN echo "{}" > OffLogs.Migrations/appsettings.Local.json
-RUN echo "{}" > OffLogs.Console/appsettings.Local.json
+RUN ls
+RUN echo "{}" > OffLogs.Api/appsettings.Local.json
+#RUN echo "{}" > OffLogs.Migrations/appsettings.Local.json
+#RUN echo "{}" > OffLogs.Console/appsettings.Local.json
 RUN dotnet restore
