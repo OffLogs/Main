@@ -4,21 +4,20 @@ USER root
 
 COPY . /app
 
-# Install .Net Core 5.0
-RUN 'wget https://packages.microsoft.com/config/ubuntu/20.10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb'
-RUN 'dpkg -i packages-microsoft-prod.deb'
-
 # Update
 RUN apt-get update
 RUN apt-get install -y apt-transport-https wget ca-certificates apt-transport-https debconf-utils \
-    net-tools sudo netcat \
-    dotnet-sdk-5.0 \
-    postgresql \
-    postgresql-client
+    net-tools sudo netcat
 
 # Configure time
 ENV TZ = "UTC"
 RUN ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && dpkg-reconfigure -f noninteractive tzdata
+
+# Install .Net Core 5.0
+RUN 'wget https://packages.microsoft.com/config/ubuntu/20.10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb'
+RUN 'dpkg -i packages-microsoft-prod.deb'
+RUN apt-get update
+RUN apt-get install -y dotnet-sdk-5.0
 
 # Assign permissions
 RUN chmod -R 700 $KAFKA_HOME
