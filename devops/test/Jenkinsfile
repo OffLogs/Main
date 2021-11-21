@@ -1,9 +1,10 @@
 pipeline {
     agent {
-        dockerfile true
-        dir 'devops/test'
-        args '--privileged'
-        reuseNode true
+        docker {
+            image 'ubuntu:focal'
+            args '--privileged -f devops/test/Dockerfile'
+            reuseNode true
+        }
     }
     
     options { 
