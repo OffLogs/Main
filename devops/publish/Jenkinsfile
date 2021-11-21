@@ -10,8 +10,6 @@ node('master') {
     }
     
     stage('Publish stash') {
-        sh 'docker build --tag="offlogs-production-web" --file="devops/publish/Dockerfile" .'
-        sh 'docker save -o test.tar offlogs-production-web'
         stash 'target', includes: "**/*.tar"
     }
 }
