@@ -10,7 +10,7 @@ node('master') {
     }
     
     stage('Save Docker image') {
-        sh 'docker save -o image.tar offlogs-production-web'
+        sh 'docker save offlogs-production-web  | gzip > image.tar.gz'
     }
     
     stage('Publish stash') {
