@@ -11,7 +11,7 @@ RUN apt-get install -y apt-transport-https wget ca-certificates apt-transport-ht
 
 # Configure time
 ENV TZ = "UTC"
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+#RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Assign permissions
 RUN chmod -R 700 $KAFKA_HOME
