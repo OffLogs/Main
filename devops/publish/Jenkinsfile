@@ -12,13 +12,13 @@ node('production') {
     
     stage('Stop exists containers') {
         sh '''
-            if [ ! "$(docker ps -q -f name=$TAG_WEB_IMAGE)" ]; then
+            if [ "$(docker ps -q -f name=$TAG_WEB_IMAGE)" ]; then
                 docker container stop $TAG_WEB_IMAGE
                 docker rm $TAG_WEB_IMAGE
             fi
         '''
         sh '''
-            if [ ! "$(docker ps -q -f name=$TAG_FRONTEND_WEB_IMAGE)" ]; then
+            if [ "$(docker ps -q -f name=$TAG_FRONTEND_WEB_IMAGE)" ]; then
                 docker container stop $TAG_WEB_IMAGE
                 # cleanup
                 docker rm $TAG_FRONTEND_WEB_IMAGE
