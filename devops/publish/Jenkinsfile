@@ -4,7 +4,6 @@ node('production') {
 
     stage('Checkout') {
         checkout scm
-        sh 'ls -sh'
     }
     
     stage('Build Web image') {
@@ -16,7 +15,7 @@ node('production') {
     }
     
     stage('Run images') {
-        sh 'docker run -d $TAG_WEB_IMAGE'
-        sh 'docker run -d $FRONTEND_WEB_IMAGE'
+        sh 'docker run --rm --detach --restart --name=$TAG_WEB_IMAGE $TAG_WEB_IMAGE'
+        sh 'docker run --rm --detach --restart --name=$TAG_WEB_IMAGE $FRONTEND_WEB_IMAGE'
     }
 }
