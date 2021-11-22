@@ -2,6 +2,10 @@ node('production') {
     env.TAG_WEB_IMAGE = "offlogs-production-web"
     env.TAG_FRONTEND_WEB_IMAGE = "offlogs-production-front"
 
+    options { 
+        disableConcurrentBuilds() 
+    }
+
     stage('Checkout') {
         checkout scm
     }
