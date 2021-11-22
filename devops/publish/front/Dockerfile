@@ -5,7 +5,7 @@ COPY . /app
 WORKDIR /app
 
 # Update
-RUN apt-get remove ca-certificates
+RUN apt-get remove -y ca-certificates
 RUN apt-get install -y ca-certificates
 RUN apt-get update --fix-missing
 RUN apt-get install -y apt-transport-https wget apt-transport-https debconf-utils \
