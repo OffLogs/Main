@@ -5,8 +5,7 @@ COPY . /app
 WORKDIR /app
 
 # Update
-RUN apt-get remove -y ca-certificates
-RUN apt-get update --fix-missing
+RUN apt-get update --fix-missing --allow-unauthenticated
 RUN apt-get install -y apt-transport-https wget ca-certificates apt-transport-https debconf-utils \
     net-tools sudo netcat
 
