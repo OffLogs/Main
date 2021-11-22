@@ -20,23 +20,23 @@ node('production') {
     }
     
     stage('Run images') {
-        sh ```
+        sh '''
             if [ ! "$(docker ps -q -f name=$TAG_WEB_IMAGE)" ]; then
                 if [ "$(docker ps -aq -f status=exited -f name=$TAG_WEB_IMAGE)" ]; then
                     # cleanup
                     docker rm $TAG_WEB_IMAGE
                 fi
             fi
-        ```
+        '''
         sh 'docker run --detach --restart=always --name=$TAG_WEB_IMAGE $TAG_WEB_IMAGE'
-        sh ```
+        sh '''
             if [ ! "$(docker ps -q -f name=$TAG_FRONTEND_WEB_IMAGE)" ]; then
                 if [ "$(docker ps -aq -f status=exited -f name=$TAG_FRONTEND_WEB_IMAGE)" ]; then
                     # cleanup
                     docker rm $TAG_FRONTEND_WEB_IMAGE
                 fi
             fi
-        ```
+        '''
         sh 'docker run --detach --restart=always --name=$TAG_FRONTEND_WEB_IMAGE $TAG_FRONTEND_WEB_IMAGE'
     }
 }
