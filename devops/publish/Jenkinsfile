@@ -12,7 +12,7 @@ node('production') {
     
     stage('Stop exists containers') {
         sh '''
-            if [ "$(docker ps -aq -f status=running -f name=$TAG_WEB_IMAGE)" ]; then
+            if [ "$(docker ps -aq -f status=restarting -f status=running -f status=removing -f status=paused -f name=$TAG_WEB_IMAGE)" ]; then
                 docker container stop $TAG_WEB_IMAGE
             fi
             if [ "$(docker ps -q -f name=$TAG_WEB_IMAGE)" ]; then
@@ -20,7 +20,7 @@ node('production') {
             fi
         '''
         sh '''
-            if [ "$(docker ps -aq -f status=running -f name=$TAG_FRONTEND_WEB_IMAGE)" ]; then
+            if [ "$(docker ps -aq -f status=restarting -f status=running -f status=removing -f status=paused -f name=$TAG_FRONTEND_WEB_IMAGE)" ]; then
                 docker container stop $TAG_FRONTEND_WEB_IMAGE
             fi
             if [ "$(docker ps -q -f name=$TAG_FRONTEND_WEB_IMAGE)" ]; then
