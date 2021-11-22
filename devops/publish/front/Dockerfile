@@ -5,7 +5,7 @@ COPY . /app
 WORKDIR /app
 
 # Update
-RUN apt-get update
+RUN apt-get update --fix-missing
 RUN apt-get install -y apt-transport-https wget ca-certificates apt-transport-https debconf-utils \
     net-tools sudo netcat
 
