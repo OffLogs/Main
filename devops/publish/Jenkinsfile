@@ -23,7 +23,7 @@ node('production') {
         sh 'docker container stop $TAG_WEB_IMAGE'
         sh 'docker container stop $TAG_FRONTEND_WEB_IMAGE'
         
-        sh 'docker run --detach --restart --name=$TAG_WEB_IMAGE $TAG_WEB_IMAGE'
-        sh 'docker run --detach --restart --name=$TAG_FRONTEND_WEB_IMAGE $TAG_FRONTEND_WEB_IMAGE'
+        sh 'docker run --detach --restart=always --name=$TAG_WEB_IMAGE $TAG_WEB_IMAGE'
+        sh 'docker run --detach --restart=always --name=$TAG_FRONTEND_WEB_IMAGE $TAG_FRONTEND_WEB_IMAGE'
     }
 }
