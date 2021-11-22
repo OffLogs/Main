@@ -8,12 +8,12 @@ node('production') {
     }
     
     stage('Build Web image') {
-        sh 'docker build --tag=$TAG_WEB_IMAGE --file="devops/publish/web/Dockerfile" .'
+        sh 'docker build --tag=$TAG_WEB_IMAGE --label=$TAG_WEB_IMAGE --file="devops/publish/web/Dockerfile" .'
     }
     
     stage('Build Frontend image') {
-            sh 'docker build --tag=$FRONTEND_WEB_IMAGE --file="devops/publish/front/Dockerfile" .'
-        }
+        sh 'docker build --tag=$FRONTEND_WEB_IMAGE  --label=$FRONTEND_WEB_IMAGE --file="devops/publish/front/Dockerfile" .'
+    }
     
     stage('Run images') {
         sh 'docker run -d $TAG_WEB_IMAGE'
