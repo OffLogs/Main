@@ -5,9 +5,9 @@ COPY . /app
 WORKDIR /app
 
 # Update
-RUN apt-get install -y ca-certificates
+RUN apt-get upgrade -y
 RUN apt-get update --fix-missing
-RUN apt-get install -y apt-transport-https wget apt-transport-https debconf-utils \
+RUN apt-get install -y apt-transport-https wget ca-certificates apt-transport-https debconf-utils \
     net-tools sudo netcat
 
 # Configure time
