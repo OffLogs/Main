@@ -1,4 +1,4 @@
-node('master') {
+node('production') {
     stage('Checkout') {
         checkout scm
         sh 'ls -sh'
@@ -10,22 +10,11 @@ node('master') {
     }
     
     stage('Save Docker image') {
-        sh 'docker save offlogs-production-web  | gzip > image.tar.gz'
+        sh 'ls -sh'
+//         sh 'docker save offlogs-production-web  | gzip > image.tar.gz'
     }
     
     stage('Publish stash') {
-        stash name: 'target', includes: "**/*.tar"
-    }
-}
-node('production') {
-    stage('Unstash') {
-        unstash 'target'
-        sh 'ls -sh'
-        sh 'docker load --input image.tar'
-        sh 'docker image ls'
-    }
-
-    stage('Run') {
-        
+//         stash name: 'target', includes: "**/*.tar"
     }
 }
