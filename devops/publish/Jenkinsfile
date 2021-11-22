@@ -10,7 +10,7 @@ node('production') {
     }
     
     stage('Build Web image') {
-        sh 'df -h'
+        sh 'env'
         sh 'docker build --tag=$TAG_WEB_IMAGE --file="devops/publish/web/Dockerfile" .'
     }
     
