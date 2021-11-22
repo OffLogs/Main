@@ -20,3 +20,9 @@ ENV ASPNETCORE_URLS = "http://+:80"
 RUN ls
 RUN echo "{}" > OffLogs.Api/appsettings.Local.json
 RUN dotnet build OffLogs.Api/
+
+RUN echo "{}" > OffLogs.Migrations/appsettings.Local.json
+RUN dotnet build OffLogs.Migrations/
+
+COPY ./devops/publish/web/boot.sh /usr/local/bin/php_boot
+CMD ["sh", "/usr/local/bin/php_boot"]

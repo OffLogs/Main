@@ -1,20 +1,26 @@
 node('production') {
+    environment {
+        TAG_WEB_IMAGE = "offlogs-production-web"
+        FRONTEND_WEB_IMAGE = "offlogs-production-web"
+    }
+
     stage('Checkout') {
         checkout scm
         sh 'ls -sh'
     }
     
-    stage('Build Docker image') {
+    stage('Build Web image') {
         sh 'df -h'
-        sh 'docker build --tag="offlogs-production-web" --file="devops/publish/Dockerfile" .'
+        sh 'docker build --tag=$TAG_WEB_IMAGE --file="devops/publish/web/Dockerfile" .'
     }
+    
+    stage('Build Frontend image') {
+            sh 'df -h'
+            sh 'docker build --tag=$FRONTEND_WEB_IMAGE --file="devops/publish/front/Dockerfile" .'
+        }
     
     stage('Save Docker image') {
         sh 'ls -sh'
 //         sh 'docker save offlogs-production-web  | gzip > image.tar.gz'
-    }
-    
-    stage('Publish stash') {
-//         stash name: 'target', includes: "**/*.tar"
     }
 }
