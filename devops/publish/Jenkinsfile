@@ -1,6 +1,6 @@
 node('production') {
     env.TAG_WEB_IMAGE = "offlogs-production-web"
-    env.FRONTEND_WEB_IMAGE = "offlogs-production-web"
+    env.TAG_TAG_FRONTEND_WEB_IMAGE = "offlogs-production-web"
 
     stage('Checkout') {
         checkout scm
@@ -11,11 +11,11 @@ node('production') {
     }
     
     stage('Build Frontend image') {
-        sh 'docker build --tag=$FRONTEND_WEB_IMAGE  --label=$FRONTEND_WEB_IMAGE --file="devops/publish/front/Dockerfile" .'
+        sh 'docker build --tag=$TAG_FRONTEND_WEB_IMAGE  --label=$TAG_FRONTEND_WEB_IMAGE --file="devops/publish/front/Dockerfile" .'
     }
     
     stage('Run images') {
         sh 'docker run --rm --detach --restart --name=$TAG_WEB_IMAGE $TAG_WEB_IMAGE'
-        sh 'docker run --rm --detach --restart --name=$TAG_WEB_IMAGE $FRONTEND_WEB_IMAGE'
+        sh 'docker run --rm --detach --restart --name=$TAG_FRONTEND_WEB_IMAGE $TAG_FRONTEND_WEB_IMAGE'
     }
 }
