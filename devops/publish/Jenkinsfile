@@ -1,6 +1,6 @@
 node('production') {
     env.TAG_WEB_IMAGE = "offlogs-production-web"
-    env.TAG_TAG_FRONTEND_WEB_IMAGE = "offlogs-production-web"
+    env.TAG_TAG_FRONTEND_WEB_IMAGE = "offlogs-production-front"
 
     stage('Checkout') {
         checkout scm
