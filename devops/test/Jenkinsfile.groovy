@@ -33,6 +33,11 @@ node('development') {
     ]
 
     preconfigureAndStart(({ networkId ->
+        runStage(Stage.CLEAN) {
+            // Clean before build
+            cleanWs()
+        }
+    
         runStage(Stage.CHECKOUT) {
             checkout scm
         }
@@ -95,6 +100,7 @@ node('development') {
 }
 
 enum Stage {
+    CLEAN('Clean'),
     CHECKOUT('Checkout'),
     BUILD('Build projects'),
     ASSIGN_PERMISSIONS('Assign Permissions'),
