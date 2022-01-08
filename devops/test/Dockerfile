@@ -8,9 +8,9 @@ COPY . /app
 RUN mkdir /tmp/test
 
 # Fix error: The configured user limit (128) on the number of inotify instances has been reached
-RUN echo "fs.inotify.max_user_watches=524288" >> /etc/sysctl.conf
-RUN echo "fs.inotify.max_user_instances=524288" >> /etc/sysctl.conf
-RUN sysctl -p
+#RUN echo "fs.inotify.max_user_watches=524288" >> /etc/sysctl.conf
+#RUN echo "fs.inotify.max_user_instances=524288" >> /etc/sysctl.conf
+#RUN sysctl -p
 
 # Install .Net Core 5.0
 RUN 'wget https://packages.microsoft.com/config/ubuntu/20.10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb'
@@ -22,7 +22,8 @@ RUN apt-get install -y apt-transport-https wget ca-certificates apt-transport-ht
     net-tools sudo netcat \
     default-jre \
     dotnet-sdk-5.0 \
-    postgresql postgresql-client
+    postgresql postgresql-client \
+    tzdata
  
 # Configure time
 ENV TZ = "UTC"
