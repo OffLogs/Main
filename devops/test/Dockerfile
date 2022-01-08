@@ -14,6 +14,7 @@ RUN apt install -y apt-transport-https wget ca-certificates iputils-ping telnet 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ = "UTC"
 RUN apt-get install -y tzdata
+RUN dpkg-reconfigure tzdata
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Fix error: The configured user limit (128) on the number of inotify instances has been reached
