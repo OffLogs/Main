@@ -41,7 +41,7 @@ node('development') {
             }
 
             runStage(Stage.INIT_KAFKA) {
-                sh './devops/common/kafka/boot.sh &'
+                sh './devops/common/kafka/boot.sh'
                 sh 'until nc -z localhost 9094; do sleep 1; done'
                 echo "Kafka is started"
             }
