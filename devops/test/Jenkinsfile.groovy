@@ -70,12 +70,12 @@ node('development') {
                 echo 'Postgre SQL is started'
             }
 
-            runStage(Stage.RESTORE) {
-                sh 'dotnet restore'
+            runStage(Stage.BUILD) {
+               sh 'dotnet build --'
             }
 
             runStage(Stage.RUN_MIGRATIONS) {
-                sh 'dotnet run --project="./OffLogs.Migrations/OffLogs.Migrations.csproj"'
+                sh 'dotnet run --no-restore --no-build --project="./OffLogs.Migrations/OffLogs.Migrations.csproj"'
             }
 
             runStage(Stage.RUN_UNIT_TESTS_API) {
@@ -95,7 +95,7 @@ node('development') {
 
 enum Stage {
     CHECKOUT('Checkout'),
-    RESTORE('Restore projects'),
+    BUILD('Build projects'),
     ASSIGN_PERMISSIONS('Assign Permissions'),
     INIT_ZOOKEEPER('Init Zookeeper'),
     INIT_KAFKA('Init Kafka'),
