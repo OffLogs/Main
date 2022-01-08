@@ -31,11 +31,6 @@ RUN apt-get install -y net-tools sudo netcat \
     default-jre \
     postgresql postgresql-client
 
-# Assign permissions
-RUN chmod -R 700 $KAFKA_HOME
-RUN chmod -R 700 ./devops/common/kafka/boot.sh
-RUN chmod -R 700 ./devops/common/zookeeper/boot.sh
-
 # Create dirs
 RUN 'mkdir /tmp/test'
 
@@ -64,6 +59,11 @@ ENV KAFKA_ADVERTISED_LISTENERS = "INSIDE://:9092,OUTSIDE://localhost:9094"
 ENV KAFKA_LISTENER_SECURITY_PROTOCOL_MAP = "INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT"
 ENV KAFKA_INTER_BROKER_LISTENER_NAME = "INSIDE"
 ENV PATH = "$PATH:$KAFKA_HOME/bin"
+
+# Assign permissions
+RUN chmod -R 700 $KAFKA_HOME
+RUN chmod -R 700 ./devops/common/kafka/boot.sh
+RUN chmod -R 700 ./devops/common/zookeeper/boot.sh
 
 # Postgres
 ENV POSTGRES_CONNECTION_RETRIES = 5
