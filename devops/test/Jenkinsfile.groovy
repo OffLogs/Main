@@ -46,7 +46,6 @@ node('development') {
         String containerEnvVarString = mapToEnvVars(containerEnvVars)
         testImage.inside(containerEnvVarString.concat(" --network=$networkId")) {
 
-
             runStage(Stage.ASSIGN_PERMISSIONS) {
 //                 sh 'export PATH = "$PATH:$KAFKA_HOME/bin"'
                 sh 'chmod -R 700 $KAFKA_HOME'
@@ -83,8 +82,6 @@ node('development') {
             }
 
             runStage(Stage.RUN_MIGRATIONS) {
-                sh 'rm -rf ./OffLogs.Migrations/obj'
-                sh 'rm -rf ./OffLogs.Migrations/bin'
                 sh 'dotnet build ./OffLogs.Migrations/OffLogs.Migrations.csproj'
                 sh 'dotnet run --project="./OffLogs.Migrations/OffLogs.Migrations.csproj"'
             }
