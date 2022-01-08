@@ -7,11 +7,6 @@ RUN cat /etc/os-release
 COPY . /app
 RUN mkdir /tmp/test
 
-# Configure time
-ENV TZ = "UTC"
-RUN dpkg-reconfigure -f noninteractive tzdata
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
 # Fix error: The configured user limit (128) on the number of inotify instances has been reached
 RUN echo "fs.inotify.max_user_watches=524288" >> /etc/sysctl.conf
 RUN echo "fs.inotify.max_user_instances=524288" >> /etc/sysctl.conf
@@ -28,6 +23,11 @@ RUN apt-get install -y apt-transport-https wget ca-certificates apt-transport-ht
     default-jre \
     dotnet-sdk-5.0 \
     postgresql postgresql-client
+ 
+# Configure time
+ENV TZ = "UTC"
+RUN dpkg-reconfigure -f noninteractive tzdata
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Assign permissions
 RUN chmod -R 700 $KAFKA_HOME
