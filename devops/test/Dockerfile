@@ -1,4 +1,4 @@
-FROM ubuntu:focal AS build
+FROM ubuntu:focal
 WORKDIR /app
 USER root
 
@@ -7,28 +7,26 @@ RUN cat /etc/os-release
 COPY . /app
 RUN mkdir /tmp/test
 
+# Configure time
+ENV TZ = "UTC"
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # Fix error: The configured user limit (128) on the number of inotify instances has been reached
 #RUN echo "fs.inotify.max_user_watches=524288" >> /etc/sysctl.conf
 #RUN echo "fs.inotify.max_user_instances=524288" >> /etc/sysctl.conf
 #RUN sysctl -p
 
 # Install .Net Core 5.0
-RUN 'wget https://packages.microsoft.com/config/ubuntu/20.10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb'
-RUN 'dpkg -i packages-microsoft-prod.deb'
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+RUN curl https://packages.microsoft.com/config/ubuntu/20.10/prod.list | tee /etc/apt/sources.list.d/msprod.list
+RUN apt update
+RUN apt install -y unixodbc-dev dotnet-sdk-5.0
 
 # Update
-RUN apt-get update
 RUN apt-get install -y apt-transport-https wget ca-certificates apt-transport-https debconf-utils \
     net-tools sudo netcat \
     default-jre \
-    dotnet-sdk-5.0 \
-    postgresql postgresql-client \
-    tzdata
- 
-# Configure time
-ENV TZ = "UTC"
-RUN dpkg-reconfigure -f noninteractive tzdata
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+    postgresql postgresql-client
 
 # Assign permissions
 RUN chmod -R 700 $KAFKA_HOME
