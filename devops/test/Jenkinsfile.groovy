@@ -13,13 +13,13 @@ node('development') {
         'ZOOKEEPER_TICK_TIME': 2000,
     
         // Kafka
-        'KAFKA_HOME': "./devops/common/binable/kafka",
-        'KAFKA_BROKER_ID': 1,
-        'KAFKA_ZOOKEEPER_CONNECT': "localhost:2181",
-        'KAFKA_LISTENERS': "INSIDE://:9092,OUTSIDE://:9094",
-        'KAFKA_ADVERTISED_LISTENERS': "INSIDE://:9092,OUTSIDE://localhost:9094",
-        'KAFKA_LISTENER_SECURITY_PROTOCOL_MAP': "INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT",
-        'KAFKA_INTER_BROKER_LISTENER_NAME': "INSIDE",
+//         'KAFKA_HOME': "./devops/common/binable/kafka",
+//         'KAFKA_BROKER_ID': 1,
+//         'KAFKA_ZOOKEEPER_CONNECT': "localhost:2181",
+//         'KAFKA_LISTENERS': "INSIDE://:9092,OUTSIDE://:9094",
+//         'KAFKA_ADVERTISED_LISTENERS': "INSIDE://:9092,OUTSIDE://localhost:9094",
+//         'KAFKA_LISTENER_SECURITY_PROTOCOL_MAP': "INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT",
+//         'KAFKA_INTER_BROKER_LISTENER_NAME': "INSIDE",
     
         // Postgres
         'POSTGRES_CONNECTION_RETRIES': 5,
