@@ -47,6 +47,13 @@ node('development') {
         String containerEnvVarString = mapToEnvVars(containerEnvVars)
         testImage.inside(containerEnvVarString.concat(" --network=$networkId")) {
 
+            runStage(Stage.BUILD) {
+                sh 'dotnet nuget locals -c all'
+                sh 'dotnet clean'
+                sh 'dotnet restore'
+                sh 'dotnet build --'
+            }
+
             runStage(Stage.ASSIGN_PERMISSIONS) {
 //                 sh 'export PATH = "$PATH:$KAFKA_HOME/bin"'
                 sh 'chmod -R 700 $KAFKA_HOME'
@@ -65,7 +72,6 @@ node('development') {
                 sh 'until nc -z localhost 9094; do sleep 1; done'
                 echo "Kafka is started"
             }
-            
 
             runStage(Stage.INIT_DB) {
                 sh 'pg_ctlcluster 12 main start'
@@ -76,14 +82,7 @@ node('development') {
                 echo 'Postgre SQL is started'
             }
 
-            runStage(Stage.BUILD) {
-                sh 'dotnet nuget locals -c all'
-                sh 'dotnet clean'
-                sh 'dotnet restore'
-            }
-
             runStage(Stage.RUN_MIGRATIONS) {
-                sh 'dotnet build ./OffLogs.Migrations/OffLogs.Migrations.csproj'
                 sh 'dotnet run --project="./OffLogs.Migrations/OffLogs.Migrations.csproj"'
             }
 
