@@ -48,6 +48,10 @@ node('development') {
         testImage.inside(containerEnvVarString.concat(" --network=$networkId")) {
 
             runStage(Stage.BUILD) {
+                sh 'echo "{}" > appsettings.Local.json'
+                sh 'echo "{}" > OffLogs.Api.Tests.Integration/appsettings.Local.json'
+                sh 'echo "{}" > OffLogs.Migrations/appsettings.Local.json'
+                sh 'echo "{}" > OffLogs.Console/appsettings.Local.json'
                 sh 'dotnet build --'
             }
 

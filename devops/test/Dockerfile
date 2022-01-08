@@ -39,9 +39,5 @@ ENV HOME=/tmp
 
 # Prepare project files
 COPY . /app
-RUN echo "{}" > appsettings.Local.json
-RUN echo "{}" > OffLogs.Api.Tests.Integration/appsettings.Local.json
-RUN echo "{}" > OffLogs.Migrations/appsettings.Local.json
-RUN echo "{}" > OffLogs.Console/appsettings.Local.json
 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
