@@ -7,6 +7,9 @@ RUN cat /etc/os-release
 COPY . /app
 RUN mkdir /tmp/test
 
+RUN apt update
+RUN apt apt-transport-https wget ca-certificates apt-transport-https debconf-utils
+
 # Configure time
 #ENV TZ = "UTC"
 #RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -19,12 +22,10 @@ RUN mkdir /tmp/test
 # Install .Net Core 5.0
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
 RUN curl https://packages.microsoft.com/config/ubuntu/20.10/prod.list | tee /etc/apt/sources.list.d/msprod.list
-RUN apt update
 RUN apt install -y unixodbc-dev dotnet-sdk-5.0
 
 # Update
-RUN apt-get install -y apt-transport-https wget ca-certificates apt-transport-https debconf-utils \
-    net-tools sudo netcat \
+RUN apt-get install -y net-tools sudo netcat \
     default-jre \
     postgresql postgresql-client
 
