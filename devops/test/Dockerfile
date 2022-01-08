@@ -22,6 +22,7 @@ RUN apt install -y apt-transport-https wget ca-certificates iputils-ping telnet 
 # Install .Net Core 5.0
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
 RUN curl https://packages.microsoft.com/config/ubuntu/20.10/prod.list | tee /etc/apt/sources.list.d/msprod.list
+RUN apt update
 RUN apt install -y unixodbc-dev dotnet-sdk-5.0
 
 # Update
