@@ -76,10 +76,13 @@ node('development') {
             }
 
             runStage(Stage.BUILD) {
-               sh 'dotnet restore --no-cache'
+                sh 'dotnet nuget locals -c all'
+                sh 'dotnet clean'
+                sh 'dotnet restore'
             }
 
             runStage(Stage.RUN_MIGRATIONS) {
+                sh 'rm -rf ./OffLogs.Migrations/obj'
                 sh 'dotnet build ./OffLogs.Migrations/OffLogs.Migrations.csproj'
                 sh 'dotnet run --project="./OffLogs.Migrations/OffLogs.Migrations.csproj"'
             }
