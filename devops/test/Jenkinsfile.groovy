@@ -65,6 +65,7 @@ node('development') {
                 sh 'until nc -z localhost 9094; do sleep 1; done'
                 echo "Kafka is started"
             }
+            
 
             runStage(Stage.INIT_DB) {
                 sh 'pg_ctlcluster 12 main start'
