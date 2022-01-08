@@ -8,6 +8,9 @@ node('development') {
     String postresUserPassword = 'postgres'
 
     Map<String, String> containerEnvVars = [
+        'ZOOKEEPER_CLIENT_PORT': 2181,
+        'ZOOKEEPER_TICK_TIME': 2000
+    
         // Postgres
         'POSTGRES_USER': postresUserPassword,
         'POSTGRES_PASSWORD': postresUserPassword,
@@ -29,6 +32,7 @@ node('development') {
 
 
             runStage(Stage.ASSIGN_PERMISSIONS) {
+                sh 'SET PATH = "$PATH:KAFKA_HOME/bin"'
                 sh 'chmod -R 700 $KAFKA_HOME'
                 sh 'chmod -R 700 ./devops/common/kafka/boot.sh'
                 sh 'chmod -R 770 ./devops/common/zookeeper/boot.sh'

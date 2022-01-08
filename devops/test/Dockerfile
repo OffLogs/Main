@@ -43,11 +43,6 @@ RUN echo "{}" > OffLogs.Api.Tests.Integration/appsettings.Local.json
 RUN echo "{}" > OffLogs.Migrations/appsettings.Local.json
 RUN echo "{}" > OffLogs.Console/appsettings.Local.json
 
-# Env vars
-# Zookeeper
-ENV ZOOKEEPER_CLIENT_PORT = 2181
-ENV ZOOKEEPER_TICK_TIME = 2000
-
 # Kafka
 ENV KAFKA_HOME="./devops/common/binable/kafka"
 ENV KAFKA_BROKER_ID = 1
