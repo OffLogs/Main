@@ -5,7 +5,6 @@ USER root
 RUN cat /etc/os-release
 
 COPY . /app
-RUN mkdir /tmp/test
 
 RUN apt update
 RUN apt install -y apt-transport-https wget ca-certificates iputils-ping telnet curl gnupg2
@@ -32,7 +31,7 @@ RUN apt-get install -y net-tools sudo netcat \
     postgresql postgresql-client
 
 # Create dirs
-RUN 'mkdir /tmp/test'
+RUN mkdir /tmp/test
 
 ENV HOME = '/tmp'
 ENV DOTNET_CLI_HOME = "/tmp/DOTNET_CLI_HOME"
