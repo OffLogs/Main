@@ -8,7 +8,7 @@ COPY . /app
 RUN mkdir /tmp/test
 
 RUN apt update
-RUN apt apt-transport-https wget ca-certificates apt-transport-https debconf-utils
+RUN apt install -y apt-transport-https wget ca-certificates iputils-ping telnet curl gnupg2
 
 # Configure time
 #ENV TZ = "UTC"
