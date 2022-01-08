@@ -2,13 +2,15 @@ FROM ubuntu:focal AS build
 WORKDIR /app
 USER root
 
+RUN cat /etc/os-release
+
 COPY . /app
 RUN mkdir /tmp/test
 
 # Configure time
-RUN dpkg-reconfigure tzdata
 ENV TZ = "UTC"
-RUN 'ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone'
+RUN dpkg-reconfigure -f noninteractive tzdata
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Fix error: The configured user limit (128) on the number of inotify instances has been reached
 RUN echo "fs.inotify.max_user_watches=524288" >> /etc/sysctl.conf
