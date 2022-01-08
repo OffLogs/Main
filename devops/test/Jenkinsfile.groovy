@@ -48,9 +48,6 @@ node('development') {
         testImage.inside(containerEnvVarString.concat(" --network=$networkId")) {
 
             runStage(Stage.BUILD) {
-                sh 'dotnet nuget locals -c all'
-                sh 'dotnet clean'
-                sh 'dotnet restore'
                 sh 'dotnet build --'
             }
 
@@ -83,7 +80,7 @@ node('development') {
             }
 
             runStage(Stage.RUN_MIGRATIONS) {
-                sh 'dotnet run --project="./OffLogs.Migrations/OffLogs.Migrations.csproj"'
+                sh 'dotnet run --no-restore --no-build --project ./OffLogs.Migrations'
             }
 
             runStage(Stage.RUN_UNIT_TESTS_API) {

@@ -31,11 +31,11 @@ RUN apt-get install -y net-tools sudo netcat \
 # Create dirs
 RUN mkdir /tmp/test
 
-ENV HOME = '/tmp'
-ENV DOTNET_CLI_HOME = "/tmp/DOTNET_CLI_HOME"
-ENV ASPNETCORE_ENVIRONMENT = "Development"
-ENV DOTNET_USE_POLLING_FILE_WATCHER = true  
 ENV ASPNETCORE_URLS = "http://+:80" 
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV DOTNET_USE_POLLING_FILE_WATCHER=true  
+ENV DOTNET_CLI_HOME=/tmp/DOTNET_CLI_HOME
+ENV HOME=/tmp
 
 # Prepare project files
 COPY . /app
