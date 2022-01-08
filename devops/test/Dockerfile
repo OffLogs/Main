@@ -63,5 +63,4 @@ ENV PATH = "$PATH:$KAFKA_HOME/bin"
 # Postgres
 ENV POSTGRES_CONNECTION_RETRIES = 5
 
-COPY ./devops/test/test/boot.sh /usr/local/bin/php_boot
-CMD ["sh", "/usr/local/bin/php_boot"]
+ENTRYPOINT ["tail", "-f", "/dev/null"]
