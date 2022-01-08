@@ -80,8 +80,8 @@ node('development') {
             }
 
             runStage(Stage.RUN_MIGRATIONS) {
-                sh 'dotnet build --project="./OffLogs.Migrations/"'
-                sh 'dotnet run --project="./OffLogs.Migrations/"'
+                sh 'dotnet build --project="./OffLogs.Migrations/OffLogs.Migrations.csproj"'
+                sh 'dotnet run --project="./OffLogs.Migrations/OffLogs.Migrations.csproj"'
             }
 
             runStage(Stage.RUN_UNIT_TESTS_API) {
