@@ -43,7 +43,7 @@ node('development') {
 
 
             runStage(Stage.ASSIGN_PERMISSIONS) {
-                sh 'PATH = "$PATH:$KAFKA_HOME/bin"'
+//                 sh 'export PATH = "$PATH:$KAFKA_HOME/bin"'
                 sh 'chmod -R 700 $KAFKA_HOME'
                 sh 'chmod -R 700 ./devops/common/kafka/boot.sh'
                 sh 'chmod -R 770 ./devops/common/zookeeper/boot.sh'

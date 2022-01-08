@@ -4,8 +4,6 @@ USER root
 
 RUN cat /etc/os-release
 
-COPY . /app
-
 RUN apt update
 RUN apt install -y apt-transport-https wget ca-certificates iputils-ping telnet curl gnupg2
 
@@ -38,10 +36,12 @@ ENV DOTNET_CLI_HOME = "/tmp/DOTNET_CLI_HOME"
 ENV ASPNETCORE_ENVIRONMENT = "Development"
 ENV DOTNET_USE_POLLING_FILE_WATCHER = true  
 ENV ASPNETCORE_URLS = "http://+:80" 
+
+# Prepare project files
+COPY . /app
 RUN echo "{}" > appsettings.Local.json
 RUN echo "{}" > OffLogs.Api.Tests.Integration/appsettings.Local.json
 RUN echo "{}" > OffLogs.Migrations/appsettings.Local.json
 RUN echo "{}" > OffLogs.Console/appsettings.Local.json
-
 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
