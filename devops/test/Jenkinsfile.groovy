@@ -22,10 +22,17 @@ node('development') {
         runStage(Stage.CHECKOUT) {
             checkout scm
         }
-
+        
         def testImage = docker.build('offlogs-test-image', '--file=./devops/test/Dockerfile .')
         String containerEnvVarString = mapToEnvVars(containerEnvVars)
         testImage.inside(containerEnvVarString.concat(" --network=$networkId")) {
+
+
+            runStage(Stage.ASSIGN_PERMISSIONS) {
+                sh 'chmod -R 700 $KAFKA_HOME'
+                sh 'chmod -R 700 ./devops/common/kafka/boot.sh'
+                sh 'chmod -R 770 ./devops/common/zookeeper/boot.sh'
+            }
 
             runStage(Stage.INIT_ZOOKEEPER) {
                 sh './devops/common/zookeeper/boot.sh &'
@@ -75,6 +82,7 @@ node('development') {
 enum Stage {
     CHECKOUT('Checkout'),
     BUILD('Build'),
+    ASSIGN_PERMISSIONS('Assign Permissions'),
     INIT_ZOOKEEPER('Init Zookeeper'),
     INIT_KAFKA('Init Kafka'),
     INIT_DB('Init DB'),
