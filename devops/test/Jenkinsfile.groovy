@@ -76,11 +76,10 @@ node('development') {
             }
 
             runStage(Stage.BUILD) {
-               sh 'dotnet restore'
+               sh 'dotnet restore --no-cache'
             }
 
             runStage(Stage.RUN_MIGRATIONS) {
-                sh 'dotnet build --project="./OffLogs.Migrations/OffLogs.Migrations.csproj"'
                 sh 'dotnet run --project="./OffLogs.Migrations/OffLogs.Migrations.csproj"'
             }
 
