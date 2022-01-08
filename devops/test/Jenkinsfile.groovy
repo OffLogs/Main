@@ -71,11 +71,11 @@ node('development') {
             }
 
             runStage(Stage.BUILD) {
-               sh 'dotnet build --'
+               sh 'dotnet restore'
             }
 
             runStage(Stage.RUN_MIGRATIONS) {
-                sh 'dotnet run --no-restore --no-build --project="./OffLogs.Migrations/OffLogs.Migrations.csproj"'
+                sh 'dotnet run --no-restore --project="./OffLogs.Migrations/OffLogs.Migrations.csproj"'
             }
 
             runStage(Stage.RUN_UNIT_TESTS_API) {
