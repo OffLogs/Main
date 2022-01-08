@@ -6,6 +6,7 @@ COPY . /app
 RUN mkdir /tmp/test
 
 # Configure time
+RUN dpkg-reconfigure tzdata
 ENV TZ = "UTC"
 RUN 'ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone'
 
