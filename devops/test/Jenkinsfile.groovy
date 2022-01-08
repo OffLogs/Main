@@ -8,10 +8,21 @@ node('development') {
     String postresUserPassword = 'postgres'
 
     Map<String, String> containerEnvVars = [
+        // Zookeeper
         'ZOOKEEPER_CLIENT_PORT': 2181,
-        'ZOOKEEPER_TICK_TIME': 2000
+        'ZOOKEEPER_TICK_TIME': 2000,
+    
+        // Kafka
+        'KAFKA_HOME': "./devops/common/binable/kafka",
+        'KAFKA_BROKER_ID': 1,
+        'KAFKA_ZOOKEEPER_CONNECT': "localhost:2181",
+        'KAFKA_LISTENERS': "INSIDE://:9092,OUTSIDE://:9094",
+        'KAFKA_ADVERTISED_LISTENERS': "INSIDE://:9092,OUTSIDE://localhost:9094",
+        'KAFKA_LISTENER_SECURITY_PROTOCOL_MAP': "INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT",
+        'KAFKA_INTER_BROKER_LISTENER_NAME': "INSIDE",
     
         // Postgres
+        'POSTGRES_CONNECTION_RETRIES': 5,
         'POSTGRES_USER': postresUserPassword,
         'POSTGRES_PASSWORD': postresUserPassword,
         'POSTGRES_DATABASE': "template1",
@@ -32,7 +43,7 @@ node('development') {
 
 
             runStage(Stage.ASSIGN_PERMISSIONS) {
-                sh 'SET PATH = "$PATH:KAFKA_HOME/bin"'
+                sh 'export PATH = "$PATH:KAFKA_HOME/bin"'
                 sh 'chmod -R 700 $KAFKA_HOME'
                 sh 'chmod -R 700 ./devops/common/kafka/boot.sh'
                 sh 'chmod -R 770 ./devops/common/zookeeper/boot.sh'

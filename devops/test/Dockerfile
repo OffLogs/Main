@@ -43,17 +43,4 @@ RUN echo "{}" > OffLogs.Api.Tests.Integration/appsettings.Local.json
 RUN echo "{}" > OffLogs.Migrations/appsettings.Local.json
 RUN echo "{}" > OffLogs.Console/appsettings.Local.json
 
-# Kafka
-ENV KAFKA_HOME="./devops/common/binable/kafka"
-ENV KAFKA_BROKER_ID = 1
-ENV KAFKA_ZOOKEEPER_CONNECT = "localhost:2181"
-ENV KAFKA_LISTENERS = "INSIDE://:9092,OUTSIDE://:9094"
-ENV KAFKA_ADVERTISED_LISTENERS = "INSIDE://:9092,OUTSIDE://localhost:9094"
-ENV KAFKA_LISTENER_SECURITY_PROTOCOL_MAP = "INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT"
-ENV KAFKA_INTER_BROKER_LISTENER_NAME = "INSIDE"
-ENV PATH = "${PATH}:${KAFKA_HOME}/bin"
-
-# Postgres
-ENV POSTGRES_CONNECTION_RETRIES = 5
-
 ENTRYPOINT ["tail", "-f", "/dev/null"]
