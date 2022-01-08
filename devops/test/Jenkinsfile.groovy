@@ -27,12 +27,6 @@ node('development') {
         String containerEnvVarString = mapToEnvVars(containerEnvVars)
         testImage.inside(containerEnvVarString.concat(" --network=$networkId")) {
 
-            runStage(Stage.ASSIGN_PERMISSIONS) {
-                sh 'chmod -R 700 $KAFKA_HOME'
-                sh 'chmod -R 700 ./devops/common/kafka/boot.sh'
-                sh 'chmod -R 700 ./devops/common/zookeeper/boot.sh'
-            }
-
             runStage(Stage.INIT_ZOOKEEPER) {
                 sh './devops/common/zookeeper/boot.sh &'
                 sh 'until nc -z localhost 2181; do sleep 1; done'
@@ -75,7 +69,6 @@ node('development') {
 
 enum Stage {
     CHECKOUT('Checkout'),
-    ASSIGN_PERMISSIONS('Assign permissions'),
     INIT_ZOOKEEPER('Init Zookeeper'),
     INIT_KAFKA('Init Kafka'),
     INIT_DB('Init DB'),
