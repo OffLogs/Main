@@ -83,6 +83,7 @@ node('development') {
 
             runStage(Stage.RUN_MIGRATIONS) {
                 sh 'rm -rf ./OffLogs.Migrations/obj'
+                sh 'rm -rf ./OffLogs.Migrations/bin'
                 sh 'dotnet build ./OffLogs.Migrations/OffLogs.Migrations.csproj'
                 sh 'dotnet run --project="./OffLogs.Migrations/OffLogs.Migrations.csproj"'
             }
