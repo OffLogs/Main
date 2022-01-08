@@ -80,6 +80,7 @@ node('development') {
             }
 
             runStage(Stage.RUN_MIGRATIONS) {
+                sh 'dotnet build ./OffLogs.Migrations/OffLogs.Migrations.csproj'
                 sh 'dotnet run --project="./OffLogs.Migrations/OffLogs.Migrations.csproj"'
             }
 
