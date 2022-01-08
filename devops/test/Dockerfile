@@ -59,9 +59,9 @@ ENV KAFKA_INTER_BROKER_LISTENER_NAME = "INSIDE"
 ENV PATH = "${PATH}:${KAFKA_HOME}/bin"
 
 # Assign permissions
-RUN chmod -R 700 ${KAFKA_HOME}
-RUN chmod -R 700 ./devops/common/kafka/boot.sh
-RUN chmod -R 700 ./devops/common/zookeeper/boot.sh
+RUN chmod -R 777 ${KAFKA_HOME}
+RUN chmod -R 777 ./devops/common/kafka/boot.sh
+RUN chmod -R 777 ./devops/common/zookeeper/boot.sh
 
 # Postgres
 ENV POSTGRES_CONNECTION_RETRIES = 5

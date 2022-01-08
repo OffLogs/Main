@@ -27,10 +27,6 @@ node('development') {
         String containerEnvVarString = mapToEnvVars(containerEnvVars)
         testImage.inside(containerEnvVarString.concat(" --network=$networkId")) {
 
-            runStage(Stage.BUILD) {
-                sh 'dotnet restore'
-            }
-
             runStage(Stage.INIT_ZOOKEEPER) {
                 sh './devops/common/zookeeper/boot.sh &'
                 sh 'until nc -z localhost 2181; do sleep 1; done'
@@ -50,6 +46,11 @@ node('development') {
                 sh "sudo -u postgres psql -c \"ALTER USER postgres PASSWORD '$postresUserPassword';\""
                 sh "PGPASSWORD=postgres psql -h localhost --username=$postresUserPassword --dbname=$postresUserPassword -c \"select 1\""
                 echo 'Postgre SQL is started'
+            }
+
+            runStage(Stage.BUILD) {
+                sh 'dotnet restore'
+                sh 'dotnet build'
             }
 
             runStage(Stage.RUN_MIGRATIONS) {
