@@ -42,7 +42,6 @@ RUN echo "{}" > appsettings.Local.json
 RUN echo "{}" > OffLogs.Api.Tests.Integration/appsettings.Local.json
 RUN echo "{}" > OffLogs.Migrations/appsettings.Local.json
 RUN echo "{}" > OffLogs.Console/appsettings.Local.json
-RUN dotnet restore
 
 # Env vars
 # Zookeeper
@@ -57,10 +56,10 @@ ENV KAFKA_LISTENERS = "INSIDE://:9092,OUTSIDE://:9094"
 ENV KAFKA_ADVERTISED_LISTENERS = "INSIDE://:9092,OUTSIDE://localhost:9094"
 ENV KAFKA_LISTENER_SECURITY_PROTOCOL_MAP = "INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT"
 ENV KAFKA_INTER_BROKER_LISTENER_NAME = "INSIDE"
-ENV PATH = "${KAFKA_HOME}:${KAFKA_HOME}/bin"
+ENV PATH = "${PATH}:${KAFKA_HOME}/bin"
 
 # Assign permissions
-RUN chmod -R 700 ${$KAFKA_HOME}
+RUN chmod -R 700 ${KAFKA_HOME}
 RUN chmod -R 700 ./devops/common/kafka/boot.sh
 RUN chmod -R 700 ./devops/common/zookeeper/boot.sh
 
