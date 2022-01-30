@@ -4,6 +4,7 @@ node('vizit-mainframe-testing-node') {
         gitLabConnection('gitlab_lampego'),
     ])
 
+
     String testScriptParameters = '--logger=trx --no-restore --no-build --results-directory=./results'
     String postresUserPassword = 'postgres'
 
