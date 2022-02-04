@@ -21,7 +21,7 @@ RUN apt-get install -y tzdata
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
 RUN curl https://packages.microsoft.com/config/ubuntu/20.10/prod.list | tee /etc/apt/sources.list.d/msprod.list
 RUN apt update
-RUN apt install -y unixodbc-dev dotnet-sdk-5.0
+RUN apt install -y unixodbc-dev dotnet-sdk-6.0
 
 # Update
 RUN apt-get install -y net-tools sudo netcat \
