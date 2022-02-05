@@ -87,6 +87,7 @@ node('abedor-mainframe-web') {
     stage('Build and restore projects') {
         docker.image('mcr.microsoft.com/dotnet/sdk:6.0').inside('') { c ->
             sh 'echo "{}" > OffLogs.Api.Tests.Integration/appsettings.Local.json'
+            sh 'echo "{}" > OffLogs.Console/appsettings.Local.json'
             sh 'dotnet restore --verbosity=q .'
             sh 'dotnet build --verbosity=q .'
         }
