@@ -26,7 +26,7 @@ def containers = [
     )
 ];
 
-node('development') {
+node('abedor-mainframe-web') {
     env.ENVIRONMENT = "Development"
 
     stage('Checkout') {
