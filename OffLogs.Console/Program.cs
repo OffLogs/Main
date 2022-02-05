@@ -21,7 +21,7 @@ namespace OffLogs.Console
 
             var log = scope.Resolve<ILogger<Program>>();
 
-            return Parser.Default.ParseArguments<CreateNewUserVerb, CreateNewApplicationVerb, int>(args)
+            return Parser.Default.ParseArguments<CreateNewUserVerb, CreateNewApplicationVerb, EmailSendVerb, int>(args)
                 .MapResult(
                     (CreateNewUserVerb verb) =>
                     {
@@ -32,6 +32,12 @@ namespace OffLogs.Console
                     {
                         var runService = scope.Resolve<ICreateApplicationService>();
                         return runService.Create(verb).Result;
+                    },
+                    (EmailSendVerb verb) =>
+                    {
+                        var runService = scope.Resolve<IEmailSendService>();
+                        runService.EmailSend(verb);
+                        return 1;
                     },
                     errs =>
                     {
@@ -61,6 +67,10 @@ namespace OffLogs.Console
 
             builder.RegisterType<CreateApplicationService>()
                 .As<ICreateApplicationService>()
+                .InstancePerLifetimeScope();
+            
+            builder.RegisterType<EmailSendService>()
+                .As<IEmailSendService>()
                 .InstancePerLifetimeScope();
 
             builder.RegisterAssemblyModules(typeof(Program).Assembly);

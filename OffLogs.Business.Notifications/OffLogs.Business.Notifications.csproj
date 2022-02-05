@@ -16,6 +16,7 @@
     <EmbeddedResource Include="Templates\Emails\en\LogsDeletedNotification.htm" />
     <EmbeddedResource Include="Templates\Emails\en\RegistrationNotification.htm" />
     <EmbeddedResource Include="Templates\Emails\en\RegularLogsNotification.htm" />
+    <EmbeddedResource Include="Templates\Emails\en\TestNotification.htm" />
     <EmbeddedResource Include="Templates\Emails\en\_EmailLayout.htm" />
   </ItemGroup>
 
