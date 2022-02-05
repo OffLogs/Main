@@ -4,9 +4,9 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0
 ENV TZ=UTC
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-COPY ./ /app
+COPY . /app
 RUN ls /app
-WORKDIR /app/OffLogs.Api.Frontend
+WORKDIR /app/OffLogs.WorkerService
 
 ENV ASPNETCORE_ENVIRONMENT=Development
 ENV DOTNET_USE_POLLING_FILE_WATCHER=true  
@@ -20,6 +20,6 @@ RUN echo "{}" > appsettings.Local.json
 RUN ["dotnet", "restore"]
 RUN ["dotnet", "build"]
 
-COPY ./devops/publish/front/boot.sh /usr/local/bin/php_boot
+COPY ./devops/publish/worker/boot.sh /usr/local/bin/php_boot
 
 CMD ["sh", "/usr/local/bin/php_boot"]
