@@ -317,39 +317,5 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             // }
             // TODO: Resore
         }
-
-        [Fact]
-        public async Task ShouldThrowExceptionIfTooManyRequests()
-        {
-            // Arrange
-            var user = await DataSeeder.CreateActivatedUser();
-
-            // Act
-            var events = new List<object>()
-            {
-                new
-                {
-                    Timestamp = "2021-03-01T21:50:42.1422383+02:00",
-                    Level = "Warning",
-                    MessageTemplate = "This is Warning message",
-                    RenderedMessage = "This is Warning message"
-                }
-            };
-
-            HttpResponseMessage response;
-            response = await PostRequestAsync(Url, user.ApplicationApiToken, new { events });
-            response.EnsureSuccessStatusCode();
-
-            for (int i = 0; i < 500; i++)
-            {
-                await ThrottleRequestsService.CheckOrThrowExceptionAsync(
-                    RequestItemType.Application, 
-                    user.ApplicationId
-                );
-            }
-
-            response = await PostRequestAsync(Url, user.ApplicationApiToken, new { events });
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        }
     }
 }
