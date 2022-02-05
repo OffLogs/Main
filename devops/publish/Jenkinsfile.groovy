@@ -85,7 +85,7 @@ node('abedor-mainframe-web') {
     }
     
     stage('Build and restore projects') {
-        docker.image('mcr.microsoft.com/dotnet/sdk:5.0').inside('') { c ->
+        docker.image('mcr.microsoft.com/dotnet/sdk:6.0').inside('') { c ->
             sh 'dotnet restore --verbosity=q .'
             sh 'dotnet build --verbosity=q .'
         }
