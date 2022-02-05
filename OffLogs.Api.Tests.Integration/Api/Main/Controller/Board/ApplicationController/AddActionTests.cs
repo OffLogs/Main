@@ -13,12 +13,11 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
         
         public AddActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
 
-        [Theory]
-        [InlineData(Url)]
-        public async Task OnlyAuthorizedUsersCanAddApplications(string url)
+        [Fact]
+        public async Task OnlyAuthorizedUsersCanAddApplications()
         {
             // Act
-            var response = await PostRequestAsAnonymousAsync(url, new AddRequest()
+            var response = await PostRequestAsAnonymousAsync(Url, new AddRequest()
             {
                 Name = "aaa"
             });
@@ -26,14 +25,13 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
             Assert.True(response.StatusCode == HttpStatusCode.Unauthorized);
         }
 
-        [Theory]
-        [InlineData(Url)]
-        public async Task ShouldAddApplication(string url)
+        [Fact]
+        public async Task ShouldAddApplication()
         {
             var user1 = await DataSeeder.CreateActivatedUser();
 
             // Act
-            var response = await PostRequestAsync(url, user1.ApiToken, new AddRequest()
+            var response = await PostRequestAsync(Url, user1.ApiToken, new AddRequest()
             {
                 Name = "SomeApp name"
             });

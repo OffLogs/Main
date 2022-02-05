@@ -13,19 +13,20 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
 {
     public class CommonActionTests: MyApiFrontendIntegrationTest
     {
+        private const string Url = "/log/add";
+        
         public CommonActionTests(ApiFrontendCustomWebApplicationFactory factory) : base(factory) {}
 
-        [Theory]
-        [InlineData("/log/add")]
-        public async Task ShouldAddWarningLog(string url)
+        [Fact]
+        public async Task ShouldAddWarningLog()
         {
             // Arrange
             var user = await DataSeeder.CreateActivatedUser();
 
-            var list = await GetLogsList(user.Applications.First().Id, 1);
+            var list = await GetLogsList(user.Application.Id, 1);
             Assert.Equal(0, list.TotalCount);
             // Act
-            var response = await PostRequestAsync(url, user.ApplicationApiToken, new
+            var response = await PostRequestAsync(Url, user.ApplicationApiToken, new
             {
                 logs = new List<object>()
                 {
@@ -53,21 +54,21 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             
             KafkaProducerService.Flush();
             // Process messages from Kafka
-            await KafkaLogsConsumerService.ProcessLogsAsync(false);
+            var processedCounter = await KafkaLogsConsumerService.ProcessLogsAsync(false);
+            Assert.True(processedCounter > 0);
             
-            var actualList = await GetLogsList(user.Applications.First().Id, 1);
+            var actualList = await GetLogsList(user.Application.Id, 1);
             Assert.Equal(1, actualList.TotalCount);
             var actualLog = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.First().Id);
             Assert.NotEmpty(actualLog.EncryptedMessage);
             Assert.NotNull(actualLog.Level);
-            Assert.True(actualLog.CreateTime > System.DateTime.UtcNow.AddMinutes(-1));
+            Assert.True(actualLog.CreateTime > System.DateTime.UtcNow.AddMinutes(-10));
             Assert.True(actualLog.Properties.Count  > 0);
             Assert.True(actualLog.Traces.Count == 0);
         }
         
-        [Theory]
-        [InlineData("/log/add")]
-        public async Task ShouldAddFatalLog(string url)
+        [Fact]
+        public async Task ShouldAddFatalLog()
         {
             // Arrange
             var user = await DataSeeder.CreateActivatedUser();
@@ -75,7 +76,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             var list = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(0, list.TotalCount);
             // Act
-            var response = await PostRequestAsync(url, user.ApplicationApiToken, new
+            var response = await PostRequestAsync(Url, user.ApplicationApiToken, new
             {
                 logs = new List<object>()
                 {
@@ -109,14 +110,13 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             var actualLog = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.First().Id);
             Assert.NotEmpty(actualLog.EncryptedMessage);
             Assert.NotNull(actualLog.Level);
-            Assert.True(actualLog.CreateTime > System.DateTime.UtcNow.AddMinutes(-1));
+            Assert.True(actualLog.CreateTime > System.DateTime.UtcNow.AddMinutes(-10));
             Assert.True(actualLog.Properties.Count  > 0);
             Assert.True(actualLog.Traces.Count == 0);
         }
         
-        [Theory]
-        [InlineData("/log/add")]
-        public async Task ShouldAddInformationLog(string url)
+        [Fact]
+        public async Task ShouldAddInformationLog()
         {
             // Arrange
             var user = await DataSeeder.CreateActivatedUser();
@@ -124,7 +124,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             var list = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(0, list.TotalCount);
             // Act
-            var response = await PostRequestAsync(url, user.ApplicationApiToken, new
+            var response = await PostRequestAsync(Url, user.ApplicationApiToken, new
             {
                 logs = new List<object>()
                 {
@@ -173,14 +173,13 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             Assert.Equal(2, actualList.TotalCount);
             var actualLog = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.First().Id);
             Assert.NotEmpty(actualLog.EncryptedMessage);
-            Assert.True(actualLog.CreateTime > System.DateTime.UtcNow.AddMinutes(-1));
+            Assert.True(actualLog.CreateTime > System.DateTime.UtcNow.AddMinutes(-10));
             Assert.True(actualLog.Properties.Count  > 0);
             Assert.True(actualLog.Traces.Count == 0);
         }
         
-        [Theory]
-        [InlineData("/log/add")]
-        public async Task ShouldAddErrorLog(string url)
+        [Fact]
+        public async Task ShouldAddErrorLog()
         {
             // Arrange
             var user = await DataSeeder.CreateActivatedUser();
@@ -188,7 +187,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             var list = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(0, list.TotalCount);
             // Act
-            var response = await PostRequestAsync(url, user.ApplicationApiToken, new
+            var response = await PostRequestAsync(Url, user.ApplicationApiToken, new
             {
                 logs = new List<object>()
                 {
@@ -232,14 +231,50 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             Assert.Equal(1, actualList.TotalCount);
             var actualLog = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.First().Id);
             Assert.NotEmpty(actualLog.EncryptedMessage);
-            Assert.True(actualLog.CreateTime > System.DateTime.UtcNow.AddMinutes(-1));
+            Assert.True(actualLog.CreateTime > System.DateTime.UtcNow.AddMinutes(-10));
             Assert.True(actualLog.Properties.Count == 9);
             Assert.True(actualLog.Traces.Count == 7);
         }
         
-        [Theory]
-        [InlineData("/log/add")]
-        public async Task ShouldNotContainLotOfItems(string url)
+        [Fact]
+        public async Task ShouldAddLogWithoutTracesAndProperties()
+        {
+            // Arrange
+            var user = await DataSeeder.CreateActivatedUser();
+
+            var list = await GetLogsList(user.Applications.First().Id, 1);
+            Assert.Equal(0, list.TotalCount);
+            // Act
+            var response = await PostRequestAsync(Url, user.ApplicationApiToken, new
+            {
+                logs = new List<object>()
+                {
+                    new  {
+                        Timestamp = "2021-03-01T21:50:42.1443263+02:00",
+                        Level = SiteLogLevel.Error.GetValue(),
+                        Message = "The method or operation is not implemented."
+                    },
+                }
+            });
+            // Assert
+            response.EnsureSuccessStatusCode();
+            
+            // Process messages from Kafka
+            KafkaProducerService.Flush();
+            await DbSessionProvider.PerformCommitAsync();
+            await KafkaLogsConsumerService.ProcessLogsAsync(false);
+            
+            var actualList = await GetLogsList(user.Applications.First().Id, 1);
+            Assert.Equal(1, actualList.TotalCount);
+            var actualLog = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.First().Id);
+            Assert.NotEmpty(actualLog.EncryptedMessage);
+            Assert.True(actualLog.CreateTime > System.DateTime.UtcNow.AddMinutes(-10));
+            Assert.True(actualLog.Properties.Count == 0);
+            Assert.True(actualLog.Traces.Count == 0);
+        }
+        
+        [Fact]
+        public async Task ShouldNotContainLotOfItems()
         {
             // Arrange
             var user = await DataSeeder.CreateActivatedUser();
@@ -265,39 +300,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
                     }
                 });
             }
-            var response = await PostRequestAsync(url, user.ApplicationApiToken, new { logs });
+            var response = await PostRequestAsync(Url, user.ApplicationApiToken, new { logs });
             // Assert
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        }
-
-        [Theory]
-        [InlineData("/log/add")]
-        public async Task ShouldThrowExceptionIfTooManyRequests(string url)
-        {
-            // Arrange
-            var user = await DataSeeder.CreateActivatedUser();
-
-            // Act
-            var logs = new List<object>()
-            {
-                new
-                {
-                    Timestamp = "2021-03-01T21:50:42.1440609+02:00",
-                    Level = SiteLogLevel.Information.GetValue(),
-                    Message = "This is Information message"
-                }
-            };
-
-            HttpResponseMessage response;
-            response = await PostRequestAsync(url, user.ApplicationApiToken, new { logs });
-            response.EnsureSuccessStatusCode();
-
-            for (int i = 0; i < 500; i++)
-            {
-                await ThrottleRequestsService.CheckOrThrowExceptionAsync(RequestItemType.Application, user.ApplicationId);
-            }
-
-            response = await PostRequestAsync(url, user.ApplicationApiToken, new { logs });
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
     }

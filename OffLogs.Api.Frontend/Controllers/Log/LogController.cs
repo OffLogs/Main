@@ -32,5 +32,13 @@ namespace OffLogs.Api.Frontend.Controllers.Log
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public Task<IActionResult> AddSerilogLog([FromBody] AddSerilogLogsRequest request)
             => this.RequestAsync(request);
+        
+        [HttpPost]
+        [OnlyAuthorizedApplication]
+        [Route("add/test")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public Task<IActionResult> AddTestLog([FromBody] AddTestLogsRequest request)
+            => this.RequestAsync(request);
     }
 }

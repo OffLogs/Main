@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using OffLogs.Business.Extensions;
 
@@ -14,14 +15,20 @@ namespace OffLogs.Business.Services.Jwt
     public class JwtAuthService: IJwtAuthService
     {
         private readonly IConfiguration _configuration;
-        
+        private readonly ILogger<IJwtAuthService> _logger;
+
         private readonly string _issuer;
         private readonly string _audience;
         private readonly SymmetricSecurityKey _key;
         
-        public JwtAuthService(IConfiguration configuration, IHttpContextAccessor httpContext)
+        public JwtAuthService(
+            IConfiguration configuration,
+            IHttpContextAccessor httpContext,
+            ILogger<IJwtAuthService> logger
+        )
         {
             _configuration = configuration;
+            _logger = logger;
             _key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(
                     _configuration.GetValue<string>("App:Auth:SymmetricSecurityKey")
@@ -40,23 +47,18 @@ namespace OffLogs.Business.Services.Jwt
                 new(ClaimTypes.NameIdentifier, userId.ToString())
             };
             
-            var jwtSecurityKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(
-                    _configuration.GetValue<string>("App:Auth:SymmetricSecurityKey")
-                )
-            );
             var now = DateTime.UtcNow;
-            var expirationTime = now.Add(TimeSpan.FromMinutes(
+            var expirationTime = now.Add(TimeSpan.FromHours(
                 _configuration.GetValue<int>("App:Auth:Lifetime")
             ));
             var signingCredentials =
                 new SigningCredentials(
-                    jwtSecurityKey, 
+                    _key, 
                     SecurityAlgorithms.HmacSha256
                 );
             var jwt = new JwtSecurityToken(
-                _configuration.GetValue<string>("App:Auth:Issuer"),
-                _configuration.GetValue<string>("App:Auth:Audience"),
+                _issuer,
+                _audience,
                 notBefore: now,
                 claims: claims,
                 expires: expirationTime,
@@ -101,8 +103,9 @@ namespace OffLogs.Business.Services.Jwt
                     out SecurityToken validatedToken
                 );
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.LogDebug($"Jwt Auth Token is Incorrect: ${e.Message}", e);
                 return false;
             }
             return true;
