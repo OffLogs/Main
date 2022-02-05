@@ -66,7 +66,7 @@ node('abedor-mainframe-web') {
                 it.envVariables.put('Smtp__Password', PASSWORD)
                 it.envVariables.put('Smtp__From__Name', 'OffLogs')
                 it.envVariables.put('Smtp__From__Email', 'support@offlogs.com')
-                it.envVariables.put('Smtp__Port', '465')
+                it.envVariables.put('Smtp__Port', '2525')
                 it.envVariables.put('Smtp__EnableSsl', 'true')
             }
             withCredentials([string(credentialsId: "offlogs_production_user_jwt", variable: 'AUTH_SECRET')]) {

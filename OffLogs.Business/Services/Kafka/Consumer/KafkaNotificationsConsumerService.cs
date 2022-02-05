@@ -78,6 +78,12 @@ namespace OffLogs.Business.Services.Kafka.Consumer
                     await _notificationBuilder.SendAsync(context);
                     return;
                 }
+                if (IsContext<TestNotificationContext>(contextType))
+                {
+                    var context = dto.GetDeserializedData<TestNotificationContext>();
+                    await _notificationBuilder.SendAsync(context);
+                    return;
+                }
                 throw new Exception(errorMessage);
             }
             catch (Exception e)

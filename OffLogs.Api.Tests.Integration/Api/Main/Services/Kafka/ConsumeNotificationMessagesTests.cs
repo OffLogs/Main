@@ -101,5 +101,27 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             Assert.Contains(notificationContext.VerificationUrl, sentMessage.Body);
             Assert.Contains(toAddress, sentMessage.To);
         }
+        
+        [Fact]
+        public async Task ShouldSendTestNotificationAndReceiveIt()
+        {
+            var toAddress = "test123@test.com";
+            var frontUrl = "https://font.url";
+            var token = "someToken";
+            var notificationContext = new TestNotificationContext(toAddress);
+
+            // Push 2 messages
+            await KafkaProducerService.ProduceNotificationMessageAsync(notificationContext);
+            KafkaProducerService.Flush();
+
+            // Receive 2 messages
+            var processedRecords = await KafkaNotificationsConsumerService.ProcessNotificationsAsync(false);
+            Assert.True(processedRecords > 0);
+            Assert.True(EmailSendingService.IsEmailSent);
+
+            var sentMessage = EmailSendingService.SentMessages.First();
+            Assert.Contains("Test notification", sentMessage.Subject);
+            Assert.Contains(toAddress, sentMessage.To);
+        }
     }
 }
