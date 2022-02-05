@@ -27,7 +27,7 @@ def containers = [
     ),
     new DockerContainer(
         tag: 'offlogs-web-production',
-        dockerFile: 'devops/publish/worker/Dockerfile',
+        dockerFile: 'devops/publish/web/Dockerfile',
         port: '6058:80',
     ),
 ];
@@ -44,7 +44,7 @@ node('abedor-mainframe-web') {
         
         containers.collect {
             // Kafka
-            it.envVariables.put('Kafka__Servers', '127.0.0.1:29092')
+            it.envVariables.put('Kafka__Servers', '192.168.99.6:29092')
             it.envVariables.put('Kafka__ProducerId', 'offlogs-reducer-1')
             it.envVariables.put('Kafka__Topic_Logs', 'production-logs')
             it.envVariables.put('Kafka__Topic_Notification', 'offlogs-notification-logs')
