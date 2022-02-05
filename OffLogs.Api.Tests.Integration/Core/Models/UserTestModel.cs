@@ -14,7 +14,7 @@ namespace OffLogs.Api.Tests.Integration.Core.Models
         
         public string ApplicationApiToken
         {
-            get => Applications.First().ApiToken;
+            get => Application.ApiToken;
         }
         
         public long ApplicationId

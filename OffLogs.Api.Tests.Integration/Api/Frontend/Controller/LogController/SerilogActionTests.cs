@@ -14,11 +14,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
 {
     public class SerilogActionTests: MyApiFrontendIntegrationTest
     {
+        private const string Url = "/log/add/serilog";
+        
         public SerilogActionTests(ApiFrontendCustomWebApplicationFactory factory) : base(factory) {}
 
-        [Theory]
-        [InlineData("/log/add/serilog")]
-        public async Task ShouldAddWarningLog(string url)
+        [Fact]
+        public async Task ShouldAddWarningLog()
         {
             // Arrange
             var user = await DataSeeder.CreateActivatedUser();
@@ -26,7 +27,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             var list = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(0, list.TotalCount);
             // Act
-            var response = await PostRequestAsync(url, user.ApplicationApiToken, new
+            var response = await PostRequestAsync(Url, user.ApplicationApiToken, new
             {
                 events = new List<object>()
                 {
@@ -67,9 +68,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             Assert.True(actualLog.Traces.Count == 0);
         }
         
-        [Theory]
-        [InlineData("/log/add/serilog")]
-        public async Task ShouldAddFatalLog(string url)
+        [Fact]
+        public async Task ShouldAddFatalLog()
         {
             // Arrange
             var user = await DataSeeder.CreateActivatedUser();
@@ -77,7 +77,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             var list = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(0, list.TotalCount);
             // Act
-            var response = await PostRequestAsync(url, user.ApplicationApiToken, new
+            var response = await PostRequestAsync(Url, user.ApplicationApiToken, new
             {
                 events = new List<object>()
                 {
@@ -117,9 +117,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             Assert.True(actualLog.Traces.Count == 0);
         }
         
-        [Theory]
-        [InlineData("/log/add/serilog")]
-        public async Task ShouldAddInformationLog(string url)
+        [Fact]
+        public async Task ShouldAddInformationLog()
         {
             // Arrange
             var user = await DataSeeder.CreateActivatedUser();
@@ -127,7 +126,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             var list = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(0, list.TotalCount);
             // Act
-            var response = await PostRequestAsync(url, user.ApplicationApiToken, new
+            var response = await PostRequestAsync(Url, user.ApplicationApiToken, new
             {
                 events = new List<object>()
                 {
@@ -184,9 +183,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             Assert.True(actualLog.Traces.Count == 0);
         }
         
-        [Theory]
-        [InlineData("/log/add/serilog")]
-        public async Task ShouldAddErrorLog(string url)
+        [Fact]
+        public async Task ShouldAddErrorLog()
         {
             // Arrange
             var user = await DataSeeder.CreateActivatedUser();
@@ -194,7 +192,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             var list = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(0, list.TotalCount);
             // Act
-            var response = await PostRequestAsync(url, user.ApplicationApiToken, new
+            var response = await PostRequestAsync(Url, user.ApplicationApiToken, new
             {
                 events = new List<object>()
                 {
@@ -235,9 +233,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             Assert.True(actualLog.Traces.Count == 7);
         }
         
-        [Theory]
-        [InlineData("/log/add/serilog")]
-        public async Task ShouldNotContainLotOfItems(string url)
+        [Fact]
+        public async Task ShouldNotContainLotOfItems()
         {
             // Arrange
             var user = await DataSeeder.CreateActivatedUser();
@@ -265,14 +262,13 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
                     }
                 });
             }
-            var response = await PostRequestAsync(url, user.ApplicationApiToken, new { events });
+            var response = await PostRequestAsync(Url, user.ApplicationApiToken, new { events });
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
         
-        [Theory]
-        [InlineData("/log/add/serilog")]
-        public async Task ShouldAddLogsIfPropertiesIsObjects(string url)
+        [Fact]
+        public async Task ShouldAddLogsIfPropertiesIsObjects()
         {
             // Arrange
             var property1 = @"{""Id"": 50, ""Name"": ""UsingInMemoryRepository""}";
@@ -282,7 +278,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             var list = await GetLogsList(user.Applications.First().Id, 1);
             Assert.Equal(0, list.TotalCount);
             // Act
-            var response = await PostRequestAsync(url, user.ApplicationApiToken, new
+            var response = await PostRequestAsync(Url, user.ApplicationApiToken, new
             {
                 events = new List<object>()
                 {
@@ -322,9 +318,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             // TODO: Resore
         }
 
-        [Theory]
-        [InlineData("/log/add/serilog")]
-        public async Task ShouldThrowExceptionIfTooManyRequests(string url)
+        [Fact]
+        public async Task ShouldThrowExceptionIfTooManyRequests()
         {
             // Arrange
             var user = await DataSeeder.CreateActivatedUser();
@@ -342,7 +337,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             };
 
             HttpResponseMessage response;
-            response = await PostRequestAsync(url, user.ApplicationApiToken, new { events });
+            response = await PostRequestAsync(Url, user.ApplicationApiToken, new { events });
             response.EnsureSuccessStatusCode();
 
             for (int i = 0; i < 500; i++)
@@ -353,7 +348,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
                 );
             }
 
-            response = await PostRequestAsync(url, user.ApplicationApiToken, new { events });
+            response = await PostRequestAsync(Url, user.ApplicationApiToken, new { events });
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
     }

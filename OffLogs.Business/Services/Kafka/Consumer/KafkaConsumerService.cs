@@ -18,7 +18,7 @@ namespace OffLogs.Business.Services.Kafka.Consumer
     public abstract class KafkaConsumerService<TKafkaDto> : IDisposable
         where TKafkaDto : IKafkaDto
     {
-        private readonly TimeSpan _defaultWaitTimeout = TimeSpan.FromSeconds(5);
+        private readonly TimeSpan _defaultWaitTimeout = TimeSpan.FromSeconds(10);
 
         protected readonly IConfiguration _configuration;
         protected readonly ConsumerConfig _config;
@@ -99,14 +99,14 @@ namespace OffLogs.Business.Services.Kafka.Consumer
             CancellationToken? cancellationToken = null
         )
         {
-            CancellationTokenSource cancellationTokenSource;
+            CancellationTokenSource timeoutCancellationToken;
             if (cancellationToken.HasValue)
             {
-                cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken.Value);
+                timeoutCancellationToken = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken.Value);
             }
             else
             {
-                cancellationTokenSource = new CancellationTokenSource();
+                timeoutCancellationToken = new CancellationTokenSource();
             }
             var processedRecords = 0;
             using (var consumer = GetBuilder<TKafkaDto>().Build())
@@ -125,24 +125,24 @@ namespace OffLogs.Business.Services.Kafka.Consumer
                             var difference = DateTime.UtcNow - startTime;
                             if (difference >= _defaultWaitTimeout)
                             {
-                                cancellationTokenSource.Cancel();
+                                timeoutCancellationToken.Cancel();
                                 break;
                             }
                         }
-                    }, cancellationTokenSource.Token);
+                    }, timeoutCancellationToken.Token);
                 }
-                while (!cancellationTokenSource.IsCancellationRequested)
+                while (!timeoutCancellationToken.IsCancellationRequested)
                 {
                     try
                     {
-                        var consumeResult = consumer.Consume(cancellationTokenSource.Token);
+                        var consumeResult = consumer.Consume(timeoutCancellationToken.Token);
                         if (consumeResult != null)
                         {
                             if (consumeResult.Message.Value != null)
                             {
-                                var startProcessingTime = DateTime.Now;
+                                var startProcessingTime = DateTime.UtcNow;
                                 await ProcessItemAsync(consumeResult.Message.Value);
-                                var processingTime = DateTime.Now - startProcessingTime;
+                                var processingTime = DateTime.UtcNow - startProcessingTime;
                                 _logger.LogDebug(
                                     $"Kafka message processing time: {processingTime.TotalMilliseconds} ms"
                                 );
@@ -162,6 +162,12 @@ namespace OffLogs.Business.Services.Kafka.Consumer
                         LogDebug($"Operation was cancelled via cancellation token");
                         consumer.Close();
                         // Cancellation token was canceled
+                        break;
+                    }
+                    catch (KafkaException e)
+                    {
+                        _logger.LogError($"KafkaException. ${e.Message}", e);
+                        timeoutCancellationToken.Cancel();
                         break;
                     }
                     catch (Exception e)

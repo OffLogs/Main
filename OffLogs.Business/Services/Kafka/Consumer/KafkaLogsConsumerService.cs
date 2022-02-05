@@ -58,6 +58,7 @@ namespace OffLogs.Business.Services.Kafka.Consumer
 
         protected override async Task ProcessItemAsync(LogMessageDto dto)
         {
+            LogEntity entity;
             try
             {
                 using var _ = _dbSessionProvider;
@@ -69,7 +70,7 @@ namespace OffLogs.Business.Services.Kafka.Consumer
                 }
 
                 // 2. Save log
-                var entity = dto.GetEntity();
+                entity = dto.GetEntity();
                 entity.Application = application;
                 await _commandBuilder.SaveAsync(entity);
             }

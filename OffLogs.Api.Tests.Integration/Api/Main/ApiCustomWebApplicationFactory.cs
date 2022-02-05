@@ -39,6 +39,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         protected override IHostBuilder CreateHostBuilder()
         {
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+            
             var builder = Host.CreateDefaultBuilder()
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureWebHostDefaults(builder =>
