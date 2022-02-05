@@ -27,7 +27,7 @@ def containers = [
     ),
     new DockerContainer(
         tag: 'offlogs-web-production',
-        dockerFile: 'devops/publish/worker/Dockerfile',
+        dockerFile: 'devops/publish/web/Dockerfile',
         port: '6058:80',
     ),
 ];
