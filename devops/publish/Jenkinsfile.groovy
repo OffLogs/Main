@@ -104,7 +104,7 @@ node('abedor-mainframe-web') {
     }
 
     stage('Run migrations') {
-        runContainer(containers[0])
+        dockerHelper.runContainer(containers[0])
     }
 
     stage('Start containers') {
