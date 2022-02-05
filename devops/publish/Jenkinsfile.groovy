@@ -7,7 +7,7 @@ def dockerHelper = new DockerHelper(this)
 def containers = [
     new DockerContainer(
         tag: 'offlogs-migration-production',
-        dockerFile: 'devops/publish/api/Dockerfile',
+        dockerFile: 'devops/publish/migrations/Dockerfile',
         isRunAlways: false,
         isRunInBackground: false
     ),
