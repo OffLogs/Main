@@ -1,28 +1,30 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0
-#USER root
+
+# Change timezone to local time
+ENV TZ=UTC
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 COPY . /app
-WORKDIR /app
+RUN ls /app
+WORKDIR /app/OffLogs.Web
 
-# Update
-RUN apt-get update --fix-missing --allow-unauthenticated
-RUN apt-get install -y apt-transport-https wget ca-certificates apt-transport-https debconf-utils \
-    net-tools sudo netcat
+# Install nginx
+RUN apt-get update --fix-missing
+RUN apt-get install -y nginx
+RUN rm /etc/nginx/sites-available/default
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+COPY ./devops/publish/web/nginx.conf /etc/nginx/sites-available/default
 
-# Configure time
-ENV TZ = "UTC"
-#RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV DOTNET_USE_POLLING_FILE_WATCHER=true  
+ENV ASPNETCORE_URLS=http://+:80  
+EXPOSE 80
 
-ENV ASPNETCORE_ENVIRONMENT = "Development"
-ENV DOTNET_USE_POLLING_FILE_WATCHER = true  
-ENV ASPNETCORE_URLS = "http://+:80" 
-
-RUN ls
-RUN echo "{}" > OffLogs.Api/appsettings.Local.json
-RUN dotnet build OffLogs.Api/
-
-RUN echo "{}" > OffLogs.Migrations/appsettings.Local.json
-RUN dotnet build OffLogs.Migrations/
+RUN apt update
+RUN apt install -y apt-transport-https wget ca-certificates
+RUN echo "{}" > appsettings.Local.json
+RUN dotnet publish --configuration=Production -o "/var/www" -f net5.0 -r linux-x64 --self-contained true
+RUN ls /var/www/wwwroot
 
 COPY ./devops/publish/web/boot.sh /usr/local/bin/php_boot
 CMD ["sh", "/usr/local/bin/php_boot"]

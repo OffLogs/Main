@@ -4,9 +4,9 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0
 ENV TZ=UTC
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-COPY ./ /app
+COPY . /app
 RUN ls /app
-WORKDIR /app/OffLogs.Api.Frontend
+WORKDIR /app
 
 ENV ASPNETCORE_ENVIRONMENT=Development
 ENV DOTNET_USE_POLLING_FILE_WATCHER=true  
@@ -16,10 +16,13 @@ EXPOSE 80
 RUN apt update
 RUN apt install -y apt-transport-https wget ca-certificates
 
-RUN echo "{}" > appsettings.Local.json
+RUN echo "{}" > ./OffLogs.Api/appsettings.Local.json
+RUN echo "{}" > ./OffLogs.Api.Tests.Integration/appsettings.Local.json
+RUN echo "{}" > ./OffLogs.Console/appsettings.Local.json
+
 RUN ["dotnet", "restore"]
 RUN ["dotnet", "build"]
 
-COPY ./devops/publish/front/boot.sh /usr/local/bin/php_boot
+COPY ./devops/publish/api/boot.sh /usr/local/bin/php_boot
 
 CMD ["sh", "/usr/local/bin/php_boot"]
