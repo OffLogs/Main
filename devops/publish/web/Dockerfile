@@ -23,7 +23,7 @@ EXPOSE 80
 RUN apt update
 RUN apt install -y apt-transport-https wget ca-certificates
 RUN echo "{}" > appsettings.Local.json
-RUN dotnet publish --configuration=Production -o "/var/www" -f net5.0 -r linux-x64 --self-contained true
+RUN dotnet publish --configuration=Production -o "/var/www" -f net6.0 -r linux-x64 --self-contained true
 RUN ls /var/www/wwwroot
 
 COPY ./devops/publish/web/boot.sh /usr/local/bin/php_boot
