@@ -6,6 +6,12 @@ def dockerHelper = new DockerHelper(this)
 
 def containers = [
     new DockerContainer(
+        tag: 'offlogs-migration-production',
+        dockerFile: 'devops/publish/api/Dockerfile',
+        isRunAlways: false,
+        isRunInBackground: false
+    ),
+    new DockerContainer(
         tag: 'offlogs-api-production',
         dockerFile: 'devops/publish/api/Dockerfile',
         port: '6056:80'
@@ -23,7 +29,7 @@ def containers = [
         tag: 'offlogs-web-production',
         dockerFile: 'devops/publish/worker/Dockerfile',
         port: '6058:80',
-    )
+    ),
 ];
 
 node('abedor-mainframe-web') {
@@ -72,20 +78,32 @@ node('abedor-mainframe-web') {
         }
     }
 
-    stage('Stop container') {
+    stage('Stop containers') {
         for (String container: containers) {
             dockerHelper.stopContainer(container)
         }
     }
-
-    stage('Build container') {
+    
+    stage('Build and restore projects') {
+        docker.image('mcr.microsoft.com/dotnet/sdk:5.0').inside('') { c ->
+            sh 'dotnet restore --verbosity=q .'
+            sh 'dotnet build --verbosity=q .'
+        }
+    }
+    
+    stage('Build containers') {
         for (String container: containers) {
             dockerHelper.buildContainer(container)
         }
     }
 
-    stage('Start container') {
-        for (String container: containers) {
+    stage('Run migrations') {
+        runContainer(containers[0])
+    }
+
+    stage('Start containers') {
+        def containersToRun = containers.drop(1)
+        for (String container: containersToRun) {
             dockerHelper.runContainer(container)
         }
     }

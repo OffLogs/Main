@@ -13,15 +13,7 @@ ENV DOTNET_USE_POLLING_FILE_WATCHER=true
 ENV ASPNETCORE_URLS=http://+:80  
 EXPOSE 80
 
-RUN apt update
-RUN apt install -y apt-transport-https wget ca-certificates
-
-RUN echo "{}" > ./OffLogs.Api/appsettings.Local.json
-RUN echo "{}" > ./OffLogs.Api.Tests.Integration/appsettings.Local.json
-RUN echo "{}" > ./OffLogs.Console/appsettings.Local.json
-
-RUN ["dotnet", "restore"]
-RUN ["dotnet", "build"]
+RUN echo "{}" > appsettings.Local.json
 
 COPY ./devops/publish/api/boot.sh /usr/local/bin/php_boot
 

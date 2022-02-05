@@ -17,8 +17,6 @@ RUN apt update
 RUN apt install -y apt-transport-https wget ca-certificates
 
 RUN echo "{}" > appsettings.Local.json
-RUN ["dotnet", "restore"]
-RUN ["dotnet", "build"]
 
 COPY ./devops/publish/worker/boot.sh /usr/local/bin/php_boot
 

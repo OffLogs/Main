@@ -4,17 +4,15 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0
 ENV TZ=UTC
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-COPY ./ /app
+COPY . /app
 RUN ls /app
-WORKDIR /app/OffLogs.Api.Frontend
+WORKDIR /app/OffLogs.Migrations
 
 ENV ASPNETCORE_ENVIRONMENT=Development
 ENV DOTNET_USE_POLLING_FILE_WATCHER=true  
-ENV ASPNETCORE_URLS=http://+:80  
-EXPOSE 80
 
 RUN echo "{}" > appsettings.Local.json
 
-COPY ./devops/publish/front/boot.sh /usr/local/bin/php_boot
+COPY ./devops/publish/migrations/boot.sh /usr/local/bin/php_boot
 
 CMD ["sh", "/usr/local/bin/php_boot"]
