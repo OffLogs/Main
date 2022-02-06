@@ -2,6 +2,7 @@ using System;
 using Domain.Abstractions;
 using Newtonsoft.Json;
 using NHibernate.Mapping.Attributes;
+using NHibernate.Type;
 using OffLogs.Business.Common.Constants;
 
 namespace OffLogs.Business.Orm.Entities
@@ -29,9 +30,9 @@ namespace OffLogs.Business.Orm.Entities
         [Column(Name = "data", NotNull = true)]
         public virtual string Data { get; set; }
         
-        [Property(NotNull = true)]
+        [Property(NotNull = true, TypeType = typeof(UtcDateTimeType))]
         [Column(Name = "create_time", SqlType = "datetime", NotNull = true)]
-        public virtual DateTimeOffset CreateTime { get; set; }
+        public virtual DateTime CreateTime { get; set; }
 
         public RequestLogEntity() {}
 
@@ -41,7 +42,7 @@ namespace OffLogs.Business.Orm.Entities
             ClientIp = clientIp;
             Data = JsonConvert.SerializeObject(data);
             Token = token;
-            CreateTime = DateTimeOffset.UtcNow;
+            CreateTime = DateTime.UtcNow;
         }
     }
 }

@@ -20,6 +20,6 @@ namespace OffLogs.Business.Orm.Dto.Entities
             }
         }
 
-        public DateTimeOffset TimeInterval { get; set; }
+        public DateTime TimeInterval { get; set; }
     }
 }

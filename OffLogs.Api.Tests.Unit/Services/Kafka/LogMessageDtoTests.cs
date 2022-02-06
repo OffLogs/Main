@@ -26,7 +26,7 @@ namespace OffLogs.Api.Tests.Unit.Services.Kafka
             expectedEntity.Level = LogLevel.Debug;
             expectedEntity.EncryptedMessage = new byte[] { 111 };
             expectedEntity.EncryptedSymmetricKey = new byte[] { 0x46 };
-            expectedEntity.LogTime = DateTime.Now;
+            expectedEntity.LogTime = DateTime.UtcNow;
             expectedEntity.Traces = new List<LogTraceEntity>()
             {
                 new() { EncryptedTrace = new byte[] { 222 } } 

@@ -4,6 +4,7 @@ using System.Linq;
 using Domain.Abstractions;
 using Newtonsoft.Json;
 using NHibernate.Mapping.Attributes;
+using NHibernate.Type;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Utils;
 
@@ -43,12 +44,12 @@ namespace OffLogs.Business.Orm.Entities
         )]
         public virtual LogEntity Log { get; set; }
         
-        [Property(NotNull = true)]
+        [Property(NotNull = true, TypeType = typeof(UtcDateTimeType))]
         [Column(Name = "create_time", SqlType = "datetime", NotNull = false)]
-        public virtual DateTimeOffset CreateTime { get; set; }
+        public virtual DateTime CreateTime { get; set; }
 
-        [Property(NotNull = true)]
+        [Property(NotNull = true, TypeType = typeof(UtcDateTimeType))]
         [Column(Name = "update_time", SqlType = "datetime", NotNull = false)]
-        public virtual DateTimeOffset UpdateTime { get; set; }
+        public virtual DateTime UpdateTime { get; set; }
     }
 }

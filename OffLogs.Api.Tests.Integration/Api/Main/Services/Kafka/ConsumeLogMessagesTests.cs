@@ -36,7 +36,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             Assert.NotNull(existsLog);
             Assert.Equal(log1.EncryptedMessage, existsLog.EncryptedMessage);
             Assert.Equal(log1.Level, existsLog.Level);
-            Assert.Equal(log1.LogTime.DateTime.ToLongDateString(), existsLog.LogTime.DateTime.ToLongDateString());
+            Assert.Equal(log1.LogTime.ToLongDateString(), existsLog.LogTime.ToLongDateString());
             Assert.Equal(log1.Traces.Count, existsLog.Traces.Count);
             Assert.Equal(log1.Properties.Count, existsLog.Properties.Count);
         }

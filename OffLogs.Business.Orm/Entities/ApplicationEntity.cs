@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Domain.Abstractions;
 using NHibernate.Mapping.Attributes;
+using NHibernate.Type;
 
 namespace OffLogs.Business.Orm.Entities
 {
@@ -52,13 +53,13 @@ namespace OffLogs.Business.Orm.Entities
         [Column(Name = "encrypted_private_key", SqlType = "bytea", NotNull = true)]
         public virtual byte[] EncryptedPrivateKey { get; set; }
         
-        [Property(NotNull = true)]
+        [Property(NotNull = true, TypeType = typeof(UtcDateTimeType))]
         [Column(Name = "create_time", SqlType = "datetime", NotNull = true)]
-        public virtual DateTimeOffset CreateTime { get; set; }
+        public virtual DateTime CreateTime { get; set; }
         
-        [Property(NotNull = true)]
+        [Property(NotNull = true, TypeType = typeof(UtcDateTimeType))]
         [Column(Name = "update_time", SqlType = "datetime", NotNull = true)]
-        public virtual DateTimeOffset UpdateTime { get; set; }
+        public virtual DateTime UpdateTime { get; set; }
         
         public ApplicationEntity() {}
 
@@ -73,8 +74,8 @@ namespace OffLogs.Business.Orm.Entities
             User = user;
             Name = name;
             ApiToken = "tempToken";
-            CreateTime = DateTimeOffset.UtcNow;
-            UpdateTime = DateTimeOffset.UtcNow;
+            CreateTime = DateTime.UtcNow;
+            UpdateTime = DateTime.UtcNow;
         }
     }
 }

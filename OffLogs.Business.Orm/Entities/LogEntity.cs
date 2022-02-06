@@ -4,6 +4,7 @@ using System.Linq;
 using Domain.Abstractions;
 using Newtonsoft.Json;
 using NHibernate.Mapping.Attributes;
+using NHibernate.Type;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Utils;
 
@@ -55,13 +56,13 @@ namespace OffLogs.Business.Orm.Entities
         [Column(Name = "encrypted_symmetric_key", SqlType = "bytea", NotNull = true)]
         public virtual byte[] EncryptedSymmetricKey { get; set; }
         
-        [Property(NotNull = true)]
+        [Property(NotNull = true, TypeType = typeof(UtcDateTimeType))]
         [Column(Name = "log_time", SqlType = "datetime")]
-        public virtual DateTimeOffset LogTime { get; set; }
+        public virtual DateTime LogTime { get; set; }
         
-        [Property(NotNull = true)]
+        [Property(NotNull = true, TypeType = typeof(UtcDateTimeType))]
         [Column(Name = "create_time", SqlType = "datetime", NotNull = false)]
-        public virtual DateTimeOffset CreateTime { get; set; }
+        public virtual DateTime CreateTime { get; set; }
         
         [Bag(Inverse = true, Lazy = CollectionLazy.Extra, Cascade = "all-delete-orphan")]
         [Key(Column = "log_id")]

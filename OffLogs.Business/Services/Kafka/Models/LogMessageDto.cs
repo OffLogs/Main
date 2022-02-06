@@ -15,7 +15,7 @@ namespace OffLogs.Business.Services.Kafka.Models
         public LogLevel LogLevel { get; set; }
         public string Message { get; set; }
         public string EncryptedSymmetricKey { get; set; }
-        public DateTimeOffset LogTime { get; set; }
+        public DateTime LogTime { get; set; }
         public IDictionary<string, string> Properties { get; set; } = new Dictionary<string, string>();
         public ICollection<string> Traces { get; set; } = new List<string>();
 

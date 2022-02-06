@@ -12,7 +12,7 @@ namespace OffLogs.Business.Extensions
         public static long ToUnixTime(this DateTime d)
         {
             return (long)(
-                d - new DateTimeOffset(1970, 1, 1, 0, 0, 0, 0, TimeSpan.Zero)
+                d - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
             ).TotalSeconds;
         }
 
