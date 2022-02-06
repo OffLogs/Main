@@ -28,7 +28,7 @@ node('vizit-mainframe-testing-node') {
         'POSTGRES_PASSWORD': postresUserPassword,
         'POSTGRES_DATABASE': "template1",
 
-        'ConnectionStrings__DefaultConnection': "User ID=postgres;Password=postgres;Host=localhost;Port=5432;Database=postgres;Pooling=true;",
+        'ConnectionStrings__DefaultConnection': "User ID=postgres;Password=postgres;Host=localhost;Port=5432;Database=postgres;Pooling=true;Include Error Detail=true;",
         'Kafka__Servers': "localhost:9094",
         'Hibernate__IsShowSql': "false"
     ]
