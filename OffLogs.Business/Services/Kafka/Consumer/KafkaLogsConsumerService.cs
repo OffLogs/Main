@@ -62,7 +62,7 @@ namespace OffLogs.Business.Services.Kafka.Consumer
             LogEntity entity;
             try
             {
-                using var _ = _dbSessionProvider;
+                using var sessionProvider = _dbSessionProvider;
                 var application = await _queryBuilder.FindByIdAsync<ApplicationEntity>(dto.ApplicationId);
                 if (application == null)
                 {
@@ -70,8 +70,15 @@ namespace OffLogs.Business.Services.Kafka.Consumer
                     return;
                 }
 
-                // 2. Save log
                 entity = dto.GetEntity();
+                var isExists = await _queryBuilder.For<bool>()
+                    .WithAsync(new LogIsExistsByTokenCriteria(entity.Token));
+                if (isExists)
+                {
+                    return;
+                }
+
+                // 2. Save log
                 entity.Application = application;
                 await _commandBuilder.SaveAsync(entity);
                 
@@ -81,6 +88,7 @@ namespace OffLogs.Business.Services.Kafka.Consumer
                     entity = dto.FillWithAdditionalData(entity);
                     await _commandBuilder.SaveAsync(entity);    
                 }
+                await sessionProvider.PerformCommitAsync();
             }
             catch (Exception e)
             {

@@ -80,6 +80,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         public void Dispose()
         {
             DbSessionProvider.PerformCommitAsync().Wait();
+            DbSessionProvider.Dispose();
             GC.SuppressFinalize(this);
         }
 

@@ -17,10 +17,12 @@ namespace OffLogs.WorkerService.Core
         private CancellationToken _cancelationToken;
         private readonly CrontabSchedule _crontabScheduler;
 
+        protected string ServiceName = "BackgroundService";
+        
         private DateTime _nextTickTime;
         private bool _isShouldRunWork
         {
-            get => DateTime.UtcNow > _nextTickTime;
+            get => DateTime.Now > _nextTickTime;
         }
 
         public ABackgroundService(ILogger<ABackgroundService> logger)
@@ -35,31 +37,40 @@ namespace OffLogs.WorkerService.Core
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _cancelationToken = stoppingToken;
-            _logger.LogInformation("Processing Hosted Service is starting.");
+            LogDebug("Processing Hosted Service is starting.");
 
-            stoppingToken.Register(() => _logger.LogDebug($"Processing Hosted Service is stopping because cancelled."));
+            stoppingToken.Register(() => LogDebug($"Processing Hosted Service is stopping because cancelled."));
 
-            while (!stoppingToken.IsCancellationRequested)
+            Task.Run(async () =>
             {
-                if (_isShouldRunWork)
+                while (!_cancelationToken.IsCancellationRequested)
                 {
-                    await DoWorkAsync(_cancelationToken);
-                    UpdateNextTickTime();
+                    if (_isShouldRunWork)
+                    {
+                        await DoWorkAsync(_cancelationToken);
+                        UpdateNextTickTime();
+                    }
+
+                    Thread.Sleep(1000);
                 }
-                Thread.Sleep(1000);
-            }
+            }, _cancelationToken);
         }
 
         public override async Task StopAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("Processing Hosted Service is stopping.");
+            LogDebug($"Processing Hosted Service is stopping.");
             await base.StopAsync(stoppingToken);
         }
 
         private void UpdateNextTickTime()
         {
-            _nextTickTime = _crontabScheduler.GetNextOccurrence(DateTime.UtcNow, DateTime.MaxValue);
-            _logger.LogDebug($"Processing Hosted Service. Next work scheduled at: {_nextTickTime}");
+            _nextTickTime = _crontabScheduler.GetNextOccurrence(DateTime.Now, DateTime.MaxValue);
+            LogDebug($"Next work scheduled at: {_nextTickTime}");
+        }
+
+        protected void LogDebug(string message)
+        {
+            _logger.LogDebug($"{ServiceName}: {message}");
         }
 
         protected virtual string GetCrontabExpression() => "* * * * *";

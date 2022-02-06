@@ -17,7 +17,7 @@ namespace OffLogs.Business.Services.Kafka.Consumer
     public partial class KafkaNotificationsConsumerService 
         : KafkaConsumerService<NotificationMessageDto>, IKafkaNotificationsConsumerService
     {
-        private readonly string _logsTopicName;
+        private readonly string _topicName;
         private readonly IAsyncNotificationBuilder _notificationBuilder;
 
         public KafkaNotificationsConsumerService(
@@ -30,18 +30,18 @@ namespace OffLogs.Business.Services.Kafka.Consumer
         )
         {
             ConsumerName = "NotificationsConsumer";
-            _logsTopicName = configuration.GetValue<string>("Kafka:Topic:Notifications");
+            _topicName = configuration.GetValue<string>("Kafka:Topic:Notifications");
             _notificationBuilder = notificationBuilder;
         }
 
         public async Task<long> ProcessNotificationsAsync(CancellationToken cancellationToken)
         {
-            return await ProcessMessagesAsync(_logsTopicName, true, cancellationToken);
+            return await ProcessMessagesAsync(_topicName, true, cancellationToken);
         }
 
         public async Task<long> ProcessNotificationsAsync(bool isInfiniteLoop = true, CancellationToken? cancellationToken = null)
         {
-            return await ProcessMessagesAsync(_logsTopicName, isInfiniteLoop, cancellationToken);
+            return await ProcessMessagesAsync(_topicName, isInfiniteLoop, cancellationToken);
         }
 
         protected override async Task ProcessItemAsync(NotificationMessageDto dto)
