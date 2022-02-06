@@ -23,7 +23,7 @@ namespace OffLogs.Business.Orm.Commands.Entities.Log
             CancellationToken cancellationToken = default
         )
         {
-            var endTime = DateTime.UtcNow.AddDays(-30);
+            var endTime = DateTimeOffset.UtcNow.AddDays(-30);
             await _sessionProvider.CurrentSession.GetNamedQuery("Log.deleteSpoiled")
                 .SetParameter("endTime", endTime)
                 .ExecuteUpdateAsync(cancellationToken);

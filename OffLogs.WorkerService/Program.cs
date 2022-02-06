@@ -25,8 +25,6 @@ namespace OffLogs.WorkerService
 
             try
             {
-                AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-                
                 CreateHostBuilder(args).Build().Run();
             }
             catch (Exception e)

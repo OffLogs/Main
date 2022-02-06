@@ -40,8 +40,6 @@ namespace OffLogs.Api
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
-            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-            
             return Host.CreateDefaultBuilder(args)
                 .UseSerilog(Log.Logger)
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())

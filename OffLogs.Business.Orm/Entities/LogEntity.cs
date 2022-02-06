@@ -57,11 +57,11 @@ namespace OffLogs.Business.Orm.Entities
         
         [Property(NotNull = true)]
         [Column(Name = "log_time", SqlType = "datetime")]
-        public virtual DateTime LogTime { get; set; }
+        public virtual DateTimeOffset LogTime { get; set; }
         
         [Property(NotNull = true)]
         [Column(Name = "create_time", SqlType = "datetime", NotNull = false)]
-        public virtual DateTime CreateTime { get; set; }
+        public virtual DateTimeOffset CreateTime { get; set; }
         
         [Bag(Inverse = true, Lazy = CollectionLazy.Extra, Cascade = "all-delete-orphan")]
         [Key(Column = "log_id")]

@@ -54,11 +54,11 @@ namespace OffLogs.Business.Orm.Entities
         
         [Property(NotNull = true)]
         [Column(Name = "create_time", SqlType = "datetime", NotNull = true)]
-        public virtual DateTime CreateTime { get; set; }
+        public virtual DateTimeOffset CreateTime { get; set; }
         
         [Property(NotNull = true)]
         [Column(Name = "update_time", SqlType = "datetime", NotNull = true)]
-        public virtual DateTime UpdateTime { get; set; }
+        public virtual DateTimeOffset UpdateTime { get; set; }
         
         public ApplicationEntity() {}
 
@@ -73,8 +73,8 @@ namespace OffLogs.Business.Orm.Entities
             User = user;
             Name = name;
             ApiToken = "tempToken";
-            CreateTime = DateTime.UtcNow;
-            UpdateTime = DateTime.UtcNow;
+            CreateTime = DateTimeOffset.UtcNow;
+            UpdateTime = DateTimeOffset.UtcNow;
         }
     }
 }

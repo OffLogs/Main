@@ -27,14 +27,14 @@ namespace OffLogs.Business.Orm.Entities
         
         [Property(NotNull = true)]
         [Column(Name = "create_time", SqlType = "datetime", NotNull = true)]
-        public virtual DateTime CreateTime { get; set; }
+        public virtual DateTimeOffset CreateTime { get; set; }
         
         public LogTraceEntity() {}
 
         public LogTraceEntity(byte[] encryptedTrace)
         {
             EncryptedTrace = encryptedTrace;
-            CreateTime = DateTime.UtcNow;
+            CreateTime = DateTimeOffset.UtcNow;
         }
     }
 }

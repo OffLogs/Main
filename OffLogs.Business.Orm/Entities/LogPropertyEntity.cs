@@ -32,7 +32,7 @@ namespace OffLogs.Business.Orm.Entities
         
         [Property(NotNull = true)]
         [Column(Name = "create_time", SqlType = "datetime", NotNull = true)]
-        public virtual DateTime CreateTime { get; set; }
+        public virtual DateTimeOffset CreateTime { get; set; }
         
         public LogPropertyEntity() {}
 
@@ -40,7 +40,7 @@ namespace OffLogs.Business.Orm.Entities
         {
             EncryptedKey = encryptedKey;
             EncryptedValue = encryptedValue;
-            CreateTime = DateTime.UtcNow;
+            CreateTime = DateTimeOffset.UtcNow;
         }
     }
 }

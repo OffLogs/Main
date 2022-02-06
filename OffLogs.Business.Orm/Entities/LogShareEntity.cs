@@ -45,10 +45,10 @@ namespace OffLogs.Business.Orm.Entities
         
         [Property(NotNull = true)]
         [Column(Name = "create_time", SqlType = "datetime", NotNull = false)]
-        public virtual DateTime CreateTime { get; set; }
+        public virtual DateTimeOffset CreateTime { get; set; }
 
         [Property(NotNull = true)]
         [Column(Name = "update_time", SqlType = "datetime", NotNull = false)]
-        public virtual DateTime UpdateTime { get; set; }
+        public virtual DateTimeOffset UpdateTime { get; set; }
     }
 }

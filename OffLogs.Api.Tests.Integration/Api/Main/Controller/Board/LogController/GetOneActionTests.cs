@@ -85,8 +85,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             Assert.NotEmpty(log.EncryptedMessage);
             Assert.Equal(log.Id, receivedLog.Id);
             Assert.Equal(log.Level, receivedLog.Level);
-            Assert.Equal(log.LogTime.ToLongTimeString(), receivedLog.LogTime.ToLongTimeString());
-            Assert.Equal(log.LogTime.ToLongDateString(), receivedLog.LogTime.ToLongDateString());
+            Assert.Equal(log.LogTime.DateTime.ToLongTimeString(), receivedLog.LogTime.ToLongTimeString());
+            Assert.Equal(log.LogTime.DateTime.ToLongDateString(), receivedLog.LogTime.ToLongDateString());
         }
 
         [Theory]

@@ -53,8 +53,6 @@ namespace OffLogs.Console
 
         private static IContainer BuildDiContainer(IConfiguration configuration)
         {
-            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-            
             var builder = new ContainerBuilder();
             builder.RegisterInstance(configuration)
                 .As<IConfiguration>()
