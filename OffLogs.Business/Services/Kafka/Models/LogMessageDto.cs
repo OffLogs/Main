@@ -56,21 +56,26 @@ namespace OffLogs.Business.Services.Kafka.Models
                     Id = ApplicationId
                 }
             };
+            return log;
+        }
+        
+        public LogEntity FillWithAdditionalData(LogEntity log)
+        {
             EnumerableExtensions.ForEach(Traces?
-                .Select(
-                    trace => new LogTraceEntity(
-                        Convert.FromBase64String(trace)    
-                    )
-                ), 
+                    .Select(
+                        trace => new LogTraceEntity(
+                            Convert.FromBase64String(trace)    
+                        )
+                    ), 
                 log.AddTrace
             );
             EnumerableExtensions.ForEach(Properties?
-                .Select(
-                    property => new LogPropertyEntity(
-                        Convert.FromBase64String(property.Key),
-                        Convert.FromBase64String(property.Value)
-                    )
-                ), 
+                    .Select(
+                        property => new LogPropertyEntity(
+                            Convert.FromBase64String(property.Key),
+                            Convert.FromBase64String(property.Value)
+                        )
+                    ), 
                 log.AddProperty
             );
             return log;
