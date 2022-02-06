@@ -2,6 +2,7 @@ using System;
 using Domain.Abstractions;
 using Newtonsoft.Json;
 using NHibernate.Mapping.Attributes;
+using NHibernate.Type;
 
 namespace OffLogs.Business.Orm.Entities
 {
@@ -25,7 +26,7 @@ namespace OffLogs.Business.Orm.Entities
         [Column(Name = "encrypted_trace", SqlType = "bytea", NotNull = true)]
         public virtual byte[] EncryptedTrace { get; set; }
         
-        [Property(NotNull = true)]
+        [Property(NotNull = true, TypeType = typeof(UtcDateTimeType))]
         [Column(Name = "create_time", SqlType = "datetime", NotNull = true)]
         public virtual DateTime CreateTime { get; set; }
         

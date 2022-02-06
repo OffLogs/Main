@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
+using OffLogs.Business.Helpers;
 
 namespace OffLogs.Business.Test.Extensions
 {
@@ -8,7 +9,7 @@ namespace OffLogs.Business.Test.Extensions
         public static async Task<T> GetJsonDataAsync<T>(this HttpResponseMessage response)
         {
             var stringData = await response.GetJsonDataStringAsync();
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(stringData);
+            return JsonHelper.DeserializeObject<T>(stringData);
         }
         
         public static async Task<object> GetJsonDataAsync(this HttpResponseMessage response)

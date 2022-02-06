@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Domain.Abstractions;
 using NHibernate.Mapping.Attributes;
+using NHibernate.Type;
 using OffLogs.Business.Common.Constants;
 
 namespace OffLogs.Business.Orm.Entities
@@ -33,15 +34,15 @@ namespace OffLogs.Business.Orm.Entities
         [Column(Name = "status", SqlType = "int", NotNull = true)]
         public virtual UserStatus Status { get; set; }
 
-        [Property(NotNull = false)]
+        [Property(NotNull = false, TypeType = typeof(UtcDateTimeType))]
         [Column(Name = "verification_time", SqlType = "datetime", NotNull = false)]
         public virtual DateTime? VerificationTime { get; set; }
         
-        [Property(NotNull = true)]
+        [Property(NotNull = true, TypeType = typeof(UtcDateTimeType))]
         [Column(Name = "create_time", SqlType = "datetime", NotNull = true)]
         public virtual DateTime CreateTime { get; set; }
         
-        [Property(NotNull = true)]
+        [Property(NotNull = true, TypeType = typeof(UtcDateTimeType))]
         [Column(Name = "update_time", SqlType = "datetime", NotNull = true)]
         public virtual DateTime UpdateTime { get; set; }
 

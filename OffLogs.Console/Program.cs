@@ -1,4 +1,5 @@
-﻿using CommandLine;
+﻿using System;
+using CommandLine;
 using Microsoft.Extensions.Configuration;
 using OffLogs.Business.Helpers;
 using OffLogs.Console.Core;

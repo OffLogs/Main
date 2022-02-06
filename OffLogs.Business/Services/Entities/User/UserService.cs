@@ -72,7 +72,7 @@ namespace OffLogs.Business.Services.Entities.User
             var keyGenerator = AsymmetricEncryptor.GenerateKeyPair();
             
             user.Status = UserStatus.Active;
-            user.VerificationTime = DateTime.Now;
+            user.VerificationTime = DateTime.UtcNow;
             user.VerificationToken = null;
             user.PublicKey = keyGenerator.GetPublicKeyBytes();
             await _commandBuilder.SaveAsync(user);

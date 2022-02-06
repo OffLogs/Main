@@ -4,7 +4,6 @@ node('vizit-mainframe-testing-node') {
         gitLabConnection('gitlab_lampego'),
     ])
 
-
     String testScriptParameters = '--logger=trx --no-restore --no-build --results-directory=./results'
     String postresUserPassword = 'postgres'
 
@@ -28,7 +27,7 @@ node('vizit-mainframe-testing-node') {
         'POSTGRES_PASSWORD': postresUserPassword,
         'POSTGRES_DATABASE': "template1",
 
-        'ConnectionStrings__DefaultConnection': "User ID=postgres;Password=postgres;Host=localhost;Port=5432;Database=postgres;Pooling=true;",
+        'ConnectionStrings__DefaultConnection': "User ID=postgres;Password=postgres;Host=localhost;Port=5432;Database=postgres;Pooling=true;Include Error Detail=true;Log Parameters=true;",
         'Kafka__Servers': "localhost:9094",
         'Hibernate__IsShowSql': "false"
     ]

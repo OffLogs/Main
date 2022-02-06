@@ -135,7 +135,8 @@ namespace OffLogs.Business.Services.Entities.Log
                 EncryptedSymmetricKey = encryptedSymmetricKey,
                 EncryptedMessage = logSymmetricEncryptor.EncryptData(message),
                 Level = level,
-                LogTime = timestamp
+                LogTime = timestamp,
+                CreateTime = DateTime.UtcNow
             };
             if (properties != null)
             {

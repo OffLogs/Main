@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 using Confluent.Kafka;
-using Newtonsoft.Json;
+using OffLogs.Business.Helpers;
 
 namespace OffLogs.Business.Services.Kafka.Serializers
 {
@@ -23,7 +23,7 @@ namespace OffLogs.Business.Services.Kafka.Serializers
                         return null;
                     }
                 }
-                return Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data));
+                return JsonHelper.SerializeToBytes(data);
             }
             catch (Exception e)
             {

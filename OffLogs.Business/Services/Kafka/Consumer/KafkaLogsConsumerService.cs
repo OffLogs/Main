@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
@@ -73,6 +74,13 @@ namespace OffLogs.Business.Services.Kafka.Consumer
                 entity = dto.GetEntity();
                 entity.Application = application;
                 await _commandBuilder.SaveAsync(entity);
+                
+                // Add Traces and properties
+                if (dto.Properties.Any() || dto.Traces.Any())
+                {
+                    entity = dto.FillWithAdditionalData(entity);
+                    await _commandBuilder.SaveAsync(entity);    
+                }
             }
             catch (Exception e)
             {

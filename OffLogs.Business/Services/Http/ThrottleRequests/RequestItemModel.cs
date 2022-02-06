@@ -37,7 +37,7 @@ namespace OffLogs.Business.Services.Http.ThrottleRequests
             {
                 lock (_lock)
                 {
-                    return DateTime.Now - CountStartTime > CountingPeriod;
+                    return DateTime.UtcNow - CountStartTime > CountingPeriod;
                 }
             }
         }
@@ -51,14 +51,14 @@ namespace OffLogs.Business.Services.Http.ThrottleRequests
             CountingPeriod = countingPeriod;
             MaxCounterValue = maxCounter;
             Counter = 0;
-            CountStartTime = DateTime.Now;
+            CountStartTime = DateTime.UtcNow;
         }
 
         public void ResetCounter()
         {
             lock(_lock)
             {
-                CountStartTime = DateTime.Now;
+                CountStartTime = DateTime.UtcNow;
                 Counter = 0;
             }
         }

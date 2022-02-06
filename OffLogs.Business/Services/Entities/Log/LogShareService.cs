@@ -36,6 +36,8 @@ namespace OffLogs.Business.Services.Entities.Log
                 throw new ValidationException("Share already created for this log");
             }
             var logShare = new LogShareEntity();
+            logShare.CreateTime = DateTime.UtcNow;
+            logShare.UpdateTime = DateTime.UtcNow;
             logShare.Log = log;
             log.LogShares.Add(logShare);
             await _commandBuilder.SaveAsync(logShare);

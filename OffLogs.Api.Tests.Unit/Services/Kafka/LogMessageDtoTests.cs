@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Notification.Abstractions;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Extensions;
+using OffLogs.Business.Helpers;
 using OffLogs.Business.Notifications;
 using OffLogs.Business.Notifications.Senders;
 using OffLogs.Business.Orm.Entities;
@@ -26,7 +27,7 @@ namespace OffLogs.Api.Tests.Unit.Services.Kafka
             expectedEntity.Level = LogLevel.Debug;
             expectedEntity.EncryptedMessage = new byte[] { 111 };
             expectedEntity.EncryptedSymmetricKey = new byte[] { 0x46 };
-            expectedEntity.LogTime = DateTime.Now;
+            expectedEntity.LogTime = DateTime.UtcNow;
             expectedEntity.Traces = new List<LogTraceEntity>()
             {
                 new() { EncryptedTrace = new byte[] { 222 } } 
@@ -41,10 +42,11 @@ namespace OffLogs.Api.Tests.Unit.Services.Kafka
             };
             
             var dto = new LogMessageDto(expectedEntity);
-            var serializedJson = JsonConvert.SerializeObject(dto);
-            var actualDto = JsonConvert.DeserializeObject<LogMessageDto>(serializedJson);
+            var serializedJson = JsonHelper.SerializeToString(dto);
+            var actualDto = JsonHelper.DeserializeObject<LogMessageDto>(serializedJson);
             Assert.NotNull(actualDto);
             var actualEntity = actualDto.GetEntity();
+            actualEntity = actualDto.FillWithAdditionalData(actualEntity);
             
             Assert.Equal(expectedEntity.Application.Id, actualEntity.Application.Id);
             Assert.Equal(expectedEntity.Level, actualEntity.Level);
