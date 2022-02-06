@@ -42,9 +42,10 @@ namespace OffLogs.Console.Core
         {
             if (string.IsNullOrEmpty(verb.Email))
             {
-                throw new ArgumentNullException(nameof(verb.Email));
+                _logger.LogError("Email is empty");
+                return;
             }
-
+            _logger.LogDebug($"Sending test email notification to: ${verb.Email} to Kafka");
             await _kafkaProducerService.ProduceNotificationMessageAsync(
                 new TestNotificationContext(verb.Email)
             );

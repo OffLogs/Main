@@ -17,11 +17,12 @@ namespace OffLogs.WorkerService.Services
         ) : base(logger)
         {
             _kafkaConsumerService = kafkaConsumerService;
+            ServiceName = "NotificationProcessingHostedService";
         }
 
         protected override async Task DoWorkAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Notifications processing worker started at: {time}", DateTime.UtcNow);
+            LogDebug(string.Format("Notifications processing worker started at: {0}", DateTime.Now));
             await _kafkaConsumerService.ProcessNotificationsAsync(cancellationToken);
         }
     }

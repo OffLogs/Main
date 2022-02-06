@@ -34,6 +34,7 @@ namespace OffLogs.WorkerService.Services
             _sessionProvider = sessionProvider;
             _configurationService = configurationService;
             _producerService = producerService;
+            ServiceName = "LogsDeletionHostedService";
         }
 
         protected override string GetCrontabExpression()
@@ -46,7 +47,7 @@ namespace OffLogs.WorkerService.Services
         {
             try
             {
-                _logger.LogDebug("Log deletion work is started.");
+                LogDebug(string.Format("Logs processing worker started at: {0}", DateTime.Now));
 
                 await _commandBuilder.ExecuteAsync(
                     new LogDeleteSpoiledCommandContext(),
@@ -57,7 +58,7 @@ namespace OffLogs.WorkerService.Services
                     _configurationService.SupportEmail
                 ));                
                 
-                _logger.LogInformation("Log deletion work is completed.");
+                LogDebug("Log deletion work is completed.");
             }
             catch (Exception e)
             {
