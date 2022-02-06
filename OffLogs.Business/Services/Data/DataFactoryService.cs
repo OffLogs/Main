@@ -28,11 +28,11 @@ namespace OffLogs.Business.Services.Data
                 )
                 .RuleFor(
                     entity => entity.CreateTime,
-                    (faker) => faker.Date.Past()
+                    (faker) => faker.Date.Past().ToUniversalTime()
                 )
                 .RuleFor(
                     entity => entity.UpdateTime,
-                    (faker) => faker.Date.Past()
+                    (faker) => faker.Date.Past().ToUniversalTime()
                 );
         }
         
@@ -49,7 +49,7 @@ namespace OffLogs.Business.Services.Data
                 )
                 .RuleFor(
                     entity => entity.CreateTime,
-                    (faker) => faker.Date.Past()
+                    (faker) => faker.Date.Past().ToUniversalTime()
                 )
                 .RuleFor(
                     entity => entity.PublicKey,
@@ -61,7 +61,7 @@ namespace OffLogs.Business.Services.Data
                 )
                 .RuleFor(
                     entity => entity.UpdateTime,
-                    (faker) => faker.Date.Past()
+                    (faker) => faker.Date.Past().ToUniversalTime()
                 )
                 .RuleFor(
                     entity => entity.User,
@@ -103,7 +103,7 @@ namespace OffLogs.Business.Services.Data
                 )
                 .RuleFor(
                     entity => entity.CreateTime,
-                    (faker) => faker.Date.Past()
+                    (faker) => faker.Date.Past().ToUniversalTime()
                 );
         }
         
@@ -120,7 +120,7 @@ namespace OffLogs.Business.Services.Data
                 )
                 .RuleFor(
                     entity => entity.CreateTime,
-                    (faker) => faker.Date.Past()
+                    (faker) => faker.Date.Past().ToUniversalTime()
                 );
         }
     }
