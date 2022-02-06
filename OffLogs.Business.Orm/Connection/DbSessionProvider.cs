@@ -63,7 +63,7 @@ namespace OffLogs.Business.Orm.Connection
 
         public async Task PerformCommitAsync(CancellationToken cancellationToken = default)
         {
-            if (_transaction != null && _session.IsOpen)
+            if (_transaction != null && _transaction.IsActive && _session.IsOpen)
             {
                 try
                 {
@@ -72,7 +72,7 @@ namespace OffLogs.Business.Orm.Connection
                 catch (Exception e)
                 {
                     _logger.LogError(e.Message, e);
-                    await _transaction.RollbackAsync();
+                    await _transaction.RollbackAsync(cancellationToken);
                     throw e;
                 }
             }
@@ -99,10 +99,6 @@ namespace OffLogs.Business.Orm.Connection
         #region IDisposable implementation
         public void Dispose()
         {
-            if (_transaction != null && _transaction.IsActive)
-            {
-                PerformCommitAsync().Wait();
-            }
             if (_session != null)
             {
                 _session.Close();
