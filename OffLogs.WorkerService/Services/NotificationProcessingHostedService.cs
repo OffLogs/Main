@@ -21,7 +21,7 @@ namespace OffLogs.WorkerService.Services
 
         protected override async Task DoWorkAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Notifications processing worker started at: {time}", DateTime.Now);
+            _logger.LogInformation("Notifications processing worker started at: {time}", DateTime.UtcNow);
             await _kafkaConsumerService.ProcessNotificationsAsync(cancellationToken);
         }
     }

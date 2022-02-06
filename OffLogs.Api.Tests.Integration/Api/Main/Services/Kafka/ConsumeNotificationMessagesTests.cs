@@ -39,7 +39,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
         public async Task ShouldSendRegularLogsDeletedNotificationAndReceiveIt()
         {
             var toAddress = "test123@test.com";
-            var sentDate = DateTime.Now;
+            var sentDate = DateTime.UtcNow;
             var dto = new LogsDeletedNotificationContext(toAddress, sentDate);
 
             // Push 2 messages
