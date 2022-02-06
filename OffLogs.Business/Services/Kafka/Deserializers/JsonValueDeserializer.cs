@@ -3,6 +3,7 @@ using System.Text;
 using Confluent.Kafka;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using OffLogs.Business.Helpers;
 
 namespace OffLogs.Business.Services.Kafka.Deserializers
 {
@@ -32,7 +33,7 @@ namespace OffLogs.Business.Services.Kafka.Deserializers
             try
             {
                 var valueString = Encoding.UTF8.GetString(data);
-                return JsonConvert.DeserializeObject<T>(valueString);
+                return JsonHelper.DeserializeObject<T>(valueString);
             }
             catch (Exception e)
             {

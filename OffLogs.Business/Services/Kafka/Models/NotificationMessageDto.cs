@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OffLogs.Business.Helpers;
 
 namespace OffLogs.Business.Services.Kafka.Models
 {
@@ -20,13 +21,13 @@ namespace OffLogs.Business.Services.Kafka.Models
             return new NotificationMessageDto()
             {
                 ContextType = context.GetTypeAsString(),
-                ContextData = Newtonsoft.Json.JsonConvert.SerializeObject(context)
+                ContextData = JsonHelper.SerializeToString(context)
             };
         }
 
         public TConext GetDeserializedData<TConext>() where TConext: INotificationContext
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<TConext>(ContextData);
+            return JsonHelper.DeserializeObject<TConext>(ContextData);
         }
     }
 }
