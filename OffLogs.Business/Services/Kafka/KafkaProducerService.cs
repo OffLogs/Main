@@ -28,7 +28,7 @@ namespace OffLogs.Business.Services.Kafka
             {
                 if (_producer == null)
                 {
-                    LogDebug("Build new instance");
+                    LogDebug($"Build new instance. Servers: {_kafkaServers}. ProducerId: {_producerId}");
                     
                     var builder = new ProducerBuilder<string, object>(_producerConfig);
                     builder.SetValueSerializer(new ValueSerializer<object>());
@@ -91,6 +91,7 @@ namespace OffLogs.Business.Services.Kafka
         public async Task ProduceNotificationMessageAsync(INotificationContext notificationContext)
         {
             var modelToSend = NotificationMessageDto.Create(notificationContext);
+            _logger.LogDebug($"Send notification to topic: {_notificationsTopicName}. Context: {modelToSend.ContextType}");
             await Producer.ProduceAsync(_notificationsTopicName, new Message<string, object>
             {
                 Value = modelToSend
