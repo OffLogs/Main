@@ -92,10 +92,17 @@ namespace OffLogs.Business.Services.Kafka
         {
             var modelToSend = NotificationMessageDto.Create(notificationContext);
             _logger.LogDebug($"Send notification to topic: {_notificationsTopicName}. Context: {modelToSend.ContextType}");
-            await Producer.ProduceAsync(_notificationsTopicName, new Message<string, object>
+            try
             {
-                Value = modelToSend
-            });
+                await Producer.ProduceAsync(_notificationsTopicName, new Message<string, object>
+                {
+                    Value = modelToSend
+                });
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message, e);
+            }
         }
 
         public void Flush(CancellationToken cancellationToken = default)
