@@ -63,7 +63,8 @@ namespace OffLogs.Business.Services.Kafka
                 // Do not change this. Because the tests is related from it
                 Acks = Acks.All,
                 MessageSendMaxRetries = 2000,
-                SecurityProtocol = SecurityProtocol.Plaintext
+                SecurityProtocol = SecurityProtocol.Plaintext,
+                Debug = "broker,topic,msg"
             };
             
             LogDebug($"Init service: {_kafkaServers}");
