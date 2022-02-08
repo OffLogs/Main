@@ -45,7 +45,7 @@ namespace OffLogs.Console.Core
                 _logger.LogError("Email is empty");
                 return;
             }
-            _logger.LogDebug($"Sending test email notification to: ${verb.Email} to Kafka");
+            _logger.LogDebug($"Sending test email notification to: {verb.Email} to Kafka");
             await _kafkaProducerService.ProduceNotificationMessageAsync(
                 new TestNotificationContext(verb.Email)
             );
