@@ -38,7 +38,7 @@ namespace OffLogs.Console
                     {
                         var runService = scope.Resolve<IEmailSendService>();
                         runService.EmailSend(verb);
-                        return 1;
+                        return 0;
                     },
                     errs =>
                     {
