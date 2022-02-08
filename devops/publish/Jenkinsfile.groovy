@@ -44,7 +44,7 @@ node('abedor-mainframe-web') {
         
         containers.collect {
             // Kafka
-            it.envVariables.put('Kafka__Servers', '192.168.99.6:29092')
+            it.envVariables.put('Kafka__Servers', '192.168.99.6:29092,192.168.99.6:29093')
             it.envVariables.put('Kafka__ProducerId', 'offlogs-reducer-1')
             it.envVariables.put('Kafka__Topic_Logs', 'production-logs')
             it.envVariables.put('Kafka__Topic_Notification', 'offlogs-notification-logs')
