@@ -11,7 +11,7 @@ using OffLogs.Business.Services.Kafka.Serializers;
 
 namespace OffLogs.Business.Services.Kafka
 {
-    public class KafkaProducerService: IKafkaProducerService
+    public class KafkaProducerService: IKafkaProducerService, IDisposable
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger<IKafkaProducerService> _logger;
@@ -64,14 +64,15 @@ namespace OffLogs.Business.Services.Kafka
                 Acks = Acks.All,
                 MessageSendMaxRetries = 2000,
                 SecurityProtocol = SecurityProtocol.Plaintext,
-                Debug = "broker,topic,msg"
+                // Debug = "broker,topic,msg"
             };
             
             LogDebug($"Init service: {_kafkaServers}");
         }
 
-        ~KafkaProducerService()
+        public void Dispose()
         {
+            Flush();
             _producer?.Dispose();
             _producer = null;
         }
