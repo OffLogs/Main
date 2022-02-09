@@ -49,7 +49,6 @@ namespace OffLogs.Console.Core
             await _kafkaProducerService.ProduceNotificationMessageAsync(
                 new TestNotificationContext(verb.Email)
             );
-            _kafkaProducerService.Flush();
         }
     }
 }
