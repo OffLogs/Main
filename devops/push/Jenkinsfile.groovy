@@ -2,7 +2,7 @@
 import com.shared.jenkins.docker.DockerHelper
 import com.shared.jenkins.docker.DockerContainer
 
-def dockerHelper = new DockerHelper(this)
+def dockerHelper = new DockerHelper(this, docker)
 
 def containers = [
     new DockerContainer(
@@ -40,6 +40,10 @@ node('vizit-mainframe-testing-node') {
     }
     
     stage('Build and push') {
-        dockerHelper.buildAndPush(containers[0])
+        def container = containers[0];
+        docker.withRegistry('https://docker.subs.itproject.club', 'abedor_docker_registry_credentials') {
+            def customImage = docker.build("${container.name}:${container.tag}")
+            customImage.push()
+        }
     }
 }
