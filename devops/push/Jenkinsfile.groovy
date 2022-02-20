@@ -46,9 +46,26 @@ node('vizit-mainframe-testing-node') {
         checkout scm
     }
     
-    stage('Build and push') {
+    stage('Build and restore projects') {
+        docker.image('mcr.microsoft.com/dotnet/sdk:6.0').inside('') { c ->
+            sh 'echo "{}" > OffLogs.Api.Tests.Integration/appsettings.Local.json'
+            sh 'echo "{}" > OffLogs.Console/appsettings.Local.json'
+            sh 'echo "{}" > OffLogs.Api/appsettings.Local.json'
+            sh 'echo "{}" > OffLogs.Api.Frontend/appsettings.Local.json'
+            sh 'echo "{}" > OffLogs.Migrations/appsettings.Local.json'
+            sh 'echo "{}" > OffLogs.WorkerService/appsettings.Local.json'
+            sh 'dotnet restore --verbosity=q .'
+            sh 'dotnet build --verbosity=q .'
+        }
+    }
+    
+    stage('Build and push images to the registry') {
         docker.withRegistry("https://$registryUrl", 'abedor_docker_registry_credentials') {
-            dockerHelper.buildAndPush(containers[0])
+            stage('Build containers') {
+                for (String container: containers) {
+                    dockerHelper.buildAndPush(container)
+                }
+            }
         }
     }
 }
