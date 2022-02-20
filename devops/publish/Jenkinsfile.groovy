@@ -11,17 +11,20 @@ def mainContainer = new DockerContainer(
     dockerFile: 'devops/publish/image/common/Dockerfile',
     registryUrl: registryUrl,
 );
+def imageTag = mainContainer.generateRandomTag()
 def migrationContainer = new DockerContainer(
     name: 'offlogs-migration-production',
     dockerFile: 'devops/publish/image/common/Dockerfile',
     isRunAlways: false,
     isRunInBackground: false,
     registryUrl: registryUrl,
+    tag: imageTag,
 );
 def webAppContainer = new DockerContainer(
     name: 'offlogs-web-production',
     dockerFile: 'devops/publish/image/web/Dockerfile',
     registryUrl: registryUrl,
+    tag: imageTag,
 );
 
 node('vizit-mainframe-testing-node') {
