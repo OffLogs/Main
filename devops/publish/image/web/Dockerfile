@@ -21,6 +21,6 @@ RUN dotnet publish --configuration=Production -o "/var/www" -f net6.0 -r linux-x
 FROM base
 WORKDIR /usr/share/nginx/html
 COPY ./devops/publish/image/web/nginx.conf /etc/nginx/nginx.conf 
-COPY --from=dot_net --chown=docker:docker /var/www/ /var/www/
+COPY --from=dot_net /var/www/ /var/www/
 RUN ls /usr/share/nginx/html
 EXPOSE 80
