@@ -43,6 +43,12 @@ node('vizit-mainframe-testing-node') {
                 dockerHelper.buildAndPush(webAppContainer)
                 echo "Pushed container: ${webAppContainer.getFullImageName()}"
             }
+            
+            stage('Apply K8S config') {
+                docker.image("$registryUrl/helm").inside('') { c ->
+                    echo 'helm --version'
+                }
+            }
         }
     }
 }
