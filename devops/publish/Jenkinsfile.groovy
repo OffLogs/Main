@@ -35,7 +35,10 @@ node('vizit-mainframe-testing-node') {
         docker.withRegistry("https://$registryUrl", 'abedor_docker_registry_credentials') {
             stage('Build containers') {
                 dockerHelper.buildAndPush(mainContainer)
+                echo "Pushed container: ${mainContainer.getFullImageName()}"
+                
                 dockerHelper.buildAndPush(webAppContainer)
+                echo "Pushed container: ${webAppContainer.getFullImageName()}"
             }
         }
     }
