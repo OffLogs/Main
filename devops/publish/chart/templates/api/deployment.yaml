@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.images.api.deploymentName }}
+  labels:
+    app: {{ .Values.images.api.name }}
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: {{ .Values.images.api.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.images.api.name }}
+    spec:
+      containers:
+      - name: {{ .Values.images.api.name }}
+        image: {{ .Values.images.api.name }}:{{ .Values.images.api.tag }}
+        env:
+        - name: PROJECT_DIR
+          value: "OffLogs.Api"
+        ports:
+        - containerPort: 80
