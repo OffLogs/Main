@@ -8,10 +8,10 @@ imageRegistry: docker.subs.itproject.club
 
 images:
   api:
-    name: offlogs-api-production
+    name: offlogs-main-production
     tag: latest
     pullPolicy: IfNotPresent
-    deploymentName: offlogs-api-production-production
+    deploymentName: offlogs-main-production-deployment
     
 nameOverride: ""
 fullnameOverride: ""

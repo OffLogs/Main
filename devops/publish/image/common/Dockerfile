@@ -20,8 +20,8 @@ RUN echo "{}" > OffLogs.Api.Frontend/appsettings.Local.json
 RUN echo "{}" > OffLogs.Migrations/appsettings.Local.json
 RUN echo "{}" > OffLogs.WorkerService/appsettings.Local.json
 
-RUN sh dotnet restore --verbosity=q .
-RUN sh dotnet build --verbosity=q .
+RUN ["dotnet", "restore", "--verbosity=q"]
+RUN ["dotnet", "build", "--verbosity=q"]
 
 COPY ./devops/publish/image/common/boot.sh /usr/local/bin/php_boot
 
