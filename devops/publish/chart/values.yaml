@@ -6,12 +6,26 @@ replicaCount: 1
 
 imageRegistry: docker.subs.itproject.club
 
+image:
+  registry: docker.subs.itproject.club
+  pullPolicy: Always
+
 images:
+  frontApi:
+    name: offlogs-main-production
+    tag: latest
+    deploymentName: offlogs-api-production-deployment
+    serviceName: offlogs-api-production-service
   api:
     name: offlogs-main-production
     tag: latest
-    pullPolicy: IfNotPresent
-    deploymentName: offlogs-main-production-deployment
+    deploymentName: offlogs-front-api-production-deployment
+    serviceName: offlogs-front-api-production-service
+  web:
+    name: offlogs-web-production
+    tag: latest
+    deploymentName: offlogs-web-production-deployment
+    serviceName: offlogs-web-production-service
     
 nameOverride: ""
 fullnameOverride: ""
