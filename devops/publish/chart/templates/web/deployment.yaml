@@ -25,4 +25,4 @@ spec:
         - containerPort: 80
       restartPolicy: Always
       imagePullSecrets:
-      - name: { { .Values.image.secrets } }
+      - name: {{ .Values.image.secrets }}
