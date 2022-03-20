@@ -8,7 +8,7 @@ imageRegistry: docker.subs.itproject.club
 
 image:
   registry: docker.subs.itproject.club
-  pullPolicy: Never # Never - Use local registry, Always - Use other registries
+  pullPolicy: Always # Never - Use local registry, Always - Use other registries
 
 images:
   frontApi:
