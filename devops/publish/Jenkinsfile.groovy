@@ -51,10 +51,13 @@ node('vizit-mainframe-k8s-master') {
     }
     
     stage('Apply K8S config') {
-        sh "
+        sh """
             helm upgrade offlogs \
-            --set .Values.images.frontApi.tag=${imageTag},.Values.images.api.tag=${imageTag},.Values.images.web.tag=${imageTag},.Values.images.worker.tag=${imageTag} \
+            --set images.frontApi.tag=${imageTag} \
+            --set images.api.tag=${imageTag} \
+            --set images.web.tag=${imageTag} \
+            --set images.worker.tag=${imageTag} \
             devops/publish/chart
-        "
+        """
     }
 }
