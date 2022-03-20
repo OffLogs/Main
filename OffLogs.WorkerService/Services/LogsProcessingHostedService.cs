@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using OffLogs.Business.Services.Kafka.Consumer;
 using OffLogs.WorkerService.Core;
 using System;
@@ -22,7 +22,7 @@ namespace OffLogs.WorkerService.Services
 
         protected override async Task DoWorkAsync(CancellationToken cancellationToken)
         {
-            LogDebug(string.Format("Logs processing worker started at: {0}", DateTime.Now));
+            LogDebug($"Logs processing worker started at: {DateTime.Now}");
             await _kafkaConsumerService.ProcessLogsAsync(cancellationToken);
         }
     }

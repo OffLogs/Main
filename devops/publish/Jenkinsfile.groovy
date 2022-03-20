@@ -27,28 +27,30 @@ def webAppContainer = new DockerContainer(
     tag: imageTag,
 );
 
-node('vizit-mainframe-testing-node') {
-    env.ENVIRONMENT = "Development"
+// node('vizit-mainframe-testing-node') {
+//     env.ENVIRONMENT = "Development"
+// 
+//     stage('Checkout') {
+//         checkout scm
+//     }
+//     
+//     stage('Build and push images to the registry') {
+//         docker.withRegistry("https://$registryUrl", 'abedor_docker_registry_credentials') {
+//             dockerHelper.buildAndPush(mainContainer)
+//             echo "Pushed container: ${mainContainer.getFullImageName()}"
+//             
+//             dockerHelper.buildAndPush(webAppContainer)
+//             echo "Pushed container: ${webAppContainer.getFullImageName()}"
+//         }
+//     }
+// }
 
+node('vizit-mainframe-k8s-master') {
     stage('Checkout') {
         checkout scm
     }
     
-    stage('Build and push images to the registry') {
-        docker.withRegistry("https://$registryUrl", 'abedor_docker_registry_credentials') {
-            stage('Build containers') {
-                dockerHelper.buildAndPush(mainContainer)
-                echo "Pushed container: ${mainContainer.getFullImageName()}"
-                
-                dockerHelper.buildAndPush(webAppContainer)
-                echo "Pushed container: ${webAppContainer.getFullImageName()}"
-            }
-            
-            stage('Apply K8S config') {
-                docker.image("$registryUrl/helm").inside('') { c ->
-                    echo 'helm --version'
-                }
-            }
-        }
+    stage('Apply K8S config') {
+        sh "helm install test-offlogs ."
     }
 }

@@ -8,7 +8,7 @@ imageRegistry: docker.subs.itproject.club
 
 image:
   registry: docker.subs.itproject.club
-  pullPolicy: Always
+  pullPolicy: Never # Never - Use local registry, Always - Use other registries
 
 images:
   frontApi:
@@ -26,6 +26,11 @@ images:
     tag: latest
     deploymentName: offlogs-web-production-deployment
     serviceName: offlogs-web-production-service
+  worker:
+    name: offlogs-main-production
+    tag: latest
+    deploymentName: offlogs-worker-production-deployment
+    serviceName: offlogs-worker-production-service
     
 nameOverride: ""
 fullnameOverride: ""
