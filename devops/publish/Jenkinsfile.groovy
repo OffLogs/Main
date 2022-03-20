@@ -28,8 +28,7 @@ def webAppContainer = new DockerContainer(
 );
 
 properties([
-    disableConcurrentBuilds(),
-    skipDefaultCheckout(true)
+    disableConcurrentBuilds()
 ])
 
 node('vizit-mainframe-testing-node') {
@@ -51,20 +50,20 @@ node('vizit-mainframe-testing-node') {
     }
 }
 
-// node('vizit-mainframe-k8s-master') {
-//     stage('Checkout') {
-//         cleanWs()
-//         checkout scm
-//     }
-//     
-//     stage('Apply K8S config') {
-//         sh """
-//             helm upgrade offlogs \
-//             --set images.frontApi.tag=${imageTag} \
-//             --set images.api.tag=${imageTag} \
-//             --set images.web.tag=${imageTag} \
-//             --set images.worker.tag=${imageTag} \
-//             devops/publish/chart
-//         """
-//     }
-// }
+node('vizit-mainframe-k8s-master') {
+    stage('Checkout') {
+        cleanWs()
+        checkout scm
+    }
+
+    stage('Apply K8S config') {
+        sh """
+            helm upgrade offlogs \
+            --set images.frontApi.tag=${imageTag} \
+            --set images.api.tag=${imageTag} \
+            --set images.web.tag=${imageTag} \
+            --set images.worker.tag=${imageTag} \
+            devops/publish/chart
+        """
+    }
+}
