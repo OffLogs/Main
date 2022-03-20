@@ -27,23 +27,23 @@ def webAppContainer = new DockerContainer(
     tag: imageTag,
 );
 
-// node('vizit-mainframe-testing-node') {
-//     env.ENVIRONMENT = "Development"
-// 
-//     stage('Checkout') {
-//         checkout scm
-//     }
-//     
-//     stage('Build and push images to the registry') {
-//         docker.withRegistry("https://$registryUrl", 'abedor_docker_registry_credentials') {
-//             dockerHelper.buildAndPush(mainContainer)
-//             echo "Pushed container: ${mainContainer.getFullImageName()}"
-//             
-//             dockerHelper.buildAndPush(webAppContainer)
-//             echo "Pushed container: ${webAppContainer.getFullImageName()}"
-//         }
-//     }
-// }
+node('vizit-mainframe-testing-node') {
+    env.ENVIRONMENT = "Development"
+
+    stage('Checkout') {
+        checkout scm
+    }
+
+    stage('Build and push images to the registry') {
+        docker.withRegistry("https://$registryUrl", 'abedor_docker_registry_credentials') {
+            dockerHelper.buildAndPush(mainContainer)
+            echo "Pushed container: ${mainContainer.getFullImageName()}"
+
+            dockerHelper.buildAndPush(webAppContainer)
+            echo "Pushed container: ${webAppContainer.getFullImageName()}"
+        }
+    }
+}
 
 node('vizit-mainframe-k8s-master') {
     stage('Checkout') {
@@ -51,6 +51,10 @@ node('vizit-mainframe-k8s-master') {
     }
     
     stage('Apply K8S config') {
-        sh "helm install offlogs devops/publish/chart"
+        sh "
+            helm upgrade offlogs \
+            --set .Values.images.frontApi.tag=${imageTag},.Values.images.api.tag=${imageTag},.Values.images.web.tag=${imageTag},.Values.images.worker.tag=${imageTag} \
+            devops/publish/chart
+        "
     }
 }
