@@ -51,6 +51,6 @@ node('vizit-mainframe-k8s-master') {
     }
     
     stage('Apply K8S config') {
-        sh "helm install test-offlogs ."
+        sh "helm install offlogs devops/publish/chart"
     }
 }
