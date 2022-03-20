@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.images.worker.deploymentName }}
+  labels:
+    app: {{ .Values.images.worker.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.images.worker.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.images.worker.name }}
+    spec:
+      containers:
+      - name: {{ .Values.images.worker.name }}
+        image: {{ .Values.image.registry }}/{{ .Values.images.worker.name }}:{{ .Values.images.worker.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: PROJECT_DIR
+          value: "OffLogs.WorkerService"
+      restartPolicy: Always

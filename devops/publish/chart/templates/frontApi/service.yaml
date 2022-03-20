@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.images.api.serviceName }}
+  name: {{ .Values.images.frontApi.serviceName }}
 spec:
   type: ClusterIP
   selector: 
-    app: {{ .Values.images.api.deploymentName }}
+    app: {{ .Values.images.frontApi.deploymentName }}
   ports:
     - port: 80
       protocol: TCP

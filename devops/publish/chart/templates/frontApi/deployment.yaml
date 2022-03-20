@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.images.frontApi.deploymentName }}
+  labels:
+    app: {{ .Values.images.frontApi.name }}
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: {{ .Values.images.frontApi.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.images.frontApi.name }}
+    spec:
+      containers:
+      - name: {{ .Values.images.frontApi.name }}
+        image: {{ .Values.image.registry }}/{{ .Values.images.frontApi.name }}:{{ .Values.images.frontApi.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: PROJECT_DIR
+          value: "OffLogs.Api.Frontend"
+        ports:
+        - containerPort: 80

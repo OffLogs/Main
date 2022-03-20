@@ -1,4 +1,4 @@
-﻿using Commands.Abstractions;
+using Commands.Abstractions;
 using Microsoft.Extensions.Logging;
 using Notification.Abstractions;
 using OffLogs.Business.Notifications.Senders;
@@ -47,7 +47,7 @@ namespace OffLogs.WorkerService.Services
         {
             try
             {
-                LogDebug(string.Format("Logs processing worker started at: {0}", DateTime.Now));
+                LogDebug($"Logs processing worker started at: {DateTime.Now}");
 
                 await _commandBuilder.ExecuteAsync(
                     new LogDeleteSpoiledCommandContext(),
