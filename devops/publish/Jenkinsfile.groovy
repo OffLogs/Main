@@ -39,9 +39,9 @@ node('vizit-mainframe-testing-node') {
     stage('Checkout') {
         cleanWs()
         sh """
-            git config --global http.postBuffer 500M
-            git config --global http.maxRequestBuffer 100M
-            git config --global core.compression 0
+            git config --global http.postBuffer 2048M
+            git config --global http.maxRequestBuffer 1024M
+            git config --global core.compression 9
         """
         checkout scm
     }
@@ -61,9 +61,9 @@ node('vizit-mainframe-k8s-master') {
     stage('Checkout') {
         cleanWs()
         sh """
-            git config --global http.postBuffer 500M
-            git config --global http.maxRequestBuffer 100M
-            git config --global core.compression 0
+            git config --global http.postBuffer 2048M
+            git config --global http.maxRequestBuffer 1024M
+            git config --global core.compression 9
         """
         checkout scm
     }
