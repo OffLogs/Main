@@ -70,7 +70,7 @@ node('vizit-mainframe-k8s-master') {
 
     stage('Apply K8S config') {
         sh """
-            helm upgrade offlogs \
+            helm upgrade offlogs --install \
             --set images.frontApi.tag=${imageTag} \
             --set images.api.tag=${imageTag} \
             --set images.web.tag=${imageTag} \
