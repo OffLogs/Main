@@ -22,3 +22,5 @@ spec:
         - name: PROJECT_DIR
           value: "OffLogs.WorkerService"
       restartPolicy: Always
+      imagePullSecrets:
+      - name: { { .Values.image.secrets } }
