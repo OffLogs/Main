@@ -39,6 +39,7 @@ node('vizit-mainframe-testing-node') {
         }
     
         runStage(Stage.CHECKOUT) {
+            sh 'git config --global http.postBuffer 524288000'
             checkout scm
         }
         
