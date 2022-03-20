@@ -11,7 +11,9 @@ def mainContainer = new DockerContainer(
     dockerFile: 'devops/publish/image/common/Dockerfile',
     registryUrl: registryUrl,
 );
-def imageTag = mainContainer.generateRandomTag()
+mainContainer.generateRandomTag()
+def imageTag = mainContainer.tag
+
 def migrationContainer = new DockerContainer(
     name: 'offlogs-migration-production',
     dockerFile: 'devops/publish/image/common/Dockerfile',
