@@ -27,6 +27,10 @@ def webAppContainer = new DockerContainer(
     tag: imageTag,
 );
 
+properties([
+    disableConcurrentBuilds()
+])
+
 node('vizit-mainframe-testing-node') {
     env.ENVIRONMENT = "Development"
 
