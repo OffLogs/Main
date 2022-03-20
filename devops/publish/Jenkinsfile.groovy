@@ -28,13 +28,15 @@ def webAppContainer = new DockerContainer(
 );
 
 properties([
-    disableConcurrentBuilds()
+    disableConcurrentBuilds(),
+    skipDefaultCheckout(true)
 ])
 
 node('vizit-mainframe-testing-node') {
     env.ENVIRONMENT = "Development"
 
     stage('Checkout') {
+        cleanWs()
         checkout scm
     }
 
@@ -51,6 +53,7 @@ node('vizit-mainframe-testing-node') {
 
 // node('vizit-mainframe-k8s-master') {
 //     stage('Checkout') {
+//         cleanWs()
 //         checkout scm
 //     }
 //     
