@@ -28,8 +28,7 @@ def webAppContainer = new DockerContainer(
 );
 
 properties([
-    disableConcurrentBuilds(),
-    skipDefaultCheckout(true)
+    disableConcurrentBuilds()
 ])
 
 node('vizit-mainframe-testing-node') {
