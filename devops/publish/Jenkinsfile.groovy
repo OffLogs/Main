@@ -38,6 +38,7 @@ node('vizit-mainframe-testing-node') {
 
     stage('Checkout') {
         cleanWs()
+        sh 'git config --global http.postBuffer 524288000'
         checkout scm
     }
 
@@ -55,6 +56,7 @@ node('vizit-mainframe-testing-node') {
 node('vizit-mainframe-k8s-master') {
     stage('Checkout') {
         cleanWs()
+        sh 'git config --global http.postBuffer 524288000'
         checkout scm
     }
 
