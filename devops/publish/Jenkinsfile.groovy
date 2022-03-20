@@ -46,11 +46,15 @@ node('vizit-mainframe-testing-node') {
         checkout scm
     }
 
-    stage('Build and push images to the registry') {
+    stage('Build and push main image to the registry') {
         docker.withRegistry("https://$registryUrl", 'abedor_docker_registry_credentials') {
             dockerHelper.buildAndPush(mainContainer)
             echo "Pushed container: ${mainContainer.getFullImageName()}"
-
+        }
+    }
+    
+    stage('Build and push web image to the registry') {
+        docker.withRegistry("https://$registryUrl", 'abedor_docker_registry_credentials') {
             dockerHelper.buildAndPush(webAppContainer)
             echo "Pushed container: ${webAppContainer.getFullImageName()}"
         }

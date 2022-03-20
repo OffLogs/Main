@@ -4,8 +4,6 @@
 
 replicaCount: 1
 
-imageRegistry: docker.subs.itproject.club
-
 image:
   registry: docker.subs.itproject.club
   pullPolicy: Always # Never - Use local registry, Always - Use other registries

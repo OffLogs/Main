@@ -23,4 +23,4 @@ spec:
           value: "OffLogs.WorkerService"
       restartPolicy: Always
       imagePullSecrets:
-      - name: { { .Values.image.secrets } }
+      - name: {{ .Values.image.secrets }}
