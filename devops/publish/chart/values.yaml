@@ -15,6 +15,7 @@ images:
     tag: latest
     deploymentName: offlogs-api-production-deployment
     serviceName: offlogs-api-production-service
+    ingressName: offlogs-api-production-ingress
   api:
     name: offlogs-main-production
     tag: latest
