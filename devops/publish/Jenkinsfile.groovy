@@ -122,8 +122,6 @@ node('vizit-mainframe-k8s-master') {
                 .replaceAll('\\"', '\\\\"')
             bashScript = "$bashScript --set pods.env.${it.key}=\"${cleanedValue}\""
         }
-        bashScript = "$bashScript devops/publish/chart"
-        echo bashScript
-        sh bashScript
+        sh "$bashScript devops/publish/chart"
     }
 }

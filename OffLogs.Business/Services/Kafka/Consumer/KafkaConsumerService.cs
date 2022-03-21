@@ -11,6 +11,7 @@ using Persistence.Transactions.Behaviors;
 using Queries.Abstractions;
 using System.Threading.Tasks;
 using System.Threading;
+using OffLogs.Business.Helpers;
 using OffLogs.Business.Services.Kafka.Models;
 
 namespace OffLogs.Business.Services.Kafka.Consumer
@@ -40,7 +41,7 @@ namespace OffLogs.Business.Services.Kafka.Consumer
             _logger = logger;
             var kafkaSection = configuration.GetSection("Kafka");
             _groupName = kafkaSection.GetValue<string>("ConsumerGroup");
-            _clientId = kafkaSection.GetValue<string>("ConsumerClientId");
+            _clientId = kafkaSection.GetValue<string>("ConsumerClientId") + "-" + EnvironmentHelper.GetPodId();
             _kafkaServers = kafkaSection.GetValue<string>("Servers");
 
             _config = new ConsumerConfig
