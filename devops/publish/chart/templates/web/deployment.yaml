@@ -15,14 +15,11 @@ spec:
         app: {{ .Values.images.web.name }}
     spec:
       containers:
-      - name: {{ .Values.images.api.name }}
-        image: {{ .Values.image.registry }}/{{ .Values.images.web.name }}:{{ .Values.images.web.tag }}
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        env:
-        - name: PROJECT_DIR
-          value: "OffLogs.Api"
-        ports:
-        - containerPort: 80
-      restartPolicy: Always
-      imagePullSecrets:
-      - name: {{ .Values.image.secrets }}
+        - name: {{ .Values.images.api.name }}
+          image: {{ .Values.image.registry }}/{{ .Values.images.web.name }}:{{ .Values.images.web.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 8080
+        restartPolicy: Always
+        imagePullSecrets:
+          - name: {{ .Values.image.secrets }}
