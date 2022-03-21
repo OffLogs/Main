@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
       - name: {{ .Values.images.frontApi.name }}
-        image: {{ .Values.image.registry }}/{{ .Values.images.frontApi.name }}:{{ .Values.images.frontApi.tag }}
+#        image: {{ .Values.image.registry }}/{{ .Values.images.frontApi.name }}:{{ .Values.images.frontApi.tag }}
+        image: cloudnativelabs/whats-my-ip:latest
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
         - name: PROJECT_DIR
