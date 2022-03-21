@@ -117,9 +117,9 @@ node('vizit-mainframe-k8s-master') {
             --set images.worker.tag=${imageTag} \
         """
         envVariables.each {
-            def cleanedValue = it.value?.replaceAll("\\.", "\\.")
-                .replaceAll(",", "\\,")
-                .replaceAll('\\"', '\\"')
+            def cleanedValue = it.value?.replaceAll("\\.", "\\\\.")
+                .replaceAll(",", "\\\\,")
+                .replaceAll('\\"', '\\\\"')
             bashScript = "$bashScript --set pods.env.${it.key}=\"${cleanedValue}\""
         }
         bashScript = "$bashScript devops/publish/chart"
