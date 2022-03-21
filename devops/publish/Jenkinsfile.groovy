@@ -3,6 +3,7 @@ import com.shared.jenkins.docker.DockerHelper
 import com.shared.jenkins.docker.DockerContainer
 
 def dockerHelper = new DockerHelper(this)
+public Map<String, String> envVariables = new HashMap<String, String>()
 
 def registryUrl = 'docker.subs.itproject.club'
 
@@ -28,8 +29,6 @@ def webAppContainer = new DockerContainer(
     registryUrl: registryUrl,
     tag: imageTag,
 );
-
-def containers = [mainContainer, migrationContainer]
 
 properties([
     disableConcurrentBuilds()
@@ -75,39 +74,37 @@ node('vizit-mainframe-k8s-master') {
     }
 
     stage('Set environment vars') {
-        containers.collect {
-            // Kafka
-            it.envVariables.put('Kafka__Servers', '192.168.110.6:29092,192.168.110.6:29093')
-            it.envVariables.put('Kafka__ProducerId', 'offlogs-reducer-1')
-            it.envVariables.put('Kafka__Topic_Logs', 'production-logs')
-            it.envVariables.put('Kafka__Topic_Notification', 'offlogs-notification-logs')
-            it.envVariables.put('Kafka__ConsumerClientId', 'client-1')
-        
-            withCredentials([
-                    usernamePassword(credentialsId: "offlogs_production_db_credentials", usernameVariable: 'USER_NAME', passwordVariable: 'PASSWORD')
-            ]) {
-                it.envVariables.put(
-                    'ConnectionStrings__DefaultConnection',
-                    "User ID=${USER_NAME};Password=${PASSWORD};Host=192.168.110.6;Port=5432;Database=offlogs;Pooling=true;"
-                )
-            }
-            withCredentials([
-                    usernamePassword(credentialsId: "offlogs_production_smtp_credentials", usernameVariable: 'USER_NAME', passwordVariable: 'PASSWORD')
-            ]) {
-                it.envVariables.put('Smtp__Server', 'smtp-pulse.com')
-                it.envVariables.put('Smtp__UserName', USER_NAME)
-                it.envVariables.put('Smtp__Password', PASSWORD)
-                it.envVariables.put('Smtp__From__Name', 'OffLogs')
-                it.envVariables.put('Smtp__From__Email', 'support@offlogs.com')
-                it.envVariables.put('Smtp__Port', '2525')
-                it.envVariables.put('Smtp__EnableSsl', 'true')
-            }
-            withCredentials([string(credentialsId: "offlogs_production_user_jwt", variable: 'AUTH_SECRET')]) {
-                it.envVariables.put('App__Auth__SymmetricSecurityKey', AUTH_SECRET)
-            }
-            withCredentials([string(credentialsId: "offlogs_production_application_jwt", variable: 'AUTH_SECRET')]) {
-                it.envVariables.put('App__Application__SymmetricSecurityKey', AUTH_SECRET)
-            }
+        // Kafka
+        envVariables.put('Kafka__Servers', '192.168.110.6:29092,192.168.110.6:29093')
+        envVariables.put('Kafka__ProducerId', 'offlogs-reducer-1')
+        envVariables.put('Kafka__Topic_Logs', 'production-logs')
+        envVariables.put('Kafka__Topic_Notification', 'offlogs-notification-logs')
+        envVariables.put('Kafka__ConsumerClientId', 'client-1')
+    
+        withCredentials([
+                usernamePassword(credentialsId: "offlogs_production_db_credentials", usernameVariable: 'USER_NAME', passwordVariable: 'PASSWORD')
+        ]) {
+            envVariables.put(
+                'ConnectionStrings__DefaultConnection',
+                "User ID=${USER_NAME};Password=${PASSWORD};Host=192.168.110.6;Port=5432;Database=offlogs;Pooling=true;"
+            )
+        }
+        withCredentials([
+                usernamePassword(credentialsId: "offlogs_production_smtp_credentials", usernameVariable: 'USER_NAME', passwordVariable: 'PASSWORD')
+        ]) {
+            envVariables.put('Smtp__Server', 'smtp-pulse.com')
+            envVariables.put('Smtp__UserName', USER_NAME)
+            envVariables.put('Smtp__Password', PASSWORD)
+            envVariables.put('Smtp__From__Name', 'OffLogs')
+            envVariables.put('Smtp__From__Email', 'support@offlogs.com')
+            envVariables.put('Smtp__Port', '2525')
+            envVariables.put('Smtp__EnableSsl', 'true')
+        }
+        withCredentials([string(credentialsId: "offlogs_production_user_jwt", variable: 'AUTH_SECRET')]) {
+            envVariables.put('App__Auth__SymmetricSecurityKey', AUTH_SECRET)
+        }
+        withCredentials([string(credentialsId: "offlogs_production_application_jwt", variable: 'AUTH_SECRET')]) {
+            envVariables.put('App__Application__SymmetricSecurityKey', AUTH_SECRET)
         }
     }
 
@@ -119,7 +116,7 @@ node('vizit-mainframe-k8s-master') {
             --set images.web.tag=${imageTag} \
             --set images.worker.tag=${imageTag} \
         """
-        container.envVariables.each {
+        envVariables.each {
             bashScript = "$bashScript --set pods.env.${it.key}=\"$it.value\""
         }
         bashScript = "$bashScript devops/publish/chart"
