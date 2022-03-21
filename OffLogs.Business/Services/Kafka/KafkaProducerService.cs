@@ -5,6 +5,7 @@ using Confluent.Kafka;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Notification.Abstractions;
+using OffLogs.Business.Helpers;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Services.Kafka.Models;
 using OffLogs.Business.Services.Kafka.Serializers;
@@ -50,7 +51,7 @@ namespace OffLogs.Business.Services.Kafka
             _logger = logger;
 
             var kafkaSection = configuration.GetSection("Kafka");
-            _producerId = kafkaSection.GetValue<string>("ProducerId");
+            _producerId = kafkaSection.GetValue<string>("ProducerId") + "-" + EnvironmentHelper.GetPodId();;
             _kafkaServers = kafkaSection.GetValue<string>("Servers");
 
             _logsTopicName = kafkaSection.GetValue<string>("Topic:Logs");
@@ -93,7 +94,9 @@ namespace OffLogs.Business.Services.Kafka
         public async Task ProduceNotificationMessageAsync(INotificationContext notificationContext)
         {
             var modelToSend = NotificationMessageDto.Create(notificationContext);
-            _logger.LogDebug($"Send notification to topic: {_notificationsTopicName}. Context: {modelToSend.ContextType}");
+            _logger.LogDebug(
+                $"Send notification to topic: {_notificationsTopicName}. Context: {modelToSend.ContextType}"
+            );
             try
             {
                 await Producer.ProduceAsync(_notificationsTopicName, new Message<string, object>
