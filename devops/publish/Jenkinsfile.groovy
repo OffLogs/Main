@@ -12,7 +12,7 @@ def mainContainer = new DockerContainer(
     dockerFile: 'devops/publish/image/common/Dockerfile',
     registryUrl: registryUrl,
 );
-mainContainer.generateRandomTag()
+// mainContainer.generateRandomTag()
 def imageTag = mainContainer.tag
 
 def migrationContainer = new DockerContainer(
@@ -34,33 +34,33 @@ properties([
     disableConcurrentBuilds()
 ])
 
-node('vizit-mainframe-testing-node') {
-    env.ENVIRONMENT = "Development"
+// node('vizit-mainframe-testing-node') {
+//     env.ENVIRONMENT = "Development"
 
-    stage('Checkout') {
-        // cleanWs()
-        sh """
-            git config --global http.postBuffer 2048M
-            git config --global http.maxRequestBuffer 1024M
-            git config --global core.compression 0
-        """
-        checkout scm
-    }
+//     stage('Checkout') {
+//         // cleanWs()
+//         sh """
+//             git config --global http.postBuffer 2048M
+//             git config --global http.maxRequestBuffer 1024M
+//             git config --global core.compression 0
+//         """
+//         checkout scm
+//     }
 
-    stage('Build and push main image to the registry') {
-        docker.withRegistry("https://$registryUrl", 'abedor_docker_registry_credentials') {
-            dockerHelper.buildAndPush(mainContainer)
-            echo "Pushed container: ${mainContainer.getFullImageName()}"
-        }
-    }
+//     stage('Build and push main image to the registry') {
+//         docker.withRegistry("https://$registryUrl", 'abedor_docker_registry_credentials') {
+//             dockerHelper.buildAndPush(mainContainer)
+//             echo "Pushed container: ${mainContainer.getFullImageName()}"
+//         }
+//     }
 
-    stage('Build and push web image to the registry') {
-        docker.withRegistry("https://$registryUrl", 'abedor_docker_registry_credentials') {
-            dockerHelper.buildAndPush(webAppContainer)
-            echo "Pushed container: ${webAppContainer.getFullImageName()}"
-        }
-    }
-}
+//     stage('Build and push web image to the registry') {
+//         docker.withRegistry("https://$registryUrl", 'abedor_docker_registry_credentials') {
+//             dockerHelper.buildAndPush(webAppContainer)
+//             echo "Pushed container: ${webAppContainer.getFullImageName()}"
+//         }
+//     }
+// }
 
 node('vizit-mainframe-k8s-master') {
     stage('Checkout') {
@@ -117,7 +117,10 @@ node('vizit-mainframe-k8s-master') {
             --set images.worker.tag=${imageTag} \
         """
         envVariables.each {
-            bashScript = "$bashScript --set pods.env.${it.key}=\"${it.value}\""
+            def cleanedValue = it.value?.replaceAll("\\.", "\\.")
+                .replaceAll(",", "\\,")
+                .replaceAll('\\"', '\\"')
+            bashScript = "$bashScript --set pods.env.${it.key}=\"${cleanedValue}\""
         }
         bashScript = "$bashScript devops/publish/chart"
         echo bashScript
