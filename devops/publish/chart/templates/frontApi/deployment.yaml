@@ -14,6 +14,7 @@ spec:
       labels:
         app: {{ .Values.images.frontApi.name }}
     spec:
+      restartPolicy: Always
       containers:
         - name: {{ .Values.images.frontApi.name }}
           image: {{ .Values.image.registry }}/{{ .Values.images.frontApi.name }}:{{ .Values.images.frontApi.tag }}
@@ -21,8 +22,8 @@ spec:
           env:
             - name: PROJECT_DIR
               value: "OffLogs.Api.Frontend"
+            {{- include "helpers.pods.env-variables" . | indent 12 }}
           ports:
           - containerPort: 80
-      restartPolicy: Always
       imagePullSecrets:
         - name: {{ .Values.image.secrets }}

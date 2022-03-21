@@ -34,7 +34,26 @@ images:
     deploymentName: offlogs-worker-production-deployment
     serviceName: offlogs-worker-production-service
     ingressName: offlogs-worker-production-ingress
-    
+
+pods:
+  env: 
+    Kafka__Servers: 192.168.110.6:29092,192.168.110.6:29093
+    Kafka__ProducerId: offlogs-reducer-
+    Kafka__ConsumerClientId: offlogs-consumer-
+    Kafka__Topic_Logs: production-logs
+    Kafka__Topic_Notification: offlogs-notification-logs
+    Smtp__Server: smtp-pulse.com
+    Smtp__From__Name: OffLogs
+    Smtp__From__Email: support@offlogs.com
+    Smtp__Port: 2525
+    Smtp__EnableSsl: true
+
+    ConnectionStrings__DefaultConnection: User ID=;Password=;Host=192.168.110.6;Port=5432;Database=offlogs;Pooling=true;
+    Smtp__UserName: ''
+    Smtp__Password: ''
+    App__Auth__SymmetricSecurityKey: ''
+    App__Application__SymmetricSecurityKey: ''
+
 nameOverride: ""
 fullnameOverride: ""
 

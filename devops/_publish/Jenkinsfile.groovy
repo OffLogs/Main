@@ -40,8 +40,7 @@ node('abedor-mainframe-web') {
     }
 
     stage('Init variables') {
-        String dbConnectionString;
-        
+
         containers.collect {
             // Kafka
             it.envVariables.put('Kafka__Servers', '192.168.99.6:29092,192.168.99.6:29093')

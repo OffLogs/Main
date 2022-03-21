@@ -14,13 +14,14 @@ spec:
       labels:
         app: {{ .Values.images.worker.name }}
     spec:
-      containers:
-      - name: {{ .Values.images.worker.name }}
-        image: {{ .Values.image.registry }}/{{ .Values.images.worker.name }}:{{ .Values.images.worker.tag }}
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        env:
-        - name: PROJECT_DIR
-          value: "OffLogs.WorkerService"
       restartPolicy: Always
+      containers:
+        - name: {{ .Values.images.worker.name }}
+          image: {{ .Values.image.registry }}/{{ .Values.images.worker.name }}:{{ .Values.images.worker.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: PROJECT_DIR
+              value: "OffLogs.WorkerService"
+            {{- include "helpers.pods.env-variables" . | indent 12 }}
       imagePullSecrets:
       - name: {{ .Values.image.secrets }}
