@@ -37,6 +37,7 @@ namespace OffLogs.Migrations
                 Migrate(testConnectionString);    
             }
             Console.WriteLine("Migrations are applied...");
+            Console.ReadKey();
         }
 
         /// <summary>
