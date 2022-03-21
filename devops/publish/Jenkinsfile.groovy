@@ -42,7 +42,7 @@ node('vizit-mainframe-testing-node') {
         sh """
             git config --global http.postBuffer 2048M
             git config --global http.maxRequestBuffer 1024M
-            git config --global core.compression 9
+            git config --global core.compression 0
         """
         checkout scm
     }
@@ -120,5 +120,6 @@ node('vizit-mainframe-k8s-master') {
             bashScript = "$bashScript --set pods.env.${it.key}=\"$it.value\""
         }
         bashScript = "$bashScript devops/publish/chart"
+        sh bashScript
     }
 }
