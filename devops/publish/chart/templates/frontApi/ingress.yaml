@@ -12,7 +12,7 @@ spec:
       - site-api.offlogs.com
       secretName: site-api-offlogs-com-tls-2-secret
   rules:
-    - host: offlogs.com
+    - host: site-api.offlogs.com
       http:
         paths:
           - pathType: Prefix
