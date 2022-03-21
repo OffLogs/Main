@@ -2,15 +2,15 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Values.images.frontApi.ingressName }}
+  name: {{ .Values.images.web.ingressName }}
   annotations:
     cert-manager.io/issuer: "letsencrypt-prod"
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
-      - site-api.offlogs.com
-      secretName: site-api-offlogs-com-tls-2-secret
+      - offlogs.com
+      secretName: offlogs-com-tls-2-secret
   rules:
     - host: offlogs.com
       http:
@@ -19,6 +19,6 @@ spec:
             path: /
             backend:
               service:
-                name: {{ .Values.images.frontApi.serviceName }}
+                name: {{ .Values.images.web.serviceName }}
                 port:
                   number: 80

@@ -21,16 +21,19 @@ images:
     tag: latest
     deploymentName: offlogs-front-api-production-deployment
     serviceName: offlogs-front-api-production-service
+    ingressName: offlogs-front-api-production-ingress
   web:
     name: offlogs-web-production
     tag: latest
     deploymentName: offlogs-web-production-deployment
     serviceName: offlogs-web-production-service
+    ingressName: offlogs-web-production-ingress
   worker:
     name: offlogs-main-production
     tag: latest
     deploymentName: offlogs-worker-production-deployment
     serviceName: offlogs-worker-production-service
+    ingressName: offlogs-worker-production-ingress
     
 nameOverride: ""
 fullnameOverride: ""

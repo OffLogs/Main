@@ -15,15 +15,14 @@ spec:
         app: {{ .Values.images.frontApi.name }}
     spec:
       containers:
-      - name: {{ .Values.images.frontApi.name }}
-#        image: {{ .Values.image.registry }}/{{ .Values.images.frontApi.name }}:{{ .Values.images.frontApi.tag }}
-        image: cloudnativelabs/whats-my-ip:latest
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        env:
-        - name: PROJECT_DIR
-          value: "OffLogs.Api.Frontend"
-        ports:
-        - containerPort: 8080
+        - name: {{ .Values.images.frontApi.name }}
+          image: {{ .Values.image.registry }}/{{ .Values.images.frontApi.name }}:{{ .Values.images.frontApi.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: PROJECT_DIR
+              value: "OffLogs.Api.Frontend"
+          ports:
+            - containerPort: 80
       restartPolicy: Always
       imagePullSecrets:
-      - name: {{ .Values.image.secrets }}
+          - name: {{ .Values.image.secrets }}
