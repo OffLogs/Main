@@ -7,5 +7,5 @@ spec:
   selector: 
     app: {{ .Values.images.frontApi.deploymentName }}
   ports:
-    - port: 80
+    - port: 8080
       protocol: TCP

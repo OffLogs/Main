@@ -9,7 +9,7 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - offlogs.com
+      - offlogs.com
       secretName: offlogs-com-tls-2-secret
   rules:
     - host: offlogs.com
@@ -21,4 +21,4 @@ spec:
               service:
                 name: {{ .Values.images.frontApi.serviceName }}
                 port:
-                  number: 80
+                  number: 8080
