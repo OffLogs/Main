@@ -29,6 +29,8 @@ def webAppContainer = new DockerContainer(
     tag: imageTag,
 );
 
+def containers = [mainContainer, migrationContainer]
+
 properties([
     disableConcurrentBuilds()
 ])
@@ -72,14 +74,54 @@ node('vizit-mainframe-k8s-master') {
         checkout scm
     }
 
+    stage('Set environment vars') {
+        containers.collect {
+            // Kafka
+            it.envVariables.put('Kafka__Servers', '192.168.110.6:29092,192.168.110.6:29093')
+            it.envVariables.put('Kafka__ProducerId', 'offlogs-reducer-1')
+            it.envVariables.put('Kafka__Topic_Logs', 'production-logs')
+            it.envVariables.put('Kafka__Topic_Notification', 'offlogs-notification-logs')
+            it.envVariables.put('Kafka__ConsumerClientId', 'client-1')
+        
+            withCredentials([
+                    usernamePassword(credentialsId: "offlogs_production_db_credentials", usernameVariable: 'USER_NAME', passwordVariable: 'PASSWORD')
+            ]) {
+                it.envVariables.put(
+                    'ConnectionStrings__DefaultConnection',
+                    "User ID=${USER_NAME};Password=${PASSWORD};Host=192.168.110.6;Port=5432;Database=offlogs;Pooling=true;"
+                )
+            }
+            withCredentials([
+                    usernamePassword(credentialsId: "offlogs_production_smtp_credentials", usernameVariable: 'USER_NAME', passwordVariable: 'PASSWORD')
+            ]) {
+                it.envVariables.put('Smtp__Server', 'smtp-pulse.com')
+                it.envVariables.put('Smtp__UserName', USER_NAME)
+                it.envVariables.put('Smtp__Password', PASSWORD)
+                it.envVariables.put('Smtp__From__Name', 'OffLogs')
+                it.envVariables.put('Smtp__From__Email', 'support@offlogs.com')
+                it.envVariables.put('Smtp__Port', '2525')
+                it.envVariables.put('Smtp__EnableSsl', 'true')
+            }
+            withCredentials([string(credentialsId: "offlogs_production_user_jwt", variable: 'AUTH_SECRET')]) {
+                it.envVariables.put('App__Auth__SymmetricSecurityKey', AUTH_SECRET)
+            }
+            withCredentials([string(credentialsId: "offlogs_production_application_jwt", variable: 'AUTH_SECRET')]) {
+                it.envVariables.put('App__Application__SymmetricSecurityKey', AUTH_SECRET)
+            }
+        }
+    }
+
     stage('Apply K8S config') {
-        sh """
+        String bashScript = """
             helm upgrade offlogs --install \
             --set images.frontApi.tag=${imageTag} \
             --set images.api.tag=${imageTag} \
             --set images.web.tag=${imageTag} \
             --set images.worker.tag=${imageTag} \
-            devops/publish/chart
         """
+        container.envVariables.each {
+            bashScript = "$bashScript --set pods.env.${it.key}=\"$it.value\""
+        }
+        bashScript = "$bashScript devops/publish/chart"
     }
 }

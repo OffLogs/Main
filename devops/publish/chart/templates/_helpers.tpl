@@ -49,3 +49,13 @@ Selector labels
 app.kubernetes.io/name: {{ include "publish.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
+
+{{/*
+Common env vars
+*/}}
+{{- define "helpers.pods.env-variables"}}
+{{- range $key, $val := .Values.pods.env }}
+- name: {{ $key }}
+  value: "{{ $val }}"
+{{- end}}
+{{- end }}

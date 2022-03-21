@@ -1,29 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.images.api.deploymentName }}
+  name: {{ .Values.images.worker.deploymentName }}
   labels:
-    app: {{ .Values.images.api.name }}
+    app: {{ .Values.images.worker.name }}
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: {{ .Values.images.api.name }}
+      app: {{ .Values.images.worker.name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.images.api.name }}
+        app: {{ .Values.images.worker.name }}
     spec:
       restartPolicy: Always
       containers:
-        - name: {{ .Values.images.api.name }}
-          image: {{ .Values.image.registry }}/{{ .Values.images.api.name }}:{{ .Values.images.api.tag }}
+        - name: {{ .Values.images.worker.name }}
+          image: {{ .Values.image.registry }}/{{ .Values.images.worker.name }}:{{ .Values.images.worker.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: PROJECT_DIR
-              value: "OffLogs.Api"
+              value: "OffLogs.Migrations"
             {{- include "helpers.pods.env-variables" . | indent 12 }}
-          ports:
-          - containerPort: 80
       imagePullSecrets:
       - name: {{ .Values.image.secrets }}
