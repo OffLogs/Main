@@ -119,6 +119,8 @@ node('vizit-mainframe-k8s-master') {
         envVariables.each {
             bashScript = "$bashScript --set pods.env.${it.key}=\"${it.value}\""
         }
-        sh "$bashScript devops/publish/chart"
+        bashScript = "$bashScript devops/publish/chart"
+        echo bashScript
+        sh bashScript
     }
 }
