@@ -38,7 +38,7 @@ node('vizit-mainframe-testing-node') {
     env.ENVIRONMENT = "Development"
 
     stage('Checkout') {
-        cleanWs()
+        // cleanWs()
         sh """
             git config --global http.postBuffer 2048M
             git config --global http.maxRequestBuffer 1024M
@@ -64,7 +64,7 @@ node('vizit-mainframe-testing-node') {
 
 node('vizit-mainframe-k8s-master') {
     stage('Checkout') {
-        cleanWs()
+        // cleanWs()
         sh """
             git config --global http.postBuffer 2048M
             git config --global http.maxRequestBuffer 1024M
