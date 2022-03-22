@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ .Values.images.migration.deploymentName }}
+  labels:
+    app: {{ .Values.images.migration.deploymentSelector }}
+spec:
+  containers:
+    - name: {{ .Values.images.migration.name }}
+      image: {{ .Values.image.registry }}/{{ .Values.images.migration.name }}:{{ .Values.images.migration.tag }}
+      imagePullPolicy: {{ .Values.image.pullPolicy }}
+      env:
+        - name: PROJECT_DIR
+          value: "OffLogs.Migrations"
+        {{- include "helpers.pods.env-variables" . | indent 8 }}
+  restartPolicy: Never
