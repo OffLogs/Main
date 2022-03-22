@@ -5,7 +5,7 @@ metadata:
 spec:
   type: ClusterIP
   selector: 
-    app: {{ .Values.images.web.name }}
+    app: {{ .Values.images.web.deploymentName }}
   ports:
     - port: 80
       protocol: TCP
