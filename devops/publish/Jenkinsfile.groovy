@@ -76,10 +76,10 @@ node('vizit-mainframe-k8s-master') {
     stage('Set environment vars') {
         // Kafka
         envVariables.put('Kafka__Servers', '192.168.110.6:29092,192.168.110.6:29093')
-        envVariables.put('Kafka__ProducerId', 'offlogs-reducer-1')
-        envVariables.put('Kafka__Topic_Logs', 'production-logs')
+        envVariables.put('Kafka__ProducerId', 'offlogs-reducer')
+        envVariables.put('Kafka__ConsumerClientId', 'offlogs-client')
+        envVariables.put('Kafka__Topic_Logs', 'offlogs-production-logs')
         envVariables.put('Kafka__Topic_Notification', 'offlogs-notification-logs')
-        envVariables.put('Kafka__ConsumerClientId', 'client-1')
     
         withCredentials([
                 usernamePassword(credentialsId: "offlogs_production_db_credentials", usernameVariable: 'USER_NAME', passwordVariable: 'PASSWORD')
