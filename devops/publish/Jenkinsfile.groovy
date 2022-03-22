@@ -16,7 +16,7 @@ mainContainer.generateRandomTag()
 def imageTag = mainContainer.tag
 
 def migrationContainer = new DockerContainer(
-    name: 'offlogs-migration-production',
+    name: 'offlogs-main-production',
     dockerFile: 'devops/publish/image/common/Dockerfile',
     isRunAlways: false,
     isRunInBackground: false,
@@ -111,6 +111,7 @@ node('vizit-mainframe-k8s-master') {
     stage('Run migrations') {
         docker.withRegistry("https://$registryUrl", 'abedor_docker_registry_credentials') {
             migrationContainer.envVariables = envVariables
+            migrationContainer.envVariables.put('PROJECT_DIR', 'OffLogs.Migrations')
             dockerHelper.runContainer(migrationContainer)
         }
     }
