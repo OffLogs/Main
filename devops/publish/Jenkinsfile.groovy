@@ -108,6 +108,13 @@ node('vizit-mainframe-k8s-master') {
         }
     }
 
+    stage('Run migrations') {
+        docker.withRegistry("https://$registryUrl", 'abedor_docker_registry_credentials') {
+            migrationContainer.envVariables = envVariables
+            dockerHelper.runContainer(migrationContainer)
+        }
+    }
+
     stage('Apply K8S config') {
         String bashScript = """
             set +x
