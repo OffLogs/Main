@@ -1,0 +1,88 @@
+﻿@page "/registration/step1"
+@using Microsoft.AspNetCore.Components
+@using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User
+@using OffLogs.Web.Resources
+@using OffLogs.Web.Services.Http
+@using OffLogs.Web.Constants
+@using OffLogs.Web.Core.Components.Form
+
+@inject IApiService _apiService
+@inject NavigationManager _navigationManager
+@inject ToastService _toastService
+
+<div class="card w-registration-step1-page">
+    <div class="card-body">
+        <h5 class="card-title">Registration</h5>
+        <div class="card-text">
+            <EditForm Model="@model" OnSubmit="@HandleSubmit">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <p>
+                    @EmailError
+                    <CustomInputText 
+                        Label="@CommonResources.User_Registration_EnterEmail"
+                        @bind-Value="model.Email"
+                        type="email"
+                        ErrorMessage="@EmailError" />
+                </p>
+                @if (_isLoading)
+                {
+                    <Preloader />
+                }
+                else
+                {
+                    <MyButton IsSubmit="true">Login</MyButton>
+                }
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    private RegistrationStep1Request model = new();
+    private EditContext _editContext;
+    private bool _isLoading;
+
+    private string EmailError
+    {
+        get
+        {
+            var messages = _editContext.GetValidationMessages(() => model.Email);
+            return messages.FirstOrDefault();
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        _isLoading = false;
+        _editContext = new EditContext(model);
+    }
+
+    private async Task HandleSubmit()
+    {
+        model.ReCaptcha = "Fake captcha";
+        var isValid = _editContext.Validate();
+        if (isValid)
+        {
+            _isLoading = true;
+            try
+            {
+                var isOk = await _apiService.RegistrationStep1Async(model);
+                if (isOk)
+                {
+                    _toastService.AddInfoMessage(CommonResources.User_Registration_EmailIsSent);
+                    model.Email = "";
+                }
+            }
+            catch (Exception)
+            {
+                _toastService.AddErrorMessage(CommonResources.User_Registration_RegistrationError);
+            }
+            finally
+            {
+                _isLoading = false;
+            }
+        }
+        StateHasChanged();
+    }
+}

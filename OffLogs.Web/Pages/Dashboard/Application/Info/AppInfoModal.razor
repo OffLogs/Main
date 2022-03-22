@@ -87,7 +87,7 @@
             _application = await _apiService.GetApplicationAsync(ApplicationId.Value);
             if (_application == null)
             {
-                _toastService.AddInfoMessage(Common.Error_LogNotFound);
+                _toastService.AddInfoMessage(CommonResources.Error_LogNotFound);
                 _isShowModal = false;
             }
         }
