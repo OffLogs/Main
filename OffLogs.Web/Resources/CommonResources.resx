@@ -27,4 +27,13 @@
     <data name="Error_ApplicationDeletionError" xml:space="preserve">
         <value>Application deletion error</value>
     </data>
+    <data name="User_Registration_EnterEmail" xml:space="preserve">
+        <value>Enter your email:</value>
+    </data>
+    <data name="User_Registration_RegistrationError" xml:space="preserve">
+        <value>Email is incorrect. Please try again or enter another email</value>
+    </data>
+    <data name="User_Registration_EmailIsSent" xml:space="preserve">
+        <value>Thank you. The email is sent. Please check and continue registration process</value>
+    </data>
 </root>

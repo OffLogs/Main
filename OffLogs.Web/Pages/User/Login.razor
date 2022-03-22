@@ -9,7 +9,7 @@
 <div class="card w-login-page">
     <div class="card-body">
         <h5 class="card-title">Login to your account</h5>
-        <p class="card-text">
+        <div class="card-text">
             <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
                 <DataAnnotationsValidator />
                 <ValidationSummary />
@@ -35,7 +35,7 @@
                     <MyButton IsSubmit="true">Login</MyButton>
                 }
             </EditForm>
-        </p>
+        </div>
     </div>
 </div>
 

@@ -47,6 +47,15 @@
 
     private bool _isShowMainMenu = false;
 
+    private bool _isSharedPage
+    {
+        get
+        {
+            var path = _navigationManager.GetPath();
+            return path.StartsWith("/login") || path.StartsWith("/registration");
+        }
+    }
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -64,7 +73,7 @@
     private void CheckIsLoggedInAndRedirect()
     {
         _isLoggedIn = _authService.IsLoggedIn();
-        if (!_isLoggedIn && !_navigationManager.GetPath().StartsWith("/login"))
+        if (!_isLoggedIn && !_isSharedPage)
         {
             _navigationManager.NavigateTo("/login");
         }

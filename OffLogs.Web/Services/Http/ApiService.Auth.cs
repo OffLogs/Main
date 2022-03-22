@@ -35,5 +35,31 @@ namespace OffLogs.Web.Services.Http
             }
             return true;
         }
+        
+        public async Task<bool> RegistrationStep1Async(RegistrationStep1Request model)
+        {
+            try
+            {
+                await PostAsync<object>(MainApiUrl.RegistrationStep1, model);
+                return true;
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            return false;
+        }
+        
+        public async Task<RegistrationStep2ResponseDto> RegistrationStep2Async(RegistrationStep2Request model)
+        {
+            var response = await PostAsync<RegistrationStep2ResponseDto>(MainApiUrl.RegistrationStep2, model);
+            if (response == null)
+            {
+                throw new ServerErrorException();
+            }
+
+            return response;
+        }
     }
 }
