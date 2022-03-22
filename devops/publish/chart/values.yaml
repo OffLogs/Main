@@ -14,24 +14,28 @@ images:
     name: offlogs-main-production
     tag: latest
     deploymentName: offlogs-front-api-production-deployment
+    deploymentSelector: offlogs-front-api-production-deployment-selector
     serviceName: offlogs-front-api-production-service
     ingressName: offlogs-front-api-production-ingress
   api:
     name: offlogs-main-production
     tag: latest
     deploymentName: offlogs-api-production-deployment
+    deploymentSelector: offlogs-api-production-deployment-selector
     serviceName: offlogs-api-production-service
     ingressName: offlogs-api-production-ingress
   web:
     name: offlogs-web-production
     tag: latest
     deploymentName: offlogs-web-production-deployment
+    deploymentSelector: offlogs-web-production-deployment-selector
     serviceName: offlogs-web-production-service
     ingressName: offlogs-web-production-ingress
   worker:
     name: offlogs-main-production
     tag: latest
     deploymentName: offlogs-worker-production-deployment
+    deploymentSelector: offlogs-worker-production-deployment-selector
     serviceName: offlogs-worker-production-service
     ingressName: offlogs-worker-production-ingress
 

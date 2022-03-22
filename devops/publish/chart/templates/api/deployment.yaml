@@ -3,16 +3,16 @@ kind: Deployment
 metadata:
   name: {{ .Values.images.api.deploymentName }}
   labels:
-    app: {{ .Values.images.api.deploymentName }}
+    app: {{ .Values.images.api.deploymentSelector }}
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: {{ .Values.images.api.deploymentName }}
+      app: {{ .Values.images.api.deploymentSelector }}
   template:
     metadata:
       labels:
-        app: {{ .Values.images.api.deploymentName }}
+        app: {{ .Values.images.api.deploymentSelector }}
     spec:
       restartPolicy: Always
       containers:
