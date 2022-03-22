@@ -38,6 +38,13 @@ images:
     deploymentSelector: offlogs-worker-production-deployment-selector
     serviceName: offlogs-worker-production-service
     ingressName: offlogs-worker-production-ingress
+  migration:
+    name: offlogs-main-production
+    tag: latest
+    deploymentName: offlogs-migration-production-deployment
+    deploymentSelector: offlogs-migration-production-deployment-selector
+    serviceName: offlogs-migration-production-service
+    ingressName: offlogs-migration-production-ingress
 
 pods:
   env: 
