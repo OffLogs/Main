@@ -110,9 +110,10 @@ node('vizit-mainframe-k8s-master') {
 
     stage('Run migrations') {
         docker.withRegistry("https://$registryUrl", 'abedor_docker_registry_credentials') {
+            dockerHelper.stopContainer(migrationContainer)
+            
             migrationContainer.envVariables = envVariables.clone()
             migrationContainer.envVariables.put('PROJECT_DIR', 'OffLogs.Migrations')
-            dockerHelper.stopContainer(migrationContainer)
             dockerHelper.runContainer(migrationContainer)
         }
     }
