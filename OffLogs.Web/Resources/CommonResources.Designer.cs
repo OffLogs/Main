@@ -79,6 +79,33 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Login.
+        /// </summary>
+        internal static string Login {
+            get {
+                return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register.
+        /// </summary>
+        internal static string Register {
+            get {
+                return ResourceManager.GetString("Register", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration.
+        /// </summary>
+        internal static string Registration {
+            get {
+                return ResourceManager.GetString("Registration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Empty....
         /// </summary>
         internal static string TableItemsNotFound {
@@ -106,11 +133,74 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter your password:.
+        /// </summary>
+        internal static string User_Registration_EnterPassword {
+            get {
+                return ResourceManager.GetString("User_Registration_EnterPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Continue.
+        /// </summary>
+        internal static string User_Registration_Login {
+            get {
+                return ResourceManager.GetString("User_Registration_Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generate secret key.
+        /// </summary>
+        internal static string User_Registration_ReceiveSecret {
+            get {
+                return ResourceManager.GetString("User_Registration_ReceiveSecret", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email is incorrect. Please try again or enter another email.
         /// </summary>
         internal static string User_Registration_RegistrationError {
             get {
                 return ResourceManager.GetString("User_Registration_RegistrationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save secret file.
+        /// </summary>
+        internal static string User_Registration_SaveKey {
+            get {
+                return ResourceManager.GetString("User_Registration_SaveKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send verification email.
+        /// </summary>
+        internal static string User_Registration_SendEmail {
+            get {
+                return ResourceManager.GetString("User_Registration_SendEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration - Step 1.
+        /// </summary>
+        internal static string User_Registration_Step1 {
+            get {
+                return ResourceManager.GetString("User_Registration_Step1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration - Step 2.
+        /// </summary>
+        internal static string User_Registration_Step2 {
+            get {
+                return ResourceManager.GetString("User_Registration_Step2", resourceCulture);
             }
         }
     }
