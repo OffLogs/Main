@@ -30,6 +30,7 @@ namespace OffLogs.Business.Services.Kafka
                 if (_producer == null)
                 {
                     LogDebug($"Build new instance. Servers: {_kafkaServers}. ProducerId: {_producerId}");
+                    LogDebug($"Active topics: {_logsTopicName}, {_notificationsTopicName}");
                     
                     var builder = new ProducerBuilder<string, object>(_producerConfig);
                     builder.SetValueSerializer(new ValueSerializer<object>());
