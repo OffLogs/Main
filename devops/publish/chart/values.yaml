@@ -52,7 +52,7 @@ pods:
     Kafka__ProducerId: offlogs-reducer-
     Kafka__ConsumerClientId: offlogs-consumer-
     Kafka__Topic__Logs: offlogs-production-logs
-    Kafka__Topic__Notification: offlogs-notification-logs
+    Kafka__Topic__Notifications: offlogs-notification-logs
     Smtp__Server: smtp-pulse.com
     Smtp__From__Name: OffLogs
     Smtp__From__Email: support@offlogs.com

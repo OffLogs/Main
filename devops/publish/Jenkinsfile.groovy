@@ -79,7 +79,7 @@ node('vizit-mainframe-k8s-master') {
         envVariables.put('Kafka__ProducerId', 'offlogs-reducer')
         envVariables.put('Kafka__ConsumerClientId', 'offlogs-client')
         envVariables.put('Kafka__Topic__Logs', 'offlogs-production-logs')
-        envVariables.put('Kafka__Topic__Notification', 'offlogs-notification-logs')
+        envVariables.put('Kafka__Topic__Notifications', 'offlogs-notification-logs')
     
         withCredentials([
                 usernamePassword(credentialsId: "offlogs_production_db_credentials", usernameVariable: 'USER_NAME', passwordVariable: 'PASSWORD')
