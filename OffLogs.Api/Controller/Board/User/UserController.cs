@@ -4,6 +4,7 @@ using AspNetCore.ApiControllers.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.User;
 using Persistence.Transactions.Behaviors;
 
@@ -16,8 +17,9 @@ namespace OffLogs.Api.Controller.Board.User
     {
         public UserController(
             IAsyncRequestBuilder asyncRequestBuilder,
-            IDbSessionProvider commitPerformer
-        ) : base(asyncRequestBuilder, commitPerformer)
+            IDbSessionProvider commitPerformer,
+            ILogger<UserController> logger
+        ) : base(asyncRequestBuilder, commitPerformer, logger)
         {
         }
 

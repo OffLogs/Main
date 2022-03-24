@@ -1,14 +1,10 @@
 ﻿@page "/login"
 @using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User
-@using OffLogs.Web.Constants
 @using OffLogs.Web.Core.Components.Form
 @using OffLogs.Web.Resources
 @using System.IO
 @using Microsoft.AspNetCore.Components
 @using Microsoft.Extensions.Logging
-@using OffLogs.Business.Common.Security
-@using OffLogs.Business.Common.Utils
-@using OffLogs.Web.Models.User
 
 @inject IAuthorizationService _authorizationService
 @inject NavigationManager _navigationManager
@@ -45,11 +41,9 @@
 
 @code
 {
-    private LoginModel model = new();
+    private LoginRequest model = new();
     private EditContext _editContext;
     private bool _isLoading;
-    private IBrowserFile _keyFile = null;
-    private AsymmetricEncryptor _asymmetricEncryptor = null;
     
     private string PasswordError
     {
@@ -69,12 +63,19 @@
     private async Task OnSelectFiles(InputFileChangeEventArgs changeEvent)
     {
         _isLoading = true;
-        _keyFile = changeEvent.GetMultipleFiles(1).FirstOrDefault();
+        var keyFile = changeEvent.GetMultipleFiles(1).FirstOrDefault();
         try
         {
-            if (_keyFile == null)
+            if (keyFile == null)
             {
                 throw new Exception();
+            }
+            using var stream = keyFile.OpenReadStream(5000000);
+            using var reader = new StreamReader(stream);
+            model.Pem = await reader.ReadToEndAsync();
+            if (string.IsNullOrEmpty(model.Pem))
+            {
+                throw new Exception("Empty key file");
             }
         }
         catch (Exception e)
@@ -83,28 +84,18 @@
             _toastService.AddErrorMessage(AuthResources.Login_PleaseEnterCorrectKeyFile);
         }
         _isLoading = false;
+        await Task.CompletedTask;
     }
 
     private async Task HandleSubmit()
     {
-        model.SignedData = SecurityUtil.GetRandomString(32);
-        model.SignBase64 = Convert.ToBase64String(
-            _asymmetricEncryptor.SignData(model.SignedData)
-        );
-        model.PublicKeyBase64 = Convert.ToBase64String(
-            _asymmetricEncryptor.GetPublicKeyBytes()
-        );
-        
         var isValid = _editContext.Validate();
         if (isValid)
         {
             _isLoading = true;
             try
             {
-                var fileContent = new StreamContent(_keyFile.OpenReadStream(1024));
-                _asymmetricEncryptor = AsymmetricEncryptor.ReadFromPem(await fileContent.ReadAsStringAsync(), model.Password);
-                
-                var isLoggedIn = await _authorizationService.LoginAsync(model.Request);
+                var isLoggedIn = await _authorizationService.LoginAsync(model);
                 if (isLoggedIn)
                 {
                     _navigationManager.NavigateTo(SiteUrl.Dashboard);
@@ -113,6 +104,7 @@
             }
             catch (Exception e)
             {
+                _logger.LogError(e.Message, e);
                 _toastService.AddErrorMessage("Login or password is incorrect");
             }
             finally

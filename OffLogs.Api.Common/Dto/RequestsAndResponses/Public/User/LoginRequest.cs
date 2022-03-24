@@ -7,14 +7,11 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User
     public class LoginRequest : IRequest<LoginResponseDto>
     {
         [Required]
-        public string SignedData { get; set; }
+        [StringLength(5048, MinimumLength = 50)]
+        public string Pem { get; set; }
         
         [Required]
-        [IsBase64]
-        public string SignBase64 { get; set; }
-
-        [Required]
-        [IsBase64]
-        public string PublicKeyBase64 { get; set; }
+        [StringLength(256, MinimumLength = 3)]
+        public string Password { get; set; }
     }
 }

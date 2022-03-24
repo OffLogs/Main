@@ -4,6 +4,7 @@ using AspNetCore.ApiControllers.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using OffLogs.Api.Common.Dto;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application;
@@ -19,8 +20,9 @@ namespace OffLogs.Api.Controller.Board.Application
     {
         public ApplicationController(
             IAsyncRequestBuilder asyncRequestBuilder, 
-            IDbSessionProvider commitPerformer
-        ) : base(asyncRequestBuilder, commitPerformer)
+            IDbSessionProvider commitPerformer,
+            ILogger<ApplicationController> logger
+        ) : base(asyncRequestBuilder, commitPerformer, logger)
         {
         }
 

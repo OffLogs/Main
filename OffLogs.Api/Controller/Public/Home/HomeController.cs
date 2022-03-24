@@ -3,6 +3,7 @@ using Api.Requests.Abstractions;
 using AspNetCore.ApiControllers.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.Home;
 using OffLogs.Business.Mvc.Attribute.Auth;
 using Persistence.Transactions.Behaviors;
@@ -15,8 +16,9 @@ namespace OffLogs.Api.Controller.Public.Home
     {
         public HomeController(
             IAsyncRequestBuilder asyncRequestBuilder, 
-            IDbSessionProvider commitPerformer
-        ) : base(asyncRequestBuilder, commitPerformer)
+            IDbSessionProvider commitPerformer,
+            ILogger<HomeController> logger
+        ) : base(asyncRequestBuilder, commitPerformer, logger)
         {
         }
         
