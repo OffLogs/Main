@@ -15,24 +15,22 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Public.UserControlle
         public LoginActionTests(ApiCustomWebApplicationFactory factory) : base(factory) { }
 
         [Fact]
-        public async Task ShouldNotLoginIfBase64IsIncorrect()
+        public async Task ShouldNotLoginIfPasswordIncorrect()
         {
             // Arrange
             var password = SecurityUtil.GeneratePassword();
-            var dataToSign = SecurityUtil.GetRandomString(16);
             var fakeUser = DataFactory.UserFactory().Generate();
             // Arrange
             var pendingUser = await UserService.CreatePendingUser(fakeUser.Email);
             var (user , pem) = await UserService.ActivateUser(pendingUser.Id, password);
 
             var encryptor = AsymmetricEncryptor.ReadFromPem(pem, password);
-            var signData = encryptor.SignData(dataToSign);
+            
             // Act
             var response = await PostRequestAsAnonymousAsync(Url, new LoginRequest
             {
-                PublicKeyBase64 = "Fake key",
-                SignBase64 = Convert.ToBase64String(signData),
-                SignedData = dataToSign
+                Password = "Fake password",
+                Pem = encryptor.CreatePem(password)
             });
             // Assert
             Assert.False(response.IsSuccessStatusCode);
@@ -43,22 +41,18 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Public.UserControlle
         {
             // Arrange
             var password = SecurityUtil.GeneratePassword();
-            var dataToSign = SecurityUtil.GetRandomString(16);
             var fakeUser = DataFactory.UserFactory().Generate();
             // Arrange
             var pendingUser = await UserService.CreatePendingUser(fakeUser.Email);
             var (user , pem) = await UserService.ActivateUser(pendingUser.Id, password);
 
             var encryptorWithAnotherPublic = AsymmetricEncryptor.GenerateKeyPair();
-            
-            var encryptor = AsymmetricEncryptor.ReadFromPem(pem, password);
-            var signData = encryptor.SignData(dataToSign);
+
             // Act
             var response = await PostRequestAsAnonymousAsync(Url, new LoginRequest
             {
-                PublicKeyBase64 = Convert.ToBase64String(encryptorWithAnotherPublic.GetPublicKeyBytes()),
-                SignBase64 = Convert.ToBase64String(signData),
-                SignedData = dataToSign
+                Password = password,
+                Pem = encryptorWithAnotherPublic.CreatePem(password)
             });
             // Assert
             Assert.False(response.IsSuccessStatusCode);
@@ -69,20 +63,17 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Public.UserControlle
         {
             // Arrange
             var password = SecurityUtil.GeneratePassword();
-            var dataToSign = SecurityUtil.GetRandomString(16);
             var fakeUser = DataFactory.UserFactory().Generate();
             // Arrange
             var pendingUser = await UserService.CreatePendingUser(fakeUser.Email);
             var (user , pem) = await UserService.ActivateUser(pendingUser.Id, password);
             
             var actualEncryptor = AsymmetricEncryptor.ReadFromPem(pem, password);
-            var actualSign = actualEncryptor.SignData(dataToSign);
             // Act
             var response = await PostRequestAsAnonymousAsync(Url, new LoginRequest
             {
-                PublicKeyBase64 = Convert.ToBase64String(actualEncryptor.GetPublicKeyBytes()),
-                SignBase64 = Convert.ToBase64String(actualSign),
-                SignedData = dataToSign
+                Password = password,
+                Pem = actualEncryptor.CreatePem(password)
             });
             // Assert
             response.EnsureSuccessStatusCode();

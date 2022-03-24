@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace OffLogs.Api.Controller.Public.Log
 {
@@ -17,8 +18,9 @@ namespace OffLogs.Api.Controller.Public.Log
     {
         public LogController(
             IAsyncRequestBuilder asyncRequestBuilder, 
-            IDbSessionProvider commitPerformer
-        ) : base(asyncRequestBuilder, commitPerformer)
+            IDbSessionProvider commitPerformer,
+            ILogger<LogController> logger
+        ) : base(asyncRequestBuilder, commitPerformer, logger)
         {
         }
 

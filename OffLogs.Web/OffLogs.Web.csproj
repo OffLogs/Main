@@ -9,6 +9,15 @@
       <Content Remove="Core\Constants\**" />
       <EmbeddedResource Remove="Core\Constants\**" />
       <None Remove="Core\Constants\**" />
+      <EmbeddedResource Update="Resources\AuthResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>AuthResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <Compile Update="Resources\AuthResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>AuthResources.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

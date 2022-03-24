@@ -22,12 +22,12 @@
                     <MyButton
                         @onclick="@(async () => await SaveFile())"
                         IsDisabled="@_isLoading">
-                        @CommonResources.User_Registration_SaveKey
+                        @AuthResources.Registration_SaveKey
                     </MyButton>
                     <MyButton
                         @onclick="@(async () => await LoginAndContinue())"
                         IsDisabled="@(_isLoading || !_isSecretFileSaved)">
-                        @CommonResources.User_Registration_Login
+                        @AuthResources.Registration_Login
                     </MyButton>
                 </div>
             }
@@ -39,14 +39,14 @@
                     <div class="mb-2">
                         @PasswordError
                         <CustomInputText
-                            Label="@CommonResources.User_Registration_EnterPassword"
+                            Label="@AuthResources.Registration_EnterPassword"
                             @bind-Value="model.Password"
                             type="password"
                             ErrorMessage="@PasswordError"/>
                     </div>
                     @if (!_isLoading)
                     {
-                        <MyButton IsSubmit="true">@CommonResources.User_Registration_ReceiveSecret</MyButton>
+                        <MyButton IsSubmit="true">@AuthResources.Registration_ReceiveSecret</MyButton>
                     }
                 </EditForm>    
             }
@@ -91,12 +91,12 @@
                 _registrationResponse = await _apiService.RegistrationStep2Async(model);
                 if (_registrationResponse != null)
                 {
-                    _toastService.AddInfoMessage(CommonResources.User_Registration_EmailIsSent);
+                    _toastService.AddInfoMessage(AuthResources.Registration_EmailIsSent);
                 }
             }
             catch (Exception)
             {
-                _toastService.AddErrorMessage(CommonResources.User_Registration_RegistrationError);
+                _toastService.AddErrorMessage(AuthResources.Registration_RegistrationError);
             }
             finally
             {
