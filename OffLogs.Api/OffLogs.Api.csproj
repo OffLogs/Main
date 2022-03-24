@@ -46,7 +46,6 @@
 
     <ItemGroup>
       <Folder Include="Controller\Public\Home\Actions\" />
-      <Folder Include="Exceptions" />
     </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Threading.Tasks;
 using Commands.Abstractions;
 using Microsoft.Extensions.Logging;
@@ -47,6 +48,8 @@ namespace OffLogs.Business.Services.Entities.User
                 UserName = FormatUtil.ClearUserName(userName),
                 Email = email.Trim().ToLower(),
                 PublicKey = Array.Empty<byte>(),
+                SignedData = Array.Empty<byte>(),
+                Sign = Array.Empty<byte>(),
                 Status = UserStatus.Pending,
                 VerificationToken = verificationToken,
                 CreateTime = DateTime.UtcNow,
@@ -69,15 +72,20 @@ namespace OffLogs.Business.Services.Entities.User
                 throw new Exception("User already activated");
             
             // Generate private key
-            var keyGenerator = AsymmetricEncryptor.GenerateKeyPair();
+            var asymmetricEncryptor = AsymmetricEncryptor.GenerateKeyPair();
             
             user.Status = UserStatus.Active;
             user.VerificationTime = DateTime.UtcNow;
             user.VerificationToken = null;
-            user.PublicKey = keyGenerator.GetPublicKeyBytes();
+            
+            // Secret key initialization
+            user.PublicKey = asymmetricEncryptor.GetPublicKeyBytes();
+            user.SignedData = Encoding.UTF8.GetBytes(SecurityUtil.GetRandomString(48));
+            user.Sign = asymmetricEncryptor.SignData(user.SignedData);
+            
             await _commandBuilder.SaveAsync(user);
 
-            var pemFileContent = keyGenerator.CreatePem(privateKeyPassword);
+            var pemFileContent = asymmetricEncryptor.CreatePem(privateKeyPassword);
             return (user, pemFileContent);
         }
         

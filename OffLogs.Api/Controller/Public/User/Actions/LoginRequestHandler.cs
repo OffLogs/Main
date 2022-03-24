@@ -33,12 +33,18 @@ namespace OffLogs.Api.Controller.Public.User.Actions
             var publicKey = asymmetricEncryptor.GetPublicKeyBytes();
             var existsUser = await _queryBuilder.For<UserEntity>()
                 .WithAsync(new UserGetByCriteria(publicKey));
-             
+
             if (existsUser == null)
             {
                 throw new UserNotAuthorizedException();
             }
-            
+            // Validate private key
+            var isValidSign = asymmetricEncryptor.VerifySign(existsUser.SignedData, existsUser.Sign);
+            if (!isValidSign)
+            {
+                throw new UserNotAuthorizedException();
+            }
+
             return new LoginResponseDto()
             {
                 Token = _jwtAuthService.BuildJwt(existsUser.Id)
