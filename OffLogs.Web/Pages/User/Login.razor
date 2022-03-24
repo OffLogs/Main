@@ -2,30 +2,34 @@
 @using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User
 @using OffLogs.Web.Constants
 @using OffLogs.Web.Core.Components.Form
+@using OffLogs.Web.Resources
+@using System.IO
+@using Microsoft.AspNetCore.Components
+@using Microsoft.Extensions.Logging
+@using OffLogs.Business.Common.Security
+@using OffLogs.Business.Common.Utils
+@using OffLogs.Web.Models.User
+
 @inject IAuthorizationService _authorizationService
 @inject NavigationManager _navigationManager
 @inject ToastService _toastService
+@inject ILogger<Login> _logger
 
 <div class="card w-login-page">
     <div class="card-body">
         <h5 class="card-title">Login to your account</h5>
         <div class="card-text">
-            <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+            <EditForm Model="@model" OnSubmit="@HandleSubmit">
                 <DataAnnotationsValidator />
                 <ValidationSummary />
-                @* <p> *@
-                @*     @UserNameError *@
-                @*     <CustomInputText Label="Login:" *@
-                @*                      @bind-Value="model.UserName" *@
-                @*                      ErrorMessage="@UserNameError" /> *@
-                @* </p> *@
-                @* <p> *@
-                @*     @PasswordError *@
-                @*     <CustomInputText Label="Password:" *@
-                @*                      @bind-Value="model.Password" *@
-                @*                      type="password" *@
-                @*                      ErrorMessage="@PasswordError" /> *@
-                @* </p> *@
+                <InputFile OnChange="@(async args => await OnSelectFiles(args))" />
+                <p>
+                    @PasswordError
+                    <CustomInputText Label="Password:"
+                                     @bind-Value="model.Password"
+                                     type="password"
+                                     ErrorMessage="@PasswordError" />
+                </p>
                 @if (_isLoading)
                 {
                     <Preloader />
@@ -41,27 +45,20 @@
 
 @code
 {
-    private LoginRequest model = new();
+    private LoginModel model = new();
     private EditContext _editContext;
     private bool _isLoading;
-
-    // private string UserNameError
-    // {
-    //     get
-    //     {
-    //         var messages = _editContext.GetValidationMessages(() => model.UserName);
-    //         return messages.FirstOrDefault();
-    //     }
-    // }
-    //
-    // private string PasswordError
-    // {
-    //     get
-    //     {
-    //         var messages = _editContext.GetValidationMessages(() => model.Password);
-    //         return messages.FirstOrDefault();
-    //     }
-    // }
+    private IBrowserFile _keyFile = null;
+    private AsymmetricEncryptor _asymmetricEncryptor = null;
+    
+    private string PasswordError
+    {
+        get
+        {
+            var messages = _editContext.GetValidationMessages(() => model.Password);
+            return messages.FirstOrDefault();
+        }
+    }
 
     protected override void OnInitialized()
     {
@@ -69,15 +66,45 @@
         _editContext = new EditContext(model);
     }
 
+    private async Task OnSelectFiles(InputFileChangeEventArgs changeEvent)
+    {
+        _isLoading = true;
+        _keyFile = changeEvent.GetMultipleFiles(1).FirstOrDefault();
+        try
+        {
+            if (_keyFile == null)
+            {
+                throw new Exception();
+            }
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message, e);
+            _toastService.AddErrorMessage(AuthResources.Login_PleaseEnterCorrectKeyFile);
+        }
+        _isLoading = false;
+    }
+
     private async Task HandleSubmit()
     {
+        model.SignedData = SecurityUtil.GetRandomString(32);
+        model.SignBase64 = Convert.ToBase64String(
+            _asymmetricEncryptor.SignData(model.SignedData)
+        );
+        model.PublicKeyBase64 = Convert.ToBase64String(
+            _asymmetricEncryptor.GetPublicKeyBytes()
+        );
+        
         var isValid = _editContext.Validate();
         if (isValid)
         {
             _isLoading = true;
             try
             {
-                var isLoggedIn = await _authorizationService.LoginAsync(model);
+                var fileContent = new StreamContent(_keyFile.OpenReadStream(1024));
+                _asymmetricEncryptor = AsymmetricEncryptor.ReadFromPem(await fileContent.ReadAsStringAsync(), model.Password);
+                
+                var isLoggedIn = await _authorizationService.LoginAsync(model.Request);
                 if (isLoggedIn)
                 {
                     _navigationManager.NavigateTo(SiteUrl.Dashboard);

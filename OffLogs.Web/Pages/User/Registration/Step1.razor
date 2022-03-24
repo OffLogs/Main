@@ -20,7 +20,7 @@
                 <div class="mb-2">
                     @EmailError
                     <CustomInputText 
-                        Label="@CommonResources.User_Registration_EnterEmail"
+                        Label="@AuthResources.Registration_EnterEmail"
                         @bind-Value="model.Email"
                         type="email"
                         ErrorMessage="@EmailError" />
@@ -31,7 +31,7 @@
                 }
                 else
                 {
-                    <MyButton IsSubmit="true">@CommonResources.User_Registration_SendEmail</MyButton>
+                    <MyButton IsSubmit="true">@AuthResources.Registration_SendEmail</MyButton>
                 }
             </EditForm>
         </div>
@@ -70,13 +70,13 @@
                 var isOk = await _apiService.RegistrationStep1Async(model);
                 if (isOk)
                 {
-                    _toastService.AddInfoMessage(CommonResources.User_Registration_EmailIsSent);
+                    _toastService.AddInfoMessage(AuthResources.Registration_EmailIsSent);
                     model.Email = "";
                 }
             }
             catch (Exception)
             {
-                _toastService.AddErrorMessage(CommonResources.User_Registration_RegistrationError);
+                _toastService.AddErrorMessage(AuthResources.Registration_RegistrationError);
             }
             finally
             {

@@ -27,36 +27,6 @@
     <data name="Error_ApplicationDeletionError" xml:space="preserve">
         <value>Application deletion error</value>
     </data>
-    <data name="User_Registration_EnterEmail" xml:space="preserve">
-        <value>Enter your email:</value>
-    </data>
-    <data name="User_Registration_RegistrationError" xml:space="preserve">
-        <value>Email is incorrect. Please try again or enter another email</value>
-    </data>
-    <data name="User_Registration_EmailIsSent" xml:space="preserve">
-        <value>Thank you. The email is sent. Please check and continue registration process</value>
-    </data>
-    <data name="User_Registration_EnterPassword" xml:space="preserve">
-        <value>Enter your password:</value>
-    </data>
-    <data name="User_Registration_SendEmail" xml:space="preserve">
-        <value>Send verification email</value>
-    </data>
-    <data name="User_Registration_ReceiveSecret" xml:space="preserve">
-        <value>Generate secret key</value>
-    </data>
-    <data name="User_Registration_Step1" xml:space="preserve">
-        <value>Registration - Step 1</value>
-    </data>
-    <data name="User_Registration_Step2" xml:space="preserve">
-        <value>Registration - Step 2</value>
-    </data>
-    <data name="User_Registration_SaveKey" xml:space="preserve">
-        <value>Save secret file</value>
-    </data>
-    <data name="User_Registration_Login" xml:space="preserve">
-        <value>Continue</value>
-    </data>
     <data name="Login" xml:space="preserve">
         <value>Login</value>
     </data>
