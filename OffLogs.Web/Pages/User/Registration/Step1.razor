@@ -12,26 +12,26 @@
 
 <div class="card w-registration-step1-page">
     <div class="card-body">
-        <h5 class="card-title">Registration</h5>
+        <h5 class="card-title">@CommonResources.Registration</h5>
         <div class="card-text">
             <EditForm Model="@model" OnSubmit="@HandleSubmit">
                 <DataAnnotationsValidator />
                 <ValidationSummary />
-                <p>
+                <div class="mb-2">
                     @EmailError
                     <CustomInputText 
                         Label="@CommonResources.User_Registration_EnterEmail"
                         @bind-Value="model.Email"
                         type="email"
                         ErrorMessage="@EmailError" />
-                </p>
+                </div>
                 @if (_isLoading)
                 {
                     <Preloader />
                 }
                 else
                 {
-                    <MyButton IsSubmit="true">Login</MyButton>
+                    <MyButton IsSubmit="true">@CommonResources.User_Registration_SendEmail</MyButton>
                 }
             </EditForm>
         </div>

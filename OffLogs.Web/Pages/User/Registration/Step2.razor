@@ -1,0 +1,129 @@
+﻿@page "/registration/verification/{verificationToken}"
+@using Microsoft.AspNetCore.Components
+@using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User
+@using OffLogs.Web.Resources
+@using OffLogs.Web.Services.Http
+@using OffLogs.Web.Core.Components.Form
+@using OffLogs.Web.Core.Helpers
+
+@inject IApiService _apiService
+@inject NavigationManager _navigationManager
+@inject ToastService _toastService
+@inject IAuthorizationService _authorizationService
+@inject IJSRuntime _js
+
+<div class="card w-registration-verification-page">
+    <div class="card-body">
+        <h5 class="card-title">@CommonResources.Registration</h5>
+        <div class="card-text">
+            @if (_isRegistered)
+            {
+                <div>
+                    <MyButton
+                        @onclick="@(async () => await SaveFile())"
+                        IsDisabled="@_isLoading">
+                        @CommonResources.User_Registration_SaveKey
+                    </MyButton>
+                    <MyButton
+                        @onclick="@(async () => await LoginAndContinue())"
+                        IsDisabled="@(_isLoading || !_isSecretFileSaved)">
+                        @CommonResources.User_Registration_Login
+                    </MyButton>
+                </div>
+            }
+            else
+            {
+                <EditForm Model="@model" OnSubmit="@HandleSubmit">
+                    <DataAnnotationsValidator/>
+                    <ValidationSummary/>
+                    <div class="mb-2">
+                        @PasswordError
+                        <CustomInputText
+                            Label="@CommonResources.User_Registration_EnterPassword"
+                            @bind-Value="model.Password"
+                            type="password"
+                            ErrorMessage="@PasswordError"/>
+                    </div>
+                    @if (!_isLoading)
+                    {
+                        <MyButton IsSubmit="true">@CommonResources.User_Registration_ReceiveSecret</MyButton>
+                    }
+                </EditForm>    
+            }
+            @if (_isLoading)
+            {
+                <Preloader/>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string? VerificationToken { get; set; }
+    
+    private RegistrationStep2Request model = new();
+    private EditContext _editContext;
+    private bool _isLoading;
+    private bool _isSecretFileSaved = false;
+    private RegistrationStep2ResponseDto _registrationResponse = null;
+    private bool _isRegistered => _registrationResponse != null;
+    
+    private string PasswordError
+    {
+        get => _editContext.GetValidationMessages(() => model.Password).FirstOrDefault();
+    }
+
+    protected override void OnInitialized()
+    {
+        _isLoading = false;
+        _editContext = new EditContext(model);
+    }
+
+    private async Task HandleSubmit()
+    {
+        if (_editContext.Validate())
+        {
+            _isLoading = true;
+            try
+            {
+                model.Token = VerificationToken;
+                _registrationResponse = await _apiService.RegistrationStep2Async(model);
+                if (_registrationResponse != null)
+                {
+                    _toastService.AddInfoMessage(CommonResources.User_Registration_EmailIsSent);
+                }
+            }
+            catch (Exception)
+            {
+                _toastService.AddErrorMessage(CommonResources.User_Registration_RegistrationError);
+            }
+            finally
+            {
+                _isLoading = false;
+            }
+        }
+        StateHasChanged();
+    }
+    
+    private async Task LoginAndContinue()
+    {
+        if (!_isRegistered)
+        {
+            return;
+        }
+        await _authorizationService.LoginAsync(_registrationResponse.JwtToken);
+        _navigationManager.NavigateTo(SiteUrl.Dashboard);
+    }
+    
+    private async Task SaveFile()
+    {
+        if (!_isRegistered)
+        {
+            return;
+        }
+        _isSecretFileSaved = true;
+        var pemBytes = System.Text.Encoding.UTF8.GetBytes(_registrationResponse.Pem);
+        await FileHelpers.SaveAsAsync(_js, "offlogs_secrets.pem", pemBytes);
+    }
+}

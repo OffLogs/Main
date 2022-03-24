@@ -7,6 +7,7 @@ namespace OffLogs.Web.Services
     {
         bool IsLoggedIn();
         Task<bool> LoginAsync(LoginRequest model);
+        Task<bool> LoginAsync(string jwtToken);
         Task LogoutAsync();
         Task<bool> IsHasJwtAsync();
         Task<string> GetJwtAsync();

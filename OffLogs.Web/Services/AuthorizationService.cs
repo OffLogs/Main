@@ -37,7 +37,11 @@ namespace OffLogs.Web.Services
         public async Task<bool> LoginAsync(LoginRequest model)
         {
             var loginData = await _apiService.LoginAsync(model);
-            var jwtToken = loginData?.Token;
+            return await LoginAsync(loginData?.Token);
+        }
+        
+        public async Task<bool> LoginAsync(string jwtToken)
+        {
             if (!string.IsNullOrEmpty(jwtToken))
             {
                 _isLoggedIn = true;

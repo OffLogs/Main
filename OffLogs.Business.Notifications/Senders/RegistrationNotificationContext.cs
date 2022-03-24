@@ -1,4 +1,5 @@
-﻿using Notification.Abstractions;
+﻿using System.Net;
+using Notification.Abstractions;
 
 namespace OffLogs.Business.Notifications.Senders
 {
@@ -19,7 +20,7 @@ namespace OffLogs.Business.Notifications.Senders
         {
             ToAddress = toAddress;
             FrontendUrl = frontendUrl;
-            VerificationToken = verificationToken;
+            VerificationToken = WebUtility.UrlEncode(verificationToken);
             VerificationUrl = $"{FrontendUrl}/registration/verification/{VerificationToken}";
         }
     }
