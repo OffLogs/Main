@@ -26,6 +26,14 @@ namespace OffLogs.Business.Orm.Entities
         [Column(Name = "public_key", SqlType = "bytea", NotNull = true)]
         public virtual byte[] PublicKey { get; set; }
         
+        [Property(NotNull = true)]
+        [Column(Name = "signed_data", SqlType = "bytea", NotNull = true)]
+        public virtual byte[] SignedData { get; set; }
+        
+        [Property(NotNull = true)]
+        [Column(Name = "sign", SqlType = "bytea", NotNull = true)]
+        public virtual byte[] Sign { get; set; }
+        
         [Property(NotNull = false)]
         [Column(Name = "verification_token", Length = 512, NotNull = false)]
         public virtual string VerificationToken { get; set; }
