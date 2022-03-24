@@ -36,7 +36,7 @@
                 <EditForm Model="@model" OnSubmit="@HandleSubmit">
                     <DataAnnotationsValidator/>
                     <ValidationSummary/>
-                    <div>
+                    <div class="mb-2">
                         @PasswordError
                         <CustomInputText
                             Label="@CommonResources.User_Registration_EnterPassword"
