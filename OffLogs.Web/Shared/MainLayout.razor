@@ -3,11 +3,17 @@
 @using OffLogs.Web.Services.Events
 @using OffLogs.Web.Shared.Ui.Toast
 @using OffLogs.Web.Constants
+@using OffLogs.Web.Resources
+@using OffLogs.Web.Services.Validation
+
 @inject IAuthorizationService _authService
 @inject NavigationManager _navigationManager
 @inject ToastService _toastService
 @inject IGlobalEventsService _eventsService
+@inject IReCaptchaService _reCaptchaService
+
 @inherits LayoutComponentBase
+@implements IDisposable
 
 <div class="page" @onclick="OnClickDocument">
 
@@ -27,7 +33,7 @@
                     <a @onClick="OnLogout"
                        href="#"
                        class="ml-md-auto">
-                        Logout
+                        @AuthResources.Logout
                     </a>
                 </div>
             }
@@ -35,8 +41,17 @@
             <div class="content px-4">
                 @Body
             </div>
-            <ToastMessageContainer />
+            <ToastMessageContainer/>
         </div>
+    }
+    
+    @if (!_isShowReCaptcha)
+    {
+        <style>
+            .grecaptcha-badge { 
+                visibility: hidden;
+            }
+        </style>
     }
 </div>
 
@@ -46,6 +61,8 @@
     private bool _isLoggedIn = false;
 
     private bool _isShowMainMenu = false;
+    
+    private bool _isShowReCaptcha = false;
 
     private bool _isSharedPage
     {
@@ -64,12 +81,24 @@
         {
             CheckIsLoggedInAndRedirect();
         };
-
+        _reCaptchaService.IsShowChanged += OnReCaptchaShowChanged;
+        _isShowReCaptcha = _reCaptchaService.GetIsEnabled();
+        
         await _authService.CheckIsLoggedInAsync();
         _isInitialized = true;
         CheckIsLoggedInAndRedirect();
     }
 
+    private void OnReCaptchaShowChanged(bool isShow)
+    {
+        _isShowReCaptcha = isShow;
+    }
+
+    public void Dispose()
+    {
+        _reCaptchaService.IsShowChanged -= OnReCaptchaShowChanged;
+    }
+    
     private void CheckIsLoggedInAndRedirect()
     {
         _isLoggedIn = _authService.IsLoggedIn();

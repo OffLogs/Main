@@ -52,4 +52,7 @@
     <data name="Login_PleaseEnterCorrectKeyFile" xml:space="preserve">
         <value>The key file is invalid. Please enter correct file</value>
     </data>
+    <data name="Logout" xml:space="preserve">
+        <value>Logout</value>
+    </data>
 </root>

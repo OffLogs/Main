@@ -10,6 +10,7 @@
 @inject NavigationManager _navigationManager
 @inject ToastService _toastService
 @inject ILogger<Login> _logger
+@inject IReCaptchaService _reCaptchaService;
 
 <div class="card w-login-page">
     <div class="card-body">
@@ -89,6 +90,7 @@
 
     private async Task HandleSubmit()
     {
+        model.ReCaptcha = await _reCaptchaService.GetReCaptchaTokenAsync();
         var isValid = _editContext.Validate();
         if (isValid)
         {
