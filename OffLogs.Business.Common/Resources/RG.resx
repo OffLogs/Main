@@ -50,4 +50,7 @@
     <data name="Error_FieldMayContainOnlyCurrencyCode" xml:space="preserve">
     <value>Field "{0}" may contain only currency code!</value>
   </data>
+    <data name="Error_IncorrectReCaptchaToken" xml:space="preserve">
+        <value>Field "{0}" contains incorrect re-captcha token!</value>
+    </data>
 </root>

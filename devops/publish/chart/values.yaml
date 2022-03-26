@@ -64,6 +64,7 @@ pods:
     Smtp__Password: ''
     App__Auth__SymmetricSecurityKey: ''
     App__Application__SymmetricSecurityKey: ''
+    ReCaptcha__Secret: ''
 
 nameOverride: ""
 fullnameOverride: ""

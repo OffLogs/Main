@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Api.Requests.Abstractions;
+using OffLogs.Business.Common.Mvc.Attribute.Validation;
 
 namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User
 {
@@ -8,10 +9,10 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-
-        // TODO: Added reCaptcha validator
+        
         [Required]
         [StringLength(512)]
+        [IsReCaptcha]
         public string ReCaptcha { get; set; }
     }
 }
