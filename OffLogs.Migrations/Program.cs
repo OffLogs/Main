@@ -80,7 +80,7 @@ namespace OffLogs.Migrations
         private static void UpdateDatabase(IServiceProvider serviceProvider)
         {
             // Instantiate the runner
-            var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
+            var runner = (IMigrationRunner)serviceProvider.GetService(typeof(IMigrationRunner));
             // Execute the migrations
             runner.MigrateUp();
             runner.Up(new ApplyProceduresMigration());
