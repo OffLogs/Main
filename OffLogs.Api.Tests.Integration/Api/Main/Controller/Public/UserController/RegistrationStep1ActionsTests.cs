@@ -65,4 +65,26 @@ public class RegistrationStep1ActionsTests : MyApiIntegrationTest
         Assert.True(processedRecords > 0);
         Assert.True(EmailSendingService.IsEmailSent);
     }
+    
+    [Theory]
+    [InlineData(Url)]
+    public async Task ShouldReSendNotificationForPendingUser(string url)
+    {
+        var newUser = DataFactory.UserFactory().Generate();
+        // Arrange
+        var user = await UserService.CreatePendingUser(newUser.Email);
+
+        // Act
+        var response = await PostRequestAsAnonymousAsync(url, new RegistrationStep1Request
+        {
+            Email = newUser.Email,
+            ReCaptcha = "testRecaptcha",
+        });
+        // Assert
+        response.EnsureSuccessStatusCode();
+            
+        var processedRecords = await KafkaNotificationsConsumerService.ProcessNotificationsAsync(false);
+        Assert.True(processedRecords > 0);
+        Assert.True(EmailSendingService.IsEmailSent);
+    }
 }

@@ -4,6 +4,7 @@ using Api.Requests.Abstractions;
 using Microsoft.Extensions.Configuration;
 using Notification.Abstractions;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
+using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Exceptions.Api;
 using OffLogs.Business.Common.Security;
 using OffLogs.Business.Notifications.Senders;
@@ -39,17 +40,20 @@ namespace OffLogs.Api.Controller.Public.User.Actions
         {
             var currentUser = await _queryBuilder.For<UserEntity>()
                 .WithAsync(new UserGetByCriteria(null, request.Email));
-            if (currentUser != null)
+            if (currentUser?.Status == UserStatus.Active)
             {
                 throw new RecordIsExistsException("User is exists");
             }
 
-            var createdUser = await _userService.CreatePendingUser(request.Email);
+            if (currentUser == null)
+            {
+                currentUser = await _userService.CreatePendingUser(request.Email);    
+            }
             await _kafkaProducerService.ProduceNotificationMessageAsync(
                 new RegistrationNotificationContext(
-                    createdUser.Email, 
+                    currentUser.Email, 
                     _frontendUrl,
-                    createdUser.VerificationToken
+                    currentUser.VerificationToken
                 )
             );
         }
