@@ -12,7 +12,7 @@ public interface IReCaptchaService
 
     public bool GetIsEnabled();
 
-    public Task<string> GetReCaptchaTokenAsync(IJSRuntime js);
+    public Task<string> GetReCaptchaTokenAsync();
 
     public event Action<bool> IsShowChanged;
 }

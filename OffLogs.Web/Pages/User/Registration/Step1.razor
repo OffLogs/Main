@@ -9,6 +9,7 @@
 @inject IApiService _apiService
 @inject NavigationManager _navigationManager
 @inject ToastService _toastService
+@inject IReCaptchaService _reCaptchaService
 
 <div class="card w-registration-step1-page">
     <div class="card-body">
@@ -60,7 +61,7 @@
 
     private async Task HandleSubmit()
     {
-        model.ReCaptcha = "Fake captcha";
+        model.ReCaptcha = await _reCaptchaService.GetReCaptchaTokenAsync();
         var isValid = _editContext.Validate();
         if (isValid)
         {

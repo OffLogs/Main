@@ -14,6 +14,7 @@ namespace OffLogs.Web.Services.Validation;
 public class ReCaptchaService: IReCaptchaService, IDisposable
 {
     private readonly NavigationManager _navigationManager;
+    private readonly IJSRuntime _js;
     public event Action<bool> IsShowChanged;
 
     private readonly string _siteKey;
@@ -40,10 +41,12 @@ public class ReCaptchaService: IReCaptchaService, IDisposable
 
     public ReCaptchaService(
         IConfiguration configuration,
-        NavigationManager navigationManager
+        NavigationManager navigationManager,
+        IJSRuntime js
     )
     {
         _navigationManager = navigationManager;
+        _js = js;
         _siteKey = configuration.GetValue<string>("ReCaptcha:SiteKey");
         _navigationManager.LocationChanged += OnLocationChanged;
         IsEnabled = IsEnabledRoute(_navigationManager.GetPath());
@@ -69,9 +72,9 @@ public class ReCaptchaService: IReCaptchaService, IDisposable
         return _isEnabled;
     }
     
-    public async Task<string> GetReCaptchaTokenAsync(IJSRuntime js)
+    public async Task<string> GetReCaptchaTokenAsync()
     {
-        return await js.InvokeAsync<string>(
+        return await _js.InvokeAsync<string>(
             "window.getReCaptchaToken",
             _siteKey,
             _siteKey

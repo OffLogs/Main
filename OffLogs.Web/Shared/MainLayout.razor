@@ -26,7 +26,6 @@
     @if (_isInitialized)
     {
         <div class="main">
-            @_isShowReCaptcha
             @if (_isShowMainMenu)
             {
                 <div class="top-row px-4">
@@ -45,7 +44,7 @@
         </div>
     }
     
-    @if (_isShowReCaptcha)
+    @if (!_isShowReCaptcha)
     {
         <style>
             .grecaptcha-badge { 

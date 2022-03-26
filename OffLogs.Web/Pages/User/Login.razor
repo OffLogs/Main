@@ -6,7 +6,6 @@
 @using Microsoft.AspNetCore.Components
 @using Microsoft.Extensions.Logging
 
-@inject IJSRuntime _js
 @inject IAuthorizationService _authorizationService
 @inject NavigationManager _navigationManager
 @inject ToastService _toastService
@@ -91,7 +90,7 @@
 
     private async Task HandleSubmit()
     {
-        model.ReCaptcha = await _reCaptchaService.GetReCaptchaTokenAsync(_js);
+        model.ReCaptcha = await _reCaptchaService.GetReCaptchaTokenAsync();
         var isValid = _editContext.Validate();
         if (isValid)
         {
