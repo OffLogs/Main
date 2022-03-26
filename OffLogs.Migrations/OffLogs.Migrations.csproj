@@ -61,8 +61,4 @@
       </Content>
     </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\OffLogs.Business.Common\OffLogs.Business.Common.csproj" />
-    </ItemGroup>
-
 </Project>

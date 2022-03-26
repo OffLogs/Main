@@ -5,7 +5,6 @@ using System.Reflection;
 using FluentMigrator.Runner;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OffLogs.Business.Common.Utils;
 using OffLogs.Migrations.Migrations;
 
 namespace OffLogs.Migrations
@@ -18,7 +17,7 @@ namespace OffLogs.Migrations
         
         static void Main(string[] args)
         {
-            var basePath = AssemblyUtils.GetAssemblyPath();
+            var basePath = GetAssemblyPath();
             Configuration = new ConfigurationBuilder()
                 .SetBasePath(basePath)
                 .AddJsonFile("appsettings.json")
@@ -84,6 +83,15 @@ namespace OffLogs.Migrations
             // Execute the migrations
             runner.MigrateUp();
             runner.Up(new ApplyProceduresMigration());
+        }
+        
+        private static string GetAssemblyPath(Assembly assembly = null)
+        {
+            assembly ??= Assembly.GetExecutingAssembly();
+            var codeBase = assembly.CodeBase;
+            var uri = new UriBuilder(codeBase);
+            var path = Uri.UnescapeDataString(uri.Path);
+            return Path.GetDirectoryName(path);
         }
     }
 }
