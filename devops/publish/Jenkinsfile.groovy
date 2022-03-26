@@ -106,6 +106,9 @@ node('vizit-mainframe-k8s-master') {
         withCredentials([string(credentialsId: "offlogs_production_application_jwt", variable: 'AUTH_SECRET')]) {
             envVariables.put('App__Application__SymmetricSecurityKey', AUTH_SECRET)
         }
+        withCredentials([string(credentialsId: "offlogs_production_recaptcha_secret", variable: 'AUTH_SECRET')]) {
+            envVariables.put('ReCaptcha__Secret', AUTH_SECRET)
+        }
     }
 
     stage('Run migrations') {

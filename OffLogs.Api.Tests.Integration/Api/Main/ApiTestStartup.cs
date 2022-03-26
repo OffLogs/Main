@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OffLogs.Api.Di.Autofac.Modules;
 using OffLogs.Api.Tests.Integration.Core.Faker;
 using OffLogs.Business;
+using OffLogs.Business.Common.Services.Web.ReCaptcha;
 using OffLogs.Business.Di.Autofac.Modules;
 using OffLogs.Business.Notifications.Services;
 using OffLogs.Business.Services.Http.ThrottleRequests;
@@ -46,6 +47,10 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
             builder
                 .RegisterType<FakeEmailSendingService>()
                 .As<IEmailSendingService>()
+                .InstancePerLifetimeScope();
+            builder
+                .RegisterType<FakeReCaptchaService>()
+                .As<IReCaptchaService>()
                 .InstancePerLifetimeScope();
         }
     }
