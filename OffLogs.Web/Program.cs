@@ -55,7 +55,7 @@ namespace OffLogs.Web
             builder.Services.AddScoped<IApiService, ApiService>();
             builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
             builder.Services.AddScoped<IReCaptchaService, ReCaptchaService>();
-            builder.Services.AddSingleton<ToastService>();
+            builder.Services.AddScoped<ToastService>();
         }
     }
 }

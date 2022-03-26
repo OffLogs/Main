@@ -49,6 +49,7 @@
       <Content Include="Pages\Dashboard\Log\Index.razor.less" />
       <Content Include="Pages\Dashboard\Log\Info\LogInfoModal.razor.less" />
       <Content Include="Pages\Dashboard\Log\Parts\LogInfoBlock.razor.less" />
+      <Content Include="Pages\Index.razor.cs.css" />
       <Content Include="Shared\Ui\Form\CustomDropDown\CustomDropDown.razor.less" />
       <Content Include="Shared\Ui\MyButton.razor.less" />
       <Content Include="Shared\Ui\Preloader.razor.less" />

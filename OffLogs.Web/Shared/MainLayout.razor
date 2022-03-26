@@ -69,7 +69,7 @@
         get
         {
             var path = _navigationManager.GetPath();
-            return path.StartsWith("/login") || path.StartsWith("/registration");
+            return path.Equals("/") || path.StartsWith("/login") || path.StartsWith("/registration");
         }
     }
 
