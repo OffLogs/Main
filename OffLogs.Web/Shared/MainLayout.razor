@@ -3,6 +3,7 @@
 @using OffLogs.Web.Services.Events
 @using OffLogs.Web.Shared.Ui.Toast
 @using OffLogs.Web.Constants
+@using OffLogs.Web.Resources
 @using OffLogs.Web.Services.Validation
 
 @inject IAuthorizationService _authService
@@ -32,7 +33,7 @@
                     <a @onClick="OnLogout"
                        href="#"
                        class="ml-md-auto">
-                        Logout
+                        @AuthResources.Logout
                     </a>
                 </div>
             }
