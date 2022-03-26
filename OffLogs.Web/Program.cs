@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using OffLogs.Web.Services;
 using OffLogs.Web.Services.Events;
 using OffLogs.Web.Services.Http;
+using OffLogs.Web.Services.Validation;
 
 namespace OffLogs.Web
 {
@@ -21,23 +22,7 @@ namespace OffLogs.Web
             var currentAssembly = typeof(Program).Assembly;
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
-
-            var apiUrl = builder.Configuration.GetValue<string>("ApiUrl");
-            
-            // System services
-            builder.Services.AddScoped(
-                sp => new HttpClient
-                {
-                    BaseAddress = new Uri(apiUrl)
-                }
-            );
-            builder.Services.AddBlazoredLocalStorage();
-
-            // Custom services
-            builder.Services.AddScoped<IGlobalEventsService, GlobalEventsService>();
-            builder.Services.AddScoped<IApiService, ApiService>();
-            builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
-            builder.Services.AddSingleton<ToastService>();
+            InitServices(builder);
             
             // Store
             builder.Services.AddFluxor(
@@ -51,6 +36,26 @@ namespace OffLogs.Web
                 .AddFilter("Microsoft", LogLevel.Information); //System logs can be filtered.
 #endif
             await builder.Build().RunAsync();
+        }
+
+        private static void InitServices(WebAssemblyHostBuilder builder)
+        {
+            var apiUrl = builder.Configuration.GetValue<string>("ApiUrl");
+            // System services
+            builder.Services.AddScoped(
+                sp => new HttpClient
+                {
+                    BaseAddress = new Uri(apiUrl)
+                }
+            );
+            builder.Services.AddBlazoredLocalStorage();
+
+            // Custom services
+            builder.Services.AddScoped<IGlobalEventsService, GlobalEventsService>();
+            builder.Services.AddScoped<IApiService, ApiService>();
+            builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
+            builder.Services.AddScoped<IReCaptchaService, ReCaptchaService>();
+            builder.Services.AddSingleton<ToastService>();
         }
     }
 }

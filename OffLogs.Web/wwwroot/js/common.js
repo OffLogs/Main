@@ -13,3 +13,13 @@ window.saveAsFile = function(filename, bytesBase64) {
     link.click();
     document.body.removeChild(link);
 };
+
+window.getReCaptchaToken = function (siteKey) {
+    return new Promise((resolve, reject) => {
+        grecaptcha.ready(function () {
+            grecaptcha.execute(siteKey, { action: 'submit' }).then(function (token) {
+                resolve(token);
+            });
+        });
+    });
+};
