@@ -13,5 +13,10 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User
         [Required]
         [StringLength(256, MinimumLength = 3)]
         public string Password { get; set; }
+        
+        [Required]
+        [StringLength(512)]
+        [IsReCaptcha]
+        public string ReCaptcha { get; set; }
     }
 }

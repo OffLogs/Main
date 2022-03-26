@@ -22,7 +22,7 @@ namespace OffLogs.Business.Common.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class RG {
+    public class RG {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace OffLogs.Business.Common.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OffLogs.Business.Common.Resources.RG", typeof(RG).Assembly);
@@ -51,7 +51,7 @@ namespace OffLogs.Business.Common.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace OffLogs.Business.Common.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Collection &quot;{0}&quot; should contain maximum {1} items.
         /// </summary>
-        internal static string Error_ArrayIsTooBig {
+        public static string Error_ArrayIsTooBig {
             get {
                 return ResourceManager.GetString("Error_ArrayIsTooBig", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace OffLogs.Business.Common.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Field &quot;{0}&quot; should not be null.
         /// </summary>
-        internal static string Error_ArrayStringCanNotBeNull {
+        public static string Error_ArrayStringCanNotBeNull {
             get {
                 return ResourceManager.GetString("Error_ArrayStringCanNotBeNull", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace OffLogs.Business.Common.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Field &quot;{0}&quot; should contain maximum {1} characters.
         /// </summary>
-        internal static string Error_ArrayStringIsTooLong {
+        public static string Error_ArrayStringIsTooLong {
             get {
                 return ResourceManager.GetString("Error_ArrayStringIsTooLong", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace OffLogs.Business.Common.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Field &quot;{0}&quot; should contain minimum {1} characters.
         /// </summary>
-        internal static string Error_ArrayStringIsTooShort {
+        public static string Error_ArrayStringIsTooShort {
             get {
                 return ResourceManager.GetString("Error_ArrayStringIsTooShort", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace OffLogs.Business.Common.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Field &quot;{0}&quot;contains incorrect IPv4 address!.
         /// </summary>
-        internal static string Error_FieldContainsIncorrectIPv4Address {
+        public static string Error_FieldContainsIncorrectIPv4Address {
             get {
                 return ResourceManager.GetString("Error_FieldContainsIncorrectIPv4Address", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace OffLogs.Business.Common.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Field &quot;{0}&quot; may contain only currency code!.
         /// </summary>
-        internal static string Error_FieldMayContainOnlyCurrencyCode {
+        public static string Error_FieldMayContainOnlyCurrencyCode {
             get {
                 return ResourceManager.GetString("Error_FieldMayContainOnlyCurrencyCode", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace OffLogs.Business.Common.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Field &quot;{0}&quot; may contain only positive digits!.
         /// </summary>
-        internal static string Error_FieldMayContainOnlyPositiveDigits {
+        public static string Error_FieldMayContainOnlyPositiveDigits {
             get {
                 return ResourceManager.GetString("Error_FieldMayContainOnlyPositiveDigits", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace OffLogs.Business.Common.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Field &quot;{0}&quot; contains incorrect Base64 value!.
         /// </summary>
-        internal static string Error_IncorrectBase64 {
+        public static string Error_IncorrectBase64 {
             get {
                 return ResourceManager.GetString("Error_IncorrectBase64", resourceCulture);
             }
@@ -135,9 +135,18 @@ namespace OffLogs.Business.Common.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Field &quot;{0}&quot; contains incorrect constant value!.
         /// </summary>
-        internal static string Error_IncorrectConstantValue {
+        public static string Error_IncorrectConstantValue {
             get {
                 return ResourceManager.GetString("Error_IncorrectConstantValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field &quot;{0}&quot; contains incorrect re-captcha token!.
+        /// </summary>
+        public static string Error_IncorrectReCaptchaToken {
+            get {
+                return ResourceManager.GetString("Error_IncorrectReCaptchaToken", resourceCulture);
             }
         }
     }
