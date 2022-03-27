@@ -11,6 +11,8 @@ public class ApplicationsListState
     
     public int Page { get; }
     
+    public bool HasMoreItems { get; }
+    
     public ICollection<ApplicationListItemDto> Applications { get; }
 
     public ApplicationsListState() { }
@@ -18,7 +20,8 @@ public class ApplicationsListState
     public ApplicationsListState(
         bool isLoading,
         int? page = null,
-        ICollection<ApplicationListItemDto> applications = null
+        ICollection<ApplicationListItemDto> applications = null,
+        bool? hasMoreItems = null
     )
     {
         IsLoading = isLoading;
@@ -30,6 +33,10 @@ public class ApplicationsListState
         if (page.HasValue)
         {
             Page = page.Value;
+        }
+        if (hasMoreItems.HasValue)
+        {
+            HasMoreItems = hasMoreItems.Value;
         }
     }
 }

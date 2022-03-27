@@ -27,7 +27,8 @@ public class ApplicationReducers
         return new ApplicationsListState(
             false,
             state.Page,
-            action.Result.Items
+            action.Result.Items,
+            action.Result.IsHasMore
         );
     }
 }
