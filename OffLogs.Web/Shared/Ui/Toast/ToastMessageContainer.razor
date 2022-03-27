@@ -1,25 +1,12 @@
-﻿@using OffLogs.Web.Shared.Ui.Toast
-@using OffLogs.Web.Core.Models.Toast
-@using OffLogs.Web.Store.Shared.Toast
-@using Fluxor
+﻿@inherits OffLogs.Web.Core.Components.BaseComponent
 
-@inject ToastService _toastService
-@inject IState<ToastMessagesState> _toastState
+<b>Messagescount: @_state.Value.Messages.Count</b>
 
 <div class="w-toast-container">
-    @_toastState.Value.Messages.Count
-    @foreach (var message in _toastState.Value.Messages)
+    @foreach (var message in _state.Value.Messages)
     {
         <div class="mb-3">
             <ToastMessage Message="message"/>
         </div>
     }
 </div>
-
-@code {
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        _toastService.Start();
-    }
-}

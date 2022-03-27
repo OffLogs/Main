@@ -1,22 +1,24 @@
 ﻿@using OffLogs.Web.Core.Extensions
-@using OffLogs.Web.Services
 @using OffLogs.Web.Services.Events
 @using OffLogs.Web.Shared.Ui.Toast
-@using OffLogs.Web.Constants
 @using OffLogs.Web.Resources
-@using OffLogs.Web.Services.Validation
+@using OffLogs.Web.Store.Shared.Toast
+@using Fluxor
 
 @inject IAuthorizationService _authService
 @inject NavigationManager _navigationManager
 @inject ToastService _toastService
 @inject IGlobalEventsService _eventsService
 @inject IReCaptchaService _reCaptchaService
+@inject IState<ToastMessagesState> _state
 
 @inherits LayoutComponentBase
 @implements IDisposable
 
 <div class="page" @onclick="OnClickDocument">
-
+    
+    <b>MainLayout: @_state.Value.Messages.Count</b>
+    
     @if (_isShowMainMenu)
     {
         <div class="sidebar">

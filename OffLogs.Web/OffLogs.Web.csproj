@@ -54,6 +54,7 @@
       <Content Include="Shared\Ui\MyButton.razor.less" />
       <Content Include="Shared\Ui\Preloader.razor.less" />
       <Content Include="Shared\Ui\Toast\ToastMessage.razor.less" />
+      <Content Include="Shared\Ui\Toast\ToastMessageContainer.razor.cs.css" />
       <Content Include="Shared\Ui\Toast\ToastMessageContainer.razor.less" />
     </ItemGroup>
 

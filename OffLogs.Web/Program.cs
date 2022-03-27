@@ -26,7 +26,13 @@ namespace OffLogs.Web
             
             // Store
             builder.Services.AddFluxor(
-                options => options.ScanAssemblies(currentAssembly)
+                options =>
+                {
+                    options.ScanAssemblies(currentAssembly);
+#if DEBUG
+                    options.UseReduxDevTools();
+#endif
+                }
             );
             
 #if DEBUG

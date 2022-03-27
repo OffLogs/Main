@@ -14,6 +14,7 @@ public class ToastMessagesReducers
         AddMessageAction action
     )
     {
+        var messages = state.Messages.ToList();
         var toastModel = new ToastMessageModel()
         {
             Type = action.Type,
@@ -21,8 +22,8 @@ public class ToastMessagesReducers
             Content = action.Content,
             CreatedAt = DateTime.UtcNow
         };
-        state.Messages.Add(toastModel);
-        return new ToastMessagesState(state.Messages);
+        messages.Add(toastModel);
+        return new ToastMessagesState(messages);
     }
     
     [ReducerMethod]
@@ -33,19 +34,19 @@ public class ToastMessagesReducers
     {
         if (action.Message == null)
         {
-            var tempMessage = state.Messages.ToList();
-            foreach (var message in tempMessage)
-            {
-                var timeDifference = DateTime.UtcNow - message.CreatedAt;
-                if (timeDifference.Seconds >= 5)
-                {
-                    state.Messages.Remove(message);
-                }
-            }    
+            // var tempMessage = state.Messages.ToList();
+            // foreach (var message in tempMessage)
+            // {
+            //     var timeDifference = DateTime.UtcNow - message.CreatedAt;
+            //     if (timeDifference.Seconds >= 5)
+            //     {
+            //         state.Messages.Remove(message);
+            //     }
+            // }    
         }
         else
         {
-            state.Messages.Remove(action.Message);
+            // state.Messages.Remove(action.Message);
         }
         return new ToastMessagesState(state.Messages);
     }
