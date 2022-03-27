@@ -7,8 +7,6 @@ public class RemoveMessageAction
 {
     public ToastMessageModel Message { get; }
 
-    public RemoveMessageAction() {}
-
     public RemoveMessageAction(ToastMessageModel message)
     {
         Message = message;

@@ -17,7 +17,7 @@ public class ApplicationsListState
     
     public ApplicationsListState(
         bool isLoading,
-        int page = 0,
+        int? page = null,
         ICollection<ApplicationListItemDto> applications = null
     )
     {
@@ -25,7 +25,11 @@ public class ApplicationsListState
         if (applications != null)
         {
             Applications = applications;
-            Page = page;    
+            
+        }
+        if (page.HasValue)
+        {
+            Page = page.Value;
         }
     }
 }

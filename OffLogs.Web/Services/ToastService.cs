@@ -5,6 +5,7 @@ using System.Timers;
 using Fluxor;
 using OffLogs.Web.Constants;
 using OffLogs.Web.Core.Models.Toast;
+using OffLogs.Web.Store.Shared.Toast;
 using OffLogs.Web.Store.Shared.Toast.Actions;
 
 namespace OffLogs.Web.Services
@@ -12,12 +13,17 @@ namespace OffLogs.Web.Services
     public class ToastService: IDisposable
     {
         private readonly IDispatcher _dispatcher;
+        private readonly IState<ToastMessagesState> _state;
         private readonly Timer _timer;
         private readonly double _interval = 1 * 1000;
         
-        public ToastService(IDispatcher dispatcher)
+        public ToastService(
+            IDispatcher dispatcher,
+            IState<ToastMessagesState> state
+        )
         {
             _dispatcher = dispatcher;
+            _state = state;
             _timer = new Timer();
         }
 
@@ -55,7 +61,15 @@ namespace OffLogs.Web.Services
 
         private void OnTimerTick(object sender, ElapsedEventArgs e)
         {
-            _dispatcher.Dispatch(new RemoveMessageAction());
+            var tempMessage = _state.Value.Messages.ToList();
+            foreach (var message in tempMessage)
+            {
+                var timeDifference = DateTime.UtcNow - message.CreatedAt;
+                if (timeDifference.Seconds >= 5)
+                {
+                    _dispatcher.Dispatch(new RemoveMessageAction(message));
+                }
+            } 
         }
     }
 }

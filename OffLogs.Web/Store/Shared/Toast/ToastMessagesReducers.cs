@@ -32,22 +32,7 @@ public class ToastMessagesReducers
         RemoveMessageAction action
     )
     {
-        if (action.Message == null)
-        {
-            // var tempMessage = state.Messages.ToList();
-            // foreach (var message in tempMessage)
-            // {
-            //     var timeDifference = DateTime.UtcNow - message.CreatedAt;
-            //     if (timeDifference.Seconds >= 5)
-            //     {
-            //         state.Messages.Remove(message);
-            //     }
-            // }    
-        }
-        else
-        {
-            // state.Messages.Remove(action.Message);
-        }
+        state.Messages.Remove(action.Message);
         return new ToastMessagesState(state.Messages);
     }
 }
