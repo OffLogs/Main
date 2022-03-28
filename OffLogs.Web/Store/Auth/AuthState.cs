@@ -7,15 +7,17 @@ namespace OffLogs.Web.Store.Auth;
 [FeatureState]
 public class AuthState
 {
-    public bool IsLoggedIn { get; }
-    
+    public bool IsLoggedIn => !string.IsNullOrEmpty(Jwt);
+
     public string Pem { get; }
+    
+    public string Jwt { get; }
     
     public AuthState() { }
     
-    public AuthState(bool isLoggedIn, string pem)
+    public AuthState(string jwt, string pem)
     {
-        IsLoggedIn = isLoggedIn;
+        Jwt = jwt;
         Pem = pem;
     }
 }

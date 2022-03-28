@@ -10,18 +10,18 @@ using OffLogs.Web.Store.Common.Actions;
 
 namespace OffLogs.Web.Store.Common.Effects;
 
-public class LoadPersistedDataEffect: EffectPersistData<PersistDataAction>
+public class LoadPersistedDataAEffect: AEffectPersistData<LoadPersistedDataAction>
 {
     private readonly IState<AuthState> _authState;
     private readonly ILocalStorageService _localStorage;
     private readonly IDispatcher _dispatcher;
-    private readonly ILogger<LoadPersistedDataEffect> _logger;
+    private readonly ILogger<LoadPersistedDataAEffect> _logger;
 
-    public LoadPersistedDataEffect(
+    public LoadPersistedDataAEffect(
         IState<AuthState> authState,
         ILocalStorageService localStorage,
         IDispatcher dispatcher,
-        ILogger<LoadPersistedDataEffect> logger
+        ILogger<LoadPersistedDataAEffect> logger
     )
     {
         _authState = authState;
@@ -30,13 +30,13 @@ public class LoadPersistedDataEffect: EffectPersistData<PersistDataAction>
         _logger = logger;
     }
 
-    public override async Task HandleAsync(PersistDataAction pageAction, IDispatcher dispatcher)
+    public override async Task HandleAsync(LoadPersistedDataAction pageAction, IDispatcher dispatcher)
     {
-        _logger.LogDebug("Load store data from local storage");
+        _logger.LogDebug("Load persisted data from local storage");
         var authData = await GetData<AuthState>(AuthDataKey);
         if (authData != null && !string.IsNullOrEmpty(authData.Pem))
         {
-            _dispatcher.Dispatch(new LoginAction(authData.Pem));
+            _dispatcher.Dispatch(new LoginAction(authData.Jwt, authData.Pem));
         }
     }
 
@@ -45,6 +45,11 @@ public class LoadPersistedDataEffect: EffectPersistData<PersistDataAction>
         try
         {
             var authDataString = await _localStorage.GetItemAsStringAsync(key);
+            if (string.IsNullOrEmpty(authDataString))
+            {
+                return default;
+            }
+
             return JsonConvert.DeserializeObject<TState>(authDataString);
         }
         catch (Exception e)

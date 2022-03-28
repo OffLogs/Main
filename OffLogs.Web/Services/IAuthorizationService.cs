@@ -5,12 +5,10 @@ namespace OffLogs.Web.Services
 {
     public interface IAuthorizationService
     {
-        bool IsLoggedIn();
         Task<bool> LoginAsync(LoginRequest model);
-        Task<bool> LoginAsync(string jwtToken);
+        void Login(string jwtToken, string pem);
         Task LogoutAsync();
-        Task<bool> IsHasJwtAsync();
-        Task<string> GetJwtAsync();
         Task<bool> CheckIsLoggedInAsync();
+        string GetJwt();
     }
 }

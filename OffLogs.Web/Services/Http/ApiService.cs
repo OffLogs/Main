@@ -4,15 +4,12 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
+using Fluxor;
 using Newtonsoft.Json;
-using OffLogs.Api.Common.Dto;
-using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses;
-using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log;
-using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
-using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Exceptions;
-using OffLogs.Web.Core.Exceptions;
+using OffLogs.Web.Store.Auth;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace OffLogs.Web.Services.Http
 {
@@ -20,13 +17,25 @@ namespace OffLogs.Web.Services.Http
     {
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorage;
+        private readonly IServiceProvider _serviceProvider;
 
-        public ApiService(HttpClient httpClient, ILocalStorageService localStorage)
+        public ApiService(
+            HttpClient httpClient,
+            ILocalStorageService localStorage,
+            IServiceProvider serviceProvider
+        )
         {
             _httpClient = httpClient;
             _localStorage = localStorage;
+            _serviceProvider = serviceProvider;
         }
 
+        public string GetJwt()
+        {
+            var store = _serviceProvider.GetService<IState<AuthState>>();
+            return store?.Value.Jwt;
+        }
+        
         private async Task<string> RequestAsync(string requestUri, string jwtToken, object data, HttpMethod httpMethod)
         {
             // create request object
@@ -75,7 +84,7 @@ namespace OffLogs.Web.Services.Http
         {
             return await RequestAsync<TResponse>(
                 requestUri, 
-                await _localStorage.GetItemAsync<string>(AuthorizationService.AuthKey), 
+                GetJwt(), 
                 data, 
                 HttpMethod.Post
             );
@@ -85,7 +94,7 @@ namespace OffLogs.Web.Services.Http
         {
             await RequestAsync(
                 requestUri, 
-                await _localStorage.GetItemAsync<string>(AuthorizationService.AuthKey), 
+                await _localStorage.GetItemAsync<string>(GetJwt()), 
                 data, 
                 HttpMethod.Post
             );

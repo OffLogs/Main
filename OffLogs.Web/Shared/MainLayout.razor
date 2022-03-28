@@ -5,15 +5,7 @@
 @using OffLogs.Web.Store.Shared.Toast
 @using Fluxor
 
-@inject IAuthorizationService _authService
-@inject NavigationManager _navigationManager
-@inject ToastService _toastService
-@inject IGlobalEventsService _eventsService
-@inject IReCaptchaService _reCaptchaService
-@inject IState<ToastMessagesState> _state
-
 @inherits LayoutComponentBase
-@implements IDisposable
 
 <div class="page" @onclick="OnClickDocument">
 
@@ -30,7 +22,7 @@
             @if (_isShowMainMenu)
             {
                 <div class="top-row px-4">
-                    <a @onClick="OnLogout"
+                    <a @onclick="OnLogout"
                        href="#"
                        class="ml-md-auto">
                         @AuthResources.Logout
@@ -54,71 +46,3 @@
         </style>
     }
 </div>
-
-@code {
-    private bool _isInitialized = false;
-
-    private bool _isLoggedIn = false;
-
-    private bool _isShowMainMenu = false;
-    
-    private bool _isShowReCaptcha = false;
-
-    private bool _isSharedPage
-    {
-        get
-        {
-            var path = _navigationManager.GetPath();
-            return path.Equals("/") || path.StartsWith("/login") || path.StartsWith("/registration");
-        }
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-
-        _navigationManager.LocationChanged += (sender, args) =>
-        {
-            CheckIsLoggedInAndRedirect();
-        };
-        _reCaptchaService.IsShowChanged += OnReCaptchaShowChanged;
-        _isShowReCaptcha = _reCaptchaService.GetIsEnabled();
-        
-        await _authService.CheckIsLoggedInAsync();
-        _isInitialized = true;
-        CheckIsLoggedInAndRedirect();
-    }
-
-    private void OnReCaptchaShowChanged(bool isShow)
-    {
-        _isShowReCaptcha = isShow;
-    }
-
-    public void Dispose()
-    {
-        _reCaptchaService.IsShowChanged -= OnReCaptchaShowChanged;
-    }
-    
-    private void CheckIsLoggedInAndRedirect()
-    {
-        _isLoggedIn = _authService.IsLoggedIn();
-        if (!_isLoggedIn && !_isSharedPage)
-        {
-            _navigationManager.NavigateTo("/login");
-        }
-        _isShowMainMenu = _isLoggedIn && _navigationManager.GetPath().StartsWith(SiteUrl.Dashboard);
-        StateHasChanged();
-    }
-
-    private async Task OnLogout()
-    {
-        await _authService.LogoutAsync();
-        CheckIsLoggedInAndRedirect();
-        _navigationManager.NavigateTo("/");
-    }
-
-    private void OnClickDocument()
-    {
-        _eventsService.InvokeOnClickDocumentAsync();
-    }
-}

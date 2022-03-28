@@ -8,18 +8,18 @@ using OffLogs.Web.Store.Common.Actions;
 
 namespace OffLogs.Web.Store.Common.Effects;
 
-public class PersistDataEffect: EffectPersistData<PersistDataAction>
+public class PersistDataAEffect: AEffectPersistData<PersistDataAction>
 {
     private readonly IState<AuthState> _authState;
     private readonly ILocalStorageService _localStorage;
     private readonly IDispatcher _dispatcher;
-    private readonly ILogger<PersistDataEffect> _logger;
+    private readonly ILogger<PersistDataAEffect> _logger;
 
-    public PersistDataEffect(
+    public PersistDataAEffect(
         IState<AuthState> authState,
         ILocalStorageService localStorage,
         IDispatcher dispatcher,
-        ILogger<PersistDataEffect> logger
+        ILogger<PersistDataAEffect> logger
     )
     {
         _authState = authState;
@@ -30,7 +30,7 @@ public class PersistDataEffect: EffectPersistData<PersistDataAction>
 
     public override async Task HandleAsync(PersistDataAction pageAction, IDispatcher dispatcher)
     {
-        _logger.LogDebug("Load store data from local storage");
+        _logger.LogDebug("Persist data to local storage");
         await SetData(AuthDataKey, _authState.Value);
     }
 

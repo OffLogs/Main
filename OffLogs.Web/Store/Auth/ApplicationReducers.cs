@@ -8,12 +8,12 @@ public class AuthReducers
     [ReducerMethod(typeof(LogoutAction))]
     public static AuthState ReduceLogoutActionAction(AuthState state)
     {
-        return new AuthState(false, null);
+        return new AuthState(null, null);
     }
     
     [ReducerMethod]
     public static AuthState ReduceLoginActionAction(AuthState state, LoginAction action)
     {
-        return new AuthState(true, action.Pem);
+        return new AuthState(action.Jwt, action.Pem);
     }
 }

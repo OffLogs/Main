@@ -106,14 +106,15 @@
         StateHasChanged();
     }
     
-    private async Task LoginAndContinue()
+    private Task LoginAndContinue()
     {
         if (!_isRegistered)
         {
-            return;
+            return Task.CompletedTask;
         }
-        await _authorizationService.LoginAsync(_registrationResponse.JwtToken);
+        _authorizationService.Login(_registrationResponse.JwtToken, _registrationResponse.Pem);
         _navigationManager.NavigateTo(SiteUrl.Dashboard);
+        return Task.CompletedTask;
     }
     
     private async Task SaveFile()
