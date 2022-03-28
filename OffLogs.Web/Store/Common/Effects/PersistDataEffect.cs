@@ -10,13 +10,13 @@ namespace OffLogs.Web.Store.Common.Effects;
 
 public class PersistDataAEffect: AEffectPersistData<PersistDataAction>
 {
-    private readonly IState<AuthState> _authState;
+    private readonly IState<CommonState> _authState;
     private readonly ILocalStorageService _localStorage;
     private readonly IDispatcher _dispatcher;
     private readonly ILogger<PersistDataAEffect> _logger;
 
     public PersistDataAEffect(
-        IState<AuthState> authState,
+        IState<CommonState> authState,
         ILocalStorageService localStorage,
         IDispatcher dispatcher,
         ILogger<PersistDataAEffect> logger

@@ -4,6 +4,7 @@ using Blazored.LocalStorage;
 using Fluxor;
 using Microsoft.Extensions.DependencyInjection;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
+using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Services.Http;
 using OffLogs.Web.Store.Auth;
 using OffLogs.Web.Store.Auth.Actions;
@@ -57,7 +58,7 @@ namespace OffLogs.Web.Services
         {
             if (!string.IsNullOrEmpty(jwtToken))
             {
-                _dispatcher.Dispatch(new LoginAction(jwtToken, pem));
+                _dispatcher.Dispatch(new LoginAction(pem, jwtToken));
                 _dispatcher.Dispatch(new PersistDataAction());
             }
         }

@@ -4,6 +4,7 @@ using Blazored.LocalStorage;
 using Fluxor;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Store.Auth;
 using OffLogs.Web.Store.Auth.Actions;
 using OffLogs.Web.Store.Common.Actions;
@@ -38,6 +39,7 @@ public class LoadPersistedDataAEffect: AEffectPersistData<LoadPersistedDataActio
         {
             _dispatcher.Dispatch(new LoginAction(authData.Jwt, authData.Pem));
         }
+        _dispatcher.Dispatch(new SetIsAppInitializedAction());
     }
 
     private async Task<TState> GetData<TState>(string key)

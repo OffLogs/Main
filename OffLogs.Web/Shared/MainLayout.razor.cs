@@ -9,6 +9,7 @@ using OffLogs.Web.Services;
 using OffLogs.Web.Services.Events;
 using OffLogs.Web.Services.Validation;
 using OffLogs.Web.Store.Auth;
+using OffLogs.Web.Store.Common;
 using OffLogs.Web.Store.Common.Actions;
 using OffLogs.Web.Store.Shared.Toast;
 
@@ -38,8 +39,11 @@ public partial class MainLayout: IDisposable
     private IState<AuthState> AuthState { get; set; }
     
     [Inject]
-    private IDispatcher Dispatcher { get; set; }
+    private IState<CommonState> CommonState { get; set; }
     
+    [Inject]
+    private IDispatcher Dispatcher { get; set; }
+
     private bool _isInitialized = false;
 
     private bool _isLoggedIn = false;
@@ -61,7 +65,23 @@ public partial class MainLayout: IDisposable
     {
         await base.OnInitializedAsync();
 
+        CommonState.StateChanged += async (sender, args) =>
+        {
+            if (CommonState.Value.IsInitialized)
+            {
+                await InitAppAsync();
+            }
+        };
+        Dispatcher.Dispatch(new LoadPersistedDataAction());
+    }
+
+    private async Task InitAppAsync()
+    {
         NavigationManager.LocationChanged += (sender, args) =>
+        {
+            CheckIsLoggedInAndRedirect();
+        };
+        AuthState.StateChanged += (sender, args) =>
         {
             CheckIsLoggedInAndRedirect();
         };
@@ -72,17 +92,7 @@ public partial class MainLayout: IDisposable
         _isInitialized = true;
         CheckIsLoggedInAndRedirect();
     }
-    
-    protected override void OnAfterRender(bool firstRender)
-    {
-        base.OnAfterRender(firstRender);
 
-        if (firstRender)
-        {
-            Dispatcher.Dispatch(new LoadPersistedDataAction());
-        }
-    }
-    
     public void Dispose()
     {
         ReCaptchaService.IsShowChanged -= OnReCaptchaShowChanged;

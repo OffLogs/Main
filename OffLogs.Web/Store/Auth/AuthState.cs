@@ -9,9 +9,9 @@ public class AuthState
 {
     public bool IsLoggedIn => !string.IsNullOrEmpty(Jwt);
 
-    public string Pem { get; }
+    public string Pem { get; set; }
     
-    public string Jwt { get; }
+    public string Jwt { get; set; }
     
     public AuthState() { }
     
