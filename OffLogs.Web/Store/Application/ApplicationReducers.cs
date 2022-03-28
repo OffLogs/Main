@@ -12,7 +12,7 @@ public class ApplicationReducers
     }
     
     [ReducerMethod(typeof(ResetListAction))]
-    public static ApplicationsListState ReduceResetListAction()
+    public static ApplicationsListState ReduceResetListAction(ApplicationsListState state)
     {
         return new ApplicationsListState(false, 0);
     }
