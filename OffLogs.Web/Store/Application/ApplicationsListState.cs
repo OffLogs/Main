@@ -12,11 +12,18 @@ public class ApplicationsListState
     public int Page { get; }
     
     public bool HasMoreItems { get; }
-    
-    public ICollection<ApplicationListItemDto> Applications { get; }
+
+    public ICollection<ApplicationListItemDto> Applications { get; } = new List<ApplicationListItemDto>();
 
     public ApplicationsListState() { }
-    
+
+    public ApplicationsListState(
+        ICollection<ApplicationListItemDto> applications
+    )
+    {
+        Applications = applications;
+    }
+
     public ApplicationsListState(
         bool isLoading,
         int? page = null,

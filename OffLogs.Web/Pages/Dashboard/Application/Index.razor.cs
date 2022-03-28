@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Fluxor;
 using Microsoft.AspNetCore.Components;
 using OffLogs.Api.Common.Dto.Entities;
-using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application;
 using OffLogs.Web.Resources;
-using OffLogs.Web.Services;
 using OffLogs.Web.Services.Http;
+using OffLogs.Web.Store.Application;
+using OffLogs.Web.Store.Application.Actions;
 
 namespace OffLogs.Web.Pages.Dashboard.Application;
 
@@ -17,10 +16,8 @@ public partial class Index
     private IApiService ApiService { get; set; }
 
     [Inject]
-    private ToastService ToastService { get; set; }
+    private IState<ApplicationsListState> ApplicationsState { get; set; }
     
-    private List<ApplicationListItemDto> _applications = new();
-    private int _currentPage = 1;
     private long? _selectedApplicationId;
     private ApplicationListItemDto _applicationForDeletion = null;
     private ApplicationListItemDto _applicationForSharing = null;
@@ -31,18 +28,14 @@ public partial class Index
         await LoadListAsync(false);
     }
 
-    private async Task LoadListAsync(bool isLoadNextPage = true)
+    private Task LoadListAsync(bool isLoadNextPage = true)
     {
-        if (isLoadNextPage)
+        if (!isLoadNextPage)
         {
-            _currentPage++;
+            Dispatcher.Dispatch(new ResetListAction());
         }
-        var response = await ApiService.GetApplicationsAsync(new GetListRequest()
-        {
-            Page = _currentPage
-        });
-        _applications = response.Items.ToList();
-        StateHasChanged();
+        Dispatcher.Dispatch(new FetchNextListPageAction());
+        return Task.CompletedTask;
     }
 
     private async Task OnClickRowAsync(ApplicationListItemDto application)
@@ -58,12 +51,13 @@ public partial class Index
 
     private Task OnApplicationAdded(ApplicationDto application)
     {
-        _applications.Add(new ApplicationListItemDto() {
+        Dispatcher.Dispatch(new AddApplicationAction(new ApplicationListItemDto
+        {
             Id = application.Id,
             CreateTime = application.CreateTime,
             Name = application.Name,
             UserId = application.UserId
-        });
+        }));
         return Task.CompletedTask;
     }
 
@@ -75,10 +69,9 @@ public partial class Index
         {
             var applicationId = _applicationForDeletion.Id;
             _applicationForDeletion = null;
-            ToastService.AddInfoMessage("Application deleting...");
             await ApiService.DeleteApplicationAsync(applicationId);
-            ToastService.AddInfoMessage("Application is deleted");
-            _applications = _applications.Where(i => i.Id != applicationId).ToList();
+            ToastService.AddInfoMessage(ApplicationResources.ApplicationIsDeleted);
+            Dispatcher.Dispatch(new DeleteApplicationAction(applicationId));
         }
         catch (Exception e)
         {

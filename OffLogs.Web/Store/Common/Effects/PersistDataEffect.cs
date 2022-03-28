@@ -12,19 +12,16 @@ public class PersistDataAEffect: AEffectPersistData<PersistDataAction>
 {
     private readonly IState<CommonState> _authState;
     private readonly ILocalStorageService _localStorage;
-    private readonly IDispatcher _dispatcher;
     private readonly ILogger<PersistDataAEffect> _logger;
 
     public PersistDataAEffect(
         IState<CommonState> authState,
         ILocalStorageService localStorage,
-        IDispatcher dispatcher,
         ILogger<PersistDataAEffect> logger
     )
     {
         _authState = authState;
         _localStorage = localStorage;
-        _dispatcher = dispatcher;
         _logger = logger;
     }
 

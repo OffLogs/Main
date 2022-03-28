@@ -1,4 +1,5 @@
-﻿using Fluxor;
+﻿using System.Linq;
+using Fluxor;
 using OffLogs.Web.Store.Application.Actions;
 
 namespace OffLogs.Web.Store.Application;
@@ -18,7 +19,7 @@ public class ApplicationReducers
     }
     
     [ReducerMethod]
-    public static ApplicationsListState ReduceResetListAction(ApplicationsListState state, FetchListResultAction action)
+    public static ApplicationsListState ReduceFetchListResultActionAction(ApplicationsListState state, FetchListResultAction action)
     {
         if (action.Result == null)
         {
@@ -30,5 +31,21 @@ public class ApplicationReducers
             action.Result.Items,
             action.Result.IsHasMore
         );
+    }
+    
+    [ReducerMethod]
+    public static ApplicationsListState ReduceDeleteApplicationActionAction(ApplicationsListState state, DeleteApplicationAction action)
+    {
+        var applications = state.Applications.Where(
+            i => i.Id != action.Id
+        ).ToList();
+        return new ApplicationsListState(applications);
+    }
+    
+    [ReducerMethod]
+    public static ApplicationsListState ReduceAddApplicationActionAction(ApplicationsListState state, AddApplicationAction action)
+    {
+        state.Applications.Add(action.Application);
+        return new ApplicationsListState(state.Applications);
     }
 }

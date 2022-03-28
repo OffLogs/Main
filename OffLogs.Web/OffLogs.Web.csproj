@@ -18,6 +18,15 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>AuthResources.resx</DependentUpon>
       </Compile>
+      <EmbeddedResource Update="Resources\ApplicationResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>ApplicationResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <Compile Update="Resources\ApplicationResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ApplicationResources.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

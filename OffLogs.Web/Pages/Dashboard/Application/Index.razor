@@ -3,6 +3,8 @@
 @using OffLogs.Web.Pages.Dashboard.Application.Info
 @using OffLogs.Web.Pages.Dashboard.Application.Share
 
+@inherits BaseComponent
+
 <h1>Your application</h1>
 
 <AddApplicationModal OnAdded="OnApplicationAdded"/>
@@ -27,7 +29,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var application in _applications)
+        @foreach (var application in ApplicationsState.Value.Applications)
         {
             <tr @onclick="@(async () => await OnClickRowAsync(application))">
                 <td>@application.Name</td>

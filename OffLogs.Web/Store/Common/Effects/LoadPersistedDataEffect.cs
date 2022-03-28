@@ -13,21 +13,15 @@ namespace OffLogs.Web.Store.Common.Effects;
 
 public class LoadPersistedDataAEffect: AEffectPersistData<LoadPersistedDataAction>
 {
-    private readonly IState<AuthState> _authState;
     private readonly ILocalStorageService _localStorage;
-    private readonly IDispatcher _dispatcher;
     private readonly ILogger<LoadPersistedDataAEffect> _logger;
 
     public LoadPersistedDataAEffect(
-        IState<AuthState> authState,
         ILocalStorageService localStorage,
-        IDispatcher dispatcher,
         ILogger<LoadPersistedDataAEffect> logger
     )
     {
-        _authState = authState;
         _localStorage = localStorage;
-        _dispatcher = dispatcher;
         _logger = logger;
     }
 
@@ -37,9 +31,9 @@ public class LoadPersistedDataAEffect: AEffectPersistData<LoadPersistedDataActio
         var authData = await GetData<AuthState>(AuthDataKey);
         if (authData != null && !string.IsNullOrEmpty(authData.Pem))
         {
-            _dispatcher.Dispatch(new LoginAction(authData.Jwt, authData.Pem));
+            dispatcher.Dispatch(new LoginAction(authData.Jwt, authData.Pem));
         }
-        _dispatcher.Dispatch(new SetIsAppInitializedAction());
+        dispatcher.Dispatch(new SetIsAppInitializedAction());
     }
 
     private async Task<TState> GetData<TState>(string key)
