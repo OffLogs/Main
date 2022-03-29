@@ -34,20 +34,11 @@
             <tr @onclick="@(async () => await OnClickRowAsync(application))">
                 <td>@application.Name</td>
                 <td @onclick:stopPropagation>
-                    @if (@application.Permissions.IsHasWriteAccess)
-                    {
-                        <MyButton IsSmall="true"
-                                  Type="BootstrapColorType.Secondary"
-                                  OnClick="@(() => _applicationForSharing = application)">
-                            Share
-                        </MyButton>
-
-                        <MyButton IsSmall="true"
-                                  Type="BootstrapColorType.Danger"
-                                  OnClick="@(() => _applicationForDeletion = application)">
-                            X
-                        </MyButton>    
-                    }
+                    <MyButton IsSmall="true"
+                              Type="BootstrapColorType.Danger"
+                              OnClick="@(() => _applicationForDeletion = application)">
+                        X
+                    </MyButton> 
                 </td>
             </tr>
         }

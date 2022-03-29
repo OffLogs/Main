@@ -65,22 +65,9 @@ public partial class Index
     {
         _applicationForDeletion = _applicationForDeletion 
                                   ?? throw new ArgumentNullException(nameof(_applicationForDeletion));
-        try
-        {
-            var applicationId = _applicationForDeletion.Id;
-            _applicationForDeletion = null;
-            await ApiService.DeleteApplicationAsync(applicationId);
-            ToastService.AddInfoMessage(ApplicationResources.ApplicationIsDeleted);
-            Dispatcher.Dispatch(new DeleteApplicationAction(applicationId));
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            ToastService.AddErrorMessage(CommonResources.Error_ApplicationDeletionError);
-        }
-        finally
-        {
-            StateHasChanged();
-        }
+        var applicationId = _applicationForDeletion.Id;
+        _applicationForDeletion = null;
+        Dispatcher.Dispatch(new DeleteApplicationAction(applicationId));
+        await Task.CompletedTask;
     }
 }

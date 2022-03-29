@@ -95,7 +95,7 @@ namespace OffLogs.Web.Services.Http
         {
             await RequestAsync(
                 requestUri, 
-                await _localStorage.GetItemAsync<string>(GetJwt()), 
+                GetJwt(), 
                 data, 
                 HttpMethod.Post
             );

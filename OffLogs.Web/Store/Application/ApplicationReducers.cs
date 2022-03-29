@@ -34,7 +34,7 @@ public class ApplicationReducers
     }
     
     [ReducerMethod]
-    public static ApplicationsListState ReduceDeleteApplicationActionAction(ApplicationsListState state, DeleteApplicationAction action)
+    public static ApplicationsListState ReduceRemoveApplicationFromListAction(ApplicationsListState state, RemoveApplicationFromListAction action)
     {
         var applications = state.Applications.Where(
             i => i.Id != action.Id

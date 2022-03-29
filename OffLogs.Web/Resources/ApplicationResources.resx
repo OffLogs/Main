@@ -20,6 +20,9 @@
     </resheader>
 
     <data name="ApplicationIsDeleted" xml:space="preserve">
-        <value>Enter your email:</value>
+        <value>The application has been deleted</value>
+    </data>
+    <data name="ApplicationDeletionError" xml:space="preserve">
+        <value>The application was not deleted</value>
     </data>
 </root>

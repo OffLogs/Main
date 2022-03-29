@@ -61,7 +61,16 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter your email:.
+        ///   Looks up a localized string similar to The application was not deleted.
+        /// </summary>
+        internal static string ApplicationDeletionError {
+            get {
+                return ResourceManager.GetString("ApplicationDeletionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The application has been deleted.
         /// </summary>
         internal static string ApplicationIsDeleted {
             get {
