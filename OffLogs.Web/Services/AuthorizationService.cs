@@ -39,7 +39,7 @@ namespace OffLogs.Web.Services
         public string GetJwt()
         {
             var store = _serviceProvider.GetService<IState<AuthState>>();
-            return store?.Value.Jwt;
+            return store?.Value.Jwt?.Trim();
         }
         
         public async Task<bool> LoginAsync(LoginRequest model)
@@ -75,14 +75,16 @@ namespace OffLogs.Web.Services
             {
                 try
                 {
+                    Debug.Log("CheckIsLoggedInAsync");
                     isValidJwt = await _apiService.CheckIsLoggedInAsync(GetJwt());
                     if (!isValidJwt)
                     {
                         await LogoutAsync();
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    Debug.Log(e.Message, e);
                     Console.WriteLine(@"CheckIsLoggedIn returned: false");
                 }
             }

@@ -11,4 +11,10 @@ public class LoginAction
         Pem = pem;
         Jwt = jwt;
     }
+    
+    public LoginAction(AuthState state)
+    {
+        Pem = state.Pem;
+        Jwt = state.Jwt;
+    }
 }

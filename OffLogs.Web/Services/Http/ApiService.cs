@@ -10,6 +10,7 @@ using OffLogs.Api.Common.Dto.RequestsAndResponses;
 using OffLogs.Business.Common.Exceptions;
 using OffLogs.Web.Store.Auth;
 using Microsoft.Extensions.DependencyInjection;
+using OffLogs.Web.Core.Helpers;
 
 namespace OffLogs.Web.Services.Http
 {
@@ -51,7 +52,7 @@ namespace OffLogs.Web.Services.Http
             }
 
             // send request
-            HttpResponseMessage response = await _httpClient.SendAsync(request);
+            var response = await _httpClient.SendAsync(request);
             var responseString = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {

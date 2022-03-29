@@ -5,6 +5,6 @@
     <NavLink href="@SiteUrl.Dashboard">Dashboard</NavLink>
 </h1>
 
-<button @onclick="TestMessage">Test</button>
+<button @onclick="@(async () => await TestMessage())">Test</button>
 
 Welcome to your new app.

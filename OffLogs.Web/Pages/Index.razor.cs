@@ -1,4 +1,5 @@
-﻿using Fluxor;
+﻿using System.Threading.Tasks;
+using Fluxor;
 using Microsoft.AspNetCore.Components;
 using OffLogs.Web.Constants;
 using OffLogs.Web.Services;
@@ -17,9 +18,13 @@ public partial class Index
 
     [Inject]
     private IState<ToastMessagesState> _state { get; set; }
-
-    private void TestMessage()
+    
+    [Inject]
+    private IAuthorizationService AuthorizationService { get; set; }
+    
+    private async Task TestMessage()
     {
+        await AuthorizationService.CheckIsLoggedInAsync();
         Dispatcher.Dispatch(new AddMessageAction(ToastMessageType.Error, "Test", "Test"));
     }
 }

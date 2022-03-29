@@ -1,14 +1,34 @@
-﻿using OffLogs.Api.Common.Dto;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using OffLogs.Api.Common.Dto;
 using OffLogs.Api.Common.Dto.Entities;
 
 namespace OffLogs.Web.Store.Application.Actions;
 
 public class FetchListResultAction
 {
-    public PaginatedListDto<ApplicationListItemDto> Result { get; }
+    public ICollection<ApplicationListItemDto> Items { get; }
 
-    public FetchListResultAction(PaginatedListDto<ApplicationListItemDto> result)
+    public long TotalPages { get; }
+
+    public int PageSize { get; }
+
+    public long TotalCount { get; }
+    
+    public bool IsHasMore { get; }
+
+    public FetchListResultAction(
+        ICollection<ApplicationListItemDto> items,
+        long totalPages,
+        long totalCount,
+        int pageSize,
+        bool isHasMore
+    )
     {
-        Result = result;
+        Items = items;
+        TotalPages = totalPages;
+        TotalCount = totalCount;
+        PageSize = pageSize;
+        IsHasMore = isHasMore;
     }
 }

@@ -31,7 +31,7 @@ public class LoadPersistedDataAEffect: AEffectPersistData<LoadPersistedDataActio
         var authData = await GetData<AuthState>(AuthDataKey);
         if (authData != null && !string.IsNullOrEmpty(authData.Pem))
         {
-            dispatcher.Dispatch(new LoginAction(authData.Jwt, authData.Pem));
+            dispatcher.Dispatch(new LoginAction(authData));
         }
         dispatcher.Dispatch(new SetIsAppInitializedAction());
     }

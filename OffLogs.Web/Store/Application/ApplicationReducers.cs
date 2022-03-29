@@ -21,15 +21,15 @@ public class ApplicationReducers
     [ReducerMethod]
     public static ApplicationsListState ReduceFetchListResultActionAction(ApplicationsListState state, FetchListResultAction action)
     {
-        if (action.Result == null)
+        if (action.Items == null)
         {
             return new ApplicationsListState(false);
         }
         return new ApplicationsListState(
             false,
             state.Page,
-            action.Result.Items,
-            action.Result.IsHasMore
+            action.Items,
+            action.IsHasMore
         );
     }
     

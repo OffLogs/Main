@@ -35,7 +35,13 @@ public class FetchApplicationsEffect: Effect<FetchNextListPageAction>
             {
                 Page = _state.Value.Page
             });
-            dispatcher.Dispatch(new FetchListResultAction(response));
+            dispatcher.Dispatch(new FetchListResultAction(
+                response.Items,
+                response.TotalPages,
+                response.TotalCount,
+                response.PageSize,
+                response.IsHasMore
+            ));
         }
         catch (Exception e)
         {
