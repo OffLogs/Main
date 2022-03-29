@@ -10,7 +10,8 @@ namespace AspNetCore.ApiControllers.Extensions
     {
         public static Task<IActionResult> RequestAsync<TApiController, TRequest>(
             this TApiController apiController,
-            TRequest request)
+            TRequest request
+        )
             where TApiController : 
                 ControllerBase, 
                 IAsyncApiController, 
@@ -54,17 +55,17 @@ namespace AspNetCore.ApiControllers.Extensions
                 IShouldPerformCommit
             where TRequest : IRequest
         {
-            if (apiController == null)
-                throw new ArgumentNullException(nameof(apiController));
-
-            if (request == null)
-                throw new ArgumentNullException(nameof(request));
-
-            if (!apiController.ModelState.IsValid)
-                return apiController.InvalidModelState(apiController.ModelState);
-
             try
             {
+                if (apiController == null)
+                    throw new ArgumentNullException(nameof(apiController));
+
+                if (request == null)
+                    throw new ArgumentNullException(nameof(request));
+
+                if (!apiController.ModelState.IsValid)
+                    return apiController.InvalidModelState(apiController.ModelState);
+                
                 await apiController.AsyncRequestBuilder.ExecuteAsync(request);
                 if (apiController.CommitPerformer != null)
                 {
