@@ -1,13 +1,9 @@
 ﻿@page "/dashboard/applications"
-@using OffLogs.Web.Services.Http
 @using OffLogs.Web.Pages.Dashboard.Application.Add
 @using OffLogs.Web.Pages.Dashboard.Application.Info
 @using OffLogs.Web.Pages.Dashboard.Application.Share
-@using OffLogs.Api.Common.Dto.Entities
-@using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application
-@using OffLogs.Web.Resources
-@inject IApiService _apiService
-@inject ToastService _toastService
+
+@inherits BaseComponent
 
 <h1>Your application</h1>
 
@@ -33,102 +29,18 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var application in _applications)
+        @foreach (var application in ApplicationsState.Value.Applications)
         {
             <tr @onclick="@(async () => await OnClickRowAsync(application))">
                 <td>@application.Name</td>
                 <td @onclick:stopPropagation>
-                    @if (@application.Permissions.IsHasWriteAccess)
-                    {
-                        <MyButton IsSmall="true"
-                                  Type="BootstrapColorType.Secondary"
-                                  OnClick="@(() => _applicationForSharing = application)">
-                            Share
-                        </MyButton>
-
-                        <MyButton IsSmall="true"
-                                  Type="BootstrapColorType.Danger"
-                                  OnClick="@(() => _applicationForDeletion = application)">
-                            X
-                        </MyButton>    
-                    }
+                    <MyButton IsSmall="true"
+                              Type="BootstrapColorType.Danger"
+                              OnClick="@(() => _applicationForDeletion = application)">
+                        X
+                    </MyButton> 
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
-@code
-{
-    private List<ApplicationListItemDto> _applications = new();
-    private int _currentPage = 1;
-    private long? _selectedApplicationId;
-    private ApplicationListItemDto _applicationForDeletion = null;
-    private ApplicationListItemDto _applicationForSharing = null;
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        await LoadListAsync(false);
-    }
-
-    private async Task LoadListAsync(bool isLoadNextPage = true)
-    {
-        if (isLoadNextPage)
-        {
-            _currentPage++;
-        }
-        var response = await _apiService.GetApplicationsAsync(new GetListRequest()
-        {
-            Page = _currentPage
-        });
-        _applications = response.Items.ToList();
-        StateHasChanged();
-    }
-
-    private async Task OnClickRowAsync(ApplicationListItemDto application)
-    {
-        _selectedApplicationId = application.Id;
-        await Task.CompletedTask;
-    }
-
-    private void OnCloseInfoModal()
-    {
-        _selectedApplicationId = null;
-    }
-
-    private Task OnApplicationAdded(ApplicationDto application)
-    {
-        _applications.Add(new ApplicationListItemDto() {
-            Id = application.Id,
-            CreateTime = application.CreateTime,
-            Name = application.Name,
-            UserId = application.UserId
-        });
-        return Task.CompletedTask;
-    }
-
-    private async Task OnDeleteAppAsync()
-    {
-        _applicationForDeletion = _applicationForDeletion 
-                                  ?? throw new ArgumentNullException(nameof(_applicationForDeletion));
-        try
-        {
-            var applicationId = _applicationForDeletion.Id;
-            _applicationForDeletion = null;
-            _toastService.AddInfoMessage("Application deleting...");
-            await _apiService.DeleteApplicationAsync(applicationId);
-            _toastService.AddInfoMessage("Application is deleted");
-            _applications = _applications.Where(i => i.Id != applicationId).ToList();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            _toastService.AddErrorMessage(CommonResources.Error_ApplicationDeletionError);
-        }
-        finally
-        {
-            StateHasChanged();
-        }
-    }
-}

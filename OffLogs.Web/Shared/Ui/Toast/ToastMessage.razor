@@ -1,60 +1,54 @@
 ﻿@using OffLogs.Web.Core.Models.Toast
 @using System.Timers
+@using Fluxor
 @using OffLogs.Web.Constants
+@using OffLogs.Web.Store.Shared.Toast.Actions
+
 @inject ToastService _toastService
+@inject IDispatcher _dispatcher
 
 <div class="toast align-items-center showing w-toast-message-fade @_toastClass">
-  <div class="d-flex">
-    <div class="toast-body">
-      @Message.Title
+    <div class="d-flex">
+        <div class="toast-body">
+            @Message.Title
+        </div>
+        <button
+            type="button"
+            class="btn-close me-2 m-auto"
+            @onclick="RemoveMessage">
+        </button>
     </div>
-    <button 
-      type="button" 
-      class="btn-close me-2 m-auto" 
-      @onclick="RemoveMessage"
-    ></button>
-  </div>
 </div>
 
 @code {
 
-  [Parameter]
-  public ToastMessageModel Message { get; set; }
+    [Parameter]
+    public ToastMessageModel Message { get; set; }
 
-  private string _toastClass
-  {
-    get
+    private string _toastClass
     {
-      if (Message.Type == ToastMessageType.Error)
-      {
-        return "bg-danger text-white";
-      }
-      return "bg-primary text-white";
+        get
+        {
+            if (Message.Type == ToastMessageType.Error)
+            {
+                return "bg-danger text-white";
+            }
+            return "bg-primary text-white";
+        }
     }
-  }
 
-  protected override void OnInitialized()
-  {
-    base.OnInitialized(); 
-    _toastService.OnRemoveMessage += OnRemoveMessage;
-  }
-  
-  public void Dispose()
-  {
-    _toastService.OnRemoveMessage -= OnRemoveMessage;
-  }
-  
-  private void OnRemoveMessage(ToastMessageModel removedMessage)
-  {
-    Console.WriteLine("On remove message");
-    if (Message.Key == removedMessage.Key)
+    private void OnRemoveMessage(ToastMessageModel removedMessage)
     {
-      RemoveMessage();
+        Console.WriteLine("On remove message");
+        if (Message.Key == removedMessage.Key)
+        {
+            RemoveMessage();
+        }
     }
-  }
-  
-  private void RemoveMessage()
-  {
-    _toastService.RemoveMessage(Message);
-  }
+
+    private void RemoveMessage()
+    {
+        _dispatcher.Dispatch(new RemoveMessageAction(Message));
+    }
+
 }

@@ -1,85 +1,94 @@
 using System;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
+using Fluxor;
+using Microsoft.Extensions.DependencyInjection;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
+using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Services.Http;
+using OffLogs.Web.Store.Auth;
+using OffLogs.Web.Store.Auth.Actions;
+using OffLogs.Web.Store.Common.Actions;
 
 namespace OffLogs.Web.Services
 {
     public class AuthorizationService: IAuthorizationService
-    {
-        public const string AuthKey = "OffLogs_JwtToken";
-        
+    {   
         private readonly IApiService _apiService;
-        private readonly ILocalStorageService _localStorage;
-
-        private bool _isLoggedIn = false;
+        private readonly IDispatcher _dispatcher;
+        private readonly IServiceProvider _serviceProvider;
 
         public AuthorizationService(
             IApiService apiService, 
-            ILocalStorageService localStorage
+            IDispatcher dispatcher,
+            IServiceProvider serviceProvider
         )
         {
             _apiService = apiService;
-            _localStorage = localStorage;
-        }
-
-        public bool IsLoggedIn()
-        {
-            return _isLoggedIn;
+            _dispatcher = dispatcher;
+            _serviceProvider = serviceProvider;
         }
 
         public async Task LogoutAsync()
         {
-            await _localStorage.RemoveItemAsync(AuthKey);
+            _dispatcher.Dispatch(new LogoutAction());
+            _dispatcher.Dispatch(new PersistDataAction());
+            await Task.CompletedTask;
         }
 
+        public string GetJwt()
+        {
+            var store = _serviceProvider.GetService<IState<AuthState>>();
+            return store?.Value.Jwt?.Trim();
+        }
+        
         public async Task<bool> LoginAsync(LoginRequest model)
         {
             var loginData = await _apiService.LoginAsync(model);
-            return await LoginAsync(loginData?.Token);
+            if (loginData != null)
+            {
+                Login(loginData?.Token, model.Pem);
+                return true;
+            }
+
+            return false;
         }
         
-        public async Task<bool> LoginAsync(string jwtToken)
+        public void Login(string jwtToken, string pem)
         {
             if (!string.IsNullOrEmpty(jwtToken))
             {
-                _isLoggedIn = true;
-                await _localStorage.SetItemAsync(AuthKey, jwtToken);
-                return true;
+                _dispatcher.Dispatch(new LoginAction(pem, jwtToken));
+                _dispatcher.Dispatch(new PersistDataAction());
             }
-            return false;
         }
         
         public async Task<bool> IsHasJwtAsync()
         {
-            return !string.IsNullOrEmpty(await GetJwtAsync());
+            return await Task.FromResult(!string.IsNullOrEmpty(GetJwt()));
         }
         
         public async Task<bool> CheckIsLoggedInAsync()
         {
+            bool isValidJwt = false;
             if (await IsHasJwtAsync())
             {
                 try
                 {
-                    var token = await GetJwtAsync();
-                    _isLoggedIn = await _apiService.CheckIsLoggedInAsync(token);
+                    Debug.Log("CheckIsLoggedInAsync");
+                    isValidJwt = await _apiService.CheckIsLoggedInAsync(GetJwt());
+                    if (!isValidJwt)
+                    {
+                        await LogoutAsync();
+                    }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    Debug.Log(e.Message, e);
                     Console.WriteLine(@"CheckIsLoggedIn returned: false");
                 }
             }
-            else
-            {
-                _isLoggedIn = false;    
-            }
-            return _isLoggedIn;
-        }
-
-        public async Task<string> GetJwtAsync()
-        {
-            return await _localStorage.GetItemAsync<string>(AuthKey);
+            return isValidJwt;
         }
     }
 }

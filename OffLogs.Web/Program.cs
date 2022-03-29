@@ -26,7 +26,13 @@ namespace OffLogs.Web
             
             // Store
             builder.Services.AddFluxor(
-                options => options.ScanAssemblies(currentAssembly)
+                options =>
+                {
+                    options.ScanAssemblies(currentAssembly);
+#if DEBUG
+                    options.UseReduxDevTools();
+#endif
+                }
             );
             
 #if DEBUG
@@ -55,7 +61,7 @@ namespace OffLogs.Web
             builder.Services.AddScoped<IApiService, ApiService>();
             builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
             builder.Services.AddScoped<IReCaptchaService, ReCaptchaService>();
-            builder.Services.AddSingleton<ToastService>();
+            builder.Services.AddScoped<ToastService>();
         }
     }
 }
