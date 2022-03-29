@@ -3,14 +3,10 @@ using System.Threading.Tasks;
 using Api.Requests.Abstractions;
 using Microsoft.AspNetCore.Http;
 using NHibernate.Mapping;
-using OffLogs.Business.Common.Security;
-using OffLogs.Business.Extensions;
+using OffLogs.Api.Frontend.Services;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Services.Api;
-using OffLogs.Business.Services.Entities.Log;
 using OffLogs.Business.Services.Http.ThrottleRequests;
-using OffLogs.Business.Services.Jwt;
-using Queries.Abstractions;
 
 namespace OffLogs.Api.Frontend.Controllers.Log.Actions.Log
 {
@@ -19,19 +15,19 @@ namespace OffLogs.Api.Frontend.Controllers.Log.Actions.Log
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IRequestService _requestService;
         private readonly IThrottleRequestsService _throttleRequestsService;
-        private readonly ILogService _logService;
+        private readonly ILogProducerService _logProducerService;
 
         public AddSerilogLogRequestHandler(
             IHttpContextAccessor httpContextAccessor,
             IRequestService requestService,
             IThrottleRequestsService throttleRequestsService,
-            ILogService logService
+            ILogProducerService logProducerService
         )
         {
             _httpContextAccessor = httpContextAccessor;
             _requestService = requestService;
             _throttleRequestsService = throttleRequestsService;
-            _logService = logService;
+            _logProducerService = logProducerService;
         }
 
         public async Task ExecuteAsync(AddSerilogLogsRequest request)
@@ -50,7 +46,7 @@ namespace OffLogs.Api.Frontend.Controllers.Log.Actions.Log
             foreach (var log in request.Events)
             {
                 var traces = log.Exception?.Split("\n");
-                await _logService.AddToKafkaAsync(
+                await _logProducerService.AddToKafkaAsync(
                     application,
                     log.RenderedMessage,
                     log.LogLevel.ToLogLevel(),

@@ -20,20 +20,17 @@ namespace OffLogs.Business.Services.Entities.Log
     {
         private readonly IAsyncCommandBuilder _commandBuilder;
         private readonly IAsyncQueryBuilder _queryBuilder;
-        private readonly IJwtApplicationService _jwtService;
-        private readonly IKafkaProducerService _kafkaProducerService;
+        private readonly ILogAssembler _logAssembler;
 
         public LogService(
             IAsyncCommandBuilder commandBuilder,
             IAsyncQueryBuilder queryBuilder,
-            IJwtApplicationService jwtService,
-            IKafkaProducerService kafkaProducerService
+            ILogAssembler logAssembler
         )
         {
             _commandBuilder = commandBuilder;
             _queryBuilder = queryBuilder;
-            _jwtService = jwtService;
-            _kafkaProducerService = kafkaProducerService;
+            _logAssembler = logAssembler;
         }
         
         public async Task<LogEntity> AddAsync(LogEntity log)
@@ -59,7 +56,7 @@ namespace OffLogs.Business.Services.Entities.Log
             ICollection<string> traces = null
         )
         {
-            var log = await AssembleLog(
+            var log = await _logAssembler.AssembleLog(
                 application,
                 message,
                 level,
@@ -68,28 +65,6 @@ namespace OffLogs.Business.Services.Entities.Log
                 traces
             );
             await _commandBuilder.SaveAsync(log);
-            return log;
-        }
-        
-        public async Task<LogEntity> AddToKafkaAsync(
-            ApplicationEntity application,  
-            string message,
-            LogLevel level,
-            DateTime timestamp,
-            IDictionary<string, object> properties = null,
-            ICollection<string> traces = null,
-            string clientIp = null
-        )
-        {
-            var log = await AssembleLog(
-                application,
-                message,
-                level,
-                timestamp,
-                properties,
-                traces
-            );
-            await _kafkaProducerService.ProduceLogMessageAsync(log, clientIp);
             return log;
         }
         
@@ -112,55 +87,6 @@ namespace OffLogs.Business.Services.Entities.Log
             user.FavoriteLogs.Add(log);
             await _commandBuilder.SaveAsync(user);
             return true;
-        }
-
-        private Task<LogEntity> AssembleLog(
-            ApplicationEntity application,  
-            string message,
-            LogLevel level,
-            DateTime timestamp,
-            IDictionary<string, object> properties = null,
-            ICollection<string> traces = null    
-        )
-        {
-            var applicationEncryptor = AsymmetricEncryptor.FromPublicKeyBytes(application.PublicKey);
-            var logSymmetricEncryptor = SymmetricEncryptor.GenerateKey();
-            var encryptedSymmetricKey = applicationEncryptor.EncryptData(
-                logSymmetricEncryptor.Key.GetKey()
-            );
-            
-            var log = new LogEntity()
-            {
-                Application = application,
-                EncryptedSymmetricKey = encryptedSymmetricKey,
-                EncryptedMessage = logSymmetricEncryptor.EncryptData(message),
-                Level = level,
-                LogTime = timestamp,
-                CreateTime = DateTime.UtcNow
-            };
-            if (properties != null)
-            {
-                foreach (var property in properties)
-                {
-                    var encryptedKey = logSymmetricEncryptor.EncryptData(property.Key);
-                    var encryptedValue = logSymmetricEncryptor.EncryptData(
-                        property.Value?.GetAsJson()
-                    );
-                    log.AddProperty(
-                        new LogPropertyEntity(encryptedKey, encryptedValue)    
-                    );
-                }
-            }
-            if (traces != null)
-            {
-                foreach (var trace in traces)
-                {
-                    var encryptedTrace = logSymmetricEncryptor.EncryptData(trace);
-                    log.AddTrace(new LogTraceEntity(encryptedTrace));
-                }
-            }
-
-            return Task.FromResult(log);
         }
     }
 }
