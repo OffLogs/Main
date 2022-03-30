@@ -2,13 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using NHibernate.Mapping;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Security;
 using OffLogs.Business.Common.Utils;
-using OffLogs.Business.Exceptions;
-using OffLogs.Business.Orm.Entities;
-using OffLogs.Business.Orm.Queries;
 using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.LogServices
@@ -36,7 +32,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.LogServices
                 {
                     { expectedPropertyKey, expectedPropertyValue }
                 },
-                new List<string>() { expectedTraceValue }
+                new List<string> { expectedTraceValue }
             );
 
             var encryptor = AsymmetricEncryptor.ReadFromPem(user.PemFile, user.PemFilePassword);
