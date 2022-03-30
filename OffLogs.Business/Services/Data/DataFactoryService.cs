@@ -77,6 +77,10 @@ namespace OffLogs.Business.Services.Data
                     (faker) => faker.Random.Bytes(32)
                 )
                 .RuleFor(
+                    entity => entity.Message,
+                    (faker) => faker.Random.String2(32)
+                )
+                .RuleFor(
                     entity => entity.EncryptedSymmetricKey,
                     (faker) => faker.Random.Bytes(32)
                 )
@@ -102,6 +106,10 @@ namespace OffLogs.Business.Services.Data
                     (faker) => faker.Random.Bytes(32)
                 )
                 .RuleFor(
+                    entity => entity.Trace,
+                    (faker) => faker.Random.String2(32)
+                )
+                .RuleFor(
                     entity => entity.CreateTime,
                     (faker) => faker.Date.Past().ToUniversalTime()
                 );
@@ -117,6 +125,14 @@ namespace OffLogs.Business.Services.Data
                 .RuleFor(
                     entity => entity.EncryptedValue,
                     (faker) => faker.Random.Bytes(32)
+                )
+                .RuleFor(
+                    entity => entity.Key,
+                    (faker) => faker.Random.String2(32)
+                )
+                .RuleFor(
+                    entity => entity.Value,
+                    (faker) => faker.Random.String2(32)
                 )
                 .RuleFor(
                     entity => entity.CreateTime,

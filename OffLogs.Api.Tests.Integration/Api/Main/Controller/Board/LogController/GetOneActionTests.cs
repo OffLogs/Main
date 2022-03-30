@@ -74,7 +74,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             // Act
             var response = await PostRequestAsync(url, user.ApiToken, new GetRequest()
             {
-                Id = log.Id
+                Id = log.Id,
+                PrivateKeyBase64 = user.PrivateKeyBase64
             });
             response.EnsureSuccessStatusCode();
             // Assert
@@ -102,7 +103,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             // Act
             var response = await PostRequestAsync(url, user2.ApiToken, new GetRequest()
             {
-                Id = log.Id
+                Id = log.Id,
+                PrivateKeyBase64 = user.PrivateKeyBase64
             });
             response.EnsureSuccessStatusCode();
             // Assert
@@ -127,7 +129,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             // Act
             var response = await PostRequestAsync(url, user.ApiToken, new GetRequest()
             {
-                Id = log.Id
+                Id = log.Id,
+                PrivateKeyBase64 = user.PrivateKeyBase64
             });
             response.EnsureSuccessStatusCode();
             // Assert
