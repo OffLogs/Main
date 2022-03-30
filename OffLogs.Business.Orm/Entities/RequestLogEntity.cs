@@ -33,7 +33,7 @@ namespace OffLogs.Business.Orm.Entities
         [Property(NotNull = true, TypeType = typeof(UtcDateTimeType))]
         [Column(Name = "create_time", SqlType = "datetime", NotNull = true)]
         public virtual DateTime CreateTime { get; set; }
-
+        
         public RequestLogEntity() {}
 
         public RequestLogEntity(RequestLogType type, string clientIp, object data, string token = null)

@@ -21,13 +21,16 @@ namespace OffLogs.Api.Frontend.Controllers.Log.Actions.Log
     {
         public DateTime Timestamp { get; set; }
         
+        [Required]
         [StringLength(100)]
         [IsValidConstant(typeof(SerilogLogLevel))]
         public string Level { get; set; }
         
+        [Required]
         [StringLength(1024)]
         public string MessageTemplate { get; set; }
         
+        [Required]
         [StringLength(1024)]
         public string RenderedMessage { get; set; }
         

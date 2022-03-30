@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Api.Requests.Abstractions;
@@ -12,6 +13,7 @@ using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries.Entities.Log;
 using OffLogs.Business.Services.Api;
 using OffLogs.Business.Services.Entities.Application;
+using OffLogs.Business.Services.Entities.Log;
 using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Security;
 using Queries.Abstractions;
@@ -26,6 +28,7 @@ namespace OffLogs.Api.Controller.Board.Log.Actions
         private readonly IApplicationService _applicationService;
         private readonly IRequestService _requestService;
         private readonly IAccessPolicyService _accessPolicyService;
+        private readonly ILogService _logService;
 
         public GetListRequestHandler(
             IJwtAuthService jwtAuthService,
@@ -33,7 +36,8 @@ namespace OffLogs.Api.Controller.Board.Log.Actions
             IAsyncQueryBuilder queryBuilder,
             IApplicationService applicationService,
             IRequestService requestService,
-            IAccessPolicyService accessPolicyService
+            IAccessPolicyService accessPolicyService,
+            ILogService logService
         )
         {
             _jwtAuthService = jwtAuthService ?? throw new ArgumentNullException(nameof(jwtAuthService));
@@ -41,7 +45,8 @@ namespace OffLogs.Api.Controller.Board.Log.Actions
             _queryBuilder = queryBuilder ?? throw new ArgumentNullException(nameof(queryBuilder));
             _applicationService = applicationService ?? throw new ArgumentNullException(nameof(applicationService));
             _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
-            _accessPolicyService = accessPolicyService;
+            _accessPolicyService = accessPolicyService ?? throw new ArgumentNullException(nameof(accessPolicyService));
+            _logService = logService ?? throw new ArgumentNullException(nameof(logService));
         }
 
         public async Task<PaginatedListDto<LogListItemDto>> ExecuteAsync(GetListRequest request)
@@ -57,16 +62,15 @@ namespace OffLogs.Api.Controller.Board.Log.Actions
                 throw new DataPermissionException();
             }
 
-            var list = await _queryBuilder.For<ListDto<LogEntity>>()
-                .WithAsync(new LogGetListCriteria { 
-                    ApplicationId = request.ApplicationId,
-                    LogLevel = request.LogLevel,
-                    Page = request.Page
-                });
-
-            var applicationDtos = _mapper.Map<List<LogListItemDto>>(list.Items);
+            var list = await _logService.GetListAsync(
+                request.ApplicationId,
+                request.Page,
+                Convert.FromBase64String(request.PrivateKeyBase64)
+            );
+            
+            var responseItems = _mapper.Map<List<LogListItemDto>>(list.Items);
             return new PaginatedListDto<LogListItemDto>(
-                applicationDtos,
+                responseItems,
                 list.TotalCount
             );
         }

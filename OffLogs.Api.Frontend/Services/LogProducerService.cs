@@ -32,7 +32,7 @@ public class LogProducerService: ILogProducerService
         string clientIp = null
     )
     {
-        var log = await _logAssembler.AssembleLog(
+        var log = await _logAssembler.AssembleEncryptedLogAsync(
             application,
             message,
             level,

@@ -13,10 +13,12 @@ namespace OffLogs.Api.Frontend.Models.Request.Log.Common
     {
         public DateTime Timestamp { get; set; }
         
+        [Required]
         [StringLength(100)]
         [IsValidConstant(typeof(SiteLogLevel))]
         public string Level { get; set; }
         
+        [Required]
         [StringLength(1024)]
         public string Message { get; set; }
         

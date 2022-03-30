@@ -35,6 +35,14 @@ namespace OffLogs.Business.Orm.Entities
         [Column(Name = "create_time", SqlType = "datetime", NotNull = true)]
         public virtual DateTime CreateTime { get; set; }
         
+        #region NonFields
+
+        public virtual string Key { get; set; }
+        
+        public virtual string Value { get; set; }
+
+        #endregion 
+        
         public LogPropertyEntity() {}
 
         public LogPropertyEntity(byte[] encryptedKey, byte[] encryptedValue)

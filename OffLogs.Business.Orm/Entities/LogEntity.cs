@@ -99,6 +99,8 @@ namespace OffLogs.Business.Orm.Entities
 
         public virtual bool IsFavorite { get; set; }
 
+        public virtual string Message { get; set; }
+        
         public virtual void AddTrace(LogTraceEntity entity)
         {
             entity.Log = this;

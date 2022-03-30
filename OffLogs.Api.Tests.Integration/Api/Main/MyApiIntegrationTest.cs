@@ -51,6 +51,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         protected readonly IAccessPolicyService AccessPolicyService;
 
         protected readonly FakeEmailSendingService EmailSendingService;
+        
+        protected readonly ILogAssembler LogAssembler;
 
         public MyApiIntegrationTest(ApiCustomWebApplicationFactory factory)
         {
@@ -72,6 +74,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
             LogShareService = _factory.Services.GetService(typeof(ILogShareService)) as ILogShareService;
             EmailSendingService = _factory.Services.GetService(typeof(IEmailSendingService)) as FakeEmailSendingService;
             ThrottleRequestsService = _factory.Services.GetService(typeof(IThrottleRequestsService)) as IThrottleRequestsService;
+            LogAssembler = _factory.Services.GetService(typeof(ILogAssembler)) as ILogAssembler;
 
             ThrottleRequestsService.Clean();
             EmailSendingService?.Reset();
