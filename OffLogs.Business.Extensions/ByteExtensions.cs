@@ -10,7 +10,7 @@ namespace OffLogs.Business.Extensions
     {
         public static string GetString(this byte[] bytes)
         {
-            return System.Text.UTF8Encoding.Default.GetString(bytes);
+            return Encoding.Default.GetString(bytes);
         }
 
         public static string ToHexString(this byte[] hex, bool ToUpper = false)

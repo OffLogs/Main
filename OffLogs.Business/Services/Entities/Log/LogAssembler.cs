@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Security;
@@ -10,7 +11,7 @@ namespace OffLogs.Business.Services.Entities.Log;
 
 public class LogAssembler : ILogAssembler
 {
-    public Task<LogEntity> AssembleLog(
+    public Task<LogEntity> AssembleEncryptedLogAsync(
         ApplicationEntity application,
         string message,
         LogLevel level,
@@ -54,6 +55,42 @@ public class LogAssembler : ILogAssembler
             {
                 var encryptedTrace = logSymmetricEncryptor.EncryptData(trace);
                 log.AddTrace(new LogTraceEntity(encryptedTrace));
+            }
+        }
+
+        return Task.FromResult(log);
+    }
+    
+    public Task<LogEntity> AssembleDecryptedLogAsync(
+        LogEntity log,
+        byte[] privateKey
+    )
+    {
+        var applicationEncryptor = AsymmetricEncryptor.FromPrivateKeyBytes(privateKey);
+        var symmetricKey = applicationEncryptor.DecryptData(log.EncryptedSymmetricKey);
+        var logSymmetricEncryptor = new SymmetricEncryptor(symmetricKey);
+        
+        log.Message = applicationEncryptor.DecryptData(log.EncryptedMessage).GetString();
+        if (log.Properties != null)
+        {
+            foreach (var property in log.Properties)
+            {
+                var decryptedKey = logSymmetricEncryptor.DecryptData(property.EncryptedKey);
+                var decryptedValue = logSymmetricEncryptor.DecryptData(
+                    property.EncryptedValue
+                );
+                log.AddProperty(
+                    new LogPropertyEntity(decryptedKey, decryptedValue)
+                );
+            }
+        }
+
+        if (log.Traces != null)
+        {
+            foreach (var trace in log.Traces)
+            {
+                var decryptedTrace = logSymmetricEncryptor.DecryptData(trace.EncryptedTrace);
+                log.AddTrace(new LogTraceEntity(decryptedTrace));
             }
         }
 

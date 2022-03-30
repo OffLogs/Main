@@ -13,6 +13,7 @@ using Persistence.Transactions.Behaviors;
 using Queries.Abstractions;
 using Xunit;
 using System.Linq;
+using Newtonsoft.Json;
 using OffLogs.Business.Services.Kafka.Consumer;
 using OffLogs.Business.Services.Http.ThrottleRequests;
 

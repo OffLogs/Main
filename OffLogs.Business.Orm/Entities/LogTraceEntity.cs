@@ -29,6 +29,12 @@ namespace OffLogs.Business.Orm.Entities
         [Property(NotNull = true, TypeType = typeof(UtcDateTimeType))]
         [Column(Name = "create_time", SqlType = "datetime", NotNull = true)]
         public virtual DateTime CreateTime { get; set; }
+
+        #region NonFields
+
+        public string Trace { get; }
+
+        #endregion 
         
         public LogTraceEntity() {}
 
@@ -36,6 +42,11 @@ namespace OffLogs.Business.Orm.Entities
         {
             EncryptedTrace = encryptedTrace;
             CreateTime = DateTime.UtcNow;
+        }
+        
+        public LogTraceEntity(string trace)
+        {
+            Trace = trace;
         }
     }
 }

@@ -10,5 +10,10 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log
         [Required]
         [IsPositive(AllowZero = true)]
         public long Id { get; set; }
+        
+        [Required]
+        [StringLength(2048)]
+        [IsBase64]
+        public string PrivateKeyBase64 { get; set; }
     }
 }

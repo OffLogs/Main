@@ -70,6 +70,8 @@ namespace OffLogs.Business.Common.Security
         
         #endregion
 
+        #region Encrypt
+        
         public byte[] EncryptData(string data)
         {
             return EncryptData(
@@ -86,6 +88,10 @@ namespace OffLogs.Business.Common.Security
             return ApplyCipher(data, cipher, DefaultRsaBlockSize);
         }
         
+        #endregion
+        
+        #region Decrypt
+        
         public byte[] DecryptData(byte[] data)
         {
             if (PrivateKey == null) throw new ArgumentNullException(nameof(PrivateKey));
@@ -95,6 +101,10 @@ namespace OffLogs.Business.Common.Security
             int blockSize = PrivateKey.Modulus.BitLength / 8;
             return ApplyCipher(data, cipher, blockSize);
         }
+        
+        #endregion
+
+        #region Sign
         
         public byte[] SignData(string data)
         {
@@ -128,6 +138,8 @@ namespace OffLogs.Business.Common.Security
 
             return signer.VerifySignature(sign);
         }
+        
+        #endregion
 
         public bool IsValidPublicKey(byte[] publicKey)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Domain.Abstractions;
 using OffLogs.Business.Common.Constants;
+using OffLogs.Business.Orm.Dto;
 using OffLogs.Business.Orm.Entities;
 
 namespace OffLogs.Business.Services.Entities.Log
@@ -19,6 +20,15 @@ namespace OffLogs.Business.Services.Entities.Log
             IDictionary<string, object> properties = null,
             ICollection<string> traces = null
         );
+
+        Task<ListDto<LogEntity>> GetListAsync(
+            long applicationId,
+            int page,
+            byte[] privateKey,
+            LogLevel? level = null
+        );
+
+        Task<LogEntity> GetOneAsync(long logId, byte[] privateKey);
         
         Task<bool> SetIsFavoriteAsync(long userId, long logId, bool isFavorite);
     }
