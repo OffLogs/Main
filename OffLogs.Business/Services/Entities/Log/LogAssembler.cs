@@ -26,7 +26,7 @@ public class LogAssembler : ILogAssembler
             logSymmetricEncryptor.Key.GetKey()
         );
 
-        var log = new LogEntity()
+        var log = new LogEntity
         {
             Application = application,
             EncryptedSymmetricKey = encryptedSymmetricKey,
@@ -61,16 +61,16 @@ public class LogAssembler : ILogAssembler
         return Task.FromResult(log);
     }
     
-    public Task<LogEntity> AssembleDecryptedLogAsync(
-        LogEntity log,
-        byte[] privateKey
-    )
+    public Task<LogEntity> AssembleDecryptedLogAsync(LogEntity log, byte[] privateKey)
     {
-        var applicationEncryptor = AsymmetricEncryptor.FromPrivateKeyBytes(privateKey);
-        var symmetricKey = applicationEncryptor.DecryptData(log.EncryptedSymmetricKey);
+        var userEncryptor = AsymmetricEncryptor.FromPrivateKeyBytes(privateKey);
+        var appPrivateKey = userEncryptor.DecryptData(log.Application.EncryptedPrivateKey);
+        var appEncryptor = AsymmetricEncryptor.FromPrivateKeyBytes(appPrivateKey);
+
+        var symmetricKey = appEncryptor.DecryptData(log.EncryptedSymmetricKey);
         var logSymmetricEncryptor = new SymmetricEncryptor(symmetricKey);
         
-        log.Message = applicationEncryptor.DecryptData(log.EncryptedMessage).GetString();
+        log.Message = logSymmetricEncryptor.DecryptData(log.EncryptedMessage).GetString();
         if (log.Properties != null)
         {
             foreach (var property in log.Properties)
@@ -79,9 +79,8 @@ public class LogAssembler : ILogAssembler
                 var decryptedValue = logSymmetricEncryptor.DecryptData(
                     property.EncryptedValue
                 );
-                log.AddProperty(
-                    new LogPropertyEntity(decryptedKey, decryptedValue)
-                );
+                property.Key = decryptedKey.GetString();
+                property.Value = decryptedValue.GetString();
             }
         }
 
@@ -90,7 +89,7 @@ public class LogAssembler : ILogAssembler
             foreach (var trace in log.Traces)
             {
                 var decryptedTrace = logSymmetricEncryptor.DecryptData(trace.EncryptedTrace);
-                log.AddTrace(new LogTraceEntity(decryptedTrace));
+                trace.Trace = decryptedTrace.GetString();
             }
         }
 

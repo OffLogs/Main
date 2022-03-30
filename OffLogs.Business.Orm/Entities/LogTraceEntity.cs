@@ -32,7 +32,7 @@ namespace OffLogs.Business.Orm.Entities
 
         #region NonFields
 
-        public string Trace { get; }
+        public virtual string Trace { get; set; }
 
         #endregion 
         
@@ -42,11 +42,6 @@ namespace OffLogs.Business.Orm.Entities
         {
             EncryptedTrace = encryptedTrace;
             CreateTime = DateTime.UtcNow;
-        }
-        
-        public LogTraceEntity(string trace)
-        {
-            Trace = trace;
         }
     }
 }

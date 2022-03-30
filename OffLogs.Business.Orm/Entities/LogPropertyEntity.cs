@@ -37,9 +37,9 @@ namespace OffLogs.Business.Orm.Entities
         
         #region NonFields
 
-        public string Key { get; }
+        public virtual string Key { get; set; }
         
-        public string Value { get; }
+        public virtual string Value { get; set; }
 
         #endregion 
         
@@ -50,12 +50,6 @@ namespace OffLogs.Business.Orm.Entities
             EncryptedKey = encryptedKey;
             EncryptedValue = encryptedValue;
             CreateTime = DateTime.UtcNow;
-        }
-        
-        public LogPropertyEntity(string key, string value)
-        {
-            Key = key;
-            Value = value;
         }
     }
 }
