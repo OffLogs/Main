@@ -14,6 +14,11 @@ public class PemParser
 
     public PemParser(string pem, bool isRemoveNewLines = true)
     {
+        if (string.IsNullOrEmpty(pem))
+        {
+            return;
+        }
+
         var matches = PrivateKeyRegex.Match(pem);
         PrivateKeyBase64 = matches.Groups["privateKey"].Value.Trim();
         PrivateKeyBase64 = isRemoveNewLines ? PrivateKeyBase64.RemoveNewLines() : PrivateKeyBase64;

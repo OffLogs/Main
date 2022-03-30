@@ -2,6 +2,7 @@
 using System.IO;
 using Fluxor;
 using OffLogs.Api.Common.Dto.Entities;
+using OffLogs.Business.Common.Security;
 using Org.BouncyCastle.OpenSsl;
 
 namespace OffLogs.Web.Store.Auth;
@@ -14,6 +15,26 @@ public class AuthState
     public string Pem { get; set; }
     
     public string Jwt { get; set; }
+
+    public string PrivateKeyBase64
+    {
+        get
+        {
+            InitPemParser();
+            return _pemParser.PrivateKeyBase64;
+        }
+    }
+    
+    public string PublicKeyBase64
+    {
+        get
+        {
+            InitPemParser();
+            return _pemParser.PublicKeyBase64;
+        }
+    }
+
+    private PemParser _pemParser;
     
     public AuthState() { }
     
@@ -21,7 +42,15 @@ public class AuthState
     {
         Jwt = jwt;
         Pem = pem;
-        using var textReader = new StringReader(pem);
-        var pemReader = new PemReader(textReader);
+    }
+
+    private void InitPemParser()
+    {
+        if (_pemParser != null)
+        {
+            return;
+        }
+
+        _pemParser = new PemParser(Pem);
     }
 }
