@@ -9,16 +9,12 @@ namespace AspNetCore.ApiControllers.Extensions
         where TResponse : IResponse
     {
         private readonly ApiControllerBase _apiController;
-
-
-
+        
         public AsyncApiControllerBaseRequestFor(ApiControllerBase apiController)
         {
             _apiController = apiController;
         }
-
-
-
+        
         public Task<IActionResult> With<TRequest>(TRequest request)
             where TRequest : IRequest<TResponse>
             => _apiController.RequestAsync<ApiControllerBase, TRequest, TResponse>(request);

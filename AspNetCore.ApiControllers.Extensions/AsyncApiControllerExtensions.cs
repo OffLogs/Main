@@ -24,7 +24,8 @@ namespace AspNetCore.ApiControllers.Extensions
                 apiController,
                 request,
                 apiController.Success,
-                apiController.Fail);
+                apiController.Fail
+            );
 
         public static Task<IActionResult> RequestAsync<TApiController, TRequest>(
             this TApiController apiController,
@@ -47,7 +48,8 @@ namespace AspNetCore.ApiControllers.Extensions
             this TApiController apiController,
             TRequest request,
             Func<IActionResult> success,
-            Func<Exception, IActionResult> fail)
+            Func<Exception, IActionResult> fail
+        )
             where TApiController : 
                 ControllerBase,
                 IAsyncApiController, 
