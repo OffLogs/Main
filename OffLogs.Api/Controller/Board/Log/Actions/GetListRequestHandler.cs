@@ -65,7 +65,8 @@ namespace OffLogs.Api.Controller.Board.Log.Actions
             var list = await _logService.GetListAsync(
                 request.ApplicationId,
                 request.Page,
-                Convert.FromBase64String(request.PrivateKeyBase64)
+                Convert.FromBase64String(request.PrivateKeyBase64),
+                request.LogLevel
             );
             
             var responseItems = _mapper.Map<List<LogListItemDto>>(list.Items);

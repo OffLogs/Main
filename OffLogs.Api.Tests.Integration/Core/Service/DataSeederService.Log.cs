@@ -35,7 +35,21 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
             for (int i = 1; i <= counter; i++)
             {
                 var log = await MakeLogAsync(application, level);
-                await _commandBuilder.SaveAsync(log);
+
+                var propertiesDictionary = new Dictionary<string, object>();
+                foreach (var item in log.Properties)
+                {
+                    propertiesDictionary.Add(item.Key, item.Value);
+                }
+
+                log = await _logService.AddAsync(
+                    log.Application,
+                    log.Message,
+                    log.Level,
+                    log.LogTime,
+                    propertiesDictionary,
+                    log.Traces.Select(item => item.Trace).ToList()
+                );
                 result.Add(log);
             }
             return result;

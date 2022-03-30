@@ -25,6 +25,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             {
                 Page = 1,
                 ApplicationId = user.Applications.First().Id,
+                PrivateKeyBase64 = user.PrivateKeyBase64
             });
             // Assert
             Assert.True(response.StatusCode == HttpStatusCode.Unauthorized);
@@ -42,6 +43,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             {
                 Page = 1,
                 ApplicationId = user2.Applications.First().Id,
+                PrivateKeyBase64 = user2.PrivateKeyBase64
             });
             // Assert
             Assert.True(response.StatusCode == HttpStatusCode.BadRequest);
@@ -61,7 +63,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             var response = await PostRequestAsync(url, user.ApiToken, new GetListRequest()
             {
                 Page = 1,
-                ApplicationId = user.ApplicationId
+                ApplicationId = user.ApplicationId,
+                PrivateKeyBase64 = user.PrivateKeyBase64
             });
             response.EnsureSuccessStatusCode();
             // Assert
@@ -81,7 +84,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             var response = await PostRequestAsync(url, user.ApiToken, new GetListRequest()
             {
                 Page = 1,
-                ApplicationId = user.ApplicationId
+                ApplicationId = user.ApplicationId,
+                PrivateKeyBase64 = user.PrivateKeyBase64
             });
             response.EnsureSuccessStatusCode();
             // Assert
@@ -102,7 +106,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             var response = await PostRequestAsync(url, user.ApiToken, new GetListRequest()
             {
                 Page = 1,
-                ApplicationId = user.ApplicationId
+                ApplicationId = user.ApplicationId,
+                PrivateKeyBase64 = user.PrivateKeyBase64
             });
             response.EnsureSuccessStatusCode();
             // Assert
@@ -125,7 +130,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             {
                 Page = 1,
                 ApplicationId = user.ApplicationId,
-                LogLevel = LogLevel.Debug
+                LogLevel = LogLevel.Debug,
+                PrivateKeyBase64 = user.PrivateKeyBase64
             });
             response.EnsureSuccessStatusCode();
             // Assert
@@ -150,7 +156,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             var response = await PostRequestAsync(url, user.ApiToken, new GetListRequest()
             {
                 Page = 1,
-                ApplicationId = user.ApplicationId
+                ApplicationId = user.ApplicationId,
+                PrivateKeyBase64 = user.PrivateKeyBase64
             });
             response.EnsureSuccessStatusCode();
             // Assert
@@ -175,7 +182,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             var response = await PostRequestAsync(url, user.ApiToken, new GetListRequest()
             {
                 Page = 1,
-                ApplicationId = user2.ApplicationId
+                ApplicationId = user2.ApplicationId,
+                PrivateKeyBase64 = user2.PrivateKeyBase64
             });
             response.EnsureSuccessStatusCode();
             // Assert

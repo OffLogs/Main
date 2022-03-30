@@ -24,6 +24,8 @@ namespace OffLogs.Api.Controller.Public.Log
         {
         }
 
+        // TODO: Remove it
+        [NonAction]
         [HttpPost("getShared")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

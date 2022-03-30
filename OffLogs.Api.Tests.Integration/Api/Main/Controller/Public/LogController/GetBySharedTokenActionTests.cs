@@ -11,7 +11,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Public.LogController
     {
         public GetBySharedTokenActionTests(ApiCustomWebApplicationFactory factory) : base(factory) { }
 
-        [Theory]
+        [Theory(Skip = "To remove")]
         [InlineData(MainApiUrl.LogGetSharedByToken)]
         public async Task ShouldNotLoginIfNotExists(string url)
         {
@@ -24,7 +24,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Public.LogController
             Assert.False(response.IsSuccessStatusCode);
         }
 
-        [Theory]
+        [Theory(Skip = "To remove")]
         [InlineData(MainApiUrl.LogGetSharedByToken)]
         public async Task ShouldNotLoginIfEmpty(string url)
         {
@@ -37,7 +37,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Public.LogController
             Assert.False(response.IsSuccessStatusCode);
         }
 
-        [Theory]
+        [Theory(Skip = "To remove")]
         [InlineData(MainApiUrl.LogGetSharedByToken)]
         public async Task ShouldNotLoginIfPasswordIsIncorrect(string url)
         {
