@@ -3,6 +3,7 @@ using Api.Requests.Abstractions;
 using AspNetCore.ApiControllers.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using OffLogs.Api.Frontend.Controllers.Log.Actions.Log;
 using OffLogs.Business.Mvc.Attribute.Auth;
 using Persistence.Transactions.Behaviors;
@@ -12,8 +13,11 @@ namespace OffLogs.Api.Frontend.Controllers.Log
     [Route("/[controller]")]
     public class LogController : FrontendApiControllerBase
     {
-        public LogController(IAsyncRequestBuilder asyncRequestBuilder) 
-            : base(asyncRequestBuilder)
+        public LogController(
+            IAsyncRequestBuilder asyncRequestBuilder,
+            ILogger<LogController> logger
+        ) 
+            : base(asyncRequestBuilder, logger)
         {
         }
         

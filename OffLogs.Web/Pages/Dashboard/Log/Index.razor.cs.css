@@ -1,0 +1,19 @@
+.w-log-block .accordion-header {
+  position: relative;
+}
+.w-log-block .accordion-header .accordion-button {
+  padding: 0.5rem 0.75rem;
+  font-size: 13px;
+}
+.w-log-block .accordion-header ::deep .w-favorite-icon {
+  position: absolute;
+  left: 5px;
+  top: -3px;
+  color: #0d6efd;
+}
+.w-log-block .accordion-body {
+  font-size: 13px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+/*# sourceMappingURL=Index.razor.css.map */

@@ -28,13 +28,13 @@ namespace OffLogs.Api.Controller
         {
             if (exception is not IDomainException)
             {
-                Logger.LogError(exception?.Message, exception);
+                Logger.LogError(exception, exception?.Message);
             }
 
-            return new BadRequestObjectResult(new BadResponseDto
+            return new BadRequestObjectResult(new
             {
-                Message = exception.Message,
-                Type = exception.GetType().Name
+                Type = exception.GetType().Name,
+                Message = exception.Message
             });
         }
     }

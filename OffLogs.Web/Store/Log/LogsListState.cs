@@ -13,26 +13,26 @@ public class LogsListState
     
     public bool HasMoreItems { get; }
 
-    public ICollection<LogListItemDto> Applications { get; } = new List<LogListItemDto>();
+    public ICollection<LogListItemDto> Logs { get; } = new List<LogListItemDto>();
 
     public LogsListState() { }
 
-    public LogsListState(ICollection<LogListItemDto> applications)
+    public LogsListState(ICollection<LogListItemDto> logs)
     {
-        Applications = applications;
+        Logs = logs;
     }
 
     public LogsListState(
         bool isLoading,
         int? page = null,
-        ICollection<LogListItemDto> applications = null,
+        ICollection<LogListItemDto> logs = null,
         bool? hasMoreItems = null
     )
     {
         IsLoading = isLoading;
-        if (applications != null)
+        if (logs != null)
         {
-            Applications = applications;
+            Logs = logs;
             
         }
         if (page.HasValue)

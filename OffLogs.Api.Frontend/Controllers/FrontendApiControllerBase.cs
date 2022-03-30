@@ -3,34 +3,47 @@ using Api.Requests.Abstractions;
 using AspNetCore.ApiControllers.Abstractions;
 using Domain.Abstractions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Persistence.Transactions.Behaviors;
+using Serilog.Core;
 
 namespace OffLogs.Api.Frontend.Controllers
 {
     public class FrontendApiControllerBase: ApiControllerBase
     {
+        protected ILogger<FrontendApiControllerBase> Logger { get; }
+
         public FrontendApiControllerBase(
             IAsyncRequestBuilder asyncRequestBuilder, 
-            IDbSessionProvider commitPerformer
+            IDbSessionProvider commitPerformer,
+            ILogger<FrontendApiControllerBase> logger
         ) : base(asyncRequestBuilder, commitPerformer)
         {
+            Logger = logger;
         }
 
-        public FrontendApiControllerBase(IAsyncRequestBuilder asyncRequestBuilder) : base(asyncRequestBuilder)
+        public FrontendApiControllerBase(
+            IAsyncRequestBuilder asyncRequestBuilder,
+            ILogger<FrontendApiControllerBase> logger
+        ) : base(asyncRequestBuilder)
         {
+            Logger = logger;
         }
 
         public override Func<Exception, IActionResult> Fail => ProcessFail;
 
-        private static IActionResult ProcessFail(Exception exception)
+        private IActionResult ProcessFail(Exception exception)
         {
-            if (exception is IDomainException)
-                return new BadRequestObjectResult(new
-                {
-                    Type = exception.GetType().Name,
-                    Message = exception.Message
-                });
-            throw exception;
+            if (exception is not IDomainException)
+            {
+                Logger.LogError(exception, exception?.Message);
+            }
+
+            return new BadRequestObjectResult(new
+            {
+                Type = exception.GetType().Name,
+                Message = exception.Message
+            });
         }
     }
 }
