@@ -4,13 +4,20 @@
 @using OffLogs.Api.Common.Dto.Entities
 @using OffLogs.Web.Resources
 @using OffLogs.Web.Services
+@using OffLogs.Web.Store.Log
+@using OffLogs.Web.Store.Log.Actions
+@using Fluxor
+
+@inherits BaseComponent
+
 @inject IApiService _apiService
 @inject ToastService _toastService
+@inject IState<LogsListState> _state
 
 <ModalWindow
     IsShow="IsShowAddModal"
     OnClose="@(async () => { await Task.Yield(); IsShowAddModal = false; })">
-    @if (_isLoading)
+    @if (_log == null)
     {
         <Preloader/>
     }
@@ -32,8 +39,7 @@
     public long? LogId { get; set; }
     public long? _logId { get; set; }
 
-    private bool _isLoading { get; set; }
-    private LogDto _log { get; set; }
+    public LogDto _log => _state.Value.LogsDetails.FirstOrDefault(log => log.Id == LogId);
 
     protected override async Task OnInitializedAsync()
     {
@@ -53,30 +59,9 @@
 
     protected async Task LoadLogAsync()
     {
-        _isLoading = true;
-        try
+        if (_logId.HasValue)
         {
-            if (!_logId.HasValue)
-            {
-                _log = null;
-                return;
-            }
-            _log = await _apiService.GetLogAsync(_logId.Value);
-            if (_log == null)
-            {
-                _toastService.AddInfoMessage(CommonResources.Error_LogNotFound);
-                IsShowAddModal = false;
-            }
-        }
-        catch (Exception e)
-        {
-            _toastService.AddServerErrorMessage();
-            Console.WriteLine(e.Message, e);
-        }
-        finally
-        {
-            _isLoading = false;
-            StateHasChanged();
+            Dispatcher.Dispatch(new FetchLogAction(_logId.Value));    
         }
     }
 }
