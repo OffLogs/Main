@@ -24,7 +24,7 @@
     </div>
 }
 
-@foreach (var log in _logListState.Value.Logs)
+@foreach (var log in _logListState.Value.List)
 {
     <div class="accordion mb-1 w-log-block">
         <div class="accordion-item">
@@ -58,18 +58,18 @@
     </div>
 }
 
-@if (_logListState.Value.Logs.Count == 0 && !_logListState.Value.IsLoading)
+@if (_logListState.Value.List.Count == 0 && !_logListState.Value.IsLoadingList)
 {
     <Alert Type="BootstrapColorType.Info">List is empty...</Alert>
 }
 
 <div class="mt-3 mb-5">
-    @if (_logListState.Value.IsLoading)
+    @if (_logListState.Value.IsLoadingList)
     {
         <Preloader />
     }
 
-    @if (_logListState.Value.HasMoreItems && !_logListState.Value.IsLoading)
+    @if (_logListState.Value.HasMoreItems && !_logListState.Value.IsLoadingList)
     {
         <div class="text-center">
             <MyButton OnClick="@(async () => await LoadListAsync())">

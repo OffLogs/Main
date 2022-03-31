@@ -7,32 +7,44 @@ namespace OffLogs.Web.Store.Log;
 [FeatureState]
 public class LogsListState
 {
-    public bool IsLoading { get; }
+    public bool IsLoadingList { get; }
     
     public int Page { get; }
     
     public bool HasMoreItems { get; }
 
-    public ICollection<LogListItemDto> Logs { get; } = new List<LogListItemDto>();
+    public ICollection<LogListItemDto> List { get; } = new List<LogListItemDto>();
+    
+    public ICollection<LogDto> LogsDetails { get; } = new List<LogDto>();
 
     public LogsListState() { }
 
-    public LogsListState(ICollection<LogListItemDto> logs)
+    public LogsListState(ICollection<LogListItemDto> list)
     {
-        Logs = logs;
+        List = list;
+    }
+    
+    public LogsListState(LogsListState state, ICollection<LogDto> logsDetails)
+    {
+        LogsDetails = logsDetails;
+
+        IsLoadingList = state.IsLoadingList;
+        Page = state.Page;
+        HasMoreItems = state.HasMoreItems;
+        List = state.List;
     }
 
     public LogsListState(
-        bool isLoading,
+        bool isLoadingList,
         int? page = null,
-        ICollection<LogListItemDto> logs = null,
+        ICollection<LogListItemDto> list = null,
         bool? hasMoreItems = null
     )
     {
-        IsLoading = isLoading;
-        if (logs != null)
+        IsLoadingList = isLoadingList;
+        if (list != null)
         {
-            Logs = logs;
+            List = list;
             
         }
         if (page.HasValue)

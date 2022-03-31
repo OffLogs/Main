@@ -61,7 +61,7 @@
                 _log = null;
                 return;
             }
-            _log = await _apiService.GetLogAsync(_logId.Value);
+            _log = await _apiService.GetLogAsync(_logId.Value, "");
             if (_log == null)
             {
                 _toastService.AddInfoMessage(CommonResources.Error_LogNotFound);

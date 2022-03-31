@@ -1,9 +1,16 @@
 ﻿@using OffLogs.Web.Services.Http
 @using OffLogs.Api.Common.Dto.Entities
+@using Fluxor
+@using OffLogs.Web.Store.Log
+@using OffLogs.Web.Store.Log.Actions
+
+@inherits BaseComponent
+
 @inject IApiService _apiService
 @inject ToastService _toastService
+@inject IState<LogsListState> _state
 
-@if (_isLoading)
+@if (_log == null)
 {
     <Preloader />
 }
@@ -26,22 +33,28 @@ else
         <b>Message:</b> @_log.Message
     </div>
     <div class="row mt-1">
-        <div class="col-6">
-            <b>Properties:</b>
-            @foreach (var property in _log.Properties)
-            {
-                <div>
-                    <b>@property.Key:</b> @property.Value
-                </div>
-            }
-        </div>
-        <div class="col-6">
-            <b>Traces:</b>
-            @foreach (var trace in _log.Traces)
-            {
-                <div>@trace</div>
-            }
-        </div>
+        @if (_log.Properties.Any())
+        {
+            <div class="col-6">
+                <b>Properties:</b>
+                @foreach (var property in _log.Properties)
+                {
+                    <div>
+                        <b>@property.Key:</b> @property.Value
+                    </div>
+                }
+            </div>    
+        }
+        @if (_log.Traces.Any())
+        {
+            <div class="col-6">
+                <b>Traces:</b>
+                @foreach (var trace in _log.Traces)
+                {
+                    <div>@trace</div>
+                }
+            </div>
+        }
     </div>    
 }
 
@@ -49,34 +62,18 @@ else
     [Parameter]
     public long LogId { get; set; }
 
-    public LogDto _log;
+    public LogDto _log => _state.Value.LogsDetails.FirstOrDefault(log => log.Id == LogId);
+
     private bool _isLoading = false;
 
-    protected override async Task OnInitializedAsync()
-    {
-        await LoadListAsync();
-    }
-
-    private async Task LoadListAsync()
+    protected override Task OnInitializedAsync()
     {
         if (_log != null)
         {
-            return;
+            return Task.CompletedTask;
         }
-        _isLoading = true;
-        try
-        {
-            _log = await _apiService.GetLogAsync(LogId);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message, e);
-        }
-        finally
-        {
-            _isLoading = false;
-        }
-        StateHasChanged();
+        Dispatcher.Dispatch(new FetchLogAction(LogId));
+        return Task.CompletedTask;
     }
 
     private async Task OnClickIsFavoriteAsync()

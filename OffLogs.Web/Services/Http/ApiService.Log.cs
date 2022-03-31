@@ -23,13 +23,14 @@ namespace OffLogs.Web.Services.Http
             return response;
         }
 
-        public async Task<LogDto> GetLogAsync(long logId)
+        public async Task<LogDto> GetLogAsync(long logId, string privateKeyBase64)
         {
             var response = await PostAuthorizedAsync<LogDto>(
                 MainApiUrl.LogGet,
                 new GetRequest()
                 {
-                    Id = logId
+                    Id = logId,
+                    PrivateKeyBase64 = privateKeyBase64
                 }
             );
             if (response == null)
