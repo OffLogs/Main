@@ -26,6 +26,7 @@ public class LogReducers
         var newState = state.Clone();
         newState.IsLoadingList = false;
         newState.Page = 0;
+        newState.List = new List<LogListItemDto>();
         return newState;
     }
     
@@ -33,11 +34,7 @@ public class LogReducers
     public static LogsListState ReduceFetchListResultAction(LogsListState state, FetchListResultAction action)
     {
         var newState = state.Clone();
-        if (action.Data.Items == null)
-        {
-            newState.IsLoadingList = false;
-            return newState;
-        }
+        newState.IsLoadingList = false;
         newState.List = newState.List.Concat(action.Data.Items).ToList();
         newState.HasMoreItems = action.Data.IsHasMore;
         return newState;
@@ -47,6 +44,7 @@ public class LogReducers
     public static LogsListState ReduceSetIsLogFavoriteAction(LogsListState state, SetIsLogFavoriteAction action)
     {
         var newState = state.Clone();
+        newState.IsLoadingList = false;
         foreach (var log in newState.List)
         {
             if (log.Id == action.LogId)
@@ -62,7 +60,7 @@ public class LogReducers
     
     #region LogDetails
     [ReducerMethod]
-    public static LogsListState ReduceAddLogDetailsActionAction(LogsListState state, AddLogDetailsAction action)
+    public static LogsListState ReduceAddLogDetailsAction(LogsListState state, AddLogDetailsAction action)
     {
         var newState = state.Clone();
         newState.LogsDetails.Add(action.Log);
@@ -70,7 +68,7 @@ public class LogReducers
     }
     
     [ReducerMethod]
-    public static LogsListState ReduceResetLogDetailsActionAction(LogsListState state, ResetLogDetailsAction action)
+    public static LogsListState ReduceResetLogDetailsAction(LogsListState state, ResetLogDetailsAction action)
     {
         var newState = state.Clone();
         newState.LogsDetails = new List<LogDto>();

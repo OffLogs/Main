@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Fluxor;
 using OffLogs.Api.Common.Dto.Entities;
+using OffLogs.Business.Common.Extensions;
+using OffLogs.Web.Core.Helpers;
 
 namespace OffLogs.Web.Store.Log;
 
@@ -41,12 +43,6 @@ public class LogsListState
 
     public LogsListState Clone()
     {
-        return new LogsListState(
-            IsLoadingList,
-            Page,
-            List,
-            HasMoreItems,
-            LogsDetails
-        );
+        return this.JsonClone<LogsListState>();
     }
 }
