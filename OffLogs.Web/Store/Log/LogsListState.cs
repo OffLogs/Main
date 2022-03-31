@@ -7,15 +7,15 @@ namespace OffLogs.Web.Store.Log;
 [FeatureState]
 public class LogsListState
 {
-    public bool IsLoadingList { get; }
+    public bool IsLoadingList { get; set; }
     
-    public int Page { get; }
+    public int Page { get; set; }
     
-    public bool HasMoreItems { get; }
+    public bool HasMoreItems { get; set; }
 
-    public ICollection<LogListItemDto> List { get; } = new List<LogListItemDto>();
+    public ICollection<LogListItemDto> List { get; set; } = new List<LogListItemDto>();
     
-    public ICollection<LogDto> LogsDetails { get; } = new List<LogDto>();
+    public ICollection<LogDto> LogsDetails { get; set; } = new List<LogDto>();
 
     public LogsListState() { }
 
@@ -24,36 +24,29 @@ public class LogsListState
         List = list;
     }
     
-    public LogsListState(LogsListState state, ICollection<LogDto> logsDetails)
-    {
-        LogsDetails = logsDetails;
-
-        IsLoadingList = state.IsLoadingList;
-        Page = state.Page;
-        HasMoreItems = state.HasMoreItems;
-        List = state.List;
-    }
-
     public LogsListState(
         bool isLoadingList,
-        int? page = null,
-        ICollection<LogListItemDto> list = null,
-        bool? hasMoreItems = null
+        int page,
+        ICollection<LogListItemDto> list,
+        bool hasMoreItems,
+        ICollection<LogDto> logsDetails
     )
     {
         IsLoadingList = isLoadingList;
-        if (list != null)
-        {
-            List = list;
-            
-        }
-        if (page.HasValue)
-        {
-            Page = page.Value;
-        }
-        if (hasMoreItems.HasValue)
-        {
-            HasMoreItems = hasMoreItems.Value;
-        }
+        List = list;
+        Page = page;
+        HasMoreItems = hasMoreItems;
+        LogsDetails = logsDetails;
+    }
+
+    public LogsListState Clone()
+    {
+        return new LogsListState(
+            IsLoadingList,
+            Page,
+            List,
+            HasMoreItems,
+            LogsDetails
+        );
     }
 }

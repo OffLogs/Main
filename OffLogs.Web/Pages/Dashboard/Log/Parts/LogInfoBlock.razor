@@ -76,14 +76,10 @@ else
         return Task.CompletedTask;
     }
 
-    private async Task OnClickIsFavoriteAsync()
+    private Task OnClickIsFavoriteAsync()
     {
         _log.IsFavorite = !_log.IsFavorite;
-        if (_log.IsFavorite)
-        {
-            _toastService.AddInfoMessage("The log marked as favorite");
-        }
-        await _apiService.LogSetIsFavoriteAsync(_log.Id, _log.IsFavorite);
-        StateHasChanged();
+        Dispatcher.Dispatch(new SetIsLogFavoriteAction(_log.Id, _log.IsFavorite));
+        return Task.CompletedTask;
     }
 }

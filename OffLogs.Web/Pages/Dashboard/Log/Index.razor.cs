@@ -49,7 +49,7 @@ public partial class Index
     {
         if (!isLoadNextPage)
         {
-               Dispatcher.Dispatch(new ResetListAction()); 
+            Dispatcher.Dispatch(new ResetListAction()); 
         }
         Dispatcher.Dispatch(new FetchNextListPageAction()
         {
