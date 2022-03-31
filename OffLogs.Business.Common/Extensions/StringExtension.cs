@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text;
 
 namespace OffLogs.Business.Common.Extensions
 {
@@ -25,6 +26,11 @@ namespace OffLogs.Business.Common.Extensions
         {
             return value.Replace("\n", "")
                 .Replace("\r", ""); 
+        }
+        
+        public static byte[] GetUtf8Bytes(this string value)
+        {
+            return Encoding.UTF8.GetBytes(value);
         }
     }
 }

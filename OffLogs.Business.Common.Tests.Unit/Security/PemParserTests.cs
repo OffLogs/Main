@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using OffLogs.Business.Common.Encryption;
 using OffLogs.Business.Common.Extensions;

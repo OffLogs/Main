@@ -47,7 +47,8 @@ namespace OffLogs.Api.Controller.Public.User.Actions
 
             return new LoginResponseDto()
             {
-                Token = _jwtAuthService.BuildJwt(existsUser.Id)
+                Token = _jwtAuthService.BuildJwt(existsUser.Id),
+                PrivateKeyBase64 = Convert.ToBase64String(asymmetricEncryptor.GetPrivateKeyBytes())
             };
         }
     }

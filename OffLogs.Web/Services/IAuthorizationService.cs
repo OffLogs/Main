@@ -6,7 +6,7 @@ namespace OffLogs.Web.Services
     public interface IAuthorizationService
     {
         Task<bool> LoginAsync(LoginRequest model);
-        void Login(string jwtToken, string pem);
+        void Login(string jwtToken, string pem, string privateKeyBase64);
         Task LogoutAsync();
         Task<bool> CheckIsLoggedInAsync();
         string GetJwt();

@@ -83,5 +83,9 @@ public class LoginActionTests : MyApiIntegrationTest
         var responseData = await response.GetJsonDataAsync<LoginResponseDto>();
         Assert.NotEmpty(responseData.Token);
         JwtAuthService.IsValidJwt(responseData.Token);
+
+        AsymmetricEncryptor.FromPrivateKeyBytes(
+            Convert.FromBase64String(responseData.PrivateKeyBase64)    
+        );
     }
 }
