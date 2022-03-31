@@ -47,18 +47,18 @@ namespace OffLogs.Web.Services
             var loginData = await _apiService.LoginAsync(model);
             if (loginData != null)
             {
-                Login(loginData?.Token, model.Pem);
+                Login(loginData?.Token, model.Pem, loginData.PrivateKeyBase64);
                 return true;
             }
 
             return false;
         }
         
-        public void Login(string jwtToken, string pem)
+        public void Login(string jwtToken, string pem, string privateKeyBase64)
         {
             if (!string.IsNullOrEmpty(jwtToken))
             {
-                _dispatcher.Dispatch(new LoginAction(pem, jwtToken));
+                _dispatcher.Dispatch(new LoginAction(pem, jwtToken, privateKeyBase64));
                 _dispatcher.Dispatch(new PersistDataAction());
             }
         }

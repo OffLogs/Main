@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Api.Requests.Abstractions;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
 using OffLogs.Business.Common.Extensions;
@@ -40,10 +41,13 @@ namespace OffLogs.Api.Controller.Public.User.Actions
             }
 
             var (_, pemFile) = await _userService.ActivateUser(user.Id, request.Password);
+
+            var asymmetricEncryptor = AsymmetricEncryptor.ReadFromPem(pemFile, request.Password);
             return new RegistrationStep2ResponseDto()
             {
                 JwtToken = _jwtAuthService.BuildJwt(user.Id),
                 Pem = pemFile,
+                PrivateKeyBase64 = Convert.ToBase64String(asymmetricEncryptor.GetPrivateKeyBytes()),
             };
         }
     }

@@ -15,33 +15,18 @@ public class AuthState
     public string Pem { get; set; }
     
     public string Jwt { get; set; }
-
-    public string PrivateKeyBase64
-    {
-        get
-        {
-            InitPemParser();
-            return _pemParser.PrivateKeyBase64;
-        }
-    }
     
-    public string PublicKeyBase64
-    {
-        get
-        {
-            InitPemParser();
-            return _pemParser.PublicKeyBase64;
-        }
-    }
+    public string PrivateKeyBase64 { get; set; }
 
     private PemParser _pemParser;
     
     public AuthState() { }
     
-    public AuthState(string jwt, string pem)
+    public AuthState(string jwt, string pem, string privateKeyBase64)
     {
         Jwt = jwt;
         Pem = pem;
+        PrivateKeyBase64 = privateKeyBase64;
     }
 
     private void InitPemParser()

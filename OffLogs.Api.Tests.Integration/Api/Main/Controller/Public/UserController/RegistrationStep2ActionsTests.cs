@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
 using OffLogs.Business.Common.Security;
 using OffLogs.Business.Common.Utils;
@@ -75,6 +76,10 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Public.UserControlle
             var encryptor = AsymmetricEncryptor.ReadFromPem(responseData.Pem, password);
             Assert.NotNull(encryptor.PrivateKey);
             Assert.NotNull(encryptor.PublicKey);
+            
+            AsymmetricEncryptor.FromPrivateKeyBytes(
+                Convert.FromBase64String(responseData.PrivateKeyBase64)    
+            );
         }
     }
 }

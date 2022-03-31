@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using OffLogs.Business.Common.Encryption;
 using OffLogs.Business.Common.Extensions;
@@ -86,6 +87,17 @@ Tw8Ht944GJDf3U2FPd1jxgpbEQSHzAN1ig==";
             var parser = new PemParser(pem, false);
             Assert.Equal(expectedPrivateKey, parser.PrivateKeyBase64);
             Assert.Equal(expectedPublicKey, parser.PublicKeyBase64);
+            
+            var encryptorWithPrivate = AsymmetricEncryptor.FromPrivateKeyBytes(
+                Convert.FromBase64String(expectedPrivateKey)    
+            );
+            
+            encryptorWithPrivate = AsymmetricEncryptor.FromPrivateKeyBytes(
+                Convert.FromBase64String(parser.PrivateKeyBase64)    
+            );
+            var encryptorWithPublic = AsymmetricEncryptor.FromPublicKeyBytes(
+                Convert.FromBase64String(parser.PublicKeyBase64)    
+            );
         }
         
         [Fact]

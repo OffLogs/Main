@@ -112,7 +112,11 @@
         {
             return Task.CompletedTask;
         }
-        _authorizationService.Login(_registrationResponse.JwtToken, _registrationResponse.Pem);
+        _authorizationService.Login(
+            _registrationResponse.JwtToken,
+            _registrationResponse.Pem,
+            _registrationResponse.PrivateKeyBase64
+        );
         _navigationManager.NavigateTo(SiteUrl.Dashboard);
         return Task.CompletedTask;
     }
