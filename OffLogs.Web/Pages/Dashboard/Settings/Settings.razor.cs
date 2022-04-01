@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using OffLogs.Web.Core.Helpers;
-using QRID.Mail.UI.Shared.Layout.Navigation.Models;
+using OffLogs.Web.Shared.Ui.NavigationLayout.Models;
 
 namespace OffLogs.Web.Pages.Dashboard.Settings;
 
@@ -16,7 +16,7 @@ public partial class Settings
         _menuItems.Add(
             new MenuItem()
             {
-                Id = 1,
+                Id = "1",
                 Title = "Test 1",
                 SubMenuItems = new List<SubMenuItem>()
                 {

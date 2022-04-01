@@ -10,5 +10,6 @@
 .container-fluid {
   padding-left: 0;
   padding-right: 0;
+  height: 100%;
 }
 /*# sourceMappingURL=MainLayout.razor.css.map */

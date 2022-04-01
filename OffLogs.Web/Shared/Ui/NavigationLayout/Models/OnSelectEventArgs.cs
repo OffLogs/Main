@@ -1,4 +1,4 @@
-namespace QRID.Mail.UI.Shared.Layout.Navigation.Models 
+namespace OffLogs.Web.Shared.Ui.NavigationLayout.Models 
 {
     public class OnSelectEventArgs 
     {

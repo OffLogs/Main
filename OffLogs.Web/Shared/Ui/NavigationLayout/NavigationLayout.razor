@@ -1,18 +1,23 @@
 @using OffLogs.Web.Shared.Ui.NavigationLayout
-@using QRID.Mail.UI.Shared.Layout.Navigation.Models
+@using OffLogs.Web.Shared.Ui.NavigationLayout.Models
 @using OffLogs.Web.Shared.Ui.NavigationLayout.Parts.Body
 @using OffLogs.Web.Shared.Ui.NavigationLayout.Parts.Menu
 @using OffLogs.Web.Shared.Ui.NavigationLayout.Parts.SubMenu
 
 <div class="w-navigation-layout">
     <CascadingValue Value="this" Name="layout">
-        <Menu MenuItems="@MenuItems" 
+        <Menu
+            MenuTitle="@MenuTitle"
+            MenuItems="@MenuItems"
             SelectedItem="@_selectedMenuItem">
         </Menu>
-        <SubMenu MenuItems="@_selectedMenuItem?.SubMenuItems" 
-            SelectedItem="@_selectedSubMenuItem"
-            Buttons="@SubMenuButtons">
-        </SubMenu>
+        @if (_selectedMenuItem != null && _selectedMenuItem.SubMenuItems.Any())
+        {
+            <SubMenu MenuItems="@_selectedMenuItem?.SubMenuItems" 
+                     SelectedItem="@_selectedSubMenuItem"
+                     Buttons="@SubMenuButtons">
+            </SubMenu>    
+        }
         <Body Buttons="@BodyButtons">
             @BodyContent
         </Body>
@@ -21,6 +26,9 @@
 
 @code {
 
+    [Parameter]
+    public string MenuTitle { get; set; }
+    
     [Parameter]
     public ICollection<MenuItem> MenuItems { get; set; } = new List<MenuItem>();
 
@@ -41,8 +49,13 @@
 
     public void OnSelectMenuItem(MenuItem menuItem)
     {
-        _selectedMenuItem = menuItem;
         _selectedSubMenuItem = null;
+        _selectedMenuItem = menuItem;
+        if (!_selectedMenuItem.SubMenuItems.Any())
+        {
+            // If sub menu is empty
+            EmitOnSelect();
+        }
         StateHasChanged();
     }
 

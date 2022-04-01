@@ -61,6 +61,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add new.
+        /// </summary>
+        internal static string AddApplication {
+            get {
+                return ResourceManager.GetString("AddApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The application was not deleted.
         /// </summary>
         internal static string ApplicationDeletionError {
@@ -75,6 +84,15 @@ namespace OffLogs.Web.Resources {
         internal static string ApplicationIsDeleted {
             get {
                 return ResourceManager.GetString("ApplicationIsDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My Applications.
+        /// </summary>
+        internal static string PageTitle_Applications {
+            get {
+                return ResourceManager.GetString("PageTitle_Applications", resourceCulture);
             }
         }
     }

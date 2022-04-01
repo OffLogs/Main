@@ -1,8 +1,7 @@
-@using QRID.Mail.UI.Shared.Layout.Navigation.Models
-@using QRID.Mail.UI.Shared.Layout;
+@using OffLogs.Web.Shared.Ui.NavigationLayout.Models
 
 <div class="w-menu-container">
-    <MenuHeader MenuTitle="Menu Title"/>
+    <MenuHeader MenuTitle="@MenuTitle"/>
     <div class="w-navigation-layout-menu">
         <ul>
             @foreach (var menuItem in MenuItems)

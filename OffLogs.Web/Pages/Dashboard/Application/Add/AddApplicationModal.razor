@@ -13,12 +13,11 @@
 @inject IApiService _apiService
 @inject ToastService _toastService
 
-<MyButton @onclick="() => _isShowAddModal = true">Add Application</MyButton>
 <ModalWindow
-    IsShow="_isShowAddModal"
+    IsShow="IsShowAddModal"
     Buttons="_modalButtons"
     IsLoading="_isLoading"
-    OnClose="@(async () => { await Task.Yield(); _isShowAddModal = false; })"
+    OnClose="@(async () => { await Task.Yield(); IsShowAddModal = false; })"
     >
     <MyEditForm OnValidSubmit="@HandleSubmit" 
                 EditContext="@_editContext"
@@ -40,13 +39,15 @@
     [Parameter]
     public EventCallback<ApplicationDto> OnAdded { get; set; }
 
+    [Parameter]
+    public bool IsShowAddModal { get; set; } = false;
+    
     private AddRequest _model = new();
     private EditContext _editContext;
     private MyButton _btnSubmit;
     private MyEditForm _editForm;
     private bool _isLoading = false;
-
-    private bool _isShowAddModal = false;
+    
 
     private List<ModalButtonModel> _modalButtons = new ();
 
@@ -79,7 +80,7 @@
             {
                 var application = await _apiService.AddApplicationAsync(_model.Name);
                 await OnAdded.InvokeAsync(application);
-                _isShowAddModal = false;
+                IsShowAddModal = false;
                 _toastService.AddInfoMessage("New application was added");
             }
             catch (Exception e)

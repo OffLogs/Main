@@ -2,12 +2,13 @@
 @using OffLogs.Web.Pages.Dashboard.Application.Add
 @using OffLogs.Web.Pages.Dashboard.Application.Info
 @using OffLogs.Web.Pages.Dashboard.Application.Share
+@using OffLogs.Web.Resources
+@using OffLogs.Web.Shared.Ui.NavigationLayout
+@using OffLogs.Web.Shared.Ui.NavigationLayout.Models
 
 @inherits BaseComponent
 
-<h1>Your application</h1>
-
-<AddApplicationModal OnAdded="OnApplicationAdded"/>
+<AddApplicationModal OnAdded="OnApplicationAdded" IsShowAddModal="@_isShowAddModal"/>
 <ShareApplicationModal OnClosed="@(() => _applicationForSharing = null)" 
                        IsShowModal="@(_applicationForSharing != null)"
                        Application="@_applicationForSharing"/>
@@ -16,10 +17,19 @@
                    OnOk="OnDeleteAppAsync"
                    OnCancel="@(() => _applicationForDeletion = null)"/>
 
-@if (_selectedApplicationId != null)
-{
-    <AppInfoModal ApplicationId="@_selectedApplicationId"/>
-}
+<NavigationLayout
+    MenuTitle="@ApplicationResources.PageTitle_Applications"
+    MenuItems="@_menuItems"
+    BodyButtons="@_buttons"
+    OnSelect="OnApplicationSelected"
+>
+    <BodyContent>
+        @if (ApplicationsState.Value.SelectedApplicationId != null)
+        {
+            <AppInfoBlock ApplicationId="@ApplicationsState.Value.SelectedApplicationId"/>
+        }
+    </BodyContent>
+</NavigationLayout>
 
 <table class="table table-hover w-table">
     <thead>
