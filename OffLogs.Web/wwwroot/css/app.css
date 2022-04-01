@@ -37,7 +37,8 @@ body {
 #layout,
 body,
 html,
-#app {
+#app,
+.content {
   height: 100%;
 }
 .content {

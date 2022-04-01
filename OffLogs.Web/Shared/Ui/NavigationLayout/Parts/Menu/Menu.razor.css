@@ -4,7 +4,6 @@
   flex: 1;
   position: relative;
   width: 220px;
-  min-width: 220px;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -36,3 +35,4 @@
 .w-navigation-layout-menu ul li.w-selected {
   background-color: #e8f5ff;
 }
+/*# sourceMappingURL=Menu.razor.css.map */

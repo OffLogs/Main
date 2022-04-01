@@ -1,40 +1,39 @@
 ﻿@using OffLogs.Web.Shared.Ui
 @using OffLogs.Web.Constants
+@using OffLogs.Web.Store.Auth.Actions
 
-<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">OffLogs</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+@inherits BaseComponent
+
+@inject NavigationManager _navigationManager
+
+<div class="w-left-menu">
+    <div class="w-task-menu">
+        <NavLink href="@SiteUrl.Dashboard" Match="NavLinkMatch.All">
+            <i class="icofont-dashboard-web"></i>
+        </NavLink>
+        <NavLink href="@SiteUrl.DashboardApplications" Match="NavLinkMatch.All">
+            <i class="icofont-box"></i>
+        </NavLink>
+        <NavLink href="@SiteUrl.DashboardLogs" Match="NavLinkMatch.All">
+            <i class="icofont-inbox"></i>
+        </NavLink>
+        <NavLink href="@SiteUrl.DashboardSettings" Match="NavLinkMatch.All">
+            <i class="icofont-settings-alt"></i>
+        </NavLink>
+        <a @onclick="OnLogout"
+           href="#"
+           class="ml-md-auto">
+            <i class="icofont-logout"></i>
+        </a>
+    </div>
 </div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="@SiteUrl.Dashboard" Match="NavLinkMatch.All">
-                <Icon IconType="home"/> Home
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="@SiteUrl.DashboardApplications">
-                <Icon IconType="settings_applications"/> Application
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="@SiteUrl.DashboardLogs">
-                <Icon IconType="dns"/> Logs
-            </NavLink>
-        </li>
-    </ul>
-</div>
-
-@code {
-    private bool _collapseNavMenu = true;
-
-    private string NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
+@code 
+{
+    private Task OnLogout()
     {
-        _collapseNavMenu = !_collapseNavMenu;
+        Dispatcher.Dispatch(new LogoutAction());
+        _navigationManager.NavigateTo("/");
+        return Task.CompletedTask;
     }
 }

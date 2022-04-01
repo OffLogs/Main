@@ -1,9 +1,5 @@
-﻿@using OffLogs.Web.Core.Extensions
-@using OffLogs.Web.Services.Events
-@using OffLogs.Web.Shared.Ui.Toast
+﻿@using OffLogs.Web.Shared.Ui.Toast
 @using OffLogs.Web.Resources
-@using OffLogs.Web.Store.Shared.Toast
-@using Fluxor
 
 @inherits LayoutComponentBase
 
@@ -11,26 +7,13 @@
 
     @if (_isShowMainMenu)
     {
-        <div class="sidebar">
-            <NavMenu />
-        </div>
+        <NavMenu />
     }
 
     @if (_isInitialized)
     {
         <div class="main">
-            @if (_isShowMainMenu)
-            {
-                <div class="top-row px-4">
-                    <a @onclick="OnLogout"
-                       href="#"
-                       class="ml-md-auto">
-                        @AuthResources.Logout
-                    </a>
-                </div>
-            }
-
-            <div class="content px-4">
+            <div class="container-fluid">
                 @Body
             </div>
             <ToastMessageContainer/>

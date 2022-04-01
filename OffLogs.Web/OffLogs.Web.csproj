@@ -47,7 +47,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Pages\Dashboard\Home\" />
+      <Folder Include="Pages\Dashboard\Settings\" />
       <Folder Include="Shared\Ui\Form\AutoComplete\" />
       <Folder Include="Store\Auth\Effects" />
     </ItemGroup>
@@ -61,7 +61,7 @@
       <Content Include="Pages\Dashboard\Log\Info\LogInfoModal.razor.less" />
       <Content Include="Pages\Dashboard\Log\Parts\LogInfoBlock.razor.less" />
       <Content Include="Pages\Index.razor.cs.css" />
-      <Content Include="Shared\MainLayout.razor.cs.css" />
+      <None Include="Shared\MainLayout.razor.less" />
       <Content Include="Shared\Ui\Form\CustomDropDown\CustomDropDown.razor.less" />
       <Content Include="Shared\Ui\MyButton.razor.less" />
       <Content Include="Shared\Ui\Preloader.razor.less" />
