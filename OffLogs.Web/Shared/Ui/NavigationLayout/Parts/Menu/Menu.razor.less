@@ -1,0 +1,43 @@
+.w-navigation-layout-menu {
+    border-left: 1px solid;
+    border-color: #ddd;
+    flex: 1;
+    position: relative;
+    width: 220px;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    ul {
+        margin: 0;
+        padding: 0;
+
+        li {
+            color: inherit;
+            background-color: transparent;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            position: relative;
+            list-style: none;
+            border-color: #ddd;
+            border-bottom: 1px solid #f1f3f4;
+            font-weight: 400;
+            line-height: 35px;
+
+            color: #2c363a;
+            background-color: transparent;
+            border-left: 2px solid transparent;
+            display: block;
+            text-decoration: none;
+            cursor: pointer;
+            width: 100%;
+            padding: 0 0.5rem;
+            white-space: nowrap;
+            vertical-align: middle;
+
+            &.w-selected {
+                background-color: #e8f5ff;
+            }
+        }
+    }
+}

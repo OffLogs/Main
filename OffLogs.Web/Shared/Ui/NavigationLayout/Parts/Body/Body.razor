@@ -1,0 +1,21 @@
+@using QRID.Mail.UI.Shared.Layout.Navigation.Models
+@using QRID.Mail.UI.Shared.Layout;
+
+<div class="w-body-container">
+    <Header Buttons="@Buttons"/>
+    <div class="w-body container-fluid">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+
+    [CascadingParameter(Name = "Layout")]
+    public NavigationLayout Layout { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public ICollection<HeaderMenuButton> Buttons { get; set; } = new List<HeaderMenuButton>();
+}

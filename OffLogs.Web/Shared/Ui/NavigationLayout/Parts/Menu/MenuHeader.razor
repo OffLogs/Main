@@ -1,0 +1,20 @@
+@using QRID.Mail.UI.Shared.Layout.Navigation.Models
+@using QRID.Mail.UI.Shared.Layout;
+
+<div class="w-menu-header">
+    <div class="w-title">
+        @MenuTitle
+    </div>
+</div>
+
+@code {
+
+    [CascadingParameter(Name = "Layout")]
+    public NavigationLayout Layout { get; set; }
+
+    [Parameter]
+    public MenuItem SelectedItem { get; set; }
+
+    [Parameter]
+    public string MenuTitle { get; set; }
+}

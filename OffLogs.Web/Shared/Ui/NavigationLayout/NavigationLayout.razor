@@ -1,0 +1,65 @@
+@using OffLogs.Web.Shared.Ui.NavigationLayout
+@using QRID.Mail.UI.Shared.Layout.Navigation.Models
+@using OffLogs.Web.Shared.Ui.NavigationLayout.Parts.Body
+@using OffLogs.Web.Shared.Ui.NavigationLayout.Parts.Menu
+@using OffLogs.Web.Shared.Ui.NavigationLayout.Parts.SubMenu
+
+<div class="w-navigation-layout">
+    <CascadingValue Value="this" Name="layout">
+        <Menu MenuItems="@MenuItems" 
+            SelectedItem="@_selectedMenuItem">
+        </Menu>
+        <SubMenu MenuItems="@_selectedMenuItem?.SubMenuItems" 
+            SelectedItem="@_selectedSubMenuItem"
+            Buttons="@SubMenuButtons">
+        </SubMenu>
+        <Body Buttons="@BodyButtons">
+            @BodyContent
+        </Body>
+    </CascadingValue>
+</div>
+
+@code {
+
+    [Parameter]
+    public ICollection<MenuItem> MenuItems { get; set; } = new List<MenuItem>();
+
+    [Parameter]
+    public ICollection<HeaderMenuButton> SubMenuButtons { get; set; } = new List<HeaderMenuButton>();
+
+    [Parameter]
+    public EventCallback<OnSelectEventArgs> OnSelect { get; set; }
+
+    [Parameter]
+    public RenderFragment BodyContent { get; set; }
+
+    [Parameter]
+    public ICollection<HeaderMenuButton> BodyButtons { get; set; } = new List<HeaderMenuButton>();
+
+    private MenuItem _selectedMenuItem;
+    private SubMenuItem _selectedSubMenuItem;
+
+    public void OnSelectMenuItem(MenuItem menuItem)
+    {
+        _selectedMenuItem = menuItem;
+        _selectedSubMenuItem = null;
+        StateHasChanged();
+    }
+
+    public void OnSelectSubMenuItem(SubMenuItem menuItem)
+    {
+        _selectedSubMenuItem = menuItem;
+        StateHasChanged();
+        EmitOnSelect();
+    }
+
+    private void EmitOnSelect()
+    {
+        InvokeAsync(async () => {
+            await OnSelect.InvokeAsync(new OnSelectEventArgs() {
+                MenuItem = _selectedMenuItem,
+                SubMenuItem = _selectedSubMenuItem
+            });
+        });
+    }
+}

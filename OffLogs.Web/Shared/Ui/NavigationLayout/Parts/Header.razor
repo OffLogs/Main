@@ -1,0 +1,82 @@
+@using QRID.Mail.UI.Shared.Layout.Navigation.Models
+@using QRID.Mail.UI.Shared.Layout;
+
+<div class="w-header">
+    @foreach (var button in Buttons)
+    {
+        <div class="w-button" @onclick="@(async () => await OnClickMenuButtonAsync(button))">
+            <i class="icofont-@button.Icon"></i>
+            <div>@button.Title</div>
+            @if (hasPopup(button)) 
+            {
+                @if (visiblePopupId == button.Id)
+                {
+                    <div class="dropdown-container">
+                        <div class="w-background" 
+                             @onclick="@(async () => await CloseAsync())"
+                        ></div>
+                        <div class="w-arrow"></div>
+                        <ul class="dropdown-menu show">
+                            @foreach (var poupItem in button.PopupItems)
+                            {
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="#"
+                                       @onclick:preventDefault
+                                       @onclick="@(async () => await EmitButtonEventAsync(button))"
+                                    >
+                                        @poupItem.Title
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+            }
+        </div>    
+    }
+</div>
+
+@code {
+
+    [CascadingParameter(Name = "Layout")]
+    public NavigationLayout Layout { get; set; }
+
+    [Parameter]
+    public ICollection<HeaderMenuButton> Buttons { get; set; } = new List<HeaderMenuButton>();
+
+    [Parameter]
+    public string MenuTitle { get; set; }
+
+    private int? visiblePopupId { get; set; }
+
+    private async Task OnClickMenuButtonAsync(HeaderMenuButton button)
+    {
+        if (hasPopup(button))
+        {
+            visiblePopupId = button.Id;
+            return;
+        }
+        await EmitButtonEventAsync(button);
+    }
+
+    private async Task EmitButtonEventAsync(HeaderMenuButton button)
+    {
+        await CloseAsync();
+        if (button.OnClick.HasValue)
+        {
+            await button.OnClick.Value.InvokeAsync();
+        }
+    }
+    
+    private Task CloseAsync()
+    {
+        visiblePopupId = null;
+        return Task.CompletedTask;
+    }
+
+    private bool hasPopup(HeaderMenuButton button)
+    {
+        return button.PopupItems != null && button.PopupItems.Count > 0;
+    }
+}
