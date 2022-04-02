@@ -1,0 +1,47 @@
+@using OffLogs.Web.Shared.Ui.NavigationLayout.Models
+
+<div class="w-menu-container">
+    <MenuHeader MenuTitle="@MenuTitle"/>
+    @if (MenuItems.Any())
+    {
+        <div class="w-navigation-layout-menu">
+            <ul>
+                @foreach (var menuItem in MenuItems)
+                {
+                    <li 
+                        @onclick="@(() => OnSelectMenuItem(menuItem))" 
+                        class="@(IsSelected(menuItem) ? "w-selected" : "")"
+                    >
+                        <i class="icofont-@menuItem.Icon"></i>
+                        @menuItem.Title
+                    </li>
+                }
+            </ul>
+        </div>    
+    }
+</div>
+
+@code {
+
+    [CascadingParameter(Name = "Layout")]
+    public NavigationLayout Layout { get; set; }
+
+    [Parameter]
+    public MenuItem SelectedItem { get; set; }
+
+    [Parameter]
+    public ICollection<MenuItem> MenuItems { get; set; } = new List<MenuItem>();
+
+    [Parameter]
+    public string MenuTitle { get; set; } = "Menu title";
+
+    public void OnSelectMenuItem(MenuItem menuItem)
+    {
+        Layout.OnSelectInnerMenuItem(menuItem);
+    }
+
+    public bool IsSelected(MenuItem menuItem)
+    {
+        return SelectedItem?.Id == menuItem.Id;
+    }
+}

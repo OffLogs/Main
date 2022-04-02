@@ -61,6 +61,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Statistic.
+        /// </summary>
+        internal static string DashboardMenu_Statistic {
+            get {
+                return ResourceManager.GetString("DashboardMenu_Statistic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Application deletion error.
         /// </summary>
         internal static string Error_ApplicationDeletionError {
@@ -79,11 +88,38 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No items....
+        /// </summary>
+        internal static string ListIsEmpty {
+            get {
+                return ResourceManager.GetString("ListIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to More.
+        /// </summary>
+        internal static string LoadMore {
+            get {
+                return ResourceManager.GetString("LoadMore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
         internal static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dashboard.
+        /// </summary>
+        internal static string PageTitle_Dashboard {
+            get {
+                return ResourceManager.GetString("PageTitle_Dashboard", resourceCulture);
             }
         }
         

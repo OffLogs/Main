@@ -1,0 +1,104 @@
+@using OffLogs.Web.Shared.Ui.NavigationLayout
+@using OffLogs.Web.Shared.Ui.NavigationLayout.Models
+@using OffLogs.Web.Shared.Ui.NavigationLayout.Parts.Body
+@using OffLogs.Web.Shared.Ui.NavigationLayout.Parts.Menu
+@using OffLogs.Web.Shared.Ui.NavigationLayout.Parts.List
+
+<div class="w-navigation-layout">
+    <CascadingValue Value="this" Name="layout">
+        <Menu
+            MenuTitle="@MenuTitle"
+            MenuItems="@MenuItems"
+            SelectedItem="@_selectedMenuItem">
+        </Menu> 
+        @if (ListItems != null)
+        {
+            <List
+                ListItems="@ListItems"
+                SelectedItem="@_selectedListItem"
+                Buttons="@SubMenuButtons"
+                IsShowMoreBtn="@IsShowMoreBtn"
+                IsReadOnly="@IsReadOnly">
+            </List>
+        }
+        <Body Buttons="@BodyButtons">
+        @BodyContent
+        </Body>
+    </CascadingValue>
+</div>
+
+@code {
+
+    [Parameter]
+    public string MenuTitle { get; set; }
+    
+    [Parameter]
+    public ICollection<MenuItem> MenuItems { get; set; } = new List<MenuItem>();
+    
+    [Parameter]
+    public ICollection<ListItem> ListItems { get; set; } = null;
+
+    [Parameter]
+    public ICollection<HeaderMenuButton> SubMenuButtons { get; set; } = new List<HeaderMenuButton>();
+
+    [Parameter]
+    public EventCallback<OnSelectEventArgs> OnSelectMenuItem { get; set; }
+
+    [Parameter]
+    public EventCallback<OnSelectEventArgs> OnSelectListItem { get; set; }
+    
+    [Parameter]
+    public RenderFragment BodyContent { get; set; }
+
+    [Parameter]
+    public ICollection<HeaderMenuButton> BodyButtons { get; set; } = new List<HeaderMenuButton>();
+
+    [Parameter]
+    public EventCallback OnClickMoreBtn { get; set; }
+    
+    [Parameter]
+    public bool IsShowMoreBtn { get; set; }
+    
+    [Parameter]
+    public bool IsReadOnly { get; set; }
+    
+    private MenuItem _selectedMenuItem;
+    private ListItem _selectedListItem;
+
+    public void OnSelectInnerListItem(ListItem listItem)
+    {
+        _selectedListItem = listItem;
+        InvokeAsync(async () => {
+            await OnSelectListItem.InvokeAsync(new OnSelectEventArgs() {
+                MenuItem = _selectedMenuItem,
+                ListItem = _selectedListItem
+            });
+        });
+        StateHasChanged();
+    }
+
+    public void OnSelectInnerMenuItem(MenuItem menuItem)
+    {
+        _selectedListItem = null;
+        _selectedMenuItem = menuItem;
+        
+        InvokeAsync(async () => {
+            await OnSelectMenuItem.InvokeAsync(new OnSelectEventArgs() {
+                MenuItem = _selectedMenuItem,
+                ListItem = _selectedListItem
+            });
+        });
+        
+        StateHasChanged();
+    }
+
+    private void EmitOnSelect()
+    {
+        InvokeAsync(async () => {
+            await OnSelectMenuItem.InvokeAsync(new OnSelectEventArgs() {
+                MenuItem = _selectedMenuItem,
+                ListItem = _selectedListItem
+            });
+        });
+    }
+}

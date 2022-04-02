@@ -1,0 +1,94 @@
+.w-header {
+  background-color: #0075c8;
+  height: 58px;
+  color: white;
+  text-align: center;
+}
+.w-header .w-button {
+  position: relative;
+  display: inline-block;
+  height: 58px;
+  line-height: 1.5;
+  padding: 0.45rem;
+  text-align: center;
+  background-color: transparent;
+  padding-block-start: 0.6rem;
+}
+.w-header .w-button:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+.w-header .w-button i {
+  font-size: 1.3rem;
+}
+.w-header .w-button > div {
+  font-weight: 400;
+  font-size: 0.85rem;
+}
+.w-header .w-button .dropdown-container {
+  position: relative;
+}
+.w-header .w-button .dropdown-container .w-background {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background-color: white;
+  opacity: 0.2;
+}
+.w-header .w-button .dropdown-container .w-arrow {
+  position: absolute;
+  display: block;
+  width: 1rem;
+  height: 0.5rem;
+  margin: 0 0.3rem;
+  left: 79px;
+  top: calc(0.3rem + 1px);
+  border-color: #ddd;
+  z-index: 101;
+}
+.w-header .w-button .dropdown-container .w-arrow:before,
+.w-header .w-button .dropdown-container .w-arrow:after {
+  position: absolute;
+  display: block;
+  content: "";
+  border-color: transparent;
+  border-style: solid;
+}
+.w-header .w-button .dropdown-container .w-arrow:before {
+  top: 1px;
+  border-width: 0 0.65rem 0.65rem 0.65rem;
+  border-bottom-color: rgba(0, 0, 0, 0.4);
+}
+.w-header .w-button .dropdown-container .w-arrow:after {
+  top: 1px;
+  border-width: 0 0.65rem 0.65rem 0.65rem;
+  border-bottom-color: #fff;
+}
+.w-header .w-button .dropdown-container .dropdown-menu {
+  padding: 0;
+  top: 0.8rem;
+  z-index: 101;
+  cursor: pointer;
+}
+.w-header .w-button .dropdown-container .dropdown-menu li {
+  border-bottom: 1px solid;
+  border-color: #ddd;
+}
+.w-header .w-button .dropdown-container .dropdown-menu li:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.w-header .w-button .dropdown-container .dropdown-menu a {
+  display: block;
+  padding: 8px 20px;
+  color: #333;
+  white-space: nowrap;
+  vertical-align: middle;
+  font-size: 0.75rem;
+}
+.w-header .w-button .dropdown-container .dropdown-menu a:active {
+  text-decoration: none;
+  background-color: transparent;
+}
+/*# sourceMappingURL=Header.razor.css.map */

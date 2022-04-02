@@ -1,0 +1,113 @@
+@using OffLogs.Web.Shared.Ui.NavigationLayout.Models
+@using OffLogs.Web.Resources
+
+<div class="w-list-container">
+    <Header Buttons="@Buttons"/>
+    <div class="w-list">
+        <ul>
+            @if (ListItems != null && ListItems.Any())
+            {
+                @foreach (var listItem in ListItems)
+                {
+                    <li 
+                        @onclick="@(() => OnSelectMenuItem(listItem))" 
+                        class="@GetItemClass(listItem)"
+                    >
+                        <span class="w-title">
+                            @listItem.Title
+                        </span>
+                        <span class="w-title-2">
+                            @listItem.RightTitle
+                        </span>
+                        <span class="w-sub-title">
+                            @listItem.SubTitle
+                        </span>
+                    </li>
+                }    
+            }
+            else
+            {
+                <li>
+                    <span class="w-sub-title">
+                        @CommonResources.ListIsEmpty
+                    </span>
+                </li>
+            }
+        </ul>
+    </div>
+    @if (IsShowMoreBtn)
+    {
+        <div class="w-list-paginator">
+            <div 
+                class="w-paginator-btn"
+                @onclick="OnClickMore"
+            >
+                <Icon IconType="refresh"></Icon>
+                <span class="w-text">
+                    @CommonResources.LoadMore
+                </span>
+            </div>
+        </div>    
+    }
+</div>
+
+@code {
+
+    [CascadingParameter(Name = "Layout")]
+    public NavigationLayout Layout { get; set; }
+
+    [Parameter]
+    public ListItem SelectedItem { get; set; }
+
+    [Parameter]
+    public ICollection<ListItem> ListItems { get; set; }
+
+    [Parameter]
+    public bool IsShowMoreBtn { get; set; }
+    
+    [Parameter]
+    public ICollection<HeaderMenuButton> Buttons { get; set; } = new List<HeaderMenuButton>();
+
+    [Parameter]
+    public bool IsReadOnly { get; set; }
+    
+    protected override Task OnInitializedAsync()
+    {
+        Buttons.Add(
+            new HeaderMenuButton("Select", "check-alt")
+        );
+        return Task.CompletedTask;
+    }
+
+    private void OnSelectMenuItem(ListItem menuItem)
+    {
+        if (IsReadOnly)
+        {
+            return;
+        }
+        Layout.OnSelectInnerListItem(menuItem);
+    }
+
+    private string GetItemClass(ListItem menuItem)
+    {
+        var classes = "";
+        var isSelected = SelectedItem?.Id == menuItem.Id;
+        classes += isSelected ? "w-selected" : "";
+
+        if (menuItem.BgColorType != null)
+        {
+            classes += $" bg-{menuItem.BgColorType.Value.GetBadgeClass()}";
+        }
+
+        return classes;
+    }
+
+    private void OnClickMore()
+    {
+        if (IsReadOnly)
+        {
+            return;
+        }
+        InvokeAsync(async () => await Layout.OnClickMoreBtn.InvokeAsync());
+    }
+}

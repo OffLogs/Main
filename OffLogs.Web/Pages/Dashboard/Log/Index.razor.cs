@@ -6,10 +6,13 @@ using Fluxor;
 using Microsoft.AspNetCore.Components;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Business.Common.Constants;
-using OffLogs.Web.Services;
+using OffLogs.Business.Common.Extensions;
+using OffLogs.Web.Extensions;
+using OffLogs.Web.Resources;
 using OffLogs.Web.Services.Http;
 using OffLogs.Web.Shared.Ui.Form.CustomDropDown;
-using OffLogs.Web.Shared.Ui.Table;
+using OffLogs.Web.Shared.Ui.NavigationLayout.Models;
+using OffLogs.Web.Store.Application;
 using OffLogs.Web.Store.Log;
 using OffLogs.Web.Store.Log.Actions;
 
@@ -18,69 +21,101 @@ namespace OffLogs.Web.Pages.Dashboard.Log;
 public partial class Index
 {
     [Inject]
-    private IApiService _apiService { get; set; }
-    
-    [Inject]
-    private ToastService _toastService { get; set; }
-    
-    [Inject]
-    private IState<LogsListState> _logListState { get; set; }
-    
-    private CustomAsyncDropDown _dropDownApplications;
-    private LogListItemDto _selectedLog = null;
-    private List<long> _expandedLogIds = new();
+    private IApiService ApiService { get; set; }
 
+    [Inject]
+    private IState<LogsListState> State { get; set; }
+    
+    [Inject]
+    private IState<ApplicationsListState> ApplicationsState { get; set; }
+    
+    private bool _isShowStatistic = false;
+    
     private long? _selectedApplicationId;
     private LogLevel? _selectedLogLevel;
 
-    private ICollection<CustomTableRowModel> _tableCols = new List<CustomTableRowModel>()
-    {
-        new(){ Name = "Message" },
-        new(){ Name = "Log time" },
-        new(){ Name = "Create time" }
-    };
+    private ICollection<HeaderMenuButton> _menuButtons = new List<HeaderMenuButton>();
 
+    private ICollection<MenuItem> _menuItems
+    {
+        get
+        {
+            return ApplicationsState.Value.List.Select(
+                application => new MenuItem()
+                {
+                    Id = application.Id.ToString(),
+                    Title = application.Name
+                }
+            ).ToList();
+        }
+    }
+    
+    private ICollection<ListItem> _logsList
+    {
+        get
+        {
+            return State.Value.List.Select(
+                log => new ListItem()
+                {
+                    Id = log.Id.ToString(),
+                    SubTitle = log.Message.Truncate(32),
+                    RightTitle = log.LogTime.ToString("MM/dd/yyyy hh:mm tt"),
+                    Title = log.Level.GetLabel(),
+                    BgColorType = log.Level.GetBootstrapColorType()
+                }
+            ).ToList();
+        }
+    }
+    
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        
+        _menuButtons.Add(
+            new(LogResources.ShowStatistic, "chart-arrows-axis", () => ShowStatisticModal())    
+        );
+        
+        Dispatcher.Dispatch(new OffLogs.Web.Store.Application.Actions.FetchNextListPageAction());
     }
 
-    private async Task LoadListAsync(bool isLoadNextPage = true)
+    private Task LoadListAsync(bool isLoadNextPage = true)
     {
         if (!isLoadNextPage)
         {
             Dispatcher.Dispatch(new ResetListAction()); 
         }
-        Dispatcher.Dispatch(new FetchNextListPageAction()
-        {
-            ApplicationId = _selectedApplicationId.Value,
-            LogLevel = _selectedLogLevel
-        });
-    }
-
-    private Task OnClickRowAsync(LogListItemDto log)
-    {
-        _selectedLog = log;
-        StateHasChanged();
+        Dispatcher.Dispatch(new FetchNextListPageAction());
         return Task.CompletedTask;
     }
 
-    private async Task OnMoreAsyncAsync()
+    private async Task OnApplicationSelected(OnSelectEventArgs menuEvent)
     {
-        await LoadListAsync();
+        _selectedApplicationId = long.Parse(menuEvent.MenuItem.Id);
+        Dispatcher.Dispatch(new SetListFilterAction(
+            _selectedApplicationId.Value,
+            _selectedLogLevel
+        ));
+        await LoadListAsync(false);
     }
 
     private async Task OnSelectedApplication(DropDownListItem selectListItem)
     {
-        _selectedApplicationId = selectListItem.IdAsLong;
         await LoadListAsync(false);
     }
 
+    private async Task OnSelectLogAsync(OnSelectEventArgs menuEvent)
+    {
+        Dispatcher.Dispatch(new SelectLogAction(
+            long.Parse(menuEvent.ListItem.Id)    
+        ));
+        await Task.CompletedTask;
+    }
+    
     private async Task<ICollection<DropDownListItem>> OnLoadApplicationsAsync()
     {
         try
         {
-            var response = await _apiService.GetApplicationsAsync();
+            var response = await ApiService.GetApplicationsAsync();
             return response.Items.Select(record => new DropDownListItem()
             {
                 Id = $"{record.Id}",
@@ -94,35 +129,24 @@ public partial class Index
         StateHasChanged();
         return default;
     }
-
-    private void ExpandOrCloseLog(LogListItemDto log)
-    {
-        if (_expandedLogIds.Contains(log.Id))
-        {
-            _expandedLogIds.Remove(log.Id);
-        }
-        else
-        {
-            _expandedLogIds.Add(log.Id);
-        }
-        StateHasChanged();
-    }
-
-    private async Task OnSelectLogLevelAsync(LogLevel level)
-    {
-        _selectedLogLevel = null;
-        if (level != default)
-        {
-            _selectedLogLevel = level;
-        }
-        StateHasChanged();
-        await LoadListAsync(false);
-    }    
     
     private Task OnClickIsFavoriteAsync(LogListItemDto log)
     {
         Dispatcher.Dispatch(new SetIsLogFavoriteAction(log.Id, !log.IsFavorite));
         return Task.CompletedTask;
+    }
+    
+    private async Task OnClickMoreBtnAsync()
+    {
+        await LoadListAsync();
+    }
+    
+    private void ShowStatisticModal()
+    {
+        if (_selectedApplicationId.HasValue)
+        {
+            _isShowStatistic = true;    
+        }
     }
 }
 

@@ -1,0 +1,19 @@
+@using OffLogs.Web.Shared.Ui.NavigationLayout.Models
+
+<div class="w-menu-header">
+    <div class="w-title">
+        @MenuTitle
+    </div>
+</div>
+
+@code {
+
+    [CascadingParameter(Name = "Layout")]
+    public NavigationLayout Layout { get; set; }
+
+    [Parameter]
+    public MenuItem SelectedItem { get; set; }
+
+    [Parameter]
+    public string MenuTitle { get; set; }
+}

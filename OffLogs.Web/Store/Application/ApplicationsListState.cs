@@ -7,43 +7,15 @@ namespace OffLogs.Web.Store.Application;
 [FeatureState]
 public class ApplicationsListState
 {
-    public bool IsLoading { get; }
+    public bool IsLoading { get; set; }
     
-    public int Page { get; }
+    public int Page { get; set; }
     
-    public bool HasMoreItems { get; }
+    public bool HasMoreItems { get; set; }
 
-    public ICollection<ApplicationListItemDto> Applications { get; } = new List<ApplicationListItemDto>();
+    public ICollection<ApplicationListItemDto> List { get; set; } = new List<ApplicationListItemDto>();
 
+    public long? SelectedApplicationId  { get; set; }
+    
     public ApplicationsListState() { }
-
-    public ApplicationsListState(
-        ICollection<ApplicationListItemDto> applications
-    )
-    {
-        Applications = applications;
-    }
-
-    public ApplicationsListState(
-        bool isLoading,
-        int? page = null,
-        ICollection<ApplicationListItemDto> applications = null,
-        bool? hasMoreItems = null
-    )
-    {
-        IsLoading = isLoading;
-        if (applications != null)
-        {
-            Applications = applications;
-            
-        }
-        if (page.HasValue)
-        {
-            Page = page.Value;
-        }
-        if (hasMoreItems.HasValue)
-        {
-            HasMoreItems = hasMoreItems.Value;
-        }
-    }
 }

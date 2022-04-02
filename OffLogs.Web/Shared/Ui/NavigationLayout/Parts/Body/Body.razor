@@ -1,0 +1,20 @@
+@using OffLogs.Web.Shared.Ui.NavigationLayout.Models
+
+<div class="w-body-container">
+    <Header Buttons="@Buttons"/>
+    <div class="w-body container-fluid">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+
+    [CascadingParameter(Name = "Layout")]
+    public NavigationLayout Layout { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public ICollection<HeaderMenuButton> Buttons { get; set; } = new List<HeaderMenuButton>();
+}

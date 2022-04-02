@@ -36,4 +36,16 @@
     <data name="Registration" xml:space="preserve">
         <value>Registration</value>
     </data>
+    <data name="ListIsEmpty" xml:space="preserve">
+        <value>No items...</value>
+    </data>
+    <data name="LoadMore" xml:space="preserve">
+        <value>More</value>
+    </data>
+    <data name="PageTitle_Dashboard" xml:space="preserve">
+        <value>Dashboard</value>
+    </data>
+    <data name="DashboardMenu_Statistic" xml:space="preserve">
+        <value>Statistic</value>
+    </data>
 </root>

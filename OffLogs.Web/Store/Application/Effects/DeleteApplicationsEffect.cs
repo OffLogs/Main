@@ -16,13 +16,13 @@ public class DeleteApplicationsEffect: Effect<DeleteApplicationAction>
 {
     private readonly IState<ApplicationsListState> _state;
     private readonly IApiService _apiService;
-    private readonly ILogger<DeleteApplicationAction> _logger;
+    private readonly ILogger<DeleteApplicationsEffect> _logger;
     private readonly ToastService _toastService;
 
     public DeleteApplicationsEffect(
         IState<ApplicationsListState> state,
         IApiService apiService,
-        ILogger<DeleteApplicationAction> logger,
+        ILogger<DeleteApplicationsEffect> logger,
         ToastService toastService
     )
     {

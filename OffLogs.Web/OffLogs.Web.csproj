@@ -27,6 +27,15 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>ApplicationResources.resx</DependentUpon>
       </Compile>
+      <EmbeddedResource Update="Resources\LogResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>LogResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <Compile Update="Resources\LogResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>LogResources.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -47,26 +56,23 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Pages\Dashboard\Home\" />
+      <Folder Include="Pages\Dashboard\Settings\" />
       <Folder Include="Shared\Ui\Form\AutoComplete\" />
       <Folder Include="Store\Auth\Effects" />
+      <Folder Include="Store\Log\Models" />
     </ItemGroup>
 
     <ItemGroup>
       <Content Include="Pages\Dashboard\Application\Add\AddApplicationModal.razor.less" />
-      <Content Include="Pages\Dashboard\Application\Index.razor.cs.css" />
       <Content Include="Pages\Dashboard\Application\Index.razor.less" />
-      <Content Include="Pages\Dashboard\Log\Index.razor.cs.css" />
       <Content Include="Pages\Dashboard\Log\Index.razor.less" />
       <Content Include="Pages\Dashboard\Log\Info\LogInfoModal.razor.less" />
       <Content Include="Pages\Dashboard\Log\Parts\LogInfoBlock.razor.less" />
-      <Content Include="Pages\Index.razor.cs.css" />
-      <Content Include="Shared\MainLayout.razor.cs.css" />
+      <None Include="Shared\MainLayout.razor.less" />
       <Content Include="Shared\Ui\Form\CustomDropDown\CustomDropDown.razor.less" />
       <Content Include="Shared\Ui\MyButton.razor.less" />
       <Content Include="Shared\Ui\Preloader.razor.less" />
       <Content Include="Shared\Ui\Toast\ToastMessage.razor.less" />
-      <Content Include="Shared\Ui\Toast\ToastMessageContainer.razor.cs.css" />
       <Content Include="Shared\Ui\Toast\ToastMessageContainer.razor.less" />
     </ItemGroup>
 

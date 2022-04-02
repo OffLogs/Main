@@ -25,4 +25,16 @@
     <data name="ApplicationDeletionError" xml:space="preserve">
         <value>The application was not deleted</value>
     </data>
+    <data name="PageTitle_Applications" xml:space="preserve">
+        <value>My Applications</value>
+    </data>
+    <data name="AddApplication" xml:space="preserve">
+        <value>Add new</value>
+    </data>
+    <data name="DeleteApplication" xml:space="preserve">
+        <value>Delete</value>
+    </data>
+    <data name="SelectApplication" xml:space="preserve">
+        <value>Please select application</value>
+    </data>
 </root>

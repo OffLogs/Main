@@ -1,46 +1,32 @@
 ﻿@page "/dashboard/applications"
 @using OffLogs.Web.Pages.Dashboard.Application.Add
 @using OffLogs.Web.Pages.Dashboard.Application.Info
-@using OffLogs.Web.Pages.Dashboard.Application.Share
+@using OffLogs.Web.Resources
+@using OffLogs.Web.Shared.Ui.NavigationLayout
 
 @inherits BaseComponent
 
-<h1>Your application</h1>
+<AddApplicationModal
+    OnAdded="OnApplicationAdded"
+    OnClose="OnCloseAddModal"
+    IsShowAddModal="@_isShowAddModal"
+/>
+<ConfirmationModal
+    Title="Are you sure you want to remove this application?" 
+    IsShow="@_isShowDeleteModal"
+    OnOk="OnDeleteAppAsync"
+    OnCancel="@(() => _isShowDeleteModal = false)"/>
 
-<AddApplicationModal OnAdded="OnApplicationAdded"/>
-<ShareApplicationModal OnClosed="@(() => _applicationForSharing = null)" 
-                       IsShowModal="@(_applicationForSharing != null)"
-                       Application="@_applicationForSharing"/>
-<ConfirmationModal Title="Are you sure you want to uninstall this application?" 
-                   IsShow="@(_applicationForDeletion != null)"
-                   OnOk="OnDeleteAppAsync"
-                   OnCancel="@(() => _applicationForDeletion = null)"/>
-
-@if (_selectedApplicationId != null)
-{
-    <AppInfoModal ApplicationId="@_selectedApplicationId"/>
-}
-
-<table class="table table-hover w-table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var application in ApplicationsState.Value.Applications)
+<NavigationLayout
+    MenuTitle="@ApplicationResources.PageTitle_Applications"
+    MenuItems="@_menuItems"
+    BodyButtons="@_buttons"
+    OnSelectMenuItem="OnApplicationSelected"
+>
+    <BodyContent>
+        @if (State.Value.SelectedApplicationId != null)
         {
-            <tr @onclick="@(async () => await OnClickRowAsync(application))">
-                <td>@application.Name</td>
-                <td @onclick:stopPropagation>
-                    <MyButton IsSmall="true"
-                              Type="BootstrapColorType.Danger"
-                              OnClick="@(() => _applicationForDeletion = application)">
-                        X
-                    </MyButton> 
-                </td>
-            </tr>
+            <AppInfoBlock ApplicationId="@State.Value.SelectedApplicationId"/>
         }
-    </tbody>
-</table>
+    </BodyContent>
+</NavigationLayout>

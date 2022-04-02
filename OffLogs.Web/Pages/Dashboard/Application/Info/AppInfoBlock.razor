@@ -6,34 +6,28 @@
 @inject IApiService _apiService
 @inject ToastService _toastService
 
-<ModalWindow 
-    IsShow="_isShowModal"
-    Buttons="_modalButtons"
-    OnClose="OnClose"
-    Title="@_title">
+<h3>@_title</h3>
 
-    @if (_isLoading)
-    {
-        <Preloader />
-    }
-    else
-    {
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-                <b>Name:</b> @_application.Name
-            </li>
-            <li class="list-group-item text-break">
-                <b>ApiToken:</b> @_application.ApiToken
-            </li>
-        </ul>
-    }
-</ModalWindow>
+@if (_isLoading)
+{
+    <Preloader />
+}
+else
+{
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <b>Name:</b> @_application.Name
+        </li>
+        <li class="list-group-item text-break">
+            <b>ApiToken:</b> @_application.ApiToken
+        </li>
+    </ul>
+}
 
 @code {
     [Parameter]
     public long? ApplicationId { get; set; }
 
-    private bool _isShowModal { get; set; }
     private bool _isLoading { get; set; }
     private ApplicationDto _application { get; set; }
 
@@ -62,7 +56,6 @@
         _isLoading = false;
         if (ApplicationId == null)
         {
-            _isShowModal = false;
             _application = null;
             return;
         }
@@ -77,18 +70,15 @@
         if (!ApplicationId.HasValue)
         {
             _application = null;
-            _isShowModal = false;
             return;
         }
         _isLoading = true;
-        _isShowModal = true;
         try
         {
             _application = await _apiService.GetApplicationAsync(ApplicationId.Value);
             if (_application == null)
             {
                 _toastService.AddInfoMessage(CommonResources.Error_LogNotFound);
-                _isShowModal = false;
             }
         }
         catch (Exception e)
@@ -101,10 +91,5 @@
             _isLoading = false;
             StateHasChanged();
         }
-    }
-
-    private void OnClose()
-    {
-        _isShowModal = false;
     }
 }

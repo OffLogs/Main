@@ -1,4 +1,6 @@
-﻿@font-face {
+﻿@import url('icofont/icofont.min.css');
+
+@font-face {
     font-family: 'Material Icons';
     font-style: normal;
     font-weight: 400;
@@ -11,10 +13,10 @@
 }
 
 .material-icons {
-    font-family: 'Material Icons';
+    font-family: 'Material Icons', Helvetica, Arial, sans-serif;
     font-weight: normal;
     font-style: normal;
-    font-size: 24px;  /* Preferred icon size */
+    font-size: 18px;  /* Preferred icon size */
     display: inline-block;
     line-height: 1;
     text-transform: none;
@@ -36,17 +38,12 @@
 }
 
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    height: 100%;
+    font-size: 0.9rem;
 }
 
-a, .btn-link {
-    color: #0366d6;
-}
-
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+#layout, body, html, #app, .content {
+    height: 100%;
 }
 
 .content {
@@ -103,4 +100,25 @@ a, .btn-link {
 /** Helpers */
 .w-cursor-pointer {
    cursor: pointer;
+}
+
+/** Scroll bar */
+/* width */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

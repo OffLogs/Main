@@ -54,15 +54,18 @@ else
 
     public LogDto _log => _state.Value.LogsDetails.FirstOrDefault(log => log.Id == LogId);
 
-    private bool _isLoading = false;
-
     protected override Task OnInitializedAsync()
     {
+        return Task.CompletedTask;
+    }
+    
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
         if (_log != null)
         {
-            return Task.CompletedTask;
+            return;
         }
         Dispatcher.Dispatch(new FetchLogAction(LogId));
-        return Task.CompletedTask;
     }
 }

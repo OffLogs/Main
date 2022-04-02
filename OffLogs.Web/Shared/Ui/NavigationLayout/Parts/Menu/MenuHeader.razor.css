@@ -1,0 +1,15 @@
+.w-menu-header {
+  background-color: #0075c8;
+  height: 58px;
+  color: white;
+}
+.w-menu-header .w-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  text-align: center;
+  padding-block-start: 16px;
+  color: white;
+  width: 100%;
+}
+
