@@ -2,20 +2,23 @@
 
 <div class="w-menu-container">
     <MenuHeader MenuTitle="@MenuTitle"/>
-    <div class="w-navigation-layout-menu">
-        <ul>
-            @foreach (var menuItem in MenuItems)
-            {
-                <li 
-                    @onclick="@(() => OnSelectMenuItem(menuItem))" 
-                    class="@(IsSelected(menuItem) ? "w-selected" : "")"
-                >
-                    <i class="icofont-@menuItem.Icon"></i>
-                    @menuItem.Title
-                </li>
-            }
-        </ul>
-    </div>
+    @if (MenuItems.Any())
+    {
+        <div class="w-navigation-layout-menu">
+            <ul>
+                @foreach (var menuItem in MenuItems)
+                {
+                    <li 
+                        @onclick="@(() => OnSelectMenuItem(menuItem))" 
+                        class="@(IsSelected(menuItem) ? "w-selected" : "")"
+                    >
+                        <i class="icofont-@menuItem.Icon"></i>
+                        @menuItem.Title
+                    </li>
+                }
+            </ul>
+        </div>    
+    }
 </div>
 
 @code {

@@ -10,20 +10,19 @@
             MenuTitle="@MenuTitle"
             MenuItems="@MenuItems"
             SelectedItem="@_selectedMenuItem">
-        </Menu>
+        </Menu> 
         @if (ListItems != null)
         {
-            <List 
-                ListItems="@ListItems" 
+            <List
+                ListItems="@ListItems"
                 SelectedItem="@_selectedListItem"
                 Buttons="@SubMenuButtons"
                 IsShowMoreBtn="@IsShowMoreBtn"
-                IsReadOnly="@IsReadOnly"
-            >
-            </List>    
+                IsReadOnly="@IsReadOnly">
+            </List>
         }
         <Body Buttons="@BodyButtons">
-            @BodyContent
+        @BodyContent
         </Body>
     </CascadingValue>
 </div>
