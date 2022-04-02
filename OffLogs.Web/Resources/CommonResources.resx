@@ -36,4 +36,10 @@
     <data name="Registration" xml:space="preserve">
         <value>Registration</value>
     </data>
+    <data name="ListIsEmpty" xml:space="preserve">
+        <value>No items...</value>
+    </data>
+    <data name="LoadMore" xml:space="preserve">
+        <value>More</value>
+    </data>
 </root>

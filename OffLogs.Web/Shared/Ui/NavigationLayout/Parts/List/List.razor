@@ -1,10 +1,11 @@
 @using OffLogs.Web.Shared.Ui.NavigationLayout.Models
+@using OffLogs.Web.Resources
 
-<div class="w-sub-menu-container">
+<div class="w-list-container">
     <Header Buttons="@Buttons"/>
-    <div class="w-sub-menu">
+    <div class="w-list">
         <ul>
-            @if (ListItems != null)
+            @if (ListItems != null && ListItems.Any())
             {
                 @foreach (var listItem in ListItems)
                 {
@@ -24,8 +25,30 @@
                     </li>
                 }    
             }
+            else
+            {
+                <li>
+                    <span class="w-sub-title">
+                        @CommonResources.ListIsEmpty
+                    </span>
+                </li>
+            }
         </ul>
     </div>
+    @if (IsShowMoreBtn)
+    {
+        <div class="w-list-paginator">
+            <div 
+                class="w-paginator-btn"
+                @onclick="OnClickMore"
+            >
+                <Icon IconType="refresh"></Icon>
+                <span class="w-text">
+                    @CommonResources.LoadMore
+                </span>
+            </div>
+        </div>    
+    }
 </div>
 
 @code {
@@ -40,8 +63,14 @@
     public ICollection<ListItem> ListItems { get; set; }
 
     [Parameter]
+    public bool IsShowMoreBtn { get; set; }
+    
+    [Parameter]
     public ICollection<HeaderMenuButton> Buttons { get; set; } = new List<HeaderMenuButton>();
 
+    [Parameter]
+    public bool IsReadOnly { get; set; }
+    
     protected override Task OnInitializedAsync()
     {
         Buttons.Add(
@@ -52,11 +81,24 @@
 
     public void OnSelectMenuItem(ListItem menuItem)
     {
+        if (IsReadOnly)
+        {
+            return;
+        }
         Layout.OnSelectInnerListItem(menuItem);
     }
 
     public bool IsSelected(ListItem menuItem)
     {
         return SelectedItem?.Id == menuItem.Id;
+    }
+
+    private void OnClickMore()
+    {
+        if (IsReadOnly)
+        {
+            return;
+        }
+        InvokeAsync(async () => await Layout.OnClickMoreBtn.InvokeAsync());
     }
 }

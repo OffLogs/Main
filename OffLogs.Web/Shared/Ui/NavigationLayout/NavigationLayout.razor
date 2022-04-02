@@ -13,9 +13,11 @@
         </Menu>
         @if (ListItems != null)
         {
-            <List ListItems="@ListItems" 
-                     SelectedItem="@_selectedListItem"
-                     Buttons="@SubMenuButtons">
+            <List 
+                ListItems="@ListItems" 
+                SelectedItem="@_selectedListItem"
+                Buttons="@SubMenuButtons"
+                IsShowMoreBtn="@IsShowMoreBtn">
             </List>    
         }
         <Body Buttons="@BodyButtons">
@@ -50,6 +52,15 @@
     [Parameter]
     public ICollection<HeaderMenuButton> BodyButtons { get; set; } = new List<HeaderMenuButton>();
 
+    [Parameter]
+    public EventCallback OnClickMoreBtn { get; set; }
+    
+    [Parameter]
+    public bool IsShowMoreBtn { get; set; }
+    
+    [Parameter]
+    public bool IsReadOnly { get; set; }
+    
     private MenuItem _selectedMenuItem;
     private ListItem _selectedListItem;
 

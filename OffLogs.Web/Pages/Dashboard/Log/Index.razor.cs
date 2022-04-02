@@ -151,5 +151,10 @@ public partial class Index
         Dispatcher.Dispatch(new SetIsLogFavoriteAction(log.Id, !log.IsFavorite));
         return Task.CompletedTask;
     }
+    
+    private async Task OnClickMoreBtnAsync()
+    {
+        await LoadListAsync();
+    }
 }
 

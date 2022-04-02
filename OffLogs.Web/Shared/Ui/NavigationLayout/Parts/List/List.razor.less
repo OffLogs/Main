@@ -1,8 +1,8 @@
-.w-sub-menu-container {
+.w-list-container {
     display: flex;
     flex-direction: column;
     
-    .w-sub-menu {
+    .w-list {
         border-right: 1px solid;
         border-color: #ddd;
         flex: 1;
@@ -19,7 +19,6 @@
     
             li {
                 width: 100%;
-                padding-right: 0;
                 display: flex;
                 flex-wrap: wrap;
                 border-left: 2px solid transparent;
@@ -56,6 +55,35 @@
                 &.w-selected {
                     background-color: #e8f5ff;
                 }
+            }
+        }
+    }
+    
+    .w-list-paginator {
+        border-right: 1px solid;
+        border-top: 1px solid;
+        border-color: #ddd;
+        
+        .w-paginator-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 2rem!important;
+            height: 35px;
+            color: #737677;
+            font-size: 80%;
+            cursor: pointer;
+            
+            &:hover {
+                color: black;
+            }
+            
+            span {
+                font-size: 24px;
+            }
+            
+            .w-text {
+                font-size: 17px;
             }
         }
     }
