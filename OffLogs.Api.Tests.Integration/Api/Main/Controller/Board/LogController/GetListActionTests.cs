@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -192,6 +193,56 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             Assert.Equal(2, responseData.Items.Count);
             Assert.Contains(responseData.Items, l => l.Id == logs2.First().Id);
             Assert.Contains(responseData.Items, l => l.Id == logs1.First().Id);
+        }
+        
+        [Theory]
+        [InlineData(MainApiUrl.LogList)]
+        public async Task ShouldCreateSeveralLogsAndReceiveEncryptedLog(string url)
+        {
+            var user = await DataSeeder.CreateActivatedUser();
+            var log1 = (await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information)).First();
+            var log2 = (await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Warning)).First();
+            var log3 = (await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Error)).First();
+
+            log1 = await LogAssembler.AssembleDecryptedLogAsync(
+                log1, 
+                Convert.FromBase64String(user.PrivateKeyBase64)
+            );
+            log2 = await LogAssembler.AssembleDecryptedLogAsync(
+                log2, 
+                Convert.FromBase64String(user.PrivateKeyBase64)
+            );
+            log3 = await LogAssembler.AssembleDecryptedLogAsync(
+                log3, 
+                Convert.FromBase64String(user.PrivateKeyBase64)
+            );
+            
+            // Act
+            var response = await PostRequestAsync(url, user.ApiToken, new GetListRequest()
+            {
+                Page = 1,
+                ApplicationId = user.ApplicationId,
+                PrivateKeyBase64 = user.PrivateKeyBase64
+            });
+            response.EnsureSuccessStatusCode();
+            // Assert
+            var responseData = await response.GetJsonDataAsync<PaginatedListDto<LogListItemDto>>();
+
+            Assert.Contains(responseData.Items, item =>
+            {
+                return item.Id == log1.Id
+                       && item.Message == log1.Message;
+            });
+            Assert.Contains(responseData.Items, item =>
+            {
+                return item.Id == log2.Id
+                       && item.Message == log2.Message;
+            });
+            Assert.Contains(responseData.Items, item =>
+            {
+                return item.Id == log3.Id
+                       && item.Message == log3.Message;
+            });
         }
     }
 }
