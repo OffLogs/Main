@@ -66,7 +66,6 @@
       <Content Include="Pages\Dashboard\Application\Add\AddApplicationModal.razor.less" />
       <Content Include="Pages\Dashboard\Application\Index.razor.cs.css" />
       <Content Include="Pages\Dashboard\Application\Index.razor.less" />
-      <Content Include="Pages\Dashboard\Log\Index.razor.cs.css" />
       <Content Include="Pages\Dashboard\Log\Index.razor.less" />
       <Content Include="Pages\Dashboard\Log\Info\LogInfoModal.razor.less" />
       <Content Include="Pages\Dashboard\Log\Parts\LogInfoBlock.razor.less" />

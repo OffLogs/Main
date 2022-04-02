@@ -72,7 +72,7 @@ public partial class Index
         await base.OnInitializedAsync();
         
         _menuButtons.Add(
-            new(LogResources.ShowStatistic, "chart-arrows-axis", () => _isShowStatistic = true)    
+            new(LogResources.ShowStatistic, "chart-arrows-axis", () => ShowStatisticModal())    
         );
         
         Dispatcher.Dispatch(new OffLogs.Web.Store.Application.Actions.FetchNextListPageAction());
@@ -139,6 +139,14 @@ public partial class Index
     private async Task OnClickMoreBtnAsync()
     {
         await LoadListAsync();
+    }
+    
+    private void ShowStatisticModal()
+    {
+        if (_selectedApplicationId.HasValue)
+        {
+            _isShowStatistic = true;    
+        }
     }
 }
 

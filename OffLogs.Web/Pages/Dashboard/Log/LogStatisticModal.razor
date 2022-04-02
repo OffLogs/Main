@@ -1,0 +1,15 @@
+﻿@using OffLogs.Web.Resources
+@inherits BaseComponent
+
+<ModalWindow
+    IsShow="@IsShowModal"
+    Buttons="@_modalButtons"
+    Title="@LogResources.ModalTitle_ApplicationStatistic"
+    OnClose="@(() => IsShowModal = false)">
+    
+    @if (_currentApplicationId.HasValue)
+    {
+        <OffLogs.Web.Shared.Components.LogStatisticChart ApplicationId="@_currentApplicationId.Value"/>    
+    }
+    
+</ModalWindow>

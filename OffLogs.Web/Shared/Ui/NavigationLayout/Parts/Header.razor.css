@@ -85,7 +85,7 @@
   color: #333;
   white-space: nowrap;
   vertical-align: middle;
-  font-size: 14px;
+  font-size: 0.75rem;
 }
 .w-header .w-button .dropdown-container .dropdown-menu a:active {
   text-decoration: none;

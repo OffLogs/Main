@@ -24,7 +24,8 @@
     </BodyContent>
 </NavigationLayout>
 
-@if (_selectedApplicationId != null)
-{
-    <OffLogs.Web.Shared.Components.LogStatisticChart ApplicationId="_selectedApplicationId.Value"/>
-}
+<LogStatisticModal
+    IsShowModal="@_isShowStatistic"
+    ApplicationId="@_selectedApplicationId"
+    OnClose="@(() => _isShowStatistic = false)"
+/>

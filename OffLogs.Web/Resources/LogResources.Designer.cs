@@ -61,6 +61,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Application statistic.
+        /// </summary>
+        internal static string ModalTitle_ApplicationStatistic {
+            get {
+                return ResourceManager.GetString("ModalTitle_ApplicationStatistic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Discover logs.
         /// </summary>
         internal static string PageTitle {

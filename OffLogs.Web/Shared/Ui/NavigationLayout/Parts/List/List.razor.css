@@ -74,9 +74,9 @@
   color: black;
 }
 .w-list-container .w-list-paginator .w-paginator-btn span {
-  font-size: 24px;
+  font-size: 0.75rem;
 }
 .w-list-container .w-list-paginator .w-paginator-btn .w-text {
-  font-size: 17px;
+  font-size: 0.75rem;
 }
 /*# sourceMappingURL=List.razor.css.map */
