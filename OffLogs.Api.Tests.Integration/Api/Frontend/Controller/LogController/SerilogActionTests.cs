@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries;
@@ -316,6 +317,76 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
             //     Assert.NotEmpty(isFirstTrue || isSecondTrue);
             // }
             // TODO: Resore
+        }
+        
+        [Fact]
+        public async Task ShouldAddLogsAndReceiveEncryptedLogs()
+        {
+            // Arrange
+            var user = await DataSeeder.CreateActivatedUser();
+            var expectedMessageLog1 = "Error log";
+            var expectedMessageLog2 = "Debug log";
+            var expectedMessageLog3 = "Warning log";
+
+            var list = await GetLogsList(user.Applications.First().Id, 1);
+            Assert.Equal(0, list.TotalCount);
+            // Act
+            var response = await PostRequestAsync(Url, user.ApplicationApiToken, new
+            {
+                events = new List<object>()
+                {
+                    new  {
+                        Timestamp = "2021-03-01T21:50:42.1443263+02:00",
+                        Level = SerilogLogLevel.Error.GetValue(),
+                        MessageTemplate = expectedMessageLog1,
+                        RenderedMessage = expectedMessageLog1,
+                    },
+                    new  {
+                        Timestamp = "2021-03-01T21:50:42.1443263+02:00",
+                        Level = SerilogLogLevel.Debug.GetValue(),
+                        MessageTemplate = expectedMessageLog2,
+                        RenderedMessage = expectedMessageLog2,
+                    },
+                    new  {
+                        Timestamp = "2021-03-01T21:50:42.1443263+02:00",
+                        Level = SerilogLogLevel.Warning.GetValue(),
+                        MessageTemplate = expectedMessageLog3,
+                        RenderedMessage = expectedMessageLog3,
+                    },
+                }
+            });
+            // Assert
+            response.EnsureSuccessStatusCode();
+            
+            // Process messages from Kafka
+            KafkaProducerService.Flush();
+            await KafkaLogsConsumerService.ProcessLogsAsync(false);
+            
+            var actualList = await GetLogsList(user.Applications.First().Id, 1);
+            Assert.Equal(3, actualList.TotalCount);
+            var log1 = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.Skip(0).First().Id);
+            log1 = await LogAssembler.AssembleDecryptedLogAsync(log1, user.PrivateKey);
+            Assert.True(
+                expectedMessageLog1 == log1.Message
+                || expectedMessageLog2 == log1.Message
+                || expectedMessageLog3 == log1.Message
+            );
+            
+            var log2 = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.Skip(1).First().Id);
+            log2 = await LogAssembler.AssembleDecryptedLogAsync(log2, user.PrivateKey);
+            Assert.True(
+                expectedMessageLog1 == log2.Message
+                || expectedMessageLog2 == log2.Message
+                || expectedMessageLog3 == log2.Message
+            );
+            
+            var log3 = await QueryBuilder.FindByIdAsync<LogEntity>(actualList.Items.Skip(2).First().Id);
+            log3 = await LogAssembler.AssembleDecryptedLogAsync(log3, user.PrivateKey);
+            Assert.True(
+                expectedMessageLog1 == log3.Message
+                || expectedMessageLog2 == log3.Message
+                || expectedMessageLog3 == log3.Message
+            );
         }
     }
 }

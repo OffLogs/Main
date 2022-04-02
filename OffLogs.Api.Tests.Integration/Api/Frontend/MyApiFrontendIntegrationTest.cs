@@ -13,6 +13,7 @@ using Persistence.Transactions.Behaviors;
 using Queries.Abstractions;
 using Xunit;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using OffLogs.Business.Services.Kafka.Consumer;
 using OffLogs.Business.Services.Http.ThrottleRequests;
@@ -30,6 +31,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
         protected readonly ILogService LogService;
         protected readonly IAsyncQueryBuilder QueryBuilder;
         protected readonly IThrottleRequestsService ThrottleRequestsService;
+        protected readonly ILogAssembler LogAssembler;
 
         public MyApiFrontendIntegrationTest(ApiFrontendCustomWebApplicationFactory factory)
         {
@@ -42,6 +44,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
             DataSeeder = _factory.Services.GetService(typeof(IDataSeederService)) as IDataSeederService;
             QueryBuilder = _factory.Services.GetService(typeof(IAsyncQueryBuilder)) as IAsyncQueryBuilder;
             ThrottleRequestsService = _factory.Services.GetService(typeof(IThrottleRequestsService)) as IThrottleRequestsService;
+            LogAssembler = _factory.Services.GetRequiredService<ILogAssembler>();
         }
 
         public void Dispose()

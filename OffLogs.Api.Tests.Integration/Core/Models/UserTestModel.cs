@@ -12,21 +12,23 @@ namespace OffLogs.Api.Tests.Integration.Core.Models
         
         public string PemFile { get; }
 
-        private string _privateKeyBase64;
-        public string PrivateKeyBase64
+        private byte[] _privateKey;
+        public byte[] PrivateKey
         {
             get
             {
-                if (string.IsNullOrEmpty(_privateKeyBase64))
+                if (_privateKey == null)
                 {
                     var encryptor = AsymmetricEncryptor.ReadFromPem(PemFile, PemFilePassword);
-                    _privateKeyBase64 = Convert.ToBase64String(encryptor.GetPrivateKeyBytes());
+                    _privateKey = encryptor.GetPrivateKeyBytes();
                 }
 
-                return _privateKeyBase64;
+                return _privateKey;
             }
         }
         
+        public string PrivateKeyBase64 => Convert.ToBase64String(PrivateKey);
+
         public List<ApplicationEntity> Applications { get; set; } = new();
         
         public string ApiToken { get; set; }
