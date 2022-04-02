@@ -2,10 +2,9 @@
 using System.Linq;
 using Fluxor;
 using OffLogs.Api.Common.Dto.Entities;
-using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Store.Log.Actions;
 
-namespace OffLogs.Web.Store.Log;
+namespace OffLogs.Web.Store.Log.Reducers;
 
 public class LogReducers
 {
@@ -62,6 +61,15 @@ public class LogReducers
     {
         var newState = state.Clone();
         newState.SelectedLog = newState.List.FirstOrDefault(log => log.Id == action.Id);
+        return newState;
+    }
+    
+    [ReducerMethod]
+    public static LogsListState ReduceSetListFilterAction(LogsListState state, SetListFilterAction action)
+    {
+        var newState = state.Clone();
+        newState.ApplicationId = action.ApplicationId;
+        newState.LogLevel = action.LogLevel;
         return newState;
     }
     #endregion

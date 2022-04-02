@@ -59,6 +59,7 @@
       <Folder Include="Pages\Dashboard\Settings\" />
       <Folder Include="Shared\Ui\Form\AutoComplete\" />
       <Folder Include="Store\Auth\Effects" />
+      <Folder Include="Store\Log\Models" />
     </ItemGroup>
 
     <ItemGroup>

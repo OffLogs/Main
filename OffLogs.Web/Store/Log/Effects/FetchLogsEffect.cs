@@ -36,8 +36,8 @@ public class FetchLogsEffect: Effect<FetchNextListPageAction>
             var response = await _apiService.GetLogsAsync(new GetListRequest
             {
                 Page = _state.Value.Page,
-                ApplicationId = pageAction.ApplicationId,
-                LogLevel = pageAction.LogLevel,
+                ApplicationId = _state.Value.ApplicationId,
+                LogLevel = _state.Value.LogLevel,
                 PrivateKeyBase64 = _authState.Value.PrivateKeyBase64
             });
             dispatcher.Dispatch(new FetchListResultAction(response));

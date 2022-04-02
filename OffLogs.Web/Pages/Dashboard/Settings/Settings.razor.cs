@@ -17,23 +17,8 @@ public partial class Settings
             new MenuItem()
             {
                 Id = "1",
-                Title = "Test 1",
-                SubMenuItems = new List<ListItem>()
-                {
-                    new ListItem()
-                    {
-                        Id = 11,
-                        Title = "SubmenuItem",
-                        RightTitle = "SubmenuItem right",
-                        SubTitle = "SubmenuTitle"
-                    }
-                }
+                Title = "Test 1"
             }
         );
-    }
-    
-    private void Callback(OnSelectEventArgs obj)
-    {
-        Debug.Log("1111111111111");
     }
 }

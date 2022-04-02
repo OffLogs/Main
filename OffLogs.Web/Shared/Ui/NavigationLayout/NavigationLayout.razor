@@ -11,9 +11,9 @@
             MenuItems="@MenuItems"
             SelectedItem="@_selectedMenuItem">
         </Menu>
-        @if (_selectedMenuItem != null && _selectedMenuItem.SubMenuItems.Any())
+        @if (ListItems != null)
         {
-            <List MenuItems="@_selectedMenuItem?.SubMenuItems" 
+            <List ListItems="@ListItems" 
                      SelectedItem="@_selectedListItem"
                      Buttons="@SubMenuButtons">
             </List>    
@@ -31,6 +31,9 @@
     
     [Parameter]
     public ICollection<MenuItem> MenuItems { get; set; } = new List<MenuItem>();
+    
+    [Parameter]
+    public ICollection<ListItem> ListItems { get; set; } = null;
 
     [Parameter]
     public ICollection<HeaderMenuButton> SubMenuButtons { get; set; } = new List<HeaderMenuButton>();
@@ -59,17 +62,13 @@
                 ListItem = _selectedListItem
             });
         });
+        StateHasChanged();
     }
 
     public void OnSelectInnerMenuItem(MenuItem menuItem)
     {
         _selectedListItem = null;
         _selectedMenuItem = menuItem;
-        if (!_selectedMenuItem.SubMenuItems.Any())
-        {
-            // If sub menu is empty
-            EmitOnSelect();
-        }
         
         InvokeAsync(async () => {
             await OnSelectMenuItem.InvokeAsync(new OnSelectEventArgs() {

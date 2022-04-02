@@ -59,9 +59,9 @@ public partial class Index
                 log => new ListItem()
                 {
                     Id = log.Id.ToString(),
-                    Title = log.Message.Truncate(32),
+                    SubTitle = log.Message.Truncate(32),
                     RightTitle = log.LogTime.ToString("MM/dd/yyyy hh:mm tt"),
-                    SubTitle = log.Level.GetLabel()
+                    Title = log.Level.GetLabel()
                 }
             ).ToList();
         }
@@ -78,33 +78,28 @@ public partial class Index
         Dispatcher.Dispatch(new OffLogs.Web.Store.Application.Actions.FetchNextListPageAction());
     }
 
-    private async Task LoadListAsync(bool isLoadNextPage = true)
+    private Task LoadListAsync(bool isLoadNextPage = true)
     {
         if (!isLoadNextPage)
         {
             Dispatcher.Dispatch(new ResetListAction()); 
         }
-        Dispatcher.Dispatch(new FetchNextListPageAction()
-        {
-            ApplicationId = _selectedApplicationId.Value,
-            LogLevel = _selectedLogLevel
-        });
-    }
-
-    private Task OnClickRowAsync(LogListItemDto log)
-    {
-        StateHasChanged();
+        Dispatcher.Dispatch(new FetchNextListPageAction());
         return Task.CompletedTask;
     }
 
-    private async Task OnMoreAsyncAsync()
+    private async Task OnApplicationSelected(OnSelectEventArgs menuEvent)
     {
-        await LoadListAsync();
+        _selectedApplicationId = long.Parse(menuEvent.MenuItem.Id);
+        Dispatcher.Dispatch(new SetListFilterAction(
+            _selectedApplicationId.Value,
+            _selectedLogLevel
+        ));
+        await LoadListAsync(false);
     }
 
     private async Task OnSelectedApplication(DropDownListItem selectListItem)
     {
-        _selectedApplicationId = selectListItem.IdAsLong;
         await LoadListAsync(false);
     }
 

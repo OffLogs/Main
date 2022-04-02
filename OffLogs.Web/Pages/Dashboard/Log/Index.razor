@@ -11,14 +11,12 @@
 <NavigationLayout
     MenuTitle="@LogResources.PageTitle"
     MenuItems="@_menuItems"
-    BodyButtons="@_buttons"
-    OnSelect="OnApplicationSelected"
+    ListItems="@_logsList"
+    BodyButtons="@_menuButtons"
+    OnSelectMenuItem="@OnApplicationSelected"
 >
     <BodyContent>
-        @if (State.Value.SelectedApplicationId != null)
-        {
-            <AppInfoBlock ApplicationId="@State.Value.SelectedApplicationId"/>
-        }
+        
     </BodyContent>
 </NavigationLayout>
 
@@ -40,44 +38,44 @@
     </div>
 }
 
-@foreach (var log in State.Value.List)
-{
-    <div class="accordion mb-1 w-log-block">
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button @onclick="@(() => ExpandOrCloseLog(log))"
-                        class="accordion-button ms-5 @(_expandedLogIds.Contains(@log.Id) ? "collapsed" : "")"
-                        type="button">
-
-                    @log.LogTime.ToFullDateTime()
-                    <Badge Color="@log.Level.GetBootstrapColorType()" Class="ms-2 me-2">
-                        @log.Level.GetLabel()
-                    </Badge>
-                    @log.Message.Truncate(128)
-                </button>
-                <div class="w-favorite-icon">
-                    <MyButton 
-                        IsOutlined="true" 
-                        IsSmall="true"
-                        OnClick="async () => await OnClickIsFavoriteAsync(log)"
-                    >
-                        <Icon 
-                            IconType="@(log.IsFavorite ? "favorite" : "favorite_border")"
-                        />
-                    </MyButton>
-                </div>
-            </h2>
-            <div class="accordion-collapse collapse @(_expandedLogIds.Contains(@log.Id) ? "show" : "")">
-                <div class="accordion-body">
-                    @if (_expandedLogIds.Contains(@log.Id))
-                    {
-                        <LogInfoBlock LogId="@log.Id" />
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-}
+@* @foreach (var log in State.Value.List) *@
+@* { *@
+@*     <div class="accordion mb-1 w-log-block"> *@
+@*         <div class="accordion-item"> *@
+@*             <h2 class="accordion-header"> *@
+@*                 <button @onclick="@(() => ExpandOrCloseLog(log))" *@
+@*                         class="accordion-button ms-5 @(_expandedLogIds.Contains(@log.Id) ? "collapsed" : "")" *@
+@*                         type="button"> *@
+@* *@
+@*                     @log.LogTime.ToFullDateTime() *@
+@*                     <Badge Color="@log.Level.GetBootstrapColorType()" Class="ms-2 me-2"> *@
+@*                         @log.Level.GetLabel() *@
+@*                     </Badge> *@
+@*                     @log.Message.Truncate(128) *@
+@*                 </button> *@
+@*                 <div class="w-favorite-icon"> *@
+@*                     <MyButton  *@
+@*                         IsOutlined="true"  *@
+@*                         IsSmall="true" *@
+@*                         OnClick="async () => await OnClickIsFavoriteAsync(log)" *@
+@*                     > *@
+@*                         <Icon  *@
+@*                             IconType="@(log.IsFavorite ? "favorite" : "favorite_border")" *@
+@*                         /> *@
+@*                     </MyButton> *@
+@*                 </div> *@
+@*             </h2> *@
+@*             <div class="accordion-collapse collapse @(_expandedLogIds.Contains(@log.Id) ? "show" : "")"> *@
+@*                 <div class="accordion-body"> *@
+@*                     @if (_expandedLogIds.Contains(@log.Id)) *@
+@*                     { *@
+@*                         <LogInfoBlock LogId="@log.Id" /> *@
+@*                     } *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+@* } *@
 
 @if (State.Value.List.Count == 0 && !State.Value.IsLoadingList)
 {

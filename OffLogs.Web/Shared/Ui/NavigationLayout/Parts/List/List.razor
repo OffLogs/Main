@@ -37,7 +37,7 @@
     public ListItem SelectedItem { get; set; }
 
     [Parameter]
-    public List<ListItem> ListItems { get; set; }
+    public ICollection<ListItem> ListItems { get; set; }
 
     [Parameter]
     public ICollection<HeaderMenuButton> Buttons { get; set; } = new List<HeaderMenuButton>();
