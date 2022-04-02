@@ -11,7 +11,7 @@
                 {
                     <li 
                         @onclick="@(() => OnSelectMenuItem(listItem))" 
-                        class="@(IsSelected(listItem) ? "w-selected" : "")"
+                        class="@GetItemClass(listItem)"
                     >
                         <span class="w-title">
                             @listItem.Title
@@ -79,7 +79,7 @@
         return Task.CompletedTask;
     }
 
-    public void OnSelectMenuItem(ListItem menuItem)
+    private void OnSelectMenuItem(ListItem menuItem)
     {
         if (IsReadOnly)
         {
@@ -88,9 +88,18 @@
         Layout.OnSelectInnerListItem(menuItem);
     }
 
-    public bool IsSelected(ListItem menuItem)
+    private string GetItemClass(ListItem menuItem)
     {
-        return SelectedItem?.Id == menuItem.Id;
+        var classes = "";
+        var isSelected = SelectedItem?.Id == menuItem.Id;
+        classes += isSelected ? "w-selected" : "";
+
+        if (menuItem.BgColorType != null)
+        {
+            classes += $" bg-{menuItem.BgColorType.Value.GetBadgeClass()}";
+        }
+
+        return classes;
     }
 
     private void OnClickMore()

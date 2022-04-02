@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Extensions;
+using OffLogs.Web.Extensions;
 using OffLogs.Web.Resources;
 using OffLogs.Web.Services.Http;
 using OffLogs.Web.Shared.Ui.Form.CustomDropDown;
@@ -59,7 +60,8 @@ public partial class Index
                     Id = log.Id.ToString(),
                     SubTitle = log.Message.Truncate(32),
                     RightTitle = log.LogTime.ToString("MM/dd/yyyy hh:mm tt"),
-                    Title = log.Level.GetLabel()
+                    Title = log.Level.GetLabel(),
+                    BgColorType = log.Level.GetBootstrapColorType()
                 }
             ).ToList();
         }
