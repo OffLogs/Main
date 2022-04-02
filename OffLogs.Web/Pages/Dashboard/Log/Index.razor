@@ -30,7 +30,7 @@
         <div class="accordion-item">
             <h2 class="accordion-header">
                 <button @onclick="@(() => ExpandOrCloseLog(log))"
-                        class="accordion-button ms-4 @(_expandedLogIds.Contains(@log.Id) ? "collapsed" : "")"
+                        class="accordion-button ms-5 @(_expandedLogIds.Contains(@log.Id) ? "collapsed" : "")"
                         type="button">
 
                     @log.LogTime.ToFullDateTime()
@@ -39,12 +39,17 @@
                     </Badge>
                     @log.Message.Truncate(128)
                 </button>
-                @if (log.IsFavorite)
-                {
-                    <div class="w-favorite-icon">
-                        <Icon IconType="favorite" Class="fs-6" />
-                    </div>
-                }
+                <div class="w-favorite-icon">
+                    <MyButton 
+                        IsOutlined="true" 
+                        IsSmall="true"
+                        OnClick="async () => await OnClickIsFavoriteAsync(log)"
+                    >
+                        <Icon 
+                            IconType="@(log.IsFavorite ? "favorite" : "favorite_border")"
+                        />
+                    </MyButton>
+                </div>
             </h2>
             <div class="accordion-collapse collapse @(_expandedLogIds.Contains(@log.Id) ? "show" : "")">
                 <div class="accordion-body">

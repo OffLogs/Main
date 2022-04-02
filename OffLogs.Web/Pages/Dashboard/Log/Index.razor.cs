@@ -49,7 +49,7 @@ public partial class Index
     {
         if (!isLoadNextPage)
         {
-               Dispatcher.Dispatch(new ResetListAction()); 
+            Dispatcher.Dispatch(new ResetListAction()); 
         }
         Dispatcher.Dispatch(new FetchNextListPageAction()
         {
@@ -118,5 +118,11 @@ public partial class Index
         StateHasChanged();
         await LoadListAsync(false);
     }    
+    
+    private Task OnClickIsFavoriteAsync(LogListItemDto log)
+    {
+        Dispatcher.Dispatch(new SetIsLogFavoriteAction(log.Id, !log.IsFavorite));
+        return Task.CompletedTask;
+    }
 }
 

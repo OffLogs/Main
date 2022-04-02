@@ -40,9 +40,9 @@ namespace OffLogs.Web.Services.Http
             return response;
         }
 
-        public async Task<bool> LogSetIsFavoriteAsync(long logId, bool isFavorite)
+        public async Task LogSetIsFavoriteAsync(long logId, bool isFavorite)
         {
-            var response = await PostAuthorizedAsync<bool>(
+            await PostAuthorizedAsync(
                 MainApiUrl.LogSetIsFavorite,
                 new SetIsFavoriteRequest()
                 {
@@ -50,7 +50,6 @@ namespace OffLogs.Web.Services.Http
                     IsFavorite = isFavorite
                 }
             );
-            return response;
         }
 
         public async Task<LogStatisticForNowDto> LogGetStatisticForNowAsync(long? applicationId = null)

@@ -16,16 +16,6 @@
 }
 else
 {
-    <MyButton 
-        IsOutlined="true" 
-        IsSmall="true"
-        OnClick="OnClickIsFavoriteAsync"
-    >
-        <Icon 
-            IconType="@(_log.IsFavorite ? "favorite" : "favorite_border")"
-        />
-    </MyButton>
-    <hr/>
     <div>
         <b>Time:</b> @_log.LogTime.ToFullDateTime()
     </div>
@@ -74,16 +64,5 @@ else
         }
         Dispatcher.Dispatch(new FetchLogAction(LogId));
         return Task.CompletedTask;
-    }
-
-    private async Task OnClickIsFavoriteAsync()
-    {
-        _log.IsFavorite = !_log.IsFavorite;
-        if (_log.IsFavorite)
-        {
-            _toastService.AddInfoMessage("The log marked as favorite");
-        }
-        await _apiService.LogSetIsFavoriteAsync(_log.Id, _log.IsFavorite);
-        StateHasChanged();
     }
 }

@@ -27,7 +27,7 @@ namespace OffLogs.Web.Services.Http
 
         #region Log
         Task<LogDto> GetLogAsync(long logId, string privateKeyBase64);
-        Task<bool> LogSetIsFavoriteAsync(long logId, bool isFavorite);
+        Task LogSetIsFavoriteAsync(long logId, bool isFavorite);
         Task<LogStatisticForNowDto> LogGetStatisticForNowAsync(long? applicationId = null);
         Task<PaginatedListDto<LogListItemDto>> GetLogsAsync(Api.Common.Dto.RequestsAndResponses.Board.Log.GetListRequest request);
         #endregion
