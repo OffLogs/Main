@@ -66,6 +66,7 @@
   color: #737677;
   font-size: 80%;
   cursor: pointer;
+  user-select: none;
 }
 .w-list-container .w-list-paginator .w-paginator-btn:hover {
   color: black;

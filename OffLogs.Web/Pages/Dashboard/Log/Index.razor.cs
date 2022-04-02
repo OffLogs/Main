@@ -28,8 +28,6 @@ public partial class Index
     [Inject]
     private IState<ApplicationsListState> ApplicationsState { get; set; }
     
-    private CustomAsyncDropDown _dropDownApplications;
-    private List<long> _expandedLogIds = new();
     private bool _isShowStatistic = false;
     
     private long? _selectedApplicationId;
@@ -103,6 +101,14 @@ public partial class Index
         await LoadListAsync(false);
     }
 
+    private async Task OnSelectLogAsync(OnSelectEventArgs menuEvent)
+    {
+        Dispatcher.Dispatch(new SelectLogAction(
+            long.Parse(menuEvent.ListItem.Id)    
+        ));
+        await Task.CompletedTask;
+    }
+    
     private async Task<ICollection<DropDownListItem>> OnLoadApplicationsAsync()
     {
         try
@@ -121,30 +127,6 @@ public partial class Index
         StateHasChanged();
         return default;
     }
-
-    private void ExpandOrCloseLog(LogListItemDto log)
-    {
-        if (_expandedLogIds.Contains(log.Id))
-        {
-            _expandedLogIds.Remove(log.Id);
-        }
-        else
-        {
-            _expandedLogIds.Add(log.Id);
-        }
-        StateHasChanged();
-    }
-
-    private async Task OnSelectLogLevelAsync(LogLevel level)
-    {
-        _selectedLogLevel = null;
-        if (level != default)
-        {
-            _selectedLogLevel = level;
-        }
-        StateHasChanged();
-        await LoadListAsync(false);
-    }    
     
     private Task OnClickIsFavoriteAsync(LogListItemDto log)
     {
