@@ -6,10 +6,12 @@ using Fluxor;
 using Microsoft.AspNetCore.Components;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Business.Common.Constants;
-using OffLogs.Web.Services;
+using OffLogs.Business.Common.Extensions;
+using OffLogs.Web.Resources;
 using OffLogs.Web.Services.Http;
 using OffLogs.Web.Shared.Ui.Form.CustomDropDown;
-using OffLogs.Web.Shared.Ui.Table;
+using OffLogs.Web.Shared.Ui.NavigationLayout.Models;
+using OffLogs.Web.Store.Application;
 using OffLogs.Web.Store.Log;
 using OffLogs.Web.Store.Log.Actions;
 
@@ -18,31 +20,62 @@ namespace OffLogs.Web.Pages.Dashboard.Log;
 public partial class Index
 {
     [Inject]
-    private IApiService _apiService { get; set; }
+    private IApiService ApiService { get; set; }
+
+    [Inject]
+    private IState<LogsListState> State { get; set; }
     
     [Inject]
-    private ToastService _toastService { get; set; }
-    
-    [Inject]
-    private IState<LogsListState> _logListState { get; set; }
+    private IState<ApplicationsListState> ApplicationsState { get; set; }
     
     private CustomAsyncDropDown _dropDownApplications;
-    private LogListItemDto _selectedLog = null;
     private List<long> _expandedLogIds = new();
-
+    private bool _isShowStatistic = false;
+    
     private long? _selectedApplicationId;
     private LogLevel? _selectedLogLevel;
 
-    private ICollection<CustomTableRowModel> _tableCols = new List<CustomTableRowModel>()
-    {
-        new(){ Name = "Message" },
-        new(){ Name = "Log time" },
-        new(){ Name = "Create time" }
-    };
+    private ICollection<HeaderMenuButton> _menuButtons = new List<HeaderMenuButton>();
 
+    private ICollection<MenuItem> _menuItems
+    {
+        get
+        {
+            return ApplicationsState.Value.List.Select(
+                application => new MenuItem()
+                {
+                    Id = application.Id.ToString(),
+                    Title = application.Name
+                }
+            ).ToList();
+        }
+    }
+    
+    private ICollection<ListItem> _logsList
+    {
+        get
+        {
+            return State.Value.List.Select(
+                log => new ListItem()
+                {
+                    Id = log.Id.ToString(),
+                    Title = log.Message.Truncate(32),
+                    RightTitle = log.LogTime.ToString("MM/dd/yyyy hh:mm tt"),
+                    SubTitle = log.Level.GetLabel()
+                }
+            ).ToList();
+        }
+    }
+    
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        
+        _menuButtons.Add(
+            new(LogResources.ShowStatistic, "chart-arrows-axis", () => _isShowStatistic = true)    
+        );
+        
+        Dispatcher.Dispatch(new OffLogs.Web.Store.Application.Actions.FetchNextListPageAction());
     }
 
     private async Task LoadListAsync(bool isLoadNextPage = true)
@@ -60,7 +93,6 @@ public partial class Index
 
     private Task OnClickRowAsync(LogListItemDto log)
     {
-        _selectedLog = log;
         StateHasChanged();
         return Task.CompletedTask;
     }
@@ -80,7 +112,7 @@ public partial class Index
     {
         try
         {
-            var response = await _apiService.GetApplicationsAsync();
+            var response = await ApiService.GetApplicationsAsync();
             return response.Items.Select(record => new DropDownListItem()
             {
                 Id = $"{record.Id}",

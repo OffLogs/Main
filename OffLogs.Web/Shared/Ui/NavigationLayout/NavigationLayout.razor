@@ -2,7 +2,7 @@
 @using OffLogs.Web.Shared.Ui.NavigationLayout.Models
 @using OffLogs.Web.Shared.Ui.NavigationLayout.Parts.Body
 @using OffLogs.Web.Shared.Ui.NavigationLayout.Parts.Menu
-@using OffLogs.Web.Shared.Ui.NavigationLayout.Parts.SubMenu
+@using OffLogs.Web.Shared.Ui.NavigationLayout.Parts.List
 
 <div class="w-navigation-layout">
     <CascadingValue Value="this" Name="layout">
@@ -13,10 +13,10 @@
         </Menu>
         @if (_selectedMenuItem != null && _selectedMenuItem.SubMenuItems.Any())
         {
-            <SubMenu MenuItems="@_selectedMenuItem?.SubMenuItems" 
-                     SelectedItem="@_selectedSubMenuItem"
+            <List MenuItems="@_selectedMenuItem?.SubMenuItems" 
+                     SelectedItem="@_selectedListItem"
                      Buttons="@SubMenuButtons">
-            </SubMenu>    
+            </List>    
         }
         <Body Buttons="@BodyButtons">
             @BodyContent
@@ -36,8 +36,11 @@
     public ICollection<HeaderMenuButton> SubMenuButtons { get; set; } = new List<HeaderMenuButton>();
 
     [Parameter]
-    public EventCallback<OnSelectEventArgs> OnSelect { get; set; }
+    public EventCallback<OnSelectEventArgs> OnSelectMenuItem { get; set; }
 
+    [Parameter]
+    public EventCallback<OnSelectEventArgs> OnSelectListItem { get; set; }
+    
     [Parameter]
     public RenderFragment BodyContent { get; set; }
 
@@ -45,33 +48,45 @@
     public ICollection<HeaderMenuButton> BodyButtons { get; set; } = new List<HeaderMenuButton>();
 
     private MenuItem _selectedMenuItem;
-    private SubMenuItem _selectedSubMenuItem;
+    private ListItem _selectedListItem;
 
-    public void OnSelectMenuItem(MenuItem menuItem)
+    public void OnSelectInnerListItem(ListItem listItem)
     {
-        _selectedSubMenuItem = null;
+        _selectedListItem = listItem;
+        InvokeAsync(async () => {
+            await OnSelectListItem.InvokeAsync(new OnSelectEventArgs() {
+                MenuItem = _selectedMenuItem,
+                ListItem = _selectedListItem
+            });
+        });
+    }
+
+    public void OnSelectInnerMenuItem(MenuItem menuItem)
+    {
+        _selectedListItem = null;
         _selectedMenuItem = menuItem;
         if (!_selectedMenuItem.SubMenuItems.Any())
         {
             // If sub menu is empty
             EmitOnSelect();
         }
+        
+        InvokeAsync(async () => {
+            await OnSelectMenuItem.InvokeAsync(new OnSelectEventArgs() {
+                MenuItem = _selectedMenuItem,
+                ListItem = _selectedListItem
+            });
+        });
+        
         StateHasChanged();
-    }
-
-    public void OnSelectSubMenuItem(SubMenuItem menuItem)
-    {
-        _selectedSubMenuItem = menuItem;
-        StateHasChanged();
-        EmitOnSelect();
     }
 
     private void EmitOnSelect()
     {
         InvokeAsync(async () => {
-            await OnSelect.InvokeAsync(new OnSelectEventArgs() {
+            await OnSelectMenuItem.InvokeAsync(new OnSelectEventArgs() {
                 MenuItem = _selectedMenuItem,
-                SubMenuItem = _selectedSubMenuItem
+                ListItem = _selectedListItem
             });
         });
     }

@@ -4,22 +4,22 @@
     <Header Buttons="@Buttons"/>
     <div class="w-sub-menu">
         <ul>
-            @if (MenuItems != null)
+            @if (ListItems != null)
             {
-                @foreach (var menuItem in MenuItems)
+                @foreach (var listItem in ListItems)
                 {
                     <li 
-                        @onclick="@(() => OnSelectMenuItem(menuItem))" 
-                        class="@(IsSelected(menuItem) ? "w-selected" : "")"
+                        @onclick="@(() => OnSelectMenuItem(listItem))" 
+                        class="@(IsSelected(listItem) ? "w-selected" : "")"
                     >
                         <span class="w-title">
-                            @menuItem.Title
+                            @listItem.Title
                         </span>
                         <span class="w-title-2">
-                            @menuItem.RightTitle
+                            @listItem.RightTitle
                         </span>
                         <span class="w-sub-title">
-                            @menuItem.SubTitle
+                            @listItem.SubTitle
                         </span>
                     </li>
                 }    
@@ -34,10 +34,10 @@
     public NavigationLayout Layout { get; set; }
 
     [Parameter]
-    public SubMenuItem SelectedItem { get; set; }
+    public ListItem SelectedItem { get; set; }
 
     [Parameter]
-    public List<SubMenuItem> MenuItems { get; set; }
+    public List<ListItem> ListItems { get; set; }
 
     [Parameter]
     public ICollection<HeaderMenuButton> Buttons { get; set; } = new List<HeaderMenuButton>();
@@ -50,12 +50,12 @@
         return Task.CompletedTask;
     }
 
-    public void OnSelectMenuItem(SubMenuItem menuItem)
+    public void OnSelectMenuItem(ListItem menuItem)
     {
-        Layout.OnSelectSubMenuItem(menuItem);
+        Layout.OnSelectInnerListItem(menuItem);
     }
 
-    public bool IsSelected(SubMenuItem menuItem)
+    public bool IsSelected(ListItem menuItem)
     {
         return SelectedItem?.Id == menuItem.Id;
     }

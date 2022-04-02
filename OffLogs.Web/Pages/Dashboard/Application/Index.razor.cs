@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using OffLogs.Api.Common.Dto.Entities;
-using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Resources;
 using OffLogs.Web.Services.Http;
 using OffLogs.Web.Shared.Ui.NavigationLayout.Models;
@@ -20,12 +19,11 @@ public partial class Index
     private IApiService ApiService { get; set; }
 
     [Inject]
-    private IState<ApplicationsListState> ApplicationsState { get; set; }
+    private IState<ApplicationsListState> State { get; set; }
 
     private bool _isShowAddModal = false;
     
-    private ApplicationListItemDto _applicationForDeletion = null;
-    private ApplicationListItemDto _applicationForSharing = null;
+    private bool _isShowDeleteModal = false;
 
     private ICollection<HeaderMenuButton> _buttons = new List<HeaderMenuButton>();
 
@@ -33,7 +31,7 @@ public partial class Index
     {
         get
         {
-            return ApplicationsState.Value.Applications.Select(
+            return State.Value.List.Select(
                 application => new MenuItem()
                 {
                     Id = application.Id.ToString(),
@@ -50,15 +48,11 @@ public partial class Index
         _buttons.Add(
             new HeaderMenuButton(ApplicationResources.AddApplication, "plus-square", () => _isShowAddModal = true)
         );
-        
-        ApplicationsState.StateChanged += OnStateChanged;
+        _buttons.Add(
+            new HeaderMenuButton(ApplicationResources.DeleteApplication, "basket", OnDeleteApplicationClick)
+        );
         
         await LoadListAsync(false);
-    }
-
-    private void OnStateChanged(object? sender, EventArgs e)
-    {
-        
     }
 
     private Task LoadListAsync(bool isLoadNextPage = true)
@@ -69,16 +63,6 @@ public partial class Index
         }
         Dispatcher.Dispatch(new FetchNextListPageAction());
         return Task.CompletedTask;
-    }
-
-    private async Task OnClickRowAsync(ApplicationListItemDto application)
-    {
-        await Task.CompletedTask;
-    }
-
-    private void OnCloseInfoModal()
-    {
-        Dispatcher.Dispatch(new SelectApplicationAction(null));
     }
 
     private Task OnApplicationAdded(ApplicationDto application)
@@ -93,21 +77,34 @@ public partial class Index
         return Task.CompletedTask;
     }
 
+    private void OnDeleteApplicationClick()
+    {
+        if (!State.Value.SelectedApplicationId.HasValue)
+        {
+            ToastService.AddInfoMessage(ApplicationResources.SelectApplication);
+            return;
+        }
+        _isShowDeleteModal = true;
+    }
+    
     private async Task OnDeleteAppAsync()
     {
-        _applicationForDeletion = _applicationForDeletion 
-                                  ?? throw new ArgumentNullException(nameof(_applicationForDeletion));
-        var applicationId = _applicationForDeletion.Id;
-        _applicationForDeletion = null;
-        Dispatcher.Dispatch(new DeleteApplicationAction(applicationId));
+        Dispatcher.Dispatch(new DeleteApplicationAction(
+            State.Value.SelectedApplicationId.Value    
+        ));
+        _isShowDeleteModal = false;
         await Task.CompletedTask;
     }
     
     private void OnApplicationSelected(OnSelectEventArgs menuEvent)
     {
-        Debug.Log($"111", menuEvent);
         Dispatcher.Dispatch(new SelectApplicationAction(
             long.Parse(menuEvent.MenuItem.Id)
         ));
+    }
+    
+    private void OnCloseAddModal()
+    {
+        _isShowAddModal = false;
     }
 }

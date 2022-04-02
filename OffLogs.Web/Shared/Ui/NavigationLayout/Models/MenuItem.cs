@@ -7,6 +7,6 @@ namespace OffLogs.Web.Shared.Ui.NavigationLayout.Models
         public string Id { get; set; }
         public string Title { get; set; }
         public string Icon { get; set; }
-        public List<SubMenuItem> SubMenuItems { get; set; } = new List<SubMenuItem>();
+        public List<ListItem> SubMenuItems { get; set; } = new List<ListItem>();
     }
 }

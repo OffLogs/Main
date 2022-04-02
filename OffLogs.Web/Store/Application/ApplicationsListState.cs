@@ -13,7 +13,7 @@ public class ApplicationsListState
     
     public bool HasMoreItems { get; set; }
 
-    public ICollection<ApplicationListItemDto> Applications { get; set; } = new List<ApplicationListItemDto>();
+    public ICollection<ApplicationListItemDto> List { get; set; } = new List<ApplicationListItemDto>();
 
     public long? SelectedApplicationId  { get; set; }
     

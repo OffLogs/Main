@@ -18,9 +18,9 @@ public partial class Settings
             {
                 Id = "1",
                 Title = "Test 1",
-                SubMenuItems = new List<SubMenuItem>()
+                SubMenuItems = new List<ListItem>()
                 {
-                    new SubMenuItem()
+                    new ListItem()
                     {
                         Id = 11,
                         Title = "SubmenuItem",

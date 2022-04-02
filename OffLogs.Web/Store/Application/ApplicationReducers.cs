@@ -22,7 +22,7 @@ public class ApplicationReducers
         var newState = state.JsonClone<ApplicationsListState>();
         newState.IsLoading = false;
         newState.Page = 0;
-        newState.Applications.Clear();
+        newState.List.Clear();
         return newState;
     }
     
@@ -32,7 +32,7 @@ public class ApplicationReducers
         var newState = state.JsonClone<ApplicationsListState>();
         newState.IsLoading = false;
         newState.HasMoreItems = action.IsHasMore;
-        newState.Applications = state.Applications.Concat(action.Items).ToList();
+        newState.List = state.List.Concat(action.Items).ToList();
         return newState;
     }
     
@@ -40,9 +40,10 @@ public class ApplicationReducers
     public static ApplicationsListState ReduceRemoveApplicationFromListAction(ApplicationsListState state, RemoveApplicationFromListAction action)
     {
         var newState = state.JsonClone<ApplicationsListState>();
-        newState.Applications = state.Applications.Where(
+        newState.List = state.List.Where(
             i => i.Id != action.Id
         ).ToList();
+        newState.SelectedApplicationId = null;
         return newState;
     }
     
@@ -50,7 +51,7 @@ public class ApplicationReducers
     public static ApplicationsListState ReduceAddApplicationActionAction(ApplicationsListState state, AddApplicationAction action)
     {
         var newState = state.JsonClone<ApplicationsListState>();
-        newState.Applications.Add(action.Application);
+        newState.List.Add(action.Application);
         return newState;
     }
     

@@ -27,6 +27,7 @@ public class LogReducers
         newState.IsLoadingList = false;
         newState.Page = 0;
         newState.List = new List<LogListItemDto>();
+        newState.SelectedLog = null;
         return newState;
     }
     
@@ -56,6 +57,13 @@ public class LogReducers
         return newState;
     }
     
+    [ReducerMethod]
+    public static LogsListState ReduceSelectLogAction(LogsListState state, SelectLogAction action)
+    {
+        var newState = state.Clone();
+        newState.SelectedLog = newState.List.FirstOrDefault(log => log.Id == action.Id);
+        return newState;
+    }
     #endregion
     
     #region LogDetails

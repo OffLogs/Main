@@ -27,6 +27,15 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>ApplicationResources.resx</DependentUpon>
       </Compile>
+      <EmbeddedResource Update="Resources\LogResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>LogResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <Compile Update="Resources\LogResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>LogResources.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

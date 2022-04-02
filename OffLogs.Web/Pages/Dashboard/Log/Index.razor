@@ -3,8 +3,24 @@
 @using OffLogs.Web.Pages.Dashboard.Log.Parts
 @using OffLogs.Business.Common.Constants
 @using OffLogs.Business.Common.Extensions
+@using OffLogs.Web.Resources
+@using OffLogs.Web.Shared.Ui.NavigationLayout
 
 @inherits BaseComponent
+
+<NavigationLayout
+    MenuTitle="@LogResources.PageTitle"
+    MenuItems="@_menuItems"
+    BodyButtons="@_buttons"
+    OnSelect="OnApplicationSelected"
+>
+    <BodyContent>
+        @if (State.Value.SelectedApplicationId != null)
+        {
+            <AppInfoBlock ApplicationId="@State.Value.SelectedApplicationId"/>
+        }
+    </BodyContent>
+</NavigationLayout>
 
 <h1>Logs</h1>
 
@@ -24,7 +40,7 @@
     </div>
 }
 
-@foreach (var log in _logListState.Value.List)
+@foreach (var log in State.Value.List)
 {
     <div class="accordion mb-1 w-log-block">
         <div class="accordion-item">
@@ -63,18 +79,18 @@
     </div>
 }
 
-@if (_logListState.Value.List.Count == 0 && !_logListState.Value.IsLoadingList)
+@if (State.Value.List.Count == 0 && !State.Value.IsLoadingList)
 {
     <Alert Type="BootstrapColorType.Info">List is empty...</Alert>
 }
 
 <div class="mt-3 mb-5">
-    @if (_logListState.Value.IsLoadingList)
+    @if (State.Value.IsLoadingList)
     {
         <Preloader />
     }
 
-    @if (_logListState.Value.HasMoreItems && !_logListState.Value.IsLoadingList)
+    @if (State.Value.HasMoreItems && !State.Value.IsLoadingList)
     {
         <div class="text-center">
             <MyButton OnClick="@(async () => await LoadListAsync())">
@@ -84,4 +100,4 @@
     }
 </div>
 
-<LogInfoModal IsShowAddModal="@(_selectedLog != null)" LogId="@_selectedLog?.Id" />
+@* <LogInfoModal IsShowAddModal="@(_selectedLog != null)" LogId="@_selectedLog?.Id" /> *@

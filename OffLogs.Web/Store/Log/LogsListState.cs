@@ -17,6 +17,8 @@ public class LogsListState
 
     public ICollection<LogListItemDto> List { get; set; } = new List<LogListItemDto>();
     
+    public LogListItemDto SelectedLog { get; set; }
+    
     public ICollection<LogDto> LogsDetails { get; set; } = new List<LogDto>();
 
     public LogsListState() { }
@@ -24,21 +26,6 @@ public class LogsListState
     public LogsListState(ICollection<LogListItemDto> list)
     {
         List = list;
-    }
-    
-    public LogsListState(
-        bool isLoadingList,
-        int page,
-        ICollection<LogListItemDto> list,
-        bool hasMoreItems,
-        ICollection<LogDto> logsDetails
-    )
-    {
-        IsLoadingList = isLoadingList;
-        List = list;
-        Page = page;
-        HasMoreItems = hasMoreItems;
-        LogsDetails = logsDetails;
     }
 
     public LogsListState Clone()

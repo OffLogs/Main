@@ -40,6 +40,9 @@
     public EventCallback<ApplicationDto> OnAdded { get; set; }
 
     [Parameter]
+    public EventCallback OnClose { get; set; }
+    
+    [Parameter]
     public bool IsShowAddModal { get; set; } = false;
     
     private AddRequest _model = new();
@@ -65,7 +68,7 @@
         _modalButtons.Add(saveBtnModel);
         _modalButtons.Add(new (
             "Cancel",
-            null,
+            OnCloseAction,
             BootstrapColorType.Light
         ));
     }
@@ -80,6 +83,7 @@
             {
                 var application = await _apiService.AddApplicationAsync(_model.Name);
                 await OnAdded.InvokeAsync(application);
+                OnCloseAction();
                 IsShowAddModal = false;
                 _toastService.AddInfoMessage("New application was added");
             }
@@ -98,5 +102,10 @@
     private void OnAddAction()
     {
         _editForm.ClickAsync().Wait();
+    }
+    
+    private void OnCloseAction()
+    {
+        InvokeAsync(async () => await OnClose.InvokeAsync());
     }
 }

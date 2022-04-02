@@ -22,14 +22,14 @@ namespace OffLogs.Web.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ApplicationResources {
+    internal class LogResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ApplicationResources() {
+        internal LogResources() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace OffLogs.Web.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OffLogs.Web.Resources.ApplicationResources", typeof(ApplicationResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OffLogs.Web.Resources.LogResources", typeof(LogResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,56 +61,20 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add new.
+        ///   Looks up a localized string similar to Discover logs.
         /// </summary>
-        internal static string AddApplication {
+        internal static string PageTitle {
             get {
-                return ResourceManager.GetString("AddApplication", resourceCulture);
+                return ResourceManager.GetString("PageTitle", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The application was not deleted.
+        ///   Looks up a localized string similar to Show statistic.
         /// </summary>
-        internal static string ApplicationDeletionError {
+        internal static string ShowStatistic {
             get {
-                return ResourceManager.GetString("ApplicationDeletionError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The application has been deleted.
-        /// </summary>
-        internal static string ApplicationIsDeleted {
-            get {
-                return ResourceManager.GetString("ApplicationIsDeleted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Delete.
-        /// </summary>
-        internal static string DeleteApplication {
-            get {
-                return ResourceManager.GetString("DeleteApplication", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to My Applications.
-        /// </summary>
-        internal static string PageTitle_Applications {
-            get {
-                return ResourceManager.GetString("PageTitle_Applications", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please select application.
-        /// </summary>
-        internal static string SelectApplication {
-            get {
-                return ResourceManager.GetString("SelectApplication", resourceCulture);
+                return ResourceManager.GetString("ShowStatistic", resourceCulture);
             }
         }
     }
