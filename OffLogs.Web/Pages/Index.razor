@@ -1,11 +1,9 @@
 ﻿@page "/"
 @inherits OffLogs.Web.Core.Components.BaseComponent
 
-<h1 class="w-test">
+<div class="w-test">
     <NavLink href="@SiteUrl.Dashboard">Dashboard</NavLink>
-    <NavLink href="@SiteUrl.DashboardSettings">Settings</NavLink>
-</h1>
+    <NavLink href="@SiteUrl.Registration_Step1">Registration</NavLink>
+</div>
 
 <button @onclick="@(async () => await TestMessage())">Test</button>
-
-Welcome to your new app.
