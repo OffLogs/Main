@@ -1,0 +1,21 @@
+﻿@page "/documentation"
+@using OffLogs.Web.Resources
+
+<NavigationLayout
+    MenuTitle="@DocResources.PageTitle"
+    MenuItems="@_menuItems"
+    ListItems="@_logsList"
+    BodyButtons="@_menuButtons"
+    OnSelectMenuItem="@OnApplicationSelected"
+    OnSelectListItem="async (menuEvent) => await OnSelectLogAsync(menuEvent)"
+    IsShowMoreBtn="@State.Value.HasMoreItems"
+    OnClickMoreBtn="async () => await OnClickMoreBtnAsync()"
+    IsReadOnly="@State.Value.IsLoadingList"
+>
+    <BodyContent>
+        @if (State.Value.SelectedLog != null)
+        {
+            <LogInfoBlock LogId="@State.Value.SelectedLog.Id"/>    
+        }
+    </BodyContent>
+</NavigationLayout>

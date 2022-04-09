@@ -36,6 +36,15 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>LogResources.resx</DependentUpon>
       </Compile>
+      <EmbeddedResource Update="Resources\DocResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>DocResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <Compile Update="Resources\DocResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>DocResources.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
