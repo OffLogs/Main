@@ -12,8 +12,6 @@ Debug: D
 
 Timestamp: ISO 8601
 
-
-
 ```json
 {
     "logs": [

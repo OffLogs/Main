@@ -57,7 +57,10 @@ public partial class MainLayout: IDisposable
         get
         {
             var path = NavigationManager.GetPath();
-            return path.Equals("/") || path.StartsWith("/login") || path.StartsWith("/registration");
+            return path.Equals("/") 
+                   || path.StartsWith("/login")
+                   || path.StartsWith("/registration")
+                   || path.StartsWith("/documentation");
         }
     }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Globalization;
 using Blazored.LocalStorage;
 using Fluxor;
 using Majorsoft.Blazor.WebAssembly.Logging.Console;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using OffLogs.Web.Services;
 using OffLogs.Web.Services.Events;
 using OffLogs.Web.Services.Http;
+using OffLogs.Web.Services.i18;
 using OffLogs.Web.Services.IO;
 using OffLogs.Web.Services.Validation;
 
@@ -42,7 +44,14 @@ namespace OffLogs.Web
                 .SetMinimumLevel(LogLevel.Debug) //Setting LogLevel is optional
                 .AddFilter("Microsoft", LogLevel.Information); //System logs can be filtered.
 #endif
-            await builder.Build().RunAsync();
+            
+            var host = builder.Build();
+            
+            // Set localization
+            var localizationService = host.Services.GetRequiredService<ILocalizationService>();
+            await localizationService.PreConfigureFromLocalStorageAsync();
+            
+            await host.RunAsync();
         }
 
         private static void InitServices(WebAssemblyHostBuilder builder)
@@ -58,6 +67,8 @@ namespace OffLogs.Web
             builder.Services.AddBlazoredLocalStorage();
 
             // Custom services
+            builder.Services.AddLocalization();
+            builder.Services.AddScoped<ILocalizationService, LocalizationService>();
             builder.Services.AddScoped<IGlobalEventsService, GlobalEventsService>();
             builder.Services.AddScoped<IApiService, ApiService>();
             builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();

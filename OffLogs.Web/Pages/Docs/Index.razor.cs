@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using OffLogs.Web.Core.Helpers;
@@ -27,19 +28,17 @@ public partial class Index
         await base.OnInitializedAsync();
         
         _menuItems.Add(_menuItemCommon);
-        _documentsList.Add(
-            new ListItem
-            {
-                Id = "1_1_common",
-                Title = "Item1",
-                SubTitle = "ItemsSub"
-            }
-        );
+        SetDocumentsList(_menuItems.First());
     }
 
     private void OnMenuItemSelected(OnSelectEventArgs item)
     {
-        if (item.MenuItem == _menuItemCommon)
+        SetDocumentsList(item.MenuItem);
+    }
+
+    private void SetDocumentsList(MenuItem menuItem)
+    {
+        if (menuItem == _menuItemCommon)
         {
             _documentsList = new List<ListItem>()
             {
@@ -55,8 +54,10 @@ public partial class Index
                 }
             };
         }
-
-        throw new System.NotImplementedException();
+        else
+        {
+            _documentsList = new List<ListItem>();
+        }
     }
 
     private async Task OnSelectPageAsync(OnSelectEventArgs menuEvent)
