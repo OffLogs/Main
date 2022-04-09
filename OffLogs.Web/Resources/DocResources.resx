@@ -21,4 +21,7 @@
     <data name="PageTitle" xml:space="preserve">
         <value>OffLogs Documentation</value>
     </data>
+    <data name="MenuItem_Common" xml:space="preserve">
+        <value>Common info</value>
+    </data>
 </root>

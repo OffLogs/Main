@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using OffLogs.Web.Services;
 using OffLogs.Web.Services.Events;
 using OffLogs.Web.Services.Http;
+using OffLogs.Web.Services.IO;
 using OffLogs.Web.Services.Validation;
 
 namespace OffLogs.Web
@@ -61,6 +62,7 @@ namespace OffLogs.Web
             builder.Services.AddScoped<IApiService, ApiService>();
             builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
             builder.Services.AddScoped<IReCaptchaService, ReCaptchaService>();
+            builder.Services.AddScoped<IFilesCache, FilesCache>();
             builder.Services.AddScoped<ToastService>();
         }
     }

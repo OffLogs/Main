@@ -3,8 +3,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Blazored.LocalStorage;
 using Fluxor;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using OffLogs.Api.Common.Dto.RequestsAndResponses;
 using OffLogs.Business.Common.Exceptions;
@@ -17,18 +17,20 @@ namespace OffLogs.Web.Services.Http
     public partial class ApiService: IApiService
     {
         private readonly HttpClient _httpClient;
-        private readonly ILocalStorageService _localStorage;
         private readonly IServiceProvider _serviceProvider;
+        private readonly IConfiguration _configuration;
+        private readonly string _apiUrl;
 
         public ApiService(
             HttpClient httpClient,
-            ILocalStorageService localStorage,
-            IServiceProvider serviceProvider
+            IServiceProvider serviceProvider,
+            IConfiguration configuration
         )
         {
             _httpClient = httpClient;
-            _localStorage = localStorage;
             _serviceProvider = serviceProvider;
+            _configuration = configuration;
+            _apiUrl = _configuration.GetValue<string>("ApiUrl");
         }
 
         public string GetJwt()
@@ -40,7 +42,7 @@ namespace OffLogs.Web.Services.Http
         private async Task<string> RequestAsync(string requestUri, string jwtToken, object data, HttpMethod httpMethod)
         {
             // create request object
-            var request = new HttpRequestMessage(httpMethod, requestUri);
+            var request = new HttpRequestMessage(httpMethod, $"{_apiUrl}/{requestUri}");
             if (data != null)
             {
                 request.Content = JsonContent.Create(data);    

@@ -61,6 +61,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Common info.
+        /// </summary>
+        internal static string MenuItem_Common {
+            get {
+                return ResourceManager.GetString("MenuItem_Common", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OffLogs Documentation.
         /// </summary>
         internal static string PageTitle {
