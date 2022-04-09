@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using OffLogs.Web.Services.i18;
 
 namespace OffLogs.Web.Services.IO;
 
@@ -9,14 +10,17 @@ public class FilesCache: IFilesCache
 {
     private readonly string _baseUrl;
     private readonly HttpClient _httpClient;
+    private readonly ILocalizationService _localizationService;
     private static readonly Dictionary<string, string> _filesCache = new();
 
     public FilesCache(
         HttpClient httpClient,
-        IConfiguration configuration
+        IConfiguration configuration,
+        ILocalizationService localizationService
     )
     {
         _httpClient = httpClient;
+        _localizationService = localizationService;
 #if DEBUG
         _baseUrl = "http://localhost:5000";
 #else
@@ -24,18 +28,28 @@ public class FilesCache: IFilesCache
 #endif
     }
 
-    public async Task<string> LoadAndCache(string url)
+    public async Task<string> LoadAndCache(string filePath, string extension = "")
     {
-        if (_filesCache.TryGetValue(url, out var fileContent))
+        var localePostfix = _localizationService.GetLocalePostfix();
+        localePostfix = string.IsNullOrEmpty(localePostfix) ? "" : $".{localePostfix}";
+        
+        var extensionWithDot = string.IsNullOrEmpty(extension) ? "" : $".{extension}";
+        var pathWithExtension = $"{filePath}{localePostfix}{extensionWithDot}";
+        if (_filesCache.TryGetValue(pathWithExtension, out var fileContent))
         {
             return fileContent;
         }
-        fileContent = await LoadFile(url);
-        if (fileContent == null)
+        fileContent = await LoadFile(pathWithExtension);
+        if (string.IsNullOrEmpty(fileContent))
         {
-            return null;
+            var pathWithExtensionNonLocalized = $"{filePath}{extensionWithDot}";
+            fileContent = await LoadFile(pathWithExtensionNonLocalized);
+            if (string.IsNullOrEmpty(fileContent))
+            {
+                return null;    
+            }
         }
-        _filesCache.TryAdd(url, fileContent);
+        _filesCache.TryAdd(pathWithExtension, fileContent);
         return fileContent;
     }
 

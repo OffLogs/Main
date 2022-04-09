@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Resources;
+using OffLogs.Web.Services.i18;
 using OffLogs.Web.Services.IO;
 using OffLogs.Web.Shared.Ui.NavigationLayout.Models;
 
@@ -62,21 +64,25 @@ public partial class Index
 
     private async Task OnSelectPageAsync(OnSelectEventArgs menuEvent)
     {
-        await LoadBody($"{_baseUrl}{menuEvent.ListItem.Id}.md");
+        var fileName = $"{_baseUrl}{menuEvent.ListItem.Id}";
+        await LoadBody(fileName);
     }
 
-    private async Task LoadBody(string filePath)
+    private async Task<bool> LoadBody(string filePath)
     {
         _isLoading = true;
-        var fileContent = await _filesCacheService.LoadAndCache(filePath);
+        var fileContent = await _filesCacheService.LoadAndCache(filePath, "md");
 
         var htmlString = "";
+        var result = false;
         if (fileContent != null)
         {
+            result = true;
             htmlString = MarkdownHelper.ToHtml(fileContent);
         }
         _body = new MarkupString(htmlString);
 
         _isLoading = false;
+        return result;
     }
 }

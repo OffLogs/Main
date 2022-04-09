@@ -4,5 +4,5 @@ namespace OffLogs.Web.Services.IO;
 
 public interface IFilesCache
 {
-    Task<string> LoadAndCache(string url);
+    Task<string> LoadAndCache(string filePath, string extension = "");
 }
