@@ -41,7 +41,7 @@ public class LogAssembler : ILogAssembler
             {
                 var encryptedKey = logSymmetricEncryptor.EncryptData(property.Key);
                 var encryptedValue = logSymmetricEncryptor.EncryptData(
-                    property.Value?.GetAsJson()
+                    AssemblePropertyValue(property.Value)
                 );
                 log.AddProperty(
                     new LogPropertyEntity(encryptedKey, encryptedValue)
@@ -94,5 +94,23 @@ public class LogAssembler : ILogAssembler
         }
 
         return Task.FromResult(log);
+    }
+
+    private string AssemblePropertyValue(object propertyValue)
+    {
+        if (propertyValue == null)
+        {
+            return null;
+        }
+        if (propertyValue is string stringValue)
+        {
+            return stringValue;
+        }
+        if (propertyValue is int or long or float or double or char or short)
+        {
+            return propertyValue.ToString();
+        }
+
+        return propertyValue.GetAsJson();
     }
 }
