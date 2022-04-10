@@ -61,11 +61,47 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Common info.
+        ///   Looks up a localized string similar to Log Level.
+        /// </summary>
+        internal static string DocumentTitle_LogLevel {
+            get {
+                return ResourceManager.GetString("DocumentTitle_LogLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rest API.
+        /// </summary>
+        internal static string DocumentTitle_RestApi {
+            get {
+                return ResourceManager.GetString("DocumentTitle_RestApi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to API.
+        /// </summary>
+        internal static string MenuItem_Api {
+            get {
+                return ResourceManager.GetString("MenuItem_Api", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Common Info.
         /// </summary>
         internal static string MenuItem_Common {
             get {
                 return ResourceManager.GetString("MenuItem_Common", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message Resource.
+        /// </summary>
+        internal static string MenuItem_MessageResource {
+            get {
+                return ResourceManager.GetString("MenuItem_MessageResource", resourceCulture);
             }
         }
         

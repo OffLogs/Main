@@ -65,7 +65,7 @@
     private MenuItem _selectedMenuItem;
     private ListItem _selectedListItem;
 
-    public void OnSelectInnerListItem(ListItem listItem)
+    public void SelectItem(ListItem listItem)
     {
         _selectedListItem = listItem;
         InvokeAsync(async () => {
@@ -77,7 +77,7 @@
         StateHasChanged();
     }
 
-    public void OnSelectInnerMenuItem(MenuItem menuItem)
+    public void SelectItem(MenuItem menuItem)
     {
         _selectedListItem = null;
         _selectedMenuItem = menuItem;

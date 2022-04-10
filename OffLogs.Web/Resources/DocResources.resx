@@ -22,6 +22,18 @@
         <value>OffLogs Documentation</value>
     </data>
     <data name="MenuItem_Common" xml:space="preserve">
-        <value>Common info</value>
+        <value>Common Info</value>
+    </data>
+    <data name="MenuItem_Api" xml:space="preserve">
+        <value>API</value>
+    </data>
+    <data name="MenuItem_MessageResource" xml:space="preserve">
+        <value>Message Resource</value>
+    </data>
+    <data name="DocumentTitle_RestApi" xml:space="preserve">
+        <value>Rest API</value>
+    </data>
+    <data name="DocumentTitle_LogLevel" xml:space="preserve">
+        <value>Log Level</value>
     </data>
 </root>

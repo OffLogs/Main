@@ -1,8 +1,9 @@
-﻿@page "/documentation"
+﻿@page "/documentation/{menuItemId?}/{listItemId?}"
 @using OffLogs.Web.Resources
 @using OffLogs.Web.Shared.Ui.NavigationLayout
 
 <NavigationLayout
+    @ref="@_navigationLayout"
     MenuTitle="@DocResources.PageTitle"
     MenuItems="@_menuItems"
     ListItems="@_documentsList"
