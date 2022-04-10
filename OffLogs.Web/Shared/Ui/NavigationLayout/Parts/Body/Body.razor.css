@@ -9,5 +9,8 @@
   flex: 6;
   flex-direction: column;
   margin-block-start: 0.3rem;
+  height: calc(100% - 62px);
+  overflow-x: auto;
+  word-break: break-all;
 }
 /*# sourceMappingURL=Body.razor.css.map */
