@@ -27,7 +27,7 @@ public partial class Index
     [Parameter]
     public string? ListItemId { get; set; }
 
-    private NavigationLayout _navigationLayout;
+    private NavigationLayout _navigationLayout { get; set; }
     
     private readonly string _baseUrl = "/files/docs/";
     private readonly ICollection<MenuItem> _menuItems = new List<MenuItem>();
@@ -48,21 +48,32 @@ public partial class Index
         _menuItems.Add(_menuItemApi);
         _menuItems.Add(_menuItemMessageResource);
         SetDocumentsList(_menuItems.First());
-        SetSelectedItems();
     }
 
-    private void SetSelectedItems()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await InvokeAsync(async () =>
+            {
+                await SetSelectedItems();
+            });
+        }
+    }
+
+    private async Task SetSelectedItems()
     {
         var menuItem = _menuItems.FirstOrDefault(item => item.Id == MenuItemId?.ToLower());
         if (menuItem == null)
         {
             return;
         }
-        _navigationLayout.SelectItem(menuItem);
+        _navigationLayout.SelectItem(menuItem, false);
         var sumMenuItem = _documentsList.FirstOrDefault(item => item.Id == ListItemId?.ToLower());
         if (sumMenuItem != null)
         {
-            _navigationLayout.SelectItem(sumMenuItem);
+            _navigationLayout.SelectItem(sumMenuItem, false);
+            await LoadBody(sumMenuItem);
         }
     }
 
@@ -125,26 +136,24 @@ public partial class Index
 
     private async Task OnSelectPageAsync(OnSelectEventArgs menuEvent)
     {
-        var fileName = $"{_baseUrl}{menuEvent.ListItem.Id}";
-        await LoadBody(fileName);
+        await LoadBody(menuEvent.ListItem);
         _navigationManager.NavigateTo($"{SiteUrl.Documentation}/{menuEvent.MenuItem.Id}/{menuEvent.ListItem.Id}");
     }
 
-    private async Task<bool> LoadBody(string filePath)
+    private async Task LoadBody(ListItem listItem)
     {
+        var fileName = $"{_baseUrl}{listItem.Id}";
         _isLoading = true;
-        var fileContent = await _filesCacheService.LoadAndCache(filePath, "md");
-
+        var fileContent = await _filesCacheService.LoadAndCache(fileName, "md");
+        
         var htmlString = "";
-        var result = false;
         if (fileContent != null)
         {
-            result = true;
             htmlString = MarkdownHelper.ToHtml(fileContent);
         }
         _body = new MarkupString(htmlString);
 
         _isLoading = false;
-        return result;
+        StateHasChanged();
     }
 }

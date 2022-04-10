@@ -7,9 +7,11 @@ public static class Debug
 {
     public static void Log(params object[] vals)
     {
+        var values = "";
         foreach (var val in vals)
         {
-            Console.WriteLine(JsonConvert.SerializeObject(val));    
+            values += JsonConvert.SerializeObject(val) + "\n";    
         }
+        Console.WriteLine(values);
     }
 }

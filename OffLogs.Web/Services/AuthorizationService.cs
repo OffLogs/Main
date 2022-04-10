@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Fluxor;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
 using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Services.Http;
@@ -17,16 +18,19 @@ namespace OffLogs.Web.Services
         private readonly IApiService _apiService;
         private readonly IDispatcher _dispatcher;
         private readonly IServiceProvider _serviceProvider;
+        private readonly ILogger<AuthorizationService> _logger;
 
         public AuthorizationService(
             IApiService apiService, 
             IDispatcher dispatcher,
-            IServiceProvider serviceProvider
+            IServiceProvider serviceProvider,
+            ILogger<AuthorizationService> logger
         )
         {
             _apiService = apiService;
             _dispatcher = dispatcher;
             _serviceProvider = serviceProvider;
+            _logger = logger;
         }
 
         public async Task LogoutAsync()
@@ -75,7 +79,6 @@ namespace OffLogs.Web.Services
             {
                 try
                 {
-                    Debug.Log("CheckIsLoggedInAsync");
                     isValidJwt = await _apiService.CheckIsLoggedInAsync(GetJwt());
                     if (!isValidJwt)
                     {
@@ -84,8 +87,7 @@ namespace OffLogs.Web.Services
                 }
                 catch (Exception e)
                 {
-                    Debug.Log(e.Message, e);
-                    Console.WriteLine(@"CheckIsLoggedIn returned: false");
+                    _logger.LogDebug(@"CheckIsLoggedIn returned: false");
                 }
             }
             return isValidJwt;

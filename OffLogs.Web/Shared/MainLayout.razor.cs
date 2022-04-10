@@ -114,7 +114,6 @@ public partial class MainLayout: IDisposable
             NavigationManager.NavigateTo("/login");
         }
         _isShowMainMenu = _isLoggedIn && NavigationManager.GetPath().ToLower().StartsWith(SiteUrl.Dashboard);
-        Debug.Log($"Is show main menu: {_isShowMainMenu} {NavigationManager.GetPath()}");
         StateHasChanged();
     }
 

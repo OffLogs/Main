@@ -65,30 +65,35 @@
     private MenuItem _selectedMenuItem;
     private ListItem _selectedListItem;
 
-    public void SelectItem(ListItem listItem)
+    public void SelectItem(ListItem listItem, bool isEmit = true)
     {
         _selectedListItem = listItem;
-        InvokeAsync(async () => {
-            await OnSelectListItem.InvokeAsync(new OnSelectEventArgs() {
-                MenuItem = _selectedMenuItem,
-                ListItem = _selectedListItem
-            });
-        });
+        if (isEmit)
+        {
+            InvokeAsync(async () => {
+                await OnSelectListItem.InvokeAsync(new OnSelectEventArgs() {
+                    MenuItem = _selectedMenuItem,
+                    ListItem = _selectedListItem
+                });
+            });    
+        }
         StateHasChanged();
     }
 
-    public void SelectItem(MenuItem menuItem)
+    public void SelectItem(MenuItem menuItem, bool isEmit = true)
     {
         _selectedListItem = null;
         _selectedMenuItem = menuItem;
-        
-        InvokeAsync(async () => {
-            await OnSelectMenuItem.InvokeAsync(new OnSelectEventArgs() {
-                MenuItem = _selectedMenuItem,
-                ListItem = _selectedListItem
-            });
-        });
-        
+
+        if (isEmit)
+        {
+            InvokeAsync(async () => {
+                await OnSelectMenuItem.InvokeAsync(new OnSelectEventArgs() {
+                    MenuItem = _selectedMenuItem,
+                    ListItem = _selectedListItem
+                });
+            });    
+        }
         StateHasChanged();
     }
 
