@@ -33,8 +33,8 @@ public partial class Index
     private readonly ICollection<MenuItem> _menuItems = new List<MenuItem>();
     private ICollection<ListItem> _documentsList = new List<ListItem>();
 
-    private MarkupString? _body = new("");
-    public bool _isLoading = false;
+    private string _markdownString = "";
+    private bool _isLoading = false;
 
     private readonly MenuItem _menuItemCommon = new() {Id = "common", Title = DocResources.MenuItem_Common};
     private readonly MenuItem _menuItemApi = new() {Id = "api", Title = DocResources.MenuItem_Api};
@@ -68,6 +68,7 @@ public partial class Index
         {
             return;
         }
+        SetDocumentsList(menuItem);
         _navigationLayout.SelectItem(menuItem, false);
         var sumMenuItem = _documentsList.FirstOrDefault(item => item.Id == ListItemId?.ToLower());
         if (sumMenuItem != null)
@@ -144,15 +145,7 @@ public partial class Index
     {
         var fileName = $"{_baseUrl}{listItem.Id}";
         _isLoading = true;
-        var fileContent = await _filesCacheService.LoadAndCache(fileName, "md");
-        
-        var htmlString = "";
-        if (fileContent != null)
-        {
-            htmlString = MarkdownHelper.ToHtml(fileContent);
-        }
-        _body = new MarkupString(htmlString);
-
+        _markdownString = await _filesCacheService.LoadAndCache(fileName, "md");
         _isLoading = false;
         StateHasChanged();
     }

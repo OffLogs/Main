@@ -1,0 +1,47 @@
+﻿@using Markdig
+@using global::Markdown.ColorCode
+
+<span class="w-markdown-block">
+    @if (_html != null)
+    {
+        @((MarkupString) _html)
+    }
+</span>
+
+@code {
+    [Parameter]
+    public string MarkdownText { get; set; }
+
+    private static MarkdownPipeline _markdownPipeline = null;
+    
+    private MarkupString? _html;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        if (_markdownPipeline == null)
+        {
+            _markdownPipeline= new MarkdownPipelineBuilder()
+                .UseAdvancedExtensions()
+                .UseBootstrap()
+                .UseGridTables()
+                .UsePipeTables()
+                .UseColorCode()
+                .Build();
+        }
+
+        await UpdateHtmlAsync();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await UpdateHtmlAsync();
+    }
+
+    private Task UpdateHtmlAsync()
+    {
+        _html = new MarkupString(
+            Markdig.Markdown.ToHtml($"{MarkdownText}", _markdownPipeline)
+        );
+        return Task.CompletedTask;
+    }
+}

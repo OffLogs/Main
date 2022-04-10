@@ -17,10 +17,7 @@
         }
         else
         {
-            if (_body != null)
-            {
-                @((MarkupString) _body)
-            }
+            <Markdown MarkdownText="@_markdownString"/>
         }
     </BodyContent>
 </NavigationLayout>
