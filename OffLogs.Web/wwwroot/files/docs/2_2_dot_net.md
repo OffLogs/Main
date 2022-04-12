@@ -36,7 +36,7 @@ namespace TestClient
 }
 ```
 
-> Используете .Net Core? Посмотрите другую библиотеку [тут]() 
+> Используете .Net Core? Посмотрите другую библиотеку [тут](/documentation/common/2_4_serilog_extension)
 > которая адаптирована для этой платформы 
 > 
 > Looking for .NET Core? We have a quickstart for that too!
