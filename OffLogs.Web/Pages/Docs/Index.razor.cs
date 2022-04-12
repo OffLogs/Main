@@ -140,7 +140,7 @@ public partial class Index: IDisposable
                 new()
                 {
                     Id = "2_3_net_core_extension",
-                    Title = DocResources.DocumentTitle_SerilogExtension
+                    Title = DocResources.DocumentTitle_DotNetCore
                 },
                 new()
                 {
