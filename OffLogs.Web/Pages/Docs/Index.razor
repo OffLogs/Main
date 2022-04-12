@@ -1,21 +1,23 @@
-﻿@page "/documentation"
+﻿@page "/documentation/{menuItemId?}/{listItemId?}"
 @using OffLogs.Web.Resources
+@using OffLogs.Web.Shared.Ui.NavigationLayout
 
 <NavigationLayout
+    @ref="_navigationLayout"
     MenuTitle="@DocResources.PageTitle"
     MenuItems="@_menuItems"
-    ListItems="@_logsList"
-    BodyButtons="@_menuButtons"
-    OnSelectMenuItem="@OnApplicationSelected"
-    OnSelectListItem="async (menuEvent) => await OnSelectLogAsync(menuEvent)"
-    IsShowMoreBtn="@State.Value.HasMoreItems"
-    OnClickMoreBtn="async () => await OnClickMoreBtnAsync()"
-    IsReadOnly="@State.Value.IsLoadingList"
+    ListItems="@_documentsList"
+    OnSelectMenuItem="@OnMenuItemSelected"
+    OnSelectListItem="@(async (menuEvent) => await OnSelectPageAsync(menuEvent))"
 >
     <BodyContent>
-        @if (State.Value.SelectedLog != null)
+        @if (_isLoading)
         {
-            <LogInfoBlock LogId="@State.Value.SelectedLog.Id"/>    
+            <Preloader/>
+        }
+        else
+        {
+            <Markdown MarkdownText="@_markdownString"/>
         }
     </BodyContent>
 </NavigationLayout>

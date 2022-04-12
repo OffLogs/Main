@@ -57,7 +57,10 @@ public partial class MainLayout: IDisposable
         get
         {
             var path = NavigationManager.GetPath();
-            return path.Equals("/") || path.StartsWith("/login") || path.StartsWith("/registration");
+            return path.Equals("/") 
+                   || path.StartsWith("/login")
+                   || path.StartsWith("/registration")
+                   || path.StartsWith("/documentation");
         }
     }
 
@@ -111,7 +114,6 @@ public partial class MainLayout: IDisposable
             NavigationManager.NavigateTo("/login");
         }
         _isShowMainMenu = _isLoggedIn && NavigationManager.GetPath().ToLower().StartsWith(SiteUrl.Dashboard);
-        Debug.Log($"Is show main menu: {_isShowMainMenu} {NavigationManager.GetPath()}");
         StateHasChanged();
     }
 

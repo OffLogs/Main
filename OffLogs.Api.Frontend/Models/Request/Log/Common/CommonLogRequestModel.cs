@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Mvc.Attribute.Constant;
 using OffLogs.Business.Common.Mvc.Attribute.Validation;
-using OffLogs.Business.Constants;
 
 namespace OffLogs.Api.Frontend.Models.Request.Log.Common
 {
