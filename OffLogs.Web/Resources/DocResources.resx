@@ -33,6 +33,15 @@
     <data name="DocumentTitle_RestApi" xml:space="preserve">
         <value>Rest API</value>
     </data>
+    <data name="DocumentTitle_DotNet" xml:space="preserve">
+        <value>.Net Client</value>
+    </data>
+    <data name="DocumentTitle_DotNetCore" xml:space="preserve">
+        <value>.Net Core Extension</value>
+    </data>
+    <data name="DocumentTitle_SerilogExtension" xml:space="preserve">
+        <value>Serilog Extension</value>
+    </data>
     <data name="DocumentTitle_LogLevel" xml:space="preserve">
         <value>Log Level</value>
     </data>

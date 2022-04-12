@@ -61,6 +61,24 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .Net Client.
+        /// </summary>
+        internal static string DocumentTitle_DotNet {
+            get {
+                return ResourceManager.GetString("DocumentTitle_DotNet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .Net Core Extension.
+        /// </summary>
+        internal static string DocumentTitle_DotNetCore {
+            get {
+                return ResourceManager.GetString("DocumentTitle_DotNetCore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Log Level.
         /// </summary>
         internal static string DocumentTitle_LogLevel {
@@ -75,6 +93,15 @@ namespace OffLogs.Web.Resources {
         internal static string DocumentTitle_RestApi {
             get {
                 return ResourceManager.GetString("DocumentTitle_RestApi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Serilog Extension.
+        /// </summary>
+        internal static string DocumentTitle_SerilogExtension {
+            get {
+                return ResourceManager.GetString("DocumentTitle_SerilogExtension", resourceCulture);
             }
         }
         

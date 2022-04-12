@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Routing;
 using OffLogs.Web.Constants;
 using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Resources;
@@ -13,7 +14,7 @@ using OffLogs.Web.Shared.Ui.NavigationLayout.Models;
 
 namespace OffLogs.Web.Pages.Docs;
 
-public partial class Index
+public partial class Index: IDisposable
 {
     [Inject]
     private IFilesCache _filesCacheService { get; set; }
@@ -48,6 +49,16 @@ public partial class Index
         _menuItems.Add(_menuItemApi);
         _menuItems.Add(_menuItemMessageResource);
         SetDocumentsList(_menuItems.First());
+
+        _navigationManager.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        InvokeAsync(async () =>
+        {
+            await SetSelectedItemsAsync();
+        });
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -56,12 +67,17 @@ public partial class Index
         {
             await InvokeAsync(async () =>
             {
-                await SetSelectedItems();
+                await SetSelectedItemsAsync();
             });
         }
     }
-
-    private async Task SetSelectedItems()
+    
+    public void Dispose()
+    {
+        _navigationManager.LocationChanged -= OnLocationChanged;
+    }
+    
+    private async Task SetSelectedItemsAsync()
     {
         var menuItem = _menuItems.FirstOrDefault(item => item.Id == MenuItemId?.ToLower());
         if (menuItem == null)
@@ -115,6 +131,21 @@ public partial class Index
                 {
                     Id = "2_1_rest_api",
                     Title = DocResources.DocumentTitle_RestApi
+                },
+                new()
+                {
+                    Id = "2_2_dot_net",
+                    Title = DocResources.DocumentTitle_DotNet
+                },
+                new()
+                {
+                    Id = "2_3_net_core_extension",
+                    Title = DocResources.DocumentTitle_SerilogExtension
+                },
+                new()
+                {
+                    Id = "2_4_serilog_extension",
+                    Title = DocResources.DocumentTitle_SerilogExtension
                 },
             };
         }
