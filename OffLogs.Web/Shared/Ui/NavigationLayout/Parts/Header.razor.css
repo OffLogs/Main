@@ -3,6 +3,7 @@
   height: 58px;
   color: white;
   text-align: center;
+  cursor: pointer;
 }
 .w-header .w-button {
   position: relative;
