@@ -112,6 +112,10 @@
       <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.woff" />
       <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\ICON-LICENSE" />
       <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\README.md" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\preloader.gif" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\logo\favicon\icons8-login-as-user-16.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\logo\favicon\icons8-login-as-user-32.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\logo\favicon\icons8-login-as-user-96.png" />
     </ItemGroup>
 
     <ItemGroup>
