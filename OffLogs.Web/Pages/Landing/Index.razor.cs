@@ -6,7 +6,7 @@ using OffLogs.Web.Services;
 using OffLogs.Web.Store.Shared.Toast;
 using OffLogs.Web.Store.Shared.Toast.Actions;
 
-namespace OffLogs.Web.Pages;
+namespace OffLogs.Web.Pages.Landing;
 
 public partial class Index
 {
@@ -21,10 +21,4 @@ public partial class Index
     
     [Inject]
     private IAuthorizationService AuthorizationService { get; set; }
-    
-    private async Task TestMessage()
-    {
-        await AuthorizationService.CheckIsLoggedInAsync();
-        Dispatcher.Dispatch(new AddMessageAction(ToastMessageType.Error, "Test", "Test"));
-    }
 }
