@@ -1,6 +1,10 @@
 ﻿@page "/documentation/{menuItemId?}/{listItemId?}"
+@page "/{locale}/documentation/{menuItemId?}/{listItemId?}"
+
 @using OffLogs.Web.Resources
 @using OffLogs.Web.Shared.Ui.NavigationLayout
+
+@inherits BaseComponent
 
 <NavigationLayout
     @ref="_navigationLayout"

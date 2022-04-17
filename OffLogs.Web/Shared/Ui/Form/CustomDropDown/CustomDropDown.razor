@@ -5,7 +5,7 @@
 @using OffLogs.Web.Services.Events
 @inject ToastService _toastService
 
-<div class="w-custom-input-select @Class">
+<div class="w-custom-drop-down @Class">
     <div class="btn-group">
         <button type="button"
                 class="btn btn-@BtnType.GetName() dropdown-toggle"
@@ -33,6 +33,10 @@
                 </a>
             }
         </div>
+        @if (_isOpened)
+        {
+            <div class="w-transparent-back" @onclick="@(() => { ShowDropDown(!_isOpened); })"></div>
+        }
     </div>
 </div>
 
@@ -42,9 +46,6 @@
     
     [Parameter]
     public string NonSelectedLabel { get; set; } = "Select item";
-
-    [Parameter]
-    public ToastMessageModel Message { get; set; }
 
     [Parameter]
     public ICollection<DropDownListItem> Items { get; set; } = new List<DropDownListItem>();
@@ -74,6 +75,8 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
+
+        SelectedItem = Items.FirstOrDefault(item => item.IsSelected);
     }
 
     public void Dispose()

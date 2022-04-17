@@ -15,10 +15,16 @@
             </li>
         </ul>
         <ul class="navbar-nav justify-content-end">
+            <li class="nav-item">
+                <CustomDropDown 
+                    BtnType="BootstrapColorType.Light"
+                    Items="@_languageMenuItems"
+                    OnChanged="@(async item => await OnSelectLanguageAsync(item))"></CustomDropDown>  
+            </li>
             @if (AuthState.Value.IsLoggedIn)
             {
                 <li class="nav-item">
-                    <NavLink href="@SiteUrl.Dashboard" class="nav-link">Dashboard</NavLink>  
+                    <NavLink href="@SiteUrl.Dashboard" class="nav-link">Dashboard</NavLink>
                 </li>
             }
             else
@@ -27,13 +33,9 @@
                     <NavLink href="@SiteUrl.Login" class="nav-link">Login</NavLink>
                 </li>
                 <li class="nav-item">
-                    <NavLink href="@SiteUrl.Registration_Step1" class="nav-link">Registration</NavLink> 
-                </li>   
+                    <NavLink href="@SiteUrl.Registration_Step1" class="nav-link">Registration</NavLink>
+                </li>
             }
         </ul>
     </div>
 </nav>
-
-@code {
-    
-}

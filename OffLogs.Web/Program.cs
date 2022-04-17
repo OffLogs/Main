@@ -49,7 +49,7 @@ namespace OffLogs.Web
             
             // Set localization
             var localizationService = host.Services.GetRequiredService<ILocalizationService>();
-            await localizationService.PreConfigureFromLocalStorageAsync();
+            await localizationService.SetUpLocaleAsync();
             
             await host.RunAsync();
         }

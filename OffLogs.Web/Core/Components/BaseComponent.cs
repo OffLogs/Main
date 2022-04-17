@@ -6,6 +6,9 @@ namespace OffLogs.Web.Core.Components;
 
 public class BaseComponent: Fluxor.Blazor.Web.Components.FluxorComponent
 {
+    [Parameter]
+    public string? Locale { get; set; }
+    
     [Inject]
     protected IDispatcher Dispatcher { get; set; }
     
