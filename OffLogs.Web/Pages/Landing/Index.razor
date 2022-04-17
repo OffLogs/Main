@@ -6,10 +6,15 @@
 @layout Layout
 @inherits BaseComponent
 
-<h2>@LandingPageResources.Main_Title</h2>
-<p>@LandingPageResources.Main_Desc</p>
+<h2 class="display-2">@LandingPageResources.Main_Title</h2>
+<p class="lead">@LandingPageResources.Main_Desc</p>
 
-<h2>@LandingPageResources.Main_HowItWorks_Title</h2>
-<p>
+<h3 class="display-3">@LandingPageResources.Main_HowItWorks_Title</h3>
+<p class="lead">
     <Markdown MarkdownText="@LandingPageResources.Main_HowItWorks_Desc"/>
+</p>
+
+<h3 class="display-3">@LandingPageResources.Main_Features_Title</h3>
+<p class="lead">
+    <Markdown MarkdownText="@LandingPageResources.Main_Features_Desc"/>
 </p>

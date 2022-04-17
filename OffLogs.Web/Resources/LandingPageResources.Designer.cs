@@ -71,6 +71,30 @@ namespace OffLogs.Web.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to 
+        /// - Нет необходимости в ручном режиме отслеживать отладочную информацию от ваших ресурсов, 
+        ///особенно если они расположены на различных серверах
+        /// - Гибкая система оповещения при получении той или иной отладочной информации
+        /// - Просмотр развернутой статистики
+        /// - Удобный просмотр и фильтрация логов
+        ///        .
+        /// </summary>
+        internal static string Main_Features_Desc {
+            get {
+                return ResourceManager.GetString("Main_Features_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Features.
+        /// </summary>
+        internal static string Main_Features_Title {
+            get {
+                return ResourceManager.GetString("Main_Features_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
         ///Наиболее частый случай когда OffLogs может вам помочь:
         ///
         ///1. Предположим, у вас есть один или несколько сайтов. Эти сайты расположены на различных серверах
