@@ -44,9 +44,6 @@
     public string NonSelectedLabel { get; set; } = "Select item";
 
     [Parameter]
-    public ToastMessageModel Message { get; set; }
-
-    [Parameter]
     public ICollection<DropDownListItem> Items { get; set; } = new List<DropDownListItem>();
 
     [Parameter]
