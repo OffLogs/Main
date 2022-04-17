@@ -46,6 +46,15 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>DocResources.resx</DependentUpon>
       </Compile>
+      <EmbeddedResource Update="Resources\LandingPageResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>LandingPageResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <Compile Update="Resources\LandingPageResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>LandingPageResources.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
