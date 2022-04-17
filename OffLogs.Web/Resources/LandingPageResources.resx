@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Main_Title" xml:space="preserve">
+        <value>About the OffLogs project</value>
+    </data>
+    <data name="Main_Desc" xml:space="preserve">
+        <value>No data</value>
+    </data>
+    <data name="Main_HowItWorks_Title" xml:space="preserve">
+        <value>How it works?</value>
+    </data>
+    <data name="Main_HowItWorks_Desc" xml:space="preserve">
+        <value>
+Наиболее частый случай когда OffLogs может вам помочь:
+
+1. Предположим, у вас есть один или несколько сайтов. Эти сайты расположены на различных серверах
+2. Вы используя один из наших клиентов или создаете свой логгер для отправки логов в наше API.
+   (Как это сделать можете прочитать [тут](/documentation/api/2_1_rest_api))
+3. После чего ваши сайты, в процессе работы, будут генерировать отладочную информацию которая будет получена и зашифрована нашим сервисом.
+4. Все :) Теперь вы можете просмотреть всю отладочную информацию с ваших ресурсов в [панели администрирования](/dashboard)
+5. А если вы настроите оповещения тогда, получите еще и оповещение если, к примеру, один из ваших ресурсов сгенерировал ошибку
+        </value>
+    </data>
+</root>
