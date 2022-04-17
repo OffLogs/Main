@@ -1,4 +1,21 @@
-.w-custom-input-select ul li {
+.w-custom-drop-down {
+  position: relative;
+  z-index: 100;
+}
+.w-custom-drop-down .dropdown-menu {
+  position: absolute;
+  top: 2.3rem;
+}
+.w-custom-drop-down ul li {
   cursor: pointer;
+}
+.w-custom-drop-down .w-transparent-back {
+  z-index: 99;
+  position: fixed;
+  background: transparent;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 /*# sourceMappingURL=CustomDropDown.razor.css.map */

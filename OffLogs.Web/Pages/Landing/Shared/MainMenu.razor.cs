@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using OffLogs.Web.Core.Components;
+using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Services.i18;
 using OffLogs.Web.Shared.Ui.Form.CustomDropDown;
 using OffLogs.Web.Store.Auth;
@@ -28,13 +29,11 @@ public partial class MainMenu
         await base.OnInitializedAsync();
 
         _languageMenuItems = LocalizationService.GetAwailableLocales()
-            .Select(locale =>
+            .Select(locale => new DropDownListItem
             {
-                return new DropDownListItem()
-                {
-                    Id = locale.Name,
-                    Label = locale.DisplayName
-                };
+                Id = locale.Name,
+                Label = locale.DisplayName,
+                IsSelected = LocalizationService.GetLocale().Equals(locale)
             })
             .ToList();
     }
