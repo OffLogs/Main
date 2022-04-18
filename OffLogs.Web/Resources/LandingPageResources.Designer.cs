@@ -61,6 +61,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Documentation.
+        /// </summary>
+        internal static string Documentation_Title {
+            get {
+                return ResourceManager.GetString("Documentation_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No data.
         /// </summary>
         internal static string Main_Desc {
@@ -124,6 +133,87 @@ namespace OffLogs.Web.Resources {
         internal static string Main_Title {
             get {
                 return ResourceManager.GetString("Main_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///If you found any bug please check or add your bug to our [bug tracker](https://gitlab.com/offlogs-public/main/-/issues)
+        ///for already reported and discussed bugs and feature requests.
+        ///        .
+        /// </summary>
+        internal static string Support_Desc_BugTracking {
+            get {
+                return ResourceManager.GetString("Support_Desc_BugTracking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///To get additional information on how to integrate and working with OffLogs, our [Wiki](/documentation/common/1_1_common) will help.
+        ///        .
+        /// </summary>
+        internal static string Support_Desc_Documentation {
+            get {
+                return ResourceManager.GetString("Support_Desc_Documentation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///If you have any questions please send us an email at **support@offlogs.com**
+        ///        .
+        /// </summary>
+        internal static string Support_Desc_Email {
+            get {
+                return ResourceManager.GetString("Support_Desc_Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///            For issues concerning the software itself, there are several ways to get help on questions about OffLogs. Please choose from the following:
+        ///        .
+        /// </summary>
+        internal static string Support_Header {
+            get {
+                return ResourceManager.GetString("Support_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Need help?.
+        /// </summary>
+        internal static string Support_Title {
+            get {
+                return ResourceManager.GetString("Support_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Found a bug?.
+        /// </summary>
+        internal static string Support_Title_BugTracking {
+            get {
+                return ResourceManager.GetString("Support_Title_BugTracking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Documentation Wiki.
+        /// </summary>
+        internal static string Support_Title_Documentation {
+            get {
+                return ResourceManager.GetString("Support_Title_Documentation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contact info.
+        /// </summary>
+        internal static string Support_Title_Email {
+            get {
+                return ResourceManager.GetString("Support_Title_Email", resourceCulture);
             }
         }
     }

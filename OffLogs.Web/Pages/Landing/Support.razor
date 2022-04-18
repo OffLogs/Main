@@ -1,0 +1,31 @@
+﻿@page "/support"
+@page "/{locale}/support"
+
+@using OffLogs.Web.Pages.Landing.Shared;
+@using OffLogs.Web.Resources
+
+@layout Layout
+@inherits BaseComponent
+
+<h1 class="display-2">@LandingPageResources.Support_Title</h1>
+<p class="lead">@LandingPageResources.Support_Header</p>
+
+<h1 class="display-5">@LandingPageResources.Support_Title_Documentation</h1>
+<p class="lead">
+    <Markdown MarkdownText="@LandingPageResources.Support_Desc_Documentation"/>
+</p>
+
+<h1 class="display-5">@LandingPageResources.Support_Title_BugTracking</h1>
+<p class="lead">
+    <Markdown MarkdownText="@LandingPageResources.Support_Desc_BugTracking"/>
+</p>
+
+<h1 class="display-5">@LandingPageResources.Support_Title_BugTracking</h1>
+<p class="lead">
+    <Markdown MarkdownText="@LandingPageResources.Support_Desc_BugTracking"/>
+</p>
+
+<h1 class="display-5">@LandingPageResources.Support_Title_Email</h1>
+<p class="lead">
+    <Markdown MarkdownText="@LandingPageResources.Support_Desc_Email"/>
+</p>

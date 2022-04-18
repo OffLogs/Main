@@ -51,4 +51,40 @@
  - Удобный просмотр и фильтрация логов
         </value>
     </data>
+    <data name="Documentation_Title" xml:space="preserve">
+        <value>Documentation</value>
+    </data>
+    <data name="Support_Title" xml:space="preserve">
+        <value>Need help?</value>
+    </data>
+    <data name="Support_Header" xml:space="preserve">
+        <value>
+            For issues concerning the software itself, there are several ways to get help on questions about OffLogs. Please choose from the following:
+        </value>
+    </data>
+    <data name="Support_Title_Documentation" xml:space="preserve">
+        <value>Documentation Wiki</value>
+    </data>
+    <data name="Support_Desc_Documentation" xml:space="preserve">
+        <value>
+To get additional information on how to integrate and working with OffLogs, our [Wiki](/documentation/common/1_1_common) will help.
+        </value>
+    </data>
+    <data name="Support_Title_BugTracking" xml:space="preserve">
+        <value>Found a bug?</value>
+    </data>
+    <data name="Support_Desc_BugTracking" xml:space="preserve">
+        <value>
+If you found any bug please check or add your bug to our [bug tracker](https://gitlab.com/offlogs-public/main/-/issues)
+for already reported and discussed bugs and feature requests.
+        </value> 
+    </data>
+    <data name="Support_Title_Email" xml:space="preserve">
+        <value>Contact info</value>
+    </data>
+    <data name="Support_Desc_Email" xml:space="preserve">
+        <value>
+If you have any questions please send us an email at **support@offlogs.com**
+        </value> 
+    </data>
 </root>

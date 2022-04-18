@@ -1,4 +1,5 @@
-﻿@inherits BaseComponent
+﻿@using OffLogs.Web.Resources
+@inherits BaseComponent
 
 <nav class="navbar navbar-light bg-light">
     <div class="container">
@@ -11,7 +12,14 @@
                 <NavLink href="/" class="nav-link">About</NavLink>
             </li>
             <li class="nav-item">
-                <NavLink href="@SiteUrl.Documentation_CommonInfo" class="nav-link">Documentation</NavLink>
+                <NavLink href="@SiteUrl.Support" class="nav-link">
+                    @LandingPageResources.Support_Title
+                </NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink href="@SiteUrl.Documentation_CommonInfo" class="nav-link">
+                    @LandingPageResources.Documentation_Title
+                </NavLink>
             </li>
         </ul>
         <ul class="navbar-nav justify-content-end">
