@@ -6,6 +6,8 @@ namespace OffLogs.Web.Constants
         public static readonly string Documentation = "/documentation";
         public static readonly string Documentation_CommonInfo = "/documentation/common/1_1_common";
         
+        public static readonly string Support = "/support";
+        
         public static readonly string Registration_Step1 = "/registration/step1";
         public static readonly string Registration_Step2 = "/registration/step2";
         
