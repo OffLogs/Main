@@ -23,12 +23,16 @@ namespace OffLogs.Migrations.Migrations
                 .Row(new { id = 1, name = "Or" })
                 .Row(new { id = 2, name = "And" });
             
-            Create.Table("notification_messages")
-                .WithColumn("id").AsInt64().PrimaryKey().Identity()
-                .WithColumn("subject").AsString().NotNullable()
-                .WithColumn("body").AsString().NotNullable()
-                .WithColumn("create_time").AsDateTime()
-                .WithColumn("update_time").AsDateTime();
+            Insert.IntoTable("logic_operator_types")
+                .Row(new { id = 1, name = "Or" })
+                .Row(new { id = 2, name = "And" });
+            
+            Create.Table("notification_condition_fields")
+                .WithColumn("id").AsInt64().PrimaryKey()
+                .WithColumn("name").AsString(100);
+            
+            Insert.IntoTable("notification_condition_fields")
+                .Row(new { id = 1, name = "LogLevel" });
             
             Create.Table("notification_rules")
                 .WithColumn("id").AsInt64().PrimaryKey().Identity()
@@ -38,7 +42,7 @@ namespace OffLogs.Migrations.Migrations
                 .WithColumn("notification_type_id").AsInt64().NotNullable()
                 .WithColumn("logic_operator_type_id").AsInt64().NotNullable()
                 
-                .WithColumn("period").AsInt32().NotNullable()
+                .WithColumn("period").AsInt64().NotNullable()
                 .WithColumn("last_execution_time").AsDateTime().Nullable()
                 .WithColumn("is_executing").AsBoolean().NotNullable().WithDefaultValue(false)
                 
@@ -48,7 +52,7 @@ namespace OffLogs.Migrations.Migrations
             Create.Table("notification_conditions")
                 .WithColumn("id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("notification_rule_id").AsInt64().NotNullable()
-                .WithColumn("field_type").AsString(20).NotNullable()
+                .WithColumn("field_type_id").AsInt64().NotNullable()
                 .WithColumn("create_time").AsDateTime()
                 .WithColumn("update_time").AsDateTime();
             
@@ -79,6 +83,10 @@ namespace OffLogs.Migrations.Migrations
             Create.ForeignKey()
                 .FromTable("notification_rules").ForeignColumn("notification_type_id")
                 .ToTable("notification_types").PrimaryColumn("id");
+            
+            Create.ForeignKey()
+                .FromTable("notification_conditions").ForeignColumn("field_type_id")
+                .ToTable("notification_condition_fields").PrimaryColumn("id");
             
             base.Up();
         }
