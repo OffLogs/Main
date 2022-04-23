@@ -1,37 +1,36 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using NHibernate.Linq;
 using NHibernate.Transform;
-using OffLogs.Business.Orm.Dto.Entities;
-using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Dto;
 using OffLogs.Business.Orm.Entities.Notifications;
-using OffLogs.Business.Orm.Queries.Entities.Log;
 using Persistence.Transactions.Behaviors;
 
 namespace OffLogs.Business.Orm.Queries.Entities.NotificationRule
 {
-    public class GetNextNonActiveQuery : LinqAsyncQueryBase<LogIsExistsByTokenCriteria, NotificationRuleEntity>
+    public class GetNextNonActiveQuery : LinqAsyncQueryBase<GetNextNonActiveCriteria, NotificationRuleEntity>
     {
         public GetNextNonActiveQuery(IDbSessionProvider transactionProvider) 
             : base(transactionProvider)
         {
         }
 
-        public override async Task<NotificationRuleEntity> AskAsync(Log.LogIsExistsByTokenCriteria criterion, CancellationToken cancellationToken = default)
+        public override async Task<NotificationRuleEntity> AskAsync(GetNextNonActiveCriteria criterion, CancellationToken cancellationToken = default)
         {
-            var resultListIds = await TransactionProvider.CurrentSession
+            var session = TransactionProvider.CurrentSession;
+            
+            var resultListIds = await session
                 .GetNamedQuery("NotificationRule.getNextNonActive")
-                .SetResultTransformer(Transformers.AliasToBean<long?>())
-                .ListAsync<long?>(cancellationToken);
+                .SetParameter("dateNow", DateTime.UtcNow)
+                .SetResultTransformer(Transformers.AliasToBean<IdDto>())
+                .ListAsync<IdDto>(cancellationToken);
 
-            var ruleId = resultListIds.FirstOrDefault();
-            if (ruleId.HasValue)
+            var ruleIdModel = resultListIds.FirstOrDefault();
+            if (ruleIdModel != null)
             {
-                return await TransactionProvider.CurrentSession.GetAsync<NotificationRuleEntity>(
-                    ruleId,
-                    cancellationToken
-                );
+                var rule = await session.GetAsync<NotificationRuleEntity>(ruleIdModel.Id, cancellationToken);
+                return rule;
             }
             return null;
         }

@@ -4,10 +4,12 @@
         namespace="OffLogs.Business.Db.Entity"
         assembly="OffLogs.Business">
 
-	<sql-query name="NotificationRule.getNextNonActive">
+	<sql-query name="NotificationRule.getNextNonActive"><![CDATA[
 		SELECT
-            id
-		FROM notification_rules
-            WHERE last_execution_time  + concat(period,' seconds')::interval > now() AT TIME ZONE 'UTC'
-	</sql-query>
+            rule.id
+		FROM notification_rules as rule
+            WHERE rule.last_execution_time  + cast(concat(rule.period,' seconds') as interval) < :dateNow
+                AND rule.is_executing = false
+            LIMIT 1
+    ]]></sql-query>
 </hibernate-mapping>

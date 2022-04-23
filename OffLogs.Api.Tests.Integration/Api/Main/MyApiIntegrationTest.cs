@@ -29,7 +29,7 @@ using Xunit;
 namespace OffLogs.Api.Tests.Integration.Api.Main
 {
     [Collection("Default collection")]
-    public class MyApiIntegrationTest: IClassFixture<ApiCustomWebApplicationFactory>
+    public class MyApiIntegrationTest: IClassFixture<ApiCustomWebApplicationFactory>, IDisposable
     {
         protected readonly ApiCustomWebApplicationFactory _factory;
         
@@ -85,7 +85,6 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         public void Dispose()
         {
             DbSessionProvider.PerformCommitAsync().Wait();
-            DbSessionProvider.Dispose();
             GC.SuppressFinalize(this);
         }
 
