@@ -27,6 +27,10 @@ namespace OffLogs.Business.Orm.Entities.Notifications
         [Column(Name = "field_type_id", SqlType = "int", NotNull = true)]
         public virtual ConditionFieldType ConditionField { get; set; }
 
+        [Property(NotNull = true)]
+        [Column(Name = "value", Length = 512, NotNull = true)]
+        public virtual string Value { get; set; }
+        
         [Property(NotNull = true, TypeType = typeof(UtcDateTimeType))]
         [Column(Name = "create_time", SqlType = "datetime", NotNull = true)]
         public virtual DateTime CreateTime { get; set; }
@@ -34,11 +38,6 @@ namespace OffLogs.Business.Orm.Entities.Notifications
         [Property(NotNull = true, TypeType = typeof(UtcDateTimeType))]
         [Column(Name = "update_time", SqlType = "datetime", NotNull = true)]
         public virtual DateTime UpdateTime { get; set; }
-        
-        [Bag(Inverse = true, Lazy = CollectionLazy.Extra, Cascade = "all-delete-orphan")]
-        [Key(Column = "notification_rule_id")]
-        [OneToMany(ClassType = typeof(LogTraceEntity))]
-        public virtual ICollection<LogTraceEntity> Traces { get; set; } = new List<LogTraceEntity>();
 
         public NotificationConditionEntity()
         {

@@ -68,11 +68,11 @@ namespace OffLogs.Business.Orm.Entities.Notifications
         [Property(NotNull = true, TypeType = typeof(UtcDateTimeType))]
         [Column(Name = "update_time", SqlType = "datetime", NotNull = true)]
         public virtual DateTime UpdateTime { get; set; }
-        
+
         [Bag(Inverse = true, Lazy = CollectionLazy.Extra, Cascade = "all-delete-orphan")]
         [Key(Column = "notification_rule_id")]
-        [OneToMany(ClassType = typeof(LogTraceEntity))]
-        public virtual ICollection<LogTraceEntity> Traces { get; set; } = new List<LogTraceEntity>();
+        [OneToMany(ClassType = typeof(NotificationConditionEntity))]
+        public virtual ICollection<NotificationConditionEntity> Conditions { get; set; } = new List<NotificationConditionEntity>();
         
         public NotificationRuleEntity() {}
     }

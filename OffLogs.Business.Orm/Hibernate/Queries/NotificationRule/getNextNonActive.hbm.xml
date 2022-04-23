@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping
+        xmlns="urn:nhibernate-mapping-2.2"
+        namespace="OffLogs.Business.Db.Entity"
+        assembly="OffLogs.Business">
+
+	<sql-query name="NotificationRule.getNextNonActive">
+		SELECT
+            id
+		FROM notification_rules
+            WHERE last_execution_time  + concat(period,' seconds')::interval > now() AT TIME ZONE 'UTC'
+	</sql-query>
+</hibernate-mapping>

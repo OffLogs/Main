@@ -5,15 +5,14 @@
         assembly="OffLogs.Business">
 
 	<sql-query name="Log.getStatisticForNow">
-
 		SELECT
-		COUNT(id) AS count,
-		level AS levelId,
-		to_timestamp(floor((extract('epoch' from create_time) / 5 )) * 5) AT TIME ZONE 'UTC' as timeInterval
+            COUNT(id) AS count,
+            level AS levelId,
+            to_timestamp(floor((extract('epoch' from create_time) / 5 )) * 5) AT TIME ZONE 'UTC' as timeInterval
 		FROM logs
-		WHERE create_time > now() AT TIME ZONE 'UTC' - interval '5 minutes'
-		AND (:applicationId IS NULL OR logs.application_id = :applicationId)
-		GROUP BY timeInterval, level
-		ORDER BY timeInterval DESC
+            WHERE create_time > now() AT TIME ZONE 'UTC' - interval '5 minutes'
+                AND (:applicationId IS NULL OR logs.application_id = :applicationId)
+            GROUP BY timeInterval, level
+            ORDER BY timeInterval DESC
 	</sql-query>
 </hibernate-mapping>
