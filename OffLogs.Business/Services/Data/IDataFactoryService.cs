@@ -2,6 +2,7 @@ using Bogus;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Entities.Notifications;
 
 namespace OffLogs.Business.Services.Data
 {
@@ -12,5 +13,8 @@ namespace OffLogs.Business.Services.Data
         Faker<LogEntity> LogFactory(LogLevel level);
         Faker<LogTraceEntity> LogTraceFactory();
         Faker<LogPropertyEntity> LogPropertyFactory();
+        Faker<NotificationConditionEntity> NotificationConditionFactory();
+        Faker<NotificationMessageEntity> NotificationMessageFactory();
+        Faker<NotificationRuleEntity> NotificationRuleFactory();
     }
 }

@@ -31,7 +31,7 @@ namespace OffLogs.Migrations.Migrations
                 .Row(new { id = 1, name = "LogLevel" });
             
             Create.Table("notification_messages")
-                .WithColumn("id").AsInt64().PrimaryKey()
+                .WithColumn("id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("user_id").AsInt64().NotNullable()
                 .WithColumn("subject").AsString(512).NotNullable()
                 .WithColumn("body").AsString().NotNullable()

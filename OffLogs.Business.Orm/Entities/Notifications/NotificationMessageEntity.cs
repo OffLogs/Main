@@ -13,6 +13,15 @@ namespace OffLogs.Business.Orm.Entities.Notifications
         [Column(Name = "id", SqlType = "bigint", NotNull = true)]
         public virtual long Id { get; set; }
         
+        [ManyToOne(
+            ClassType = typeof(UserEntity),
+            Column = "user_id",
+            Lazy = Laziness.Proxy,
+            Fetch = FetchMode.Join,
+            Cascade = "delete-orphan"
+        )]
+        public virtual UserEntity User { get; set; }
+        
         [Property(NotNull = true)]
         [Column(Name = "subject", Length = 1024, NotNull = true)]
         public virtual string Subject { get; set; }

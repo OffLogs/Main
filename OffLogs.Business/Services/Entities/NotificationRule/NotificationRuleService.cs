@@ -30,7 +30,7 @@ public class NotificationRuleService: INotificationRuleService
         _dbSessionProvider = dbSessionProvider;
     }
 
-    public async Task CreateRule(
+    public async Task<NotificationRuleEntity> CreateRule(
         UserEntity user,
         int period,
         LogicOperatorType logicOperator,
@@ -51,11 +51,6 @@ public class NotificationRuleService: INotificationRuleService
             throw new ArgumentException("List of conditions can not be empty");
         }
 
-        foreach (var condition in conditions)
-        {
-            condition.CreateTime = DateTime.UtcNow;
-            condition.UpdateTime = DateTime.UtcNow;
-        }
         var rule = new NotificationRuleEntity
         {
             User = user,
@@ -66,11 +61,18 @@ public class NotificationRuleService: INotificationRuleService
             Type = NotificationType.Email,
             IsExecuting = false,
             LogicOperator = logicOperator,
-            Conditions = conditions,
             CreateTime = DateTime.UtcNow,
             UpdateTime = DateTime.UtcNow
         };
+        foreach (var condition in conditions)
+        {
+            condition.CreateTime = DateTime.UtcNow;
+            condition.UpdateTime = DateTime.UtcNow;
+            condition.Rule = rule;
+            rule.Conditions.Add(condition);
+        }
         await _commandBuilder.SaveAsync(rule);
+        return rule;
     }
     
     public async Task<NotificationRuleEntity> GetNextAndSetExecuting()

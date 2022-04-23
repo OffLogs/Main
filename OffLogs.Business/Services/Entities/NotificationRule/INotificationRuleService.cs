@@ -11,7 +11,7 @@ public interface INotificationRuleService: IDomainService
 {
     Task<NotificationRuleEntity> GetNextAndSetExecuting();
 
-    Task CreateRule(
+    Task<NotificationRuleEntity> CreateRule(
         UserEntity user,
         int period,
         LogicOperatorType logicOperator,
