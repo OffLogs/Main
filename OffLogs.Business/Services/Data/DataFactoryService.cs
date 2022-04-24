@@ -1,7 +1,9 @@
 using System;
 using Bogus;
 using OffLogs.Business.Common.Constants;
+using OffLogs.Business.Common.Constants.Notificatiions;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Entities.Notifications;
 
 namespace OffLogs.Business.Services.Data
 {
@@ -136,6 +138,77 @@ namespace OffLogs.Business.Services.Data
                 )
                 .RuleFor(
                     entity => entity.CreateTime,
+                    (faker) => faker.Date.Past().ToUniversalTime()
+                );
+        }
+        
+        public Faker<NotificationRuleEntity> NotificationRuleFactory()
+        {
+            return new Faker<NotificationRuleEntity>()
+                .RuleFor(
+                    entity => entity.Type,
+                    (faker) => NotificationType.Email
+                )
+                .RuleFor(
+                    entity => entity.LogicOperator,
+                    (faker) => LogicOperatorType.Disjunction
+                )
+                .RuleFor(
+                    entity => entity.Period,
+                    (faker) => faker.Random.Int(1, 100)
+                )
+                .RuleFor(
+                    entity => entity.LastExecutionTime,
+                    (faker) => faker.Date.Past().ToUniversalTime()
+                )
+                .RuleFor(
+                    entity => entity.IsExecuting,
+                    (faker) => false
+                )
+                .RuleFor(
+                    entity => entity.CreateTime,
+                    (faker) => faker.Date.Past().ToUniversalTime()
+                );
+        }
+        
+        public Faker<NotificationMessageEntity> NotificationMessageFactory()
+        {
+            return new Faker<NotificationMessageEntity>()
+                .RuleFor(
+                    entity => entity.Subject,
+                    (faker) => faker.Lorem.Sentence()
+                )
+                .RuleFor(
+                    entity => entity.Body,
+                    (faker) => faker.Lorem.Sentence()
+                )
+                .RuleFor(
+                    entity => entity.CreateTime,
+                    (faker) => faker.Date.Past().ToUniversalTime()
+                )
+                .RuleFor(
+                    entity => entity.UpdateTime,
+                    (faker) => faker.Date.Past().ToUniversalTime()
+                );
+        }
+        
+        public Faker<NotificationConditionEntity> NotificationConditionFactory()
+        {
+            return new Faker<NotificationConditionEntity>()
+                .RuleFor(
+                    entity => entity.ConditionField,
+                    (faker) => ConditionFieldType.LogLevel
+                )
+                .RuleFor(
+                    entity => entity.Value,
+                    (faker) => "Error"
+                )
+                .RuleFor(
+                    entity => entity.CreateTime,
+                    (faker) => faker.Date.Past().ToUniversalTime()
+                )
+                .RuleFor(
+                    entity => entity.UpdateTime,
                     (faker) => faker.Date.Past().ToUniversalTime()
                 );
         }

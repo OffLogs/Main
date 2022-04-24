@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OffLogs.Business.Notifications.Core.Emails
 {
-    class TemplatedTextBuilder
+    public class TemplatedTextBuilder
     {
         /// <summary>
         /// Helps building TemplatedText like Email Body or Email Subject. Replaces placeholders starting from the END of the template. 
@@ -21,6 +21,10 @@ namespace OffLogs.Business.Notifications.Core.Emails
 
         public string Text;
 
+        public TemplatedTextBuilder(string templateString): this(templateString, 16384)
+        {
+        }   
+        
         public TemplatedTextBuilder(string templateString, int defaultCapacity)
         {
             _template = templateString;

@@ -1,5 +1,6 @@
 ﻿@using Markdig
 @using global::Markdown.ColorCode
+@using OffLogs.Business.Common.Services.Web
 
 <span class="w-markdown-block">
     @if (_html != null)
@@ -9,25 +10,16 @@
 </span>
 
 @code {
+    [Inject]
+    private IMarkdownService MarkdownService { get; set; }
+    
     [Parameter]
     public string MarkdownText { get; set; }
-
-    private static MarkdownPipeline _markdownPipeline = null;
     
     private MarkupString? _html;
     
     protected override async Task OnInitializedAsync()
     {
-        if (_markdownPipeline == null)
-        {
-            _markdownPipeline= new MarkdownPipelineBuilder()
-                .UseAdvancedExtensions()
-                .UseGridTables()
-                .UsePipeTables()
-                .UseColorCode()
-                .Build();
-        }
-
         await UpdateHtmlAsync();
     }
 
@@ -38,9 +30,7 @@
 
     private Task UpdateHtmlAsync()
     {
-        _html = new MarkupString(
-            Markdig.Markdown.ToHtml($"{MarkdownText}", _markdownPipeline)
-        );
+        _html = new MarkupString(MarkdownService.ToHtml(MarkdownText));
         return Task.CompletedTask;
     }
 }

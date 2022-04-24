@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Commands.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
 using Notification.Abstractions;
 using OffLogs.Api.Tests.Integration.Core.Faker;
 using OffLogs.Api.Tests.Integration.Core.Service;
@@ -14,6 +15,7 @@ using OffLogs.Business.Orm.Queries.Entities.Log;
 using OffLogs.Business.Services.Data;
 using OffLogs.Business.Services.Entities.Application;
 using OffLogs.Business.Services.Entities.Log;
+using OffLogs.Business.Services.Entities.NotificationRule;
 using OffLogs.Business.Services.Entities.User;
 using OffLogs.Business.Services.Http.ThrottleRequests;
 using OffLogs.Business.Services.Jwt;
@@ -27,7 +29,7 @@ using Xunit;
 namespace OffLogs.Api.Tests.Integration.Api.Main
 {
     [Collection("Default collection")]
-    public class MyApiIntegrationTest: IClassFixture<ApiCustomWebApplicationFactory>
+    public class MyApiIntegrationTest: IClassFixture<ApiCustomWebApplicationFactory>, IDisposable
     {
         protected readonly ApiCustomWebApplicationFactory _factory;
         
@@ -83,7 +85,6 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         public void Dispose()
         {
             DbSessionProvider.PerformCommitAsync().Wait();
-            DbSessionProvider.Dispose();
             GC.SuppressFinalize(this);
         }
 

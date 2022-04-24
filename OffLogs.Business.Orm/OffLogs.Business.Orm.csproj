@@ -7,6 +7,7 @@
     <ItemGroup>
       <Compile Remove="Criteria\**" />
       <EmbeddedResource Remove="Criteria\**" />
+      <EmbeddedResource Include="Hibernate\Queries\NotificationRule\getNextNonActive.hbm.xml" />
       <None Remove="Criteria\**" />
     </ItemGroup>
 

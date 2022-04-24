@@ -28,5 +28,23 @@
             }
             return null;
         }
+        
+        public static string GetByName(this LogLevel level)
+        {
+            switch (level)
+            {
+                case LogLevel.Error:
+                    return "Error";
+                case LogLevel.Warning:
+                    return "Warning";
+                case LogLevel.Fatal:
+                    return "Fatal";
+                case LogLevel.Information:
+                    return "Information";
+                case LogLevel.Debug:
+                    return "Debug";
+            }
+            return null;
+        }
     }
 }
