@@ -17,8 +17,7 @@ namespace OffLogs.Business.Orm.Entities.Notifications
             ClassType = typeof(UserEntity),
             Column = "user_id",
             Lazy = Laziness.Proxy,
-            Fetch = FetchMode.Join,
-            Cascade = "delete-orphan"
+            Fetch = FetchMode.Join
         )]
         public virtual UserEntity User { get; set; }
         

@@ -30,6 +30,7 @@ namespace OffLogs.Business.Common.Constants
         public const string PermissionRemoveAccess = "board/permission/removeAccess";
         
         public const string NotificationMessageSet = "board/settings/notification-messages/set";
+        public const string NotificationMessageDelete = "board/settings/notification-messages/delete";
         #endregion
     }
 }
