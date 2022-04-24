@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Commands.Abstractions;
 using OffLogs.Business.Common.Constants.Notificatiions;
 using OffLogs.Business.Orm.Commands.Context;
+using OffLogs.Business.Orm.Dto.Entities;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Entities.Notifications;
 using OffLogs.Business.Orm.Queries.Entities.NotificationRule;
@@ -75,7 +76,7 @@ public class NotificationRuleService: INotificationRuleService
         return rule;
     }
     
-    public async Task<NotificationRuleEntity> GetNextAndSetExecuting()
+    public async Task<NotificationRuleEntity> GetNextAndSetExecutingAsync()
     {
         var notificationRule = await _queryBuilder.For<NotificationRuleEntity>().WithAsync(new GetNextNonActiveCriteria());
         if (notificationRule == null)
@@ -86,5 +87,11 @@ public class NotificationRuleService: INotificationRuleService
         await _commandBuilder.SaveAsync(notificationRule);
         await _dbSessionProvider.PerformCommitAsync();
         return notificationRule;
+    }
+
+    public async Task<ProcessingDataDto> GetDataForNotificationRule(NotificationRuleEntity rule)
+    {
+        return await _queryBuilder.For<ProcessingDataDto>()
+            .WithAsync(new GetDataByRuleCriteria(rule));
     }
 }

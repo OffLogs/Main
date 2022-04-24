@@ -84,7 +84,12 @@ namespace OffLogs.Business.Notifications.Core.Emails
             if (subjectMatch != null && subjectMatch.Groups["subjectText"].Success)
             {
                 subjectTemplate = subjectMatch.Groups["subjectText"].Value;
-                contentTemplate = Regex.Replace(contentTemplate, subjectRegex, string.Empty, RegexOptions.IgnoreCase);
+                contentTemplate = Regex.Replace(
+                    contentTemplate, 
+                    subjectRegex, 
+                    string.Empty, 
+                    RegexOptions.IgnoreCase
+                );
             }
 
             // return results

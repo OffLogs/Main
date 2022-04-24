@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using OffLogs.Business.Common.Services.Web;
 using OffLogs.Web.Services;
 using OffLogs.Web.Services.Events;
 using OffLogs.Web.Services.Http;
@@ -74,6 +75,7 @@ namespace OffLogs.Web
             builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
             builder.Services.AddScoped<IReCaptchaService, ReCaptchaService>();
             builder.Services.AddScoped<IFilesCache, FilesCache>();
+            builder.Services.AddScoped<IMarkdownService, MarkdownService>();
             builder.Services.AddScoped<ToastService>();
         }
     }

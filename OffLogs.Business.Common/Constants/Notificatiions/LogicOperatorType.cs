@@ -2,6 +2,6 @@
 
 public enum LogicOperatorType
 {
-    Or = 1,
-    And = 2
+    Disjunction = 1,
+    Conjunction = 2
 }

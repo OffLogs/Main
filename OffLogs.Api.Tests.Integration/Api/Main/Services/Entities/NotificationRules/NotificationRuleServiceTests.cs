@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate.Linq;
+using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Constants.Notificatiions;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities.Notifications;
@@ -24,7 +25,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
         public async Task ShouldCreateRule()
         {
             var expectedPeriod = 5 * 60;
-            var expectedOperator = LogicOperatorType.And;
+            var expectedOperator = LogicOperatorType.Conjunction;
 
             var actualRule = await CreateRule();
             
@@ -33,6 +34,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
             Assert.Equal(expectedOperator, actualRule.LogicOperator);
             Assert.True(actualRule.LastExecutionTime > DateTime.MinValue);
             Assert.True(actualRule.Id > 0);
+            Assert.True(actualRule.IsExecuting);
         }
 
         [Fact]
@@ -49,7 +51,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
             await CommandBuilder.SaveAsync(expectedRule);
             
             await DbSessionProvider.PerformCommitAsync();
-            var actualRule = await NotificationRuleService.GetNextAndSetExecuting();
+            var actualRule = await NotificationRuleService.GetNextAndSetExecutingAsync();
             Assert.NotNull(actualRule);
         }
         
@@ -70,11 +72,111 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
             await CommandBuilder.SaveAsync(expectedRule);
 
             await DbSessionProvider.PerformCommitAsync();
-            var actualRule = await NotificationRuleService.GetNextAndSetExecuting();
+            var actualRule = await NotificationRuleService.GetNextAndSetExecutingAsync();
             Assert.Null(actualRule);
         }
         
-        private async Task<NotificationRuleEntity> CreateRule()
+        [Fact]
+        public async Task ShouldReceiveRuleDataWithDisjunctionOperator()
+        {
+            var conditionsFactory = DataFactory.NotificationConditionFactory();
+            
+            var expectedLogLevel = LogLevel.Warning;
+            var expectedCount = 3;
+            
+            var conditions = new List<NotificationConditionEntity>();
+            var condition = conditionsFactory.Generate();
+            condition.Value = LogLevel.Error.GetLabel();
+            conditions.Add(condition);
+            
+            condition = conditionsFactory.Generate();
+            condition.Value = LogLevel.Information.GetLabel();
+            conditions.Add(condition);
+            
+            condition = conditionsFactory.Generate();
+            condition.Value = expectedLogLevel.GetLabel();
+            conditions.Add(condition);
+            
+            var expectedRule = await CreateRule(
+                expectedLogLevel,
+                conditions,
+                LogicOperatorType.Disjunction
+            );
+            await DataSeeder.CreateLogsAsync(
+                expectedRule.Application.Id,
+                expectedLogLevel,
+                expectedCount
+            );
+            
+            var data = await NotificationRuleService.GetDataForNotificationRule(expectedRule);
+            Assert.Equal(expectedCount, data.LogCount);
+        }
+        
+        [Fact]
+        public async Task ShouldReceiveRuleDataWithConjunctionOperator()
+        {
+            var conditionsFactory = DataFactory.NotificationConditionFactory();
+            
+            var expectedLogLevel = LogLevel.Warning;
+            var expectedCount = 3;
+            
+            var conditions = new List<NotificationConditionEntity>();
+            var condition = conditionsFactory.Generate();
+            condition.Value = expectedLogLevel.GetLabel();
+            conditions.Add(condition);
+
+            var expectedRule = await CreateRule(
+                expectedLogLevel,
+                conditions,
+                LogicOperatorType.Conjunction
+            );
+            await DataSeeder.CreateLogsAsync(
+                expectedRule.Application.Id,
+                expectedLogLevel,
+                expectedCount
+            );
+            
+            var data = await NotificationRuleService.GetDataForNotificationRule(expectedRule);
+            Assert.Equal(expectedCount, data.LogCount);
+        }
+        
+        [Fact]
+        public async Task ShouldNotReceiveRuleDataWithConjunctionOperator()
+        {
+            var conditionsFactory = DataFactory.NotificationConditionFactory();
+            
+            var expectedLogLevel = LogLevel.Warning;
+            var expectedCount = 3;
+            
+            var conditions = new List<NotificationConditionEntity>();
+            var condition = conditionsFactory.Generate();
+            condition.Value = expectedLogLevel.GetLabel();
+            conditions.Add(condition);
+            
+            condition = conditionsFactory.Generate();
+            condition.Value = LogLevel.Error.GetLabel();
+            conditions.Add(condition);
+
+            var expectedRule = await CreateRule(
+                expectedLogLevel,
+                conditions,
+                LogicOperatorType.Conjunction
+            );
+            await DataSeeder.CreateLogsAsync(
+                expectedRule.Application.Id,
+                expectedLogLevel,
+                expectedCount
+            );
+            
+            var data = await NotificationRuleService.GetDataForNotificationRule(expectedRule);
+            Assert.Equal(0, data.LogCount);
+        }
+        
+        private async Task<NotificationRuleEntity> CreateRule(
+            LogLevel logLevel = LogLevel.Information,
+            ICollection<NotificationConditionEntity> conditions = null,
+            LogicOperatorType logicOperatorType = LogicOperatorType.Conjunction
+        )
         {
             var expectedPeriod = 5 * 60;
             var user = await DataSeeder.CreateActivatedUser();
@@ -83,19 +185,24 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
             message.User = user;
             await CommandBuilder.SaveAsync(message);
 
-            var conditionsFactory = DataFactory.NotificationConditionFactory();
-            var expectedConditions = new List<NotificationConditionEntity>();
-            for (int i = 0; i < 3; i++)
+            if (conditions == null)
             {
-                expectedConditions.Add(conditionsFactory.Generate());
+                conditions = new List<NotificationConditionEntity>();
+                var conditionsFactory = DataFactory.NotificationConditionFactory();
+                for (int i = 0; i < 3; i++)
+                {
+                    var condition = conditionsFactory.Generate();
+                    condition.Value = logLevel.GetLabel();
+                    conditions.Add(condition);
+                }    
             }
             
             return await NotificationRuleService.CreateRule(
                 user,
                 expectedPeriod,
-                LogicOperatorType.And,
+                logicOperatorType,
                 message,
-                expectedConditions,
+                conditions,
                 user.Application
             );
         }

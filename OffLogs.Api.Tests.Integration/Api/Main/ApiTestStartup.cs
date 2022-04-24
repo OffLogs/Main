@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OffLogs.Api.Di.Autofac.Modules;
 using OffLogs.Api.Tests.Integration.Core.Faker;
 using OffLogs.Business;
+using OffLogs.Business.Common;
 using OffLogs.Business.Common.Services.Web.ReCaptcha;
 using OffLogs.Business.Di.Autofac.Modules;
 using OffLogs.Business.Notifications.Services;
@@ -39,6 +40,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
 
             builder
                 .RegisterAssemblyTypes(typeof(BusinessAssemblyMarker).Assembly)
+                .AssignableTo<IDomainService>()
+                .AsImplementedInterfaces()
+                .InstancePerDependency();
+            
+            builder
+                .RegisterAssemblyTypes(typeof(BusinessCommonAssemblyMarker).Assembly)
                 .AssignableTo<IDomainService>()
                 .AsImplementedInterfaces()
                 .InstancePerDependency();

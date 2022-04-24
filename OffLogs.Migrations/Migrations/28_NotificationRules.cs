@@ -20,8 +20,8 @@ namespace OffLogs.Migrations.Migrations
                 .WithColumn("name").AsString(100);
 
             Insert.IntoTable("logic_operator_types")
-                .Row(new { id = 1, name = "Or" })
-                .Row(new { id = 2, name = "And" });
+                .Row(new { id = 1, name = "Disjunction" })
+                .Row(new { id = 2, name = "Conjunction" });
 
             Create.Table("notification_condition_fields")
                 .WithColumn("id").AsInt64().PrimaryKey()

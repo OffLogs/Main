@@ -151,7 +151,7 @@ namespace OffLogs.Business.Services.Data
                 )
                 .RuleFor(
                     entity => entity.LogicOperator,
-                    (faker) => LogicOperatorType.Or
+                    (faker) => LogicOperatorType.Disjunction
                 )
                 .RuleFor(
                     entity => entity.Period,
