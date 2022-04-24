@@ -80,5 +80,25 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Settings.Notif
             Assert.Equal(expectedMessage.Subject, data.Subject);
             Assert.Equal(expectedMessage.Body, data.Body);
         }
+        
+        [Fact]
+        public async Task OnlyOwnerCanUpdate()
+        {
+            var oldMessage = _messageFactory.Generate();
+            var user = await DataSeeder.CreateActivatedUser();
+            var user2 = await DataSeeder.CreateActivatedUser();
+
+            oldMessage.User = user;
+            await CommandBuilder.SaveAsync(oldMessage);
+            // Act
+            var response = await PostRequestAsync(Url, user2.ApiToken, new SetMessageRequest()
+            {
+                Id = oldMessage.Id,
+                Subject = oldMessage.Subject,
+                Body = oldMessage.Body
+            });
+            // Assert
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
     }
 }
