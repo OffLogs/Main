@@ -9,15 +9,15 @@ using OffLogs.Business.Orm.Entities.Notifications;
 using OffLogs.Business.Test.Extensions;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.MessagesController
+namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.RulesController
 {
-    public partial class SetMessageTests : MyApiIntegrationTest
+    public partial class SetRuleTests : MyApiIntegrationTest
     {
-        private const string Url = MainApiUrl.NotificationMessageSet;
+        private const string Url = MainApiUrl.NotificationRulesSet;
 
         private readonly Faker<NotificationMessageEntity> _messageFactory;
         
-        public SetMessageTests(ApiCustomWebApplicationFactory factory) : base(factory)
+        public SetRuleTests(ApiCustomWebApplicationFactory factory) : base(factory)
         {
             _messageFactory = DataFactory.NotificationMessageFactory();
         }

@@ -12,13 +12,14 @@ public interface INotificationRuleService: IDomainService
 {
     Task<NotificationRuleEntity> GetNextAndSetExecutingAsync();
 
-    Task<NotificationRuleEntity> CreateRule(
+    Task<NotificationRuleEntity> SetRule(
         UserEntity user,
         int period,
         LogicOperatorType logicOperator,
         NotificationMessageEntity message,
         ICollection<NotificationConditionEntity> conditions,
-        ApplicationEntity application = null
+        ApplicationEntity application = null,
+        long? existsRuleId = null
     );
 
     Task<ProcessingDataDto> GetDataForNotificationRule(NotificationRuleEntity rule);

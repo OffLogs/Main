@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses;
-using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Settings.NotificationMessage;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Message;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule;
 using Persistence.Transactions.Behaviors;
 
 namespace OffLogs.Api.Controller.Board.Notifications.Rules
@@ -28,7 +29,7 @@ namespace OffLogs.Api.Controller.Board.Notifications.Rules
         [HttpPost("set")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public Task<IActionResult> SetMessage(SetMessageRequest request)
-            => this.RequestAsync().For<NotificationMessageDto>().With(request);
+        public Task<IActionResult> SetMessage(SetRuleRequest request)
+            => this.RequestAsync().For<NotificationRuleDto>().With(request);
     }
 }

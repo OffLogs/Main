@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate.Linq;
+using OffLogs.Api.Tests.Integration.Core.Models;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Constants.Notificatiions;
 using OffLogs.Business.Orm.Commands.Context;
+using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Entities.Notifications;
 using OffLogs.Business.Services.Entities.NotificationRule;
 using Xunit;
@@ -15,10 +17,14 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
     public class NotificationRuleServiceTests : MyApiIntegrationTest
     {
         protected readonly INotificationRuleService NotificationRuleService;
-        
+
+        public UserTestModel UserModel { get; set; }
+
         public NotificationRuleServiceTests(ApiCustomWebApplicationFactory factory) : base(factory)
         {
             NotificationRuleService = _factory.Services.GetRequiredService<INotificationRuleService>();
+            
+            UserModel = DataSeeder.CreateActivatedUser().Result;
         }
 
         [Fact]
@@ -37,6 +43,30 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
             Assert.False(actualRule.IsExecuting);
         }
 
+        [Fact]
+        public async Task ShouldUpdateRule()
+        {
+            var user = await DataSeeder.CreateActivatedUser();
+            var actualRule = await CreateRule();
+            var expectedRule = await CreateRule();
+            
+            var rule = await NotificationRuleService.SetRule(
+                expectedRule.User,
+                expectedRule.Period,
+                expectedRule.LogicOperator,
+                expectedRule.Message,
+                expectedRule.Conditions,
+                expectedRule.Application,
+                actualRule.Id
+            );
+            
+            Assert.Equal(actualRule.Application.Id, expectedRule.Application.Id);
+            Assert.Equal(actualRule.User.Id, expectedRule.User.Id);
+            Assert.Equal(actualRule.Message, expectedRule.Message);
+            Assert.Equal(actualRule.Period, expectedRule.Period);
+            Assert.Equal(actualRule.Type, expectedRule.Type);
+        }
+        
         [Fact]
         public async Task ShouldReceiveNextRule()
         {
@@ -179,10 +209,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
         )
         {
             var expectedPeriod = 5 * 60;
-            var user = await DataSeeder.CreateActivatedUser();
             
             var message = DataFactory.NotificationMessageFactory().Generate();
-            message.User = user;
+            message.User = UserModel;
             await CommandBuilder.SaveAsync(message);
 
             if (conditions == null)
@@ -197,13 +226,13 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
                 }    
             }
             
-            return await NotificationRuleService.CreateRule(
-                user,
+            return await NotificationRuleService.SetRule(
+                UserModel,
                 expectedPeriod,
                 logicOperatorType,
                 message,
                 conditions,
-                user.Application
+                UserModel.Application
             );
         }
 

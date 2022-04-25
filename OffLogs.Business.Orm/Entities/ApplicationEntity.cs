@@ -77,5 +77,10 @@ namespace OffLogs.Business.Orm.Entities
             CreateTime = DateTime.UtcNow;
             UpdateTime = DateTime.UtcNow;
         }
+        
+        public virtual bool IsOwner(long userId)
+        {
+            return User.Id == userId;
+        }
     }
 }

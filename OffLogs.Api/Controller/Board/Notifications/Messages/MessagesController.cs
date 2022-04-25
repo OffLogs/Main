@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses;
-using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Settings.NotificationMessage;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Message;
 using Persistence.Transactions.Behaviors;
 
 namespace OffLogs.Api.Controller.Board.Notifications.Messages

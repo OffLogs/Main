@@ -4,7 +4,7 @@ using Api.Requests.Abstractions;
 using AutoMapper;
 using Commands.Abstractions;
 using OffLogs.Api.Common.Dto.Entities;
-using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Settings.NotificationMessage;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Message;
 using OffLogs.Business.Exceptions;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;

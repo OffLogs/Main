@@ -78,7 +78,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Notifications
                 }    
             }
             
-            return await NotificationRuleService.CreateRule(
+            return await NotificationRuleService.SetRule(
                 user,
                 expectedPeriod,
                 logicOperatorType,

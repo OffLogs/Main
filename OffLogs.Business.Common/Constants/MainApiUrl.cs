@@ -31,6 +31,7 @@ namespace OffLogs.Business.Common.Constants
         
         public const string NotificationMessageSet = "board/notifications/messages/set";
         public const string NotificationMessageDelete = "board/notifications/messages/delete";
+        public const string NotificationRulesSet = "board/notifications/rules/set";
         #endregion
     }
 }
