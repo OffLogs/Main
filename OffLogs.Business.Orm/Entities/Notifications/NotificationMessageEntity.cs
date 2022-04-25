@@ -17,8 +17,7 @@ namespace OffLogs.Business.Orm.Entities.Notifications
             ClassType = typeof(UserEntity),
             Column = "user_id",
             Lazy = Laziness.Proxy,
-            Fetch = FetchMode.Join,
-            Cascade = "delete-orphan"
+            Fetch = FetchMode.Join
         )]
         public virtual UserEntity User { get; set; }
         
@@ -46,6 +45,11 @@ namespace OffLogs.Business.Orm.Entities.Notifications
             Body = body;
             CreateTime = DateTime.UtcNow;
             UpdateTime = DateTime.UtcNow;
+        }
+        
+        public virtual bool IsOwner(long userId)
+        {
+            return User.Id == userId;
         }
     }
 }

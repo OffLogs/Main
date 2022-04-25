@@ -44,8 +44,4 @@
       <ProjectReference Include="..\OffLogs.Business\OffLogs.Business.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Controller\Public\Home\Actions\" />
-    </ItemGroup>
-
 </Project>

@@ -43,4 +43,8 @@
       <EmbeddedResource Include="Hibernate\Queries\Log\getList.hbm.xml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Commands\Entities\Notification" />
+    </ItemGroup>
+
 </Project>

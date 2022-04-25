@@ -13,6 +13,11 @@ namespace OffLogs.Business.Di.Autofac.Modules
                 .RegisterGeneric(typeof(SaveObjectWithIdCommand<>))
                 .As(typeof(IAsyncCommand<>))
                 .InstancePerLifetimeScope();
+            
+            builder
+                .RegisterGeneric(typeof(DeleteObjectWithIdCommand<>))
+                .As(typeof(IAsyncCommand<>))
+                .InstancePerLifetimeScope();
 
             builder
                 .RegisterAssemblyTypes(typeof(BusinessOrmAssemblyMarker).Assembly)
