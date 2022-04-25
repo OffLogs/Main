@@ -34,7 +34,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
             Assert.Equal(expectedOperator, actualRule.LogicOperator);
             Assert.True(actualRule.LastExecutionTime > DateTime.MinValue);
             Assert.True(actualRule.Id > 0);
-            Assert.True(actualRule.IsExecuting);
+            Assert.False(actualRule.IsExecuting);
         }
 
         [Fact]

@@ -10,10 +10,10 @@ using OffLogs.Api.Common.Dto.RequestsAndResponses;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Settings.NotificationMessage;
 using Persistence.Transactions.Behaviors;
 
-namespace OffLogs.Api.Controller.Board.Settings.NotificationMessages
+namespace OffLogs.Api.Controller.Board.Notifications.Messages
 {
     [Authorize]
-    [Route("/board/settings/notification-messages")]
+    [Route("/board/notifications/[controller]")]
     [ApiController]
     public class MessagesController : MainApiControllerBase
     {

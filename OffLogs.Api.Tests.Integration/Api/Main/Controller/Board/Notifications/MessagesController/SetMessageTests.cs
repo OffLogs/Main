@@ -9,7 +9,7 @@ using OffLogs.Business.Orm.Entities.Notifications;
 using OffLogs.Business.Test.Extensions;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Settings.NotificationMessagesController
+namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.MessagesController
 {
     public partial class SetMessageTests : MyApiIntegrationTest
     {
