@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Api.Requests.Abstractions;
 using AutoMapper;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule;
+using OffLogs.Business.Common.Constants.Notificatiions;
 using OffLogs.Business.Exceptions;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Entities.Notifications;
@@ -39,26 +41,24 @@ namespace OffLogs.Api.Controller.Board.Notifications.Rules.Actions
             var userId = _requestService.GetUserIdFromJwt();
             var user = await _queryBuilder.FindByIdAsync<UserEntity>(userId);
             var message = await _queryBuilder.FindByIdAsync<NotificationMessageEntity>(request.MessageId);
-            if (message == null)
-            {
-                throw new ItemNotFoundException("MessageId is incorrect");
-            }
+            
+            if (message == null) throw new ItemNotFoundException("MessageId is incorrect");
             
             ApplicationEntity application = null;
             if (request.ApplicationId.HasValue)
             {
-                application = await _queryBuilder.FindByIdAsync<ApplicationEntity>(request.MessageId);    
+                application = await _queryBuilder.FindByIdAsync<ApplicationEntity>(request.ApplicationId.Value);    
             }
-
             if (application != null && !application.IsOwner(user.Id))
-            {
                 throw new PermissionException("User has no permissions");
-            }
 
+            Enum.TryParse<LogicOperatorType>(request.LogicOperator, out var logicOperator);
+            Enum.TryParse<NotificationType>(request.Type, out var notificationType);
             var rule = await _notificationRuleService.SetRule(
                 user,
                 request.Period,
-                request.LogicOperator,
+                logicOperator,
+                notificationType,
                 message,
                 _mapper.Map<ICollection<NotificationConditionEntity>>(request.Conditions),
                 application,

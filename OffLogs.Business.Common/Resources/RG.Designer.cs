@@ -149,5 +149,14 @@ namespace OffLogs.Business.Common.Resources {
                 return ResourceManager.GetString("Error_IncorrectReCaptchaToken", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The user does not have access to do this..
+        /// </summary>
+        public static string Error_UserHasNotPermissions {
+            get {
+                return ResourceManager.GetString("Error_UserHasNotPermissions", resourceCulture);
+            }
+        }
     }
 }

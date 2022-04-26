@@ -82,6 +82,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Notifications
                 user,
                 expectedPeriod,
                 logicOperatorType,
+                NotificationType.Email,
                 message,
                 conditions,
                 user.Application

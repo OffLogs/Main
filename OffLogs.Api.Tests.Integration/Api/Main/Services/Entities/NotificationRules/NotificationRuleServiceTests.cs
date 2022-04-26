@@ -54,6 +54,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
                 expectedRule.User,
                 expectedRule.Period,
                 expectedRule.LogicOperator,
+                expectedRule.Type,
                 expectedRule.Message,
                 expectedRule.Conditions,
                 expectedRule.Application,
@@ -230,6 +231,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
                 UserModel,
                 expectedPeriod,
                 logicOperatorType,
+                NotificationType.Email,
                 message,
                 conditions,
                 UserModel.Application

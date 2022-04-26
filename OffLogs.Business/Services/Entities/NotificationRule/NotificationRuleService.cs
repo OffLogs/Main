@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Commands.Abstractions;
 using OffLogs.Business.Common.Constants.Notificatiions;
+using OffLogs.Business.Exceptions;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Dto.Entities;
 using OffLogs.Business.Orm.Entities;
@@ -36,18 +37,18 @@ public class NotificationRuleService: INotificationRuleService
         UserEntity user,
         int period,
         LogicOperatorType logicOperator,
+        NotificationType type,
         NotificationMessageEntity message,
         ICollection<NotificationConditionEntity> conditions,
         ApplicationEntity application = null,
         long? existsRuleId = null
     )
     {
-        if (message == null || !message.IsOwner(user.Id)) throw new ArgumentNullException(nameof(message));
+        if (message == null || !message.IsOwner(user.Id))
+            throw new PermissionException();
         
-        if (application != null && application.User.Id != user.Id)
-        {
-            throw new ArgumentException("The user is not application owner");
-        }
+        if (application != null && !application.IsOwner(user.Id))
+            throw new PermissionException();
 
         if (!conditions.Any())
         {
@@ -58,6 +59,8 @@ public class NotificationRuleService: INotificationRuleService
         if (existsRuleId.HasValue)
         {
             existsRule = await _queryBuilder.FindByIdAsync<NotificationRuleEntity>(existsRuleId.Value);
+            if (existsRule != null && !existsRule.IsOwner(user.Id))
+                throw new PermissionException();
         }
 
         var rule = new NotificationRuleEntity();
@@ -67,6 +70,7 @@ public class NotificationRuleService: INotificationRuleService
         }
         else
         {
+            rule.Type = type;
             rule.User = user;
             rule.CreateTime = DateTime.UtcNow;
             rule.LastExecutionTime = DateTime.UtcNow;
@@ -80,12 +84,10 @@ public class NotificationRuleService: INotificationRuleService
         rule.LogicOperator = logicOperator;
         rule.UpdateTime = DateTime.UtcNow;
 
+        rule.Conditions.Clear();
         foreach (var condition in conditions)
         {
-            if (existsRule == null)
-            {
-                condition.CreateTime = DateTime.UtcNow;
-            }
+            condition.CreateTime = DateTime.UtcNow;
             condition.UpdateTime = DateTime.UtcNow;
             condition.Rule = rule;
             rule.Conditions.Add(condition);

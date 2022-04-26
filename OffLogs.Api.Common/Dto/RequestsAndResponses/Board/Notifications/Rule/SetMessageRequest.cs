@@ -12,10 +12,6 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
     {
         [IsPositive(AllowZero = true)]
         public long? Id { get; set; }
-        
-        [Required]
-        [StringLength(512, MinimumLength = 1)]
-        public string Subject { get; set; }
 
         [Required]
         [IsPositive(AllowZero = false)]
@@ -26,12 +22,12 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
         public long? ApplicationId { get; set; }
         
         [Required]
-        [EnumDataType(typeof(ConditionFieldType))]
-        public NotificationType Type { get; set; }
+        [EnumDataType(typeof(NotificationType))]
+        public string Type { get; set; }
         
         [Required]
-        [EnumDataType(typeof(ConditionFieldType))]
-        public LogicOperatorType LogicOperator { get; set; }
+        [EnumDataType(typeof(LogicOperatorType))]
+        public string LogicOperator { get; set; }
         
         [Required]
         [IsPositive(AllowZero = false)]

@@ -16,6 +16,7 @@ public interface INotificationRuleService: IDomainService
         UserEntity user,
         int period,
         LogicOperatorType logicOperator,
+        NotificationType type,
         NotificationMessageEntity message,
         ICollection<NotificationConditionEntity> conditions,
         ApplicationEntity application = null,

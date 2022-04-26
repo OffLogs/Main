@@ -13,7 +13,7 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
     {
         [Required]
         [EnumDataType(typeof(ConditionFieldType))]
-        public virtual ConditionFieldType ConditionField { get; set; }
+        public virtual string ConditionField { get; set; }
         
         [Required]
         [EnumDataType(typeof(LogLevel))]
