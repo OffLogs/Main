@@ -19,7 +19,7 @@ namespace OffLogs.Business.Orm.Entities.Notifications
             Column = "notification_rule_id",
             Lazy = Laziness.Proxy,
             Fetch = FetchMode.Join,
-            Cascade = "delete-orphan"
+            Cascade = "none"
         )]
         public virtual NotificationRuleEntity Rule { get; set; }
 

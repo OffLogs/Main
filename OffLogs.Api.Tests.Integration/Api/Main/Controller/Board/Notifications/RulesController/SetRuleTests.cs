@@ -55,7 +55,6 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
         public async Task ShouldAddNew()
         {
             var expectedOperator = LogicOperatorType.Conjunction;
-            var user = await DataSeeder.CreateActivatedUser();
 
             var conditions = new List<SetConditionRequest>()
             {
@@ -64,10 +63,10 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             };
             
             // Act
-            var response = await PostRequestAsync(Url, user.ApiToken, new SetRuleRequest
+            var response = await PostRequestAsync(Url, _userModel.ApiToken, new SetRuleRequest
             {
                 Period = DefaultPeriod,
-                ApplicationId = user.ApplicationId,
+                ApplicationId = _userModel.ApplicationId,
                 Type = NotificationType.Email.ToString(),
                 LogicOperator = expectedOperator.ToString(),
                 MessageId = _expectedMessage.Id,
