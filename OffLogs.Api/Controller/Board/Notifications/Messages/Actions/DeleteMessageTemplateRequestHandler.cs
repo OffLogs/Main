@@ -15,20 +15,20 @@ using ValidationException = OffLogs.Business.Exceptions.ValidationException;
 
 namespace OffLogs.Api.Controller.Board.Notifications.Messages.Actions
 {
-    public class DeleteMessageRequestHandler : IAsyncRequestHandler<IdRequest>
+    public class DeleteMessageTemplateRequestHandler : IAsyncRequestHandler<IdRequest>
     {
         private readonly IRequestService _requestService;
         private readonly IAsyncCommandBuilder _commandBuilder;
         private readonly IAsyncQueryBuilder _asyncQueryBuilder;
         private readonly IMapper _mapper;
-        private readonly ILogger<DeleteMessageRequestHandler> _logger;
+        private readonly ILogger<DeleteMessageTemplateRequestHandler> _logger;
 
-        public DeleteMessageRequestHandler(
+        public DeleteMessageTemplateRequestHandler(
             IRequestService requestService,
             IAsyncCommandBuilder commandBuilder,
             IAsyncQueryBuilder asyncQueryBuilder,
             IMapper mapper,
-            ILogger<DeleteMessageRequestHandler> logger
+            ILogger<DeleteMessageTemplateRequestHandler> logger
             )
         {
             _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
@@ -41,7 +41,7 @@ namespace OffLogs.Api.Controller.Board.Notifications.Messages.Actions
         public async Task ExecuteAsync(IdRequest request)
         {
             var userId = _requestService.GetUserIdFromJwt();
-            var message = await _asyncQueryBuilder.FindByIdAsync<NotificationMessageEntity>(request.Id);
+            var message = await _asyncQueryBuilder.FindByIdAsync<MessageTemplateEntity>(request.Id);
             if (message == null)
             {
                 throw new ItemNotFoundException("Message not found");

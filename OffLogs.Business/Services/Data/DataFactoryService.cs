@@ -171,9 +171,9 @@ namespace OffLogs.Business.Services.Data
                 );
         }
         
-        public Faker<NotificationMessageEntity> NotificationMessageFactory()
+        public Faker<MessageTemplateEntity> NotificationMessageFactory()
         {
-            return new Faker<NotificationMessageEntity>()
+            return new Faker<MessageTemplateEntity>()
                 .RuleFor(
                     entity => entity.Subject,
                     (faker) => faker.Lorem.Sentence()

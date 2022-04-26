@@ -9,16 +9,19 @@
 <div class="w-left-menu">
     <div class="w-task-menu">
         <NavLink href="@SiteUrl.Dashboard" Match="NavLinkMatch.All">
-            <i class="icofont-dashboard-web"></i>
+            <Icon Name="dashboard-web" />
         </NavLink>
         <NavLink href="@SiteUrl.DashboardApplications" Match="NavLinkMatch.All">
-            <i class="icofont-box"></i>
+            <Icon Name="box" />
         </NavLink>
         <NavLink href="@SiteUrl.DashboardLogs" Match="NavLinkMatch.All">
-            <i class="icofont-inbox"></i>
+            <Icon Name="inbox" />
+        </NavLink>
+        <NavLink href="@SiteUrl.DashboardNotifications" Match="NavLinkMatch.All">
+            <Icon Name="notification" />
         </NavLink>
         <NavLink href="@SiteUrl.DashboardSettings" Match="NavLinkMatch.All">
-            <i class="icofont-settings-alt"></i>
+            <Icon Name="settings-alt" />
         </NavLink>
         <a @onclick="OnLogout"
            href="#"

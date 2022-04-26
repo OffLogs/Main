@@ -9,8 +9,8 @@ namespace OffLogs.Api.Profiles.Notifications
     {
         public NotificationMessageProfile()
         {
-            CreateMap<NotificationMessageEntity, NotificationMessageDto>();
-            CreateMap<SetMessageRequest, NotificationMessageEntity>();
+            CreateMap<MessageTemplateEntity, MessageTemplateDto>();
+            CreateMap<SetMessageTemplateRequest, MessageTemplateEntity>();
         }
     }
 }

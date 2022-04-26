@@ -1,12 +1,9 @@
-﻿<span class="material-icons @Class" @onclick="@OnClick">@IconType</span>
+﻿<span class="icofont-@Name" @onclick="@OnClick"></span>
 
 @code {
 
     [Parameter]
-    public string IconType { get; set; } = "";
-    
-    [Parameter]
-    public string Class { get; set; } = "";
+    public string Name { get; set; } = "";
 
     [Parameter]
     public EventCallback<MouseEventArgs> OnClick { get; set; }

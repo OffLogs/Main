@@ -38,13 +38,13 @@ public class NotificationRuleService: INotificationRuleService
         int period,
         LogicOperatorType logicOperator,
         NotificationType type,
-        NotificationMessageEntity message,
+        MessageTemplateEntity messageTemplate,
         ICollection<NotificationConditionEntity> conditions,
         ApplicationEntity application = null,
         long? existsRuleId = null
     )
     {
-        if (message == null || !message.IsOwner(user.Id))
+        if (messageTemplate == null || !messageTemplate.IsOwner(user.Id))
             throw new PermissionException();
         
         if (application != null && !application.IsOwner(user.Id))
@@ -78,7 +78,7 @@ public class NotificationRuleService: INotificationRuleService
         }
         
         rule.Application = application;
-        rule.Message = message;
+        rule.MessageTemplate = messageTemplate;
         rule.Period = period;
         rule.Type = NotificationType.Email;
         rule.LogicOperator = logicOperator;

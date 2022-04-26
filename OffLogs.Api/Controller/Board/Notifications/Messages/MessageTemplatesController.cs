@@ -15,12 +15,12 @@ namespace OffLogs.Api.Controller.Board.Notifications.Messages
     [Authorize]
     [Route("/board/notifications/[controller]")]
     [ApiController]
-    public class MessagesController : MainApiControllerBase
+    public class MessageTemplatesController : MainApiControllerBase
     {
-        public MessagesController(
+        public MessageTemplatesController(
             IAsyncRequestBuilder asyncRequestBuilder,
             IDbSessionProvider commitPerformer,
-            ILogger<MessagesController> logger
+            ILogger<MessageTemplatesController> logger
         ) : base(asyncRequestBuilder, commitPerformer, logger)
         {
         }
@@ -28,8 +28,8 @@ namespace OffLogs.Api.Controller.Board.Notifications.Messages
         [HttpPost("set")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public Task<IActionResult> SetMessage(SetMessageRequest request)
-            => this.RequestAsync().For<NotificationMessageDto>().With(request);
+        public Task<IActionResult> SetMessage(SetMessageTemplateRequest templateRequest)
+            => this.RequestAsync().For<MessageTemplateDto>().With(templateRequest);
         
         [HttpPost("delete")]
         [ProducesResponseType(StatusCodes.Status200OK)]

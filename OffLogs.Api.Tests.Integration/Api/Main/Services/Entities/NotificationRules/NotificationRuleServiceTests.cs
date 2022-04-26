@@ -35,7 +35,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
 
             var actualRule = await CreateRule();
             
-            Assert.NotEmpty(actualRule.Message.Subject);
+            Assert.NotEmpty(actualRule.MessageTemplate.Subject);
             Assert.Equal(expectedPeriod, actualRule.Period);
             Assert.Equal(expectedOperator, actualRule.LogicOperator);
             Assert.True(actualRule.LastExecutionTime > DateTime.MinValue);
@@ -55,7 +55,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
                 expectedRule.Period,
                 expectedRule.LogicOperator,
                 expectedRule.Type,
-                expectedRule.Message,
+                expectedRule.MessageTemplate,
                 expectedRule.Conditions,
                 expectedRule.Application,
                 actualRule.Id
@@ -63,7 +63,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
             
             Assert.Equal(actualRule.Application.Id, expectedRule.Application.Id);
             Assert.Equal(actualRule.User.Id, expectedRule.User.Id);
-            Assert.Equal(actualRule.Message, expectedRule.Message);
+            Assert.Equal(actualRule.MessageTemplate, expectedRule.MessageTemplate);
             Assert.Equal(actualRule.Period, expectedRule.Period);
             Assert.Equal(actualRule.Type, expectedRule.Type);
         }

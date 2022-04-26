@@ -9,13 +9,13 @@ using OffLogs.Business.Orm.Entities.Notifications;
 using OffLogs.Business.Test.Extensions;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.MessagesController
+namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.MessageTemplatesController
 {
     public partial class SetMessageTests : MyApiIntegrationTest
     {
         private const string Url = MainApiUrl.NotificationMessageSet;
 
-        private readonly Faker<NotificationMessageEntity> _messageFactory;
+        private readonly Faker<MessageTemplateEntity> _messageFactory;
         
         public SetMessageTests(ApiCustomWebApplicationFactory factory) : base(factory)
         {
@@ -28,7 +28,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             var expectedMessage = _messageFactory.Generate();
 
             // Act
-            var response = await PostRequestAsAnonymousAsync(Url, new SetMessageRequest()
+            var response = await PostRequestAsAnonymousAsync(Url, new SetMessageTemplateRequest()
             {
                 Subject = expectedMessage.Subject,
                 Body = expectedMessage.Body
@@ -44,14 +44,14 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             var user = await DataSeeder.CreateActivatedUser();
 
             // Act
-            var response = await PostRequestAsync(Url, user.ApiToken, new SetMessageRequest()
+            var response = await PostRequestAsync(Url, user.ApiToken, new SetMessageTemplateRequest()
             {
                 Subject = expectedMessage.Subject,
                 Body = expectedMessage.Body
             });
             // Assert
             response.EnsureSuccessStatusCode();
-            var data = await response.GetJsonDataAsync<NotificationMessageDto>();
+            var data = await response.GetJsonDataAsync<MessageTemplateDto>();
             Assert.True(data.Id > 0);
             Assert.Equal(expectedMessage.Subject, data.Subject);
             Assert.Equal(expectedMessage.Body, data.Body);
@@ -67,7 +67,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             oldMessage.User = user;
             await CommandBuilder.SaveAsync(oldMessage);
             // Act
-            var response = await PostRequestAsync(Url, user.ApiToken, new SetMessageRequest()
+            var response = await PostRequestAsync(Url, user.ApiToken, new SetMessageTemplateRequest()
             {
                 Id = oldMessage.Id,
                 Subject = expectedMessage.Subject,
@@ -75,7 +75,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             });
             // Assert
             response.EnsureSuccessStatusCode();
-            var data = await response.GetJsonDataAsync<NotificationMessageDto>();
+            var data = await response.GetJsonDataAsync<MessageTemplateDto>();
             Assert.Equal(oldMessage.Id, data.Id);
             Assert.Equal(expectedMessage.Subject, data.Subject);
             Assert.Equal(expectedMessage.Body, data.Body);
@@ -91,7 +91,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             oldMessage.User = user;
             await CommandBuilder.SaveAsync(oldMessage);
             // Act
-            var response = await PostRequestAsync(Url, user2.ApiToken, new SetMessageRequest()
+            var response = await PostRequestAsync(Url, user2.ApiToken, new SetMessageTemplateRequest()
             {
                 Id = oldMessage.Id,
                 Subject = oldMessage.Subject,

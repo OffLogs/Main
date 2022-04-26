@@ -33,13 +33,13 @@ namespace OffLogs.Business.Orm.Entities.Notifications
         public virtual ApplicationEntity Application { get; set; }
         
         [ManyToOne(
-            ClassType = typeof(NotificationMessageEntity),
+            ClassType = typeof(MessageTemplateEntity),
             Column = "notification_message_id",
             Lazy = Laziness.Proxy,
             Fetch = FetchMode.Join,
             Cascade = "save-update"
         )]
-        public virtual NotificationMessageEntity Message { get; set; }
+        public virtual MessageTemplateEntity MessageTemplate { get; set; }
         
         [Property(NotNull = true)]
         [Column(Name = "notification_type_id", SqlType = "int", NotNull = true)]

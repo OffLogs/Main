@@ -22,18 +22,18 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
 
         private const int DefaultPeriod = 300;
 
-        private readonly Faker<NotificationMessageEntity> _messageFactory;
+        private readonly Faker<MessageTemplateEntity> _messageFactory;
         private readonly INotificationRuleService _notificationRuleService;
-        private readonly NotificationMessageEntity _expectedMessage;
+        private readonly MessageTemplateEntity _expectedMessageTemplate;
         private UserTestModel _userModel { get; set; }
 
         public SetRuleTests(ApiCustomWebApplicationFactory factory) : base(factory)
         {
             _userModel = DataSeeder.CreateActivatedUser().Result;
             _messageFactory = DataFactory.NotificationMessageFactory();
-            _expectedMessage = _messageFactory.Generate();
-            _expectedMessage.User = _userModel;
-            CommandBuilder.SaveAsync(_expectedMessage).Wait();
+            _expectedMessageTemplate = _messageFactory.Generate();
+            _expectedMessageTemplate.User = _userModel;
+            CommandBuilder.SaveAsync(_expectedMessageTemplate).Wait();
             
             _notificationRuleService = _factory.Services.GetRequiredService<INotificationRuleService>();
         }
@@ -69,7 +69,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
                 ApplicationId = _userModel.ApplicationId,
                 Type = NotificationType.Email.ToString(),
                 LogicOperator = expectedOperator.ToString(),
-                MessageId = _expectedMessage.Id,
+                MessageId = _expectedMessageTemplate.Id,
                 Conditions = conditions
             });
             // Assert
@@ -77,7 +77,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             var data = await response.GetJsonDataAsync<NotificationRuleDto>();
             Assert.True(data.Id > 0);
             Assert.Equal(DefaultPeriod, data.Period);
-            Assert.Equal(_expectedMessage.Id, data.Message.Id);
+            Assert.Equal(_expectedMessageTemplate.Id, data.MessageTemplate.Id);
             Assert.Equal(conditions.Count, data.Conditions.Count);
             Assert.Equal(expectedOperator, data.LogicOperator);
         }
@@ -104,7 +104,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
                 ApplicationId = _userModel.ApplicationId,
                 Type = NotificationType.Email.ToString(),
                 LogicOperator = expectedOperator.ToString(),
-                MessageId = _expectedMessage.Id,
+                MessageId = _expectedMessageTemplate.Id,
                 Conditions = conditions
             });
             // Assert
@@ -112,7 +112,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             var data = await response.GetJsonDataAsync<NotificationRuleDto>();
             Assert.Equal(actualRule.Id, data.Id);
             Assert.Equal(expectedPeriod, data.Period);
-            Assert.Equal(_expectedMessage.Id, data.Message.Id);
+            Assert.Equal(_expectedMessageTemplate.Id, data.MessageTemplate.Id);
             Assert.Equal(conditions.Count, data.Conditions.Count);
             Assert.Equal(expectedOperator, data.LogicOperator);
         }
@@ -140,7 +140,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
                 ApplicationId = _userModel.ApplicationId,
                 Type = NotificationType.Email.ToString(),
                 LogicOperator = expectedOperator.ToString(),
-                MessageId = _expectedMessage.Id,
+                MessageId = _expectedMessageTemplate.Id,
                 Conditions = conditions
             });
             // Assert
@@ -167,7 +167,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
                 expectedPeriod,
                 LogicOperatorType.Conjunction,
                 NotificationType.Email,
-                _expectedMessage,
+                _expectedMessageTemplate,
                 conditions,
                 _userModel.Application
             );

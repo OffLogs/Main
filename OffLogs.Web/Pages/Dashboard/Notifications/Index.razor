@@ -1,0 +1,16 @@
+@page "/dashboard/notifications"
+@page "/{locale}/dashboard/notifications"
+
+@using OffLogs.Web.Shared.Ui.NavigationLayout
+@using OffLogs.Web.Resources
+
+@inherits BaseComponent
+
+<NavigationLayout
+    MenuTitle="@NotificationResources.PageTitle"
+    MenuItems="@_menuItems"
+    ListItems="@_listItems"
+    OnSelectMenuItem="OnSelectMenuItem"
+>
+    <BodyContent>Test body</BodyContent>
+</NavigationLayout>
