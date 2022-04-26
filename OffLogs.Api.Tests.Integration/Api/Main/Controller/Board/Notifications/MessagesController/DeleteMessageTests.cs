@@ -1,17 +1,14 @@
 using System.Net;
 using System.Threading.Tasks;
 using Bogus;
-using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses;
-using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Settings.NotificationMessage;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities.Notifications;
 using OffLogs.Business.Orm.Queries;
-using OffLogs.Business.Test.Extensions;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Settings.NotificationMessagesController
+namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.MessagesController
 {
     public partial class DeleteMessageTests : MyApiIntegrationTest
     {

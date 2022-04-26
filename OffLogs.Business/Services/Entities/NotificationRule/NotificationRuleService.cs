@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Commands.Abstractions;
 using OffLogs.Business.Common.Constants.Notificatiions;
+using OffLogs.Business.Exceptions;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Dto.Entities;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Entities.Notifications;
+using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Orm.Queries.Entities.NotificationRule;
 using Persistence.Transactions.Behaviors;
 using Queries.Abstractions;
@@ -31,40 +33,58 @@ public class NotificationRuleService: INotificationRuleService
         _dbSessionProvider = dbSessionProvider;
     }
 
-    public async Task<NotificationRuleEntity> CreateRule(
+    public async Task<NotificationRuleEntity> SetRule(
         UserEntity user,
         int period,
         LogicOperatorType logicOperator,
+        NotificationType type,
         NotificationMessageEntity message,
         ICollection<NotificationConditionEntity> conditions,
-        ApplicationEntity application = null
+        ApplicationEntity application = null,
+        long? existsRuleId = null
     )
     {
-        if (message == null) throw new ArgumentNullException(nameof(message));
+        if (message == null || !message.IsOwner(user.Id))
+            throw new PermissionException();
         
-        if (application != null && application.User.Id != user.Id)
-        {
-            throw new ArgumentException("The user is not application owner");
-        }
+        if (application != null && !application.IsOwner(user.Id))
+            throw new PermissionException();
 
         if (!conditions.Any())
         {
             throw new ArgumentException("List of conditions can not be empty");
         }
 
-        var rule = new NotificationRuleEntity
+        NotificationRuleEntity existsRule = null;
+        if (existsRuleId.HasValue)
         {
-            User = user,
-            Application = application,
-            Message = message,
-            Period = period,
-            LastExecutionTime = DateTime.UtcNow,
-            Type = NotificationType.Email,
-            IsExecuting = false,
-            LogicOperator = logicOperator,
-            CreateTime = DateTime.UtcNow,
-            UpdateTime = DateTime.UtcNow
-        };
+            existsRule = await _queryBuilder.FindByIdAsync<NotificationRuleEntity>(existsRuleId.Value);
+            if (existsRule != null && !existsRule.IsOwner(user.Id))
+                throw new PermissionException();
+        }
+
+        var rule = new NotificationRuleEntity();
+        if (existsRule != null)
+        {
+            rule = existsRule;
+        }
+        else
+        {
+            rule.Type = type;
+            rule.User = user;
+            rule.CreateTime = DateTime.UtcNow;
+            rule.LastExecutionTime = DateTime.UtcNow;
+            rule.IsExecuting = false;
+        }
+        
+        rule.Application = application;
+        rule.Message = message;
+        rule.Period = period;
+        rule.Type = NotificationType.Email;
+        rule.LogicOperator = logicOperator;
+        rule.UpdateTime = DateTime.UtcNow;
+
+        rule.Conditions.Clear();
         foreach (var condition in conditions)
         {
             condition.CreateTime = DateTime.UtcNow;
@@ -75,7 +95,7 @@ public class NotificationRuleService: INotificationRuleService
         await _commandBuilder.SaveAsync(rule);
         return rule;
     }
-    
+
     public async Task<NotificationRuleEntity> GetNextAndSetExecutingAsync()
     {
         var notificationRule = await _queryBuilder.For<NotificationRuleEntity>().WithAsync(new GetNextNonActiveCriteria());

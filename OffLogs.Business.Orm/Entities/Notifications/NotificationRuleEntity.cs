@@ -18,8 +18,7 @@ namespace OffLogs.Business.Orm.Entities.Notifications
             ClassType = typeof(UserEntity),
             Column = "user_id",
             Lazy = Laziness.Proxy,
-            Fetch = FetchMode.Join,
-            Cascade = "delete-orphan"
+            Fetch = FetchMode.Join
         )]
         public virtual UserEntity User { get; set; }
         
@@ -27,8 +26,7 @@ namespace OffLogs.Business.Orm.Entities.Notifications
             ClassType = typeof(ApplicationEntity),
             Column = "application_id",
             Lazy = Laziness.Proxy,
-            Fetch = FetchMode.Join,
-            Cascade = "delete-orphan"
+            Fetch = FetchMode.Join
         )]
         public virtual ApplicationEntity Application { get; set; }
         
@@ -36,8 +34,7 @@ namespace OffLogs.Business.Orm.Entities.Notifications
             ClassType = typeof(NotificationMessageEntity),
             Column = "notification_message_id",
             Lazy = Laziness.Proxy,
-            Fetch = FetchMode.Join,
-            Cascade = "delete-orphan"
+            Fetch = FetchMode.Join
         )]
         public virtual NotificationMessageEntity Message { get; set; }
         
@@ -51,7 +48,7 @@ namespace OffLogs.Business.Orm.Entities.Notifications
         
         [Property(NotNull = true)]
         [Column(Name = "period", SqlType = "int", NotNull = true)]
-        public virtual long Period { get; set; }
+        public virtual int Period { get; set; }
         
         [Property(NotNull = true, TypeType = typeof(UtcDateTimeType))]
         [Column(Name = "last_execution_time", SqlType = "datetime", NotNull = true)]
@@ -75,5 +72,10 @@ namespace OffLogs.Business.Orm.Entities.Notifications
         public virtual ICollection<NotificationConditionEntity> Conditions { get; set; } = new List<NotificationConditionEntity>();
         
         public NotificationRuleEntity() {}
+        
+        public virtual bool IsOwner(long userId)
+        {
+            return User.Id == userId;
+        }
     }
 }
