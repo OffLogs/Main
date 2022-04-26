@@ -18,7 +18,8 @@ namespace OffLogs.Business.Orm.Entities.Notifications
             ClassType = typeof(UserEntity),
             Column = "user_id",
             Lazy = Laziness.Proxy,
-            Fetch = FetchMode.Join
+            Fetch = FetchMode.Join,
+            Cascade = "none"
         )]
         public virtual UserEntity User { get; set; }
         
@@ -26,7 +27,8 @@ namespace OffLogs.Business.Orm.Entities.Notifications
             ClassType = typeof(ApplicationEntity),
             Column = "application_id",
             Lazy = Laziness.Proxy,
-            Fetch = FetchMode.Join
+            Fetch = FetchMode.Join,
+            Cascade = "none"
         )]
         public virtual ApplicationEntity Application { get; set; }
         
@@ -34,7 +36,8 @@ namespace OffLogs.Business.Orm.Entities.Notifications
             ClassType = typeof(NotificationMessageEntity),
             Column = "notification_message_id",
             Lazy = Laziness.Proxy,
-            Fetch = FetchMode.Join
+            Fetch = FetchMode.Join,
+            Cascade = "save-update"
         )]
         public virtual NotificationMessageEntity Message { get; set; }
         
