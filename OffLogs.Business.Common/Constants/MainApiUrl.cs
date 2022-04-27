@@ -33,6 +33,7 @@ namespace OffLogs.Business.Common.Constants
         public const string NotificationMessageTemplateDelete = "board/notifications/message-templates/delete";
         public const string NotificationMessageTemplateList = "board/notifications/message-templates/list";
         public const string NotificationRulesSet = "board/notifications/rules/set";
+        public const string NotificationRulesList = "board/notifications/rules/list";
         #endregion
     }
 }

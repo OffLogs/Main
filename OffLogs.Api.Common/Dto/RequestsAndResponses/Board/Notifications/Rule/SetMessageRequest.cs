@@ -21,19 +21,29 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
         [IsPositive(AllowZero = false)]
         public long? ApplicationId { get; set; }
         
-        [Required]
-        [EnumDataType(typeof(NotificationType))]
+        [
+            Required, 
+            EnumDataType(typeof(NotificationType))
+        ]
         public string Type { get; set; }
         
-        [Required]
-        [EnumDataType(typeof(LogicOperatorType))]
+        [
+            Required,
+            EnumDataType(typeof(LogicOperatorType))
+        ]
         public string LogicOperator { get; set; }
         
-        [Required]
-        [IsPositive(AllowZero = false)]
-        [Range(300, 2_678_400)]
+        [
+            Required,
+            IsPositive(AllowZero = false),
+            Range(300, 2_678_400)
+        ]
         public int Period { get; set; }
 
+        [
+            Required,
+            MinLength(1)
+        ]
         public ICollection<SetConditionRequest> Conditions { get; set; } = new List<SetConditionRequest>();
     }
 }

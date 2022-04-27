@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Bogus;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule;
@@ -51,6 +52,28 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             Assert.True(response.StatusCode == HttpStatusCode.Unauthorized);
         }
 
+        [Fact]
+        public async Task ShouldContainAtLeastOneCondition()
+        {
+            var expectedOperator = LogicOperatorType.Conjunction;
+
+            var conditions = new List<SetConditionRequest>(){};
+            
+            // Act
+            var response = await PostRequestAsync(Url, _userModel.ApiToken, new SetRuleRequest
+            {
+                Period = DefaultPeriod,
+                ApplicationId = _userModel.ApplicationId,
+                Type = NotificationType.Email.ToString(),
+                LogicOperator = expectedOperator.ToString(),
+                MessageId = _expectedMessageTemplate.Id,
+                Conditions = conditions
+            });
+            // Assert
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Contains("Conditions", await response.GetDataAsStringAsync());
+        }
+        
         [Fact]
         public async Task ShouldAddNew()
         {
