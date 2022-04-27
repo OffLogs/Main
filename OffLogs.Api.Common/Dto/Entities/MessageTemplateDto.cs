@@ -2,12 +2,16 @@
 
 namespace OffLogs.Api.Common.Dto.Entities
 {
-    public class NotificationMessageDto : IResponse
+    public class MessageTemplateDto : IResponse
     {
         public long Id { get; set; }
         
         public string Subject { get; set; }
         
         public string Body { get; set; }
+
+        public MessageTemplateDto()
+        {
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Commands.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Net.Http.Headers;
 using Notification.Abstractions;
 using OffLogs.Api.Tests.Integration.Core.Faker;
 using OffLogs.Api.Tests.Integration.Core.Service;
@@ -127,6 +128,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
 
             var client = _factory.CreateClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
+            client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+            client.DefaultRequestHeaders.Add(HeaderNames.Accept, "text/json");
             return await client.GetAsync(url);
         }
         #endregion

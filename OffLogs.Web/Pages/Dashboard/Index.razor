@@ -1,12 +1,11 @@
 ﻿@page "/dashboard"
 @page "/{locale}/dashboard"
 
-@using Microsoft.Extensions.Logging
 @using OffLogs.Web.Resources
 @using OffLogs.Web.Shared.Ui.NavigationLayout
 @using OffLogs.Web.Shared.Components
 
-@inject ILogger<Index> _logger
+@inherits BaseComponent
 
 <NavigationLayout
     MenuTitle="@CommonResources.PageTitle_Dashboard"

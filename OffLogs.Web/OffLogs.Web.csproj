@@ -14,19 +14,15 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>AuthResources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <Compile Update="Resources\AuthResources.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>AuthResources.resx</DependentUpon>
-      </Compile>
-      <EmbeddedResource Update="Resources\ApplicationResources.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>ApplicationResources.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
       <Compile Update="Resources\ApplicationResources.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>ApplicationResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\AuthResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>AuthResources.resx</DependentUpon>
       </Compile>
       <EmbeddedResource Update="Resources\LogResources.resx">
         <Generator>ResXFileCodeGenerator</Generator>
@@ -55,6 +51,24 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>LandingPageResources.resx</DependentUpon>
       </Compile>
+      <EmbeddedResource Update="Resources\NotificationResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>NotificationResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <Compile Update="Resources\NotificationResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>NotificationResources.resx</DependentUpon>
+      </Compile>
+      <EmbeddedResource Update="Resources\ApplicationResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>ApplicationResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <Compile Update="Resources\ApplicationResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ApplicationResources.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -80,6 +94,7 @@
       <Folder Include="Shared\Ui\Form\AutoComplete\" />
       <Folder Include="Store\Auth\Effects" />
       <Folder Include="Store\Log\Models" />
+      <Folder Include="Store\Notification\Actions" />
     </ItemGroup>
 
     <ItemGroup>

@@ -2,6 +2,7 @@ using OffLogs.Api.Common.Dto;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Requests.Board.Log;
 using System.Threading.Tasks;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Message;
 using OffLogs.Business.Common.Constants.Permissions;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.User;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
@@ -51,6 +52,12 @@ namespace OffLogs.Web.Services.Http
 
         Task<bool> RegistrationStep1Async(RegistrationStep1Request model);
         Task<RegistrationStep2ResponseDto> RegistrationStep2Async(RegistrationStep2Request model);
+
+        #endregion
+
+        #region Notifications
+
+        Task<MessageTemplateDto> NotificationMessageSet(SetMessageTemplateRequest templateRequest);
 
         #endregion
     }

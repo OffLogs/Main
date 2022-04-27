@@ -17,7 +17,7 @@ public interface INotificationRuleService: IDomainService
         int period,
         LogicOperatorType logicOperator,
         NotificationType type,
-        NotificationMessageEntity message,
+        MessageTemplateEntity messageTemplate,
         ICollection<NotificationConditionEntity> conditions,
         ApplicationEntity application = null,
         long? existsRuleId = null

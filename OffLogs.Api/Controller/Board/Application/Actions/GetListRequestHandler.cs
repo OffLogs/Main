@@ -8,7 +8,6 @@ using OffLogs.Api.Common.Dto;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application;
 using OffLogs.Business.Common.Dto;
-using OffLogs.Business.Orm.Dto;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries.Entities.Application;
 using OffLogs.Business.Services.Api;

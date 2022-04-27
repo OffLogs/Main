@@ -15,14 +15,14 @@ using Queries.Abstractions;
 
 namespace OffLogs.Api.Controller.Board.Notifications.Messages.Actions
 {
-    public class SetMessageRequestHandler : IAsyncRequestHandler<SetMessageRequest, NotificationMessageDto>
+    public class SetMessageTemplateRequestHandler : IAsyncRequestHandler<SetMessageTemplateRequest, MessageTemplateDto>
     {
         private readonly IRequestService _requestService;
         private readonly IAsyncCommandBuilder _commandBuilder;
         private readonly IAsyncQueryBuilder _asyncQueryBuilder;
         private readonly IMapper _mapper;
 
-        public SetMessageRequestHandler(
+        public SetMessageTemplateRequestHandler(
             IRequestService requestService,
             IAsyncCommandBuilder commandBuilder,
             IAsyncQueryBuilder asyncQueryBuilder,
@@ -35,13 +35,13 @@ namespace OffLogs.Api.Controller.Board.Notifications.Messages.Actions
             _mapper = mapper;
         }
 
-        public async Task<NotificationMessageDto> ExecuteAsync(SetMessageRequest request)
+        public async Task<MessageTemplateDto> ExecuteAsync(SetMessageTemplateRequest templateRequest)
         {
             var userId = _requestService.GetUserIdFromJwt();
-            var message = new NotificationMessageEntity();
-            if (request.Id.HasValue)
+            var message = new MessageTemplateEntity();
+            if (templateRequest.Id.HasValue)
             {
-                message = await _asyncQueryBuilder.FindByIdAsync<NotificationMessageEntity>(request.Id.Value);
+                message = await _asyncQueryBuilder.FindByIdAsync<MessageTemplateEntity>(templateRequest.Id.Value);
                 if (!message.IsOwner(userId))
                 {
                     throw new PermissionException("User has no permissions to change this message");
@@ -54,10 +54,10 @@ namespace OffLogs.Api.Controller.Board.Notifications.Messages.Actions
             }
 
             message.UpdateTime = DateTime.UtcNow;
-            message.Subject = request.Subject;
-            message.Body = request.Body;
+            message.Subject = templateRequest.Subject;
+            message.Body = templateRequest.Body;
             await _commandBuilder.SaveAsync(message);
-            return _mapper.Map<NotificationMessageDto>(message);
+            return _mapper.Map<MessageTemplateDto>(message);
         }
     }
 }

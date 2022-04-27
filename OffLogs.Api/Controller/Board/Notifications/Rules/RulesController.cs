@@ -5,11 +5,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using OffLogs.Api.Common.Dto;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Message;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule;
 using Persistence.Transactions.Behaviors;
+using GetListRequest = OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule.GetListRequest;
 
 namespace OffLogs.Api.Controller.Board.Notifications.Rules
 {
@@ -26,8 +28,14 @@ namespace OffLogs.Api.Controller.Board.Notifications.Rules
         {
         }
 
+        [HttpPost("list")]
+        [ProducesResponseType(typeof(ListDto<NotificationRuleDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public Task<IActionResult> GetList(GetListRequest request)
+            => this.RequestAsync().For<ListDto<NotificationRuleDto>>().With(request);
+        
         [HttpPost("set")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(NotificationRuleDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public Task<IActionResult> SetMessage(SetRuleRequest request)
             => this.RequestAsync().For<NotificationRuleDto>().With(request);

@@ -8,7 +8,7 @@ namespace OffLogs.Business.Test.Extensions
     {
         public static async Task<T> GetJsonDataAsync<T>(this HttpResponseMessage response)
         {
-            var stringData = await response.GetJsonDataStringAsync();
+            var stringData = await response.GetDataAsStringAsync();
             return JsonHelper.DeserializeObject<T>(stringData);
         }
         
@@ -17,7 +17,7 @@ namespace OffLogs.Business.Test.Extensions
             return await response.GetJsonDataAsync<object>();
         }
         
-        public static async Task<string> GetJsonDataStringAsync(this HttpResponseMessage response)
+        public static async Task<string> GetDataAsStringAsync(this HttpResponseMessage response)
         {
             return await response.Content.ReadAsStringAsync();
         }

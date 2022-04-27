@@ -57,7 +57,7 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
                     {
                         notificationContext = new EmailNotificationContext()
                         {
-                            Subject = rule.Message.Subject,
+                            Subject = rule.MessageTemplate.Subject,
                             Body = PrepareBody(rule, dataByRule),
                             To = notificationReceivers
                         };
@@ -74,7 +74,7 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
 
     private string PrepareBody(NotificationRuleEntity rule, ProcessingDataDto ruleData) 
     {
-        var builder = new TemplatedTextBuilder(rule.Message.Body);
+        var builder = new TemplatedTextBuilder(rule.MessageTemplate.Body);
         builder.AddPlaceholder("applicationName", rule.Application.Name);
         builder.AddPlaceholder("navigateUrl", $"{_frontendUrl}/{_logsPageUrl}/{rule.Application.Id}");
         builder.AddPlaceholder("logCount", ruleData.LogCount.ToString());

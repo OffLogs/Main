@@ -8,13 +8,13 @@ using OffLogs.Business.Orm.Entities.Notifications;
 using OffLogs.Business.Orm.Queries;
 using Xunit;
 
-namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.MessagesController
+namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.MessageTemplatesController
 {
     public partial class DeleteMessageTests : MyApiIntegrationTest
     {
-        private const string Url = MainApiUrl.NotificationMessageDelete;
+        private const string Url = MainApiUrl.NotificationMessageTemplateDelete;
 
-        private readonly Faker<NotificationMessageEntity> _messageFactory;
+        private readonly Faker<MessageTemplateEntity> _messageFactory;
         
         public DeleteMessageTests(ApiCustomWebApplicationFactory factory) : base(factory)
         {
@@ -51,7 +51,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             response.EnsureSuccessStatusCode();
 
             DbSessionProvider.CurrentSession.Clear();
-            message = await QueryBuilder.FindByIdAsync<NotificationMessageEntity>(message.Id);
+            message = await QueryBuilder.FindByIdAsync<MessageTemplateEntity>(message.Id);
             Assert.Null(message);
         }
         

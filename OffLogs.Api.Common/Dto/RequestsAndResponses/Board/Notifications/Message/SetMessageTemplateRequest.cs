@@ -5,7 +5,7 @@ using OffLogs.Business.Common.Mvc.Attribute.Validation;
 
 namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Message
 {
-    public class SetMessageRequest : IRequest<NotificationMessageDto>
+    public class SetMessageTemplateRequest : IRequest<MessageTemplateDto>
     {
         [IsPositive(AllowZero = true)]
         public long? Id { get; set; }

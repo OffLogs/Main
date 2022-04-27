@@ -9,7 +9,7 @@ namespace OffLogs.Api.Common.Dto.Entities
     {
         public long Id { get; set; }
         
-        public NotificationMessageDto Message { get; set; }
+        public MessageTemplateDto MessageTemplate { get; set; }
         
         public NotificationType Type { get; set; }
         

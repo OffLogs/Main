@@ -6,8 +6,8 @@ using NHibernate.Type;
 
 namespace OffLogs.Business.Orm.Entities.Notifications
 {
-    [Class(Table = "notification_messages")]
-    public class NotificationMessageEntity: IEntity
+    [Class(Table = "notification_message_templates")]
+    public class MessageTemplateEntity: IEntity
     {
         [Id(Name = "Id", Generator = "native")]
         [Column(Name = "id", SqlType = "bigint", NotNull = true)]
@@ -37,9 +37,9 @@ namespace OffLogs.Business.Orm.Entities.Notifications
         [Column(Name = "update_time", SqlType = "datetime", NotNull = true)]
         public virtual DateTime UpdateTime { get; set; }
         
-        public NotificationMessageEntity() {}
+        public MessageTemplateEntity() {}
 
-        public NotificationMessageEntity(string subject, string body)
+        public MessageTemplateEntity(string subject, string body)
         {
             Subject = subject;
             Body = body;
