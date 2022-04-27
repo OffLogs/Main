@@ -29,8 +29,9 @@ namespace OffLogs.Business.Common.Constants
         public const string PermissionAddAccess = "board/permission/addAccess";
         public const string PermissionRemoveAccess = "board/permission/removeAccess";
         
-        public const string NotificationMessageSet = "board/notifications/message-templates/set";
+        public const string NotificationMessageTemplateSet = "board/notifications/message-templates/set";
         public const string NotificationMessageTemplateDelete = "board/notifications/message-templates/delete";
+        public const string NotificationMessageTemplateList = "board/notifications/message-templates/list";
         public const string NotificationRulesSet = "board/notifications/rules/set";
         #endregion
     }

@@ -7,6 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Api.Requests.Abstractions\Api.Requests.Abstractions.csproj" />
     <ProjectReference Include="..\OffLogs.Business.Common\OffLogs.Business.Common.csproj" />
+    <ProjectReference Include="..\OffLogs.Business.Orm\OffLogs.Business.Orm.csproj" />
   </ItemGroup>
 
 </Project>

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using OffLogs.Api.Common.Dto;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Message;
@@ -13,7 +14,7 @@ using Persistence.Transactions.Behaviors;
 namespace OffLogs.Api.Controller.Board.Notifications.Messages
 {
     [Authorize]
-    [Route("/board/notifications/[controller]")]
+    [Route("/board/notifications/message-templates")]
     [ApiController]
     public class MessageTemplatesController : MainApiControllerBase
     {
@@ -25,8 +26,14 @@ namespace OffLogs.Api.Controller.Board.Notifications.Messages
         {
         }
 
+        [HttpPost("list")]
+        [ProducesResponseType(typeof(ListDto<MessageTemplateDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public Task<IActionResult> GetMessagesList(GetListRequest request)
+            => this.RequestAsync().For<ListDto<MessageTemplateDto>>().With(request);
+        
         [HttpPost("set")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(MessageTemplateDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public Task<IActionResult> SetMessage(SetMessageTemplateRequest templateRequest)
             => this.RequestAsync().For<MessageTemplateDto>().With(templateRequest);
@@ -36,5 +43,7 @@ namespace OffLogs.Api.Controller.Board.Notifications.Messages
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public Task<IActionResult> DeleteMessage(IdRequest request)
             => this.RequestAsync(request);
+        
+        
     }
 }

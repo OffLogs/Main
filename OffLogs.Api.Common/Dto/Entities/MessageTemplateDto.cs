@@ -9,5 +9,9 @@ namespace OffLogs.Api.Common.Dto.Entities
         public string Subject { get; set; }
         
         public string Body { get; set; }
+
+        public MessageTemplateDto()
+        {
+        }
     }
 }

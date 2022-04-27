@@ -24,10 +24,6 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>AuthResources.resx</DependentUpon>
       </Compile>
-      <EmbeddedResource Update="Resources\ApplicationResources.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>ApplicationResources.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
       <EmbeddedResource Update="Resources\LogResources.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>LogResources.Designer.cs</LastGenOutput>
@@ -63,6 +59,15 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>NotificationResources.resx</DependentUpon>
+      </Compile>
+      <EmbeddedResource Update="Resources\ApplicationResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>ApplicationResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <Compile Update="Resources\ApplicationResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ApplicationResources.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

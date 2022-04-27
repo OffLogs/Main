@@ -13,7 +13,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
 {
     public partial class SetMessageTests : MyApiIntegrationTest
     {
-        private const string Url = MainApiUrl.NotificationMessageSet;
+        private const string Url = MainApiUrl.NotificationMessageTemplateSet;
 
         private readonly Faker<MessageTemplateEntity> _messageFactory;
         

@@ -11,7 +11,7 @@ namespace OffLogs.Web.Services.Http
         public async Task<MessageTemplateDto> NotificationMessageSet(SetMessageTemplateRequest templateRequest)
         {
             var response = await PostAuthorizedAsync<MessageTemplateDto>(
-                MainApiUrl.NotificationMessageSet,
+                MainApiUrl.NotificationMessageTemplateSet,
                 templateRequest
             );
             if (response == null)
