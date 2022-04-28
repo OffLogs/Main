@@ -55,7 +55,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Log
             await DataSeeder.CreateLogsAsync(application.Id, LogLevel.Debug, expectedCounter);
 
             var statisticList = await QueryBuilder.For<ICollection<LogStatisticForNowDto>>()
-                .WithAsync(new GetByApplicationOrUserCriteria(application.Id));
+                .WithAsync(new GetByApplicationOrUserCriteria(userModel.Id, application.Id));
 
             Assert.Equal(
                 expectedCounter,
