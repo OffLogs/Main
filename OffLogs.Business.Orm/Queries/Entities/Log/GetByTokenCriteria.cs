@@ -3,11 +3,11 @@ using Queries.Abstractions;
 
 namespace OffLogs.Business.Orm.Queries.Entities.Log
 {
-    public class LogIsExistsByTokenCriteria : ICriterion
+    public class GetByTokenCriteria : ICriterion
     {
         public string Token { get; }
 
-        public LogIsExistsByTokenCriteria(string token)
+        public GetByTokenCriteria(string token)
         {
             Token = token ?? throw new ArgumentNullException(nameof(token));
         }

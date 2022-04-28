@@ -27,7 +27,7 @@ namespace OffLogs.Api.Controller.Public.Log.Actions
         public async Task<LogSharedDto> ExecuteAsync(GetBySharedTokenRequest request)
         {
             var log = await _queryBuilder.For<LogEntity>()
-                .WithAsync(new LogGetBySharedTokenCriteria(request.Token));
+                .WithAsync(new GetByTokenCriteria(request.Token));
             if (log == null)
             {
                 throw new ItemNotFoundException(nameof(log));

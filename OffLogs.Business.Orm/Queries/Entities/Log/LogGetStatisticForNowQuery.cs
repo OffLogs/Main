@@ -1,4 +1,5 @@
-﻿using OffLogs.Business.Common.Constants;
+﻿using System;
+using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Orm.Dto.Entities;
 using Persistence.Transactions.Behaviors;
 using Queries.Abstractions;
@@ -10,7 +11,7 @@ using NHibernate.Transform;
 
 namespace OffLogs.Business.Orm.Queries.Entities.Log
 {
-    public class LogGetStatisticForNowQuery : LinqAsyncQueryBase<LogGetStatisticForNowCriteria, ICollection<LogStatisticForNowDto>>
+    public class LogGetStatisticForNowQuery : LinqAsyncQueryBase<GetByApplicationOrUserCriteria, ICollection<LogStatisticForNowDto>>
     {
         public LogGetStatisticForNowQuery(IDbSessionProvider transactionProvider)
             : base(transactionProvider)
@@ -18,15 +19,17 @@ namespace OffLogs.Business.Orm.Queries.Entities.Log
         }
 
         public override async Task<ICollection<LogStatisticForNowDto>> AskAsync(
-            LogGetStatisticForNowCriteria criterion, 
+            GetByApplicationOrUserCriteria criterion, 
             CancellationToken cancellationToken = default
         )
         {
             return await TransactionProvider.CurrentSession
                 .GetNamedQuery("Log.getStatisticForNow")
                 .SetParameter("applicationId", criterion.ApplicationId)
+                .SetParameter("userId", criterion.UserId)
+                .SetParameter("dateNow", DateTime.UtcNow)
                 .SetResultTransformer(Transformers.AliasToBean<LogStatisticForNowDto>())
-                .ListAsync<LogStatisticForNowDto>();
+                .ListAsync<LogStatisticForNowDto>(cancellationToken);
         }
     }
 }

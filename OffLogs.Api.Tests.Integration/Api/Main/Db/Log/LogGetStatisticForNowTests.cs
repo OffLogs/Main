@@ -32,7 +32,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Log
             await DataSeeder.CreateLogsAsync(application.Id, LogLevel.Debug, expectedCounter);
 
             var statisticList = await QueryBuilder.For<ICollection<LogStatisticForNowDto>>()
-                .WithAsync(new LogGetStatisticForNowCriteria());
+                .WithAsync(new GetByApplicationOrUserCriteria(userModel.Id));
 
             Assert.Contains(statisticList, item => item.LogLevel == LogLevel.Error && item.Count >= expectedCounter);
             Assert.Contains(statisticList, item => item.LogLevel == LogLevel.Information && item.Count >= expectedCounter);
@@ -55,7 +55,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Log
             await DataSeeder.CreateLogsAsync(application.Id, LogLevel.Debug, expectedCounter);
 
             var statisticList = await QueryBuilder.For<ICollection<LogStatisticForNowDto>>()
-                .WithAsync(new LogGetStatisticForNowCriteria(application.Id));
+                .WithAsync(new GetByApplicationOrUserCriteria(application.Id));
 
             Assert.Equal(
                 expectedCounter,
