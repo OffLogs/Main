@@ -72,7 +72,7 @@ namespace OffLogs.Business.Services.Kafka.Consumer
 
                 entity = dto.GetEntity();
                 var isExists = await _queryBuilder.For<bool>()
-                    .WithAsync(new LogIsExistsByTokenCriteria(entity.Token));
+                    .WithAsync(new GetByTokenCriteria(entity.Token));
                 if (isExists)
                 {
                     return;

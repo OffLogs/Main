@@ -7,7 +7,7 @@ using Persistence.Transactions.Behaviors;
 
 namespace OffLogs.Business.Orm.Queries.Entities.Log
 {
-    public class LogGetBySharedTokenQuery : LinqAsyncQueryBase<LogGetBySharedTokenCriteria, LogEntity>
+    public class LogGetBySharedTokenQuery : LinqAsyncQueryBase<GetByTokenCriteria, LogEntity>
     {
         public LogGetBySharedTokenQuery(IDbSessionProvider transactionProvider) 
             : base(transactionProvider)
@@ -15,7 +15,7 @@ namespace OffLogs.Business.Orm.Queries.Entities.Log
         }
 
         public override async Task<LogEntity> AskAsync(
-            LogGetBySharedTokenCriteria criterion, 
+            GetByTokenCriteria criterion, 
             CancellationToken cancellationToken = default
         )
         {

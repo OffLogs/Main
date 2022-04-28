@@ -7,14 +7,14 @@ using Persistence.Transactions.Behaviors;
 
 namespace OffLogs.Business.Orm.Queries.Entities.Log
 {
-    public class LogGetByTokenQuery : LinqAsyncQueryBase<LogEntity, LogGetByTokenCriteria, LogEntity>
+    public class LogGetByTokenQuery : LinqAsyncQueryBase<LogEntity, GetByTokenCriteria, LogEntity>
     {
         public LogGetByTokenQuery(IDbSessionProvider transactionProvider) 
             : base(transactionProvider)
         {
         }
 
-        public override async Task<LogEntity> AskAsync(LogGetByTokenCriteria criterion, CancellationToken cancellationToken = default)
+        public override async Task<LogEntity> AskAsync(GetByTokenCriteria criterion, CancellationToken cancellationToken = default)
         {
             return await TransactionProvider.CurrentSession.Query<LogEntity>()
                 .Where(q => q.Token == criterion.Token)

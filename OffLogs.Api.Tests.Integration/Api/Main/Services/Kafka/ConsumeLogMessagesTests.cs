@@ -32,7 +32,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             Assert.True(processedRecords > 0);
 
             var existsLog = await QueryBuilder.For<LogEntity>()
-                .WithAsync(new LogGetByTokenCriteria(log1.Token));
+                .WithAsync(new GetByTokenCriteria(log1.Token));
             Assert.NotNull(existsLog);
             Assert.Equal(log1.EncryptedMessage, existsLog.EncryptedMessage);
             Assert.Equal(log1.Level, existsLog.Level);
@@ -59,7 +59,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             Assert.True(processedRecords > 0);
 
             var existsLog = await QueryBuilder.For<LogEntity>()
-                .WithAsync(new LogGetByTokenCriteria(log1.Token), cancellationToken);
+                .WithAsync(new GetByTokenCriteria(log1.Token), cancellationToken);
             Assert.NotNull(existsLog);
         }
         
@@ -86,7 +86,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             foreach (var expectedLog in logs)
             {
                 var isExists = await QueryBuilder.For<bool>()
-                    .WithAsync(new LogIsExistsByTokenCriteria(expectedLog.Token));
+                    .WithAsync(new GetByTokenCriteria(expectedLog.Token));
                 Assert.True(isExists);
             }
         }

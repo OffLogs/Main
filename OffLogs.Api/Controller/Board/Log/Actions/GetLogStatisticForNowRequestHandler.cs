@@ -45,7 +45,9 @@ namespace OffLogs.Api.Controller.Board.Log.Actions
                 }
             }
             var statisticList = await _queryBuilder.For<ICollection<OffLogs.Business.Orm.Dto.Entities.LogStatisticForNowDto>>()
-                .WithAsync(new LogGetStatisticForNowCriteria(request.ApplicationId));
+                .WithAsync(
+                    new GetByApplicationOrUserCriteria(userId, request.ApplicationId)
+                );
             return new LogStatisticForNowDto(
                 _mapper.Map<ICollection<LogStatisticForNowItemDto>>(statisticList)
             );
