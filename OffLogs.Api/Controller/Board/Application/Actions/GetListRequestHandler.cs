@@ -43,7 +43,7 @@ namespace OffLogs.Api.Controller.Board.Application.Actions
         public async Task<PaginatedListDto<ApplicationListItemDto>> ExecuteAsync(GetListRequest request)
         {
             var userId = _requestService.GetUserIdFromJwt();
-            var applicationsList = await _queryBuilder.For<ListDto<ApplicationEntity>>()
+            var applicationsList = await _queryBuilder.For<OffLogs.Business.Orm.Dto.ListDto<ApplicationEntity>>()
                 .WithAsync(new ApplicationGetListCriteria(userId, request.Page));
 
             var applicationDtos = _mapper.Map<List<ApplicationListItemDto>>(applicationsList.Items)
