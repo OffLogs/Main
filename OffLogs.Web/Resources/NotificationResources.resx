@@ -27,4 +27,13 @@
     <data name="MenuItem_Rules" xml:space="preserve">
         <value>Notification rules</value>
     </data>
+    <data name="MessageTemplate_Subject" xml:space="preserve">
+        <value>Subject</value>
+    </data>
+    <data name="MessageTemplate_Body" xml:space="preserve">
+        <value>Message body</value>
+    </data>
+    <data name="MessageTemplate_BodyPlaceholder" xml:space="preserve">
+        <value>Enter message body</value>
+    </data>
 </root>

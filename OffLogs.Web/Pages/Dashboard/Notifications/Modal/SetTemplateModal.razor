@@ -1,0 +1,32 @@
+﻿@using OffLogs.Web.Core.Components.Form
+@using Microsoft.AspNetCore.Components
+@using OffLogs.Web.Resources
+
+<ModalWindow
+    IsShow="@IsShowAddModal"
+    Buttons="@_modalButtons"
+    IsLoading="@_isLoading"
+    OnClose="@(async () => { await Task.Yield(); IsShowAddModal = false; })"
+    >
+    <MyEditForm OnValidSubmit="@HandleSubmit" 
+                EditContext="@_editContext"
+                @ref="@_editForm">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <p>
+            <CustomInputText
+                Label="@NotificationResources.MessageTemplate_Subject"
+                @bind-Value="@_model.Subject" 
+            />
+        </p>
+        <p>
+            <CustomInputText
+                IsMulti="true"
+                Label="@NotificationResources.MessageTemplate_Body"
+                Placeholder="@NotificationResources.MessageTemplate_BodyPlaceholder"
+                @bind-Value="@_model.Body"
+            />
+        </p>
+    </MyEditForm>
+
+</ModalWindow>

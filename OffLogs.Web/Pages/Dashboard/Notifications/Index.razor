@@ -3,6 +3,7 @@
 
 @using OffLogs.Web.Shared.Ui.NavigationLayout
 @using OffLogs.Web.Resources
+@using OffLogs.Web.Pages.Dashboard.Notifications.Modal
 
 @inherits BaseComponent
 
@@ -11,9 +12,22 @@
     MenuItems="@_menuItems"
     ListItems="@_listItems"
     OnSelectMenuItem="OnSelectMenuItem"
+    BodyButtons="@_actionButtons"
 >
     <BodyContent>
         IsLoading: @_state.Value.IsLoading
         Test body
     </BodyContent>
 </NavigationLayout>
+
+@if (_isShowAddRuleModal)
+{
+    
+}
+@if (_isShowAddTemplateModal)
+{
+    <AddTemplateModal
+        OnClose="OnCloseModal"
+        IsShowAddModal="@_isShowAddTemplateModal"
+    />
+}

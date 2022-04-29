@@ -79,6 +79,33 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Message body.
+        /// </summary>
+        internal static string MessageTemplate_Body {
+            get {
+                return ResourceManager.GetString("MessageTemplate_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter message body.
+        /// </summary>
+        internal static string MessageTemplate_BodyPlaceholder {
+            get {
+                return ResourceManager.GetString("MessageTemplate_BodyPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subject.
+        /// </summary>
+        internal static string MessageTemplate_Subject {
+            get {
+                return ResourceManager.GetString("MessageTemplate_Subject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notifications.
         /// </summary>
         internal static string PageTitle {
