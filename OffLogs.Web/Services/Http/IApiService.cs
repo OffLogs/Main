@@ -3,6 +3,7 @@ using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Requests.Board.Log;
 using System.Threading.Tasks;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Message;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule;
 using OffLogs.Business.Common.Constants.Permissions;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.User;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
@@ -55,9 +56,17 @@ namespace OffLogs.Web.Services.Http
 
         #endregion
 
-        #region Notifications
+        #region Notification Rule
 
-        Task<MessageTemplateDto> NotificationMessageSet(SetMessageTemplateRequest templateRequest);
+        Task<ListDto<NotificationRuleDto>> NotificationRuleGetList();
+        Task<NotificationRuleDto> NotificationRuleSet(SetRuleRequest request);
+
+        #endregion
+
+        #region Message Template
+
+        Task<ListDto<MessageTemplateDto>> MessageTemplateGetList();
+        Task<MessageTemplateDto> MessageTemplateSet(SetMessageTemplateRequest request);
 
         #endregion
     }

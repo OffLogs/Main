@@ -29,7 +29,7 @@ namespace OffLogs.Api.Controller.Board.Notifications.Messages
         [HttpPost("list")]
         [ProducesResponseType(typeof(ListDto<MessageTemplateDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public Task<IActionResult> GetMessagesList(GetListRequest request)
+        public Task<IActionResult> GetMessagesList(GetMessageTemplateListRequest request)
             => this.RequestAsync().For<ListDto<MessageTemplateDto>>().With(request);
         
         [HttpPost("set")]

@@ -13,7 +13,7 @@ using Queries.Abstractions;
 
 namespace OffLogs.Api.Controller.Board.Notifications.Messages.Actions
 {
-    public class GetListRequestHandler : IAsyncRequestHandler<GetListRequest, ListDto<MessageTemplateDto>>
+    public class GetListRequestHandler : IAsyncRequestHandler<GetMessageTemplateListRequest, ListDto<MessageTemplateDto>>
     {
         private readonly IRequestService _requestService;
         private readonly IAsyncQueryBuilder _queryBuilder;
@@ -30,7 +30,7 @@ namespace OffLogs.Api.Controller.Board.Notifications.Messages.Actions
             _mapper = mapper;
         }
 
-        public async Task<ListDto<MessageTemplateDto>> ExecuteAsync(GetListRequest templateRequest)
+        public async Task<ListDto<MessageTemplateDto>> ExecuteAsync(GetMessageTemplateListRequest templateRequest)
         {
             var userId = _requestService.GetUserIdFromJwt();
             var templates = await _queryBuilder.For<Business.Orm.Dto.ListDto<MessageTemplateEntity>>()

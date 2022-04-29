@@ -81,9 +81,9 @@ namespace OffLogs.Web.Services.Http
         private async Task<TResponse> PostAsync<TResponse>(string requestUri, object data, string jwtToken = null)
         {
             return await RequestAsync<TResponse>(requestUri, jwtToken, data, HttpMethod.Post);
-        }    
-        
-        private async Task<TResponse> PostAuthorizedAsync<TResponse>(string requestUri, object data)
+        }
+
+        private async Task<TResponse> PostAuthorizedAsync<TResponse>(string requestUri, object data = null)
         {
             return await RequestAsync<TResponse>(
                 requestUri, 
