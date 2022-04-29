@@ -9,31 +9,31 @@ using OffLogs.Web.Store.Notification.Actions;
 
 namespace OffLogs.Web.Store.Notification.Effects;
 
-public class FetchMessageTemplatesEffect: Effect<FetchMessageTemplatesAction>
+public class FetchNotificationRulesEffect: Effect<FetchNotificationRulesAction>
 {
     private readonly IApiService _apiService;
-    private readonly ILogger<FetchMessageTemplatesEffect> _logger;
+    private readonly ILogger<FetchNotificationRulesEffect> _logger;
 
-    public FetchMessageTemplatesEffect(
+    public FetchNotificationRulesEffect(
         IApiService apiService,
-        ILogger<FetchMessageTemplatesEffect> logger
+        ILogger<FetchNotificationRulesEffect> logger
     )
     {
         _apiService = apiService;
         _logger = logger;
     }
 
-    public override async Task HandleAsync(FetchMessageTemplatesAction pageAction, IDispatcher dispatcher)
+    public override async Task HandleAsync(FetchNotificationRulesAction pageAction, IDispatcher dispatcher)
     {
-        ListDto<MessageTemplateDto> response = null;
+        ListDto<NotificationRuleDto> response = null;
         try
         {
-            response = await _apiService.MessageTemplateGetList();
+            response = await _apiService.NotificationRuleGetList();
         }
         catch (Exception e)
         {
             _logger.LogError(e.Message, e);
         }
-        dispatcher.Dispatch(new FetchMessageTemplatesResultAction(response));
+        dispatcher.Dispatch(new FetchNotificationRulesResultAction(response));
     }
 }

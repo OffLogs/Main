@@ -94,7 +94,6 @@
       <Folder Include="Shared\Ui\Form\AutoComplete\" />
       <Folder Include="Store\Auth\Effects" />
       <Folder Include="Store\Log\Models" />
-      <Folder Include="Store\Notification\Actions" />
     </ItemGroup>
 
     <ItemGroup>
