@@ -52,6 +52,18 @@ public class ApplicationReducers
         return newState;
     }
     
+    [ReducerMethod]
+    public static NotificationRuleState ReduceDeleteMessageTemplatesAction(
+        NotificationRuleState state,
+        DeleteMessageTemplatesAction action
+    )
+    {
+        var newState = state.JsonClone<NotificationRuleState>();
+        newState.MessageTemplates = state.MessageTemplates.Where(
+            item => item.Id != action.Id
+        ).ToList();
+        return newState;
+    }
     #endregion
 
     #region Rules

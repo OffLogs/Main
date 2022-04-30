@@ -43,6 +43,7 @@ public partial class MessageTemplateForm
     private MyButton _btnSubmit;
     private MyEditForm _editForm;
     private bool _isLoading = false;
+    private bool _isShowDeleteModal = false;
 
     private bool _isNew => Id == 0;
 
@@ -63,6 +64,16 @@ public partial class MessageTemplateForm
             );
             _model.Fill(foundItem);
         }
+    }
+    
+    public void Delete()
+    {
+        if (_isNew)
+        {
+            return;
+        }
+
+        _isShowDeleteModal = true;
     }
     
     private async Task HandleSubmit()
@@ -98,6 +109,31 @@ public partial class MessageTemplateForm
     private void OnAddAction()
     {
         _editForm.ClickAsync().Wait();
+    }
+
+    private async Task OnDeleteAppAsync()
+    {
+        _isShowDeleteModal = false;
+        _isLoading = true;
+        try
+        {
+            await _apiService.MessageTemplateDelete(_model.Id.Value);
+            _toastService.AddInfoMessage(NotificationResources.MessageTemplate_Deleted);
+            Dispatcher.Dispatch(new DeleteMessageTemplatesAction(_model.Id.Value));
+            await InvokeAsync(async () =>
+            {
+                await OnSaved.InvokeAsync(0);
+            });
+        }
+        catch (Exception e)
+        {
+            _toastService.AddErrorMessage(e.Message);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+        StateHasChanged();
     }
 }
 

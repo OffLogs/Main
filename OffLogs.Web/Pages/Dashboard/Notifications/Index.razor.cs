@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using OffLogs.Business.Common.Extensions;
-using OffLogs.Web.Core.Helpers;
+using OffLogs.Web.Pages.Dashboard.Notifications.Form;
 using OffLogs.Web.Resources;
 using OffLogs.Web.Shared.Ui.NavigationLayout;
 using OffLogs.Web.Shared.Ui.NavigationLayout.Models;
@@ -20,6 +20,8 @@ public partial class Index
     private IState<NotificationRuleState> _state { get; set; }
 
     private NavigationLayout _navigationLayout { get; set; }
+    
+    private MessageTemplateForm _messageTemplateForm { get; set; }
     
     private ICollection<HeaderMenuButton> _actionButtons = new List<HeaderMenuButton>();
 
@@ -95,7 +97,10 @@ public partial class Index
 
     private void OnClickDeleteButton()
     {
-        throw new NotImplementedException();
+        if (_selectedMenuItem == _menuItemTemplates)
+        {
+            _messageTemplateForm.Delete();
+        }
     }
 
     private void OnSelectMenuItem(OnSelectEventArgs menuEvent)
@@ -137,16 +142,13 @@ public partial class Index
     private void SetMainMenu()
     {
         var addMenuTitle = "";
-        var editMenuTitle = "";
         if (_selectedMenuItem == _menuItemRules)
         {
             addMenuTitle = NotificationResources.MenuItem_AddRule;
-            editMenuTitle = NotificationResources.MenuItem_EditRule;
         }
         if (_selectedMenuItem == _menuItemTemplates)
         {
             addMenuTitle = NotificationResources.MenuItem_AddTemplate;
-            editMenuTitle = NotificationResources.MenuItem_EditTemplate;
         }
         
         _actionButtons.Clear();

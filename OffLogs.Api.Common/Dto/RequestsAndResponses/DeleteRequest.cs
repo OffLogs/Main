@@ -9,5 +9,14 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses
         [Required]
         [IsPositive(AllowZero = true)]
         public long Id { get; set; }
+
+        public IdRequest()
+        {
+        }
+        
+        public IdRequest(long id)
+        {
+            Id = id;
+        }
     }
 }

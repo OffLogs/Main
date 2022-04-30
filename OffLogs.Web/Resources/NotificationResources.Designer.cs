@@ -70,6 +70,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove this template?.
+        /// </summary>
+        internal static string Confirmation_AreSureToDeleteTemplate {
+            get {
+                return ResourceManager.GetString("Confirmation_AreSureToDeleteTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add new rue.
         /// </summary>
         internal static string MenuItem_AddRule {
@@ -156,6 +165,15 @@ namespace OffLogs.Web.Resources {
         internal static string MessageTemplate_BodyPlaceholder {
             get {
                 return ResourceManager.GetString("MessageTemplate_BodyPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The message template was deleted.
+        /// </summary>
+        internal static string MessageTemplate_Deleted {
+            get {
+                return ResourceManager.GetString("MessageTemplate_Deleted", resourceCulture);
             }
         }
         

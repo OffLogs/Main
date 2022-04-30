@@ -20,6 +20,7 @@
         @if (_selectedMenuItem == _menuItemTemplates)
         {
             <MessageTemplateForm 
+                @ref="@_messageTemplateForm"
                 Id="@_selectedListItemId"
                 OnSaved="OnSave"
             />    

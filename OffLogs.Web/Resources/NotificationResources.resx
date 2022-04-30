@@ -42,6 +42,9 @@
     <data name="MessageTemplate_Saved" xml:space="preserve">
         <value>New message template was saved</value>
     </data>
+    <data name="MessageTemplate_Deleted" xml:space="preserve">
+        <value>The message template was deleted</value>
+    </data>
     <data name="MenuItem_AddTemplate" xml:space="preserve">
         <value>Add new template</value>
     </data>
@@ -59,5 +62,8 @@
     </data>
     <data name="MenuItem_Delete" xml:space="preserve">
         <value>Delete</value>
+    </data>
+    <data name="Confirmation_AreSureToDeleteTemplate" xml:space="preserve">
+        <value>Are you sure you want to remove this template?</value>
     </data>
 </root>
