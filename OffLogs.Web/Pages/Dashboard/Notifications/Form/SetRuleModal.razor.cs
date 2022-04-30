@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Fluxor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using OffLogs.Api.Common.Dto.Entities;
-using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Message;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule;
 using OffLogs.Web.Constants;
 using OffLogs.Web.Core.Models.Modal;
 using OffLogs.Web.Resources;
@@ -14,21 +11,16 @@ using OffLogs.Web.Services;
 using OffLogs.Web.Services.Http;
 using OffLogs.Web.Shared.Ui;
 using OffLogs.Web.Shared.Ui.Form;
-using OffLogs.Web.Store.Notification;
-using OffLogs.Web.Store.Notification.Actions;
 
-namespace OffLogs.Web.Pages.Dashboard.Notifications.Modal;
+namespace OffLogs.Web.Pages.Dashboard.Notifications.Form;
 
-public partial class SetTemplateModal
+public partial class SetRuleModal
 {
     [Inject]
     private IApiService _apiService { get; set; }
 
     [Inject]
     private ToastService _toastService { get; set; }
-    
-    [Inject]
-    private IState<NotificationRuleState> _state { get; set; }
     
     [Parameter]
     public RenderFragment ChildContent { get; set; }
@@ -39,10 +31,7 @@ public partial class SetTemplateModal
     [Parameter]
     public bool IsShowAddModal { get; set; } = false;
     
-    [Parameter]
-    public long Id { get; set; }
-    
-    private SetMessageTemplateRequest _model = new();
+    private SetRuleRequest _model = new();
     private EditContext _editContext;
     private MyButton _btnSubmit;
     private MyEditForm _editForm;
@@ -60,30 +49,16 @@ public partial class SetTemplateModal
         var saveBtnModel = new ModalButtonModel(
             "Add",
             OnAddAction
-        )
-        {
-            IsCloseAfterAction = false
-        };
+        );
+        saveBtnModel.IsCloseAfterAction = false;
         _modalButtons.Add(saveBtnModel);
-        _modalButtons.Add(new ModalButtonModel(
+        _modalButtons.Add(new (
             "Cancel",
             OnCloseAction,
             BootstrapColorType.Light
         ));
     }
 
-    protected override async Task OnParametersSetAsync()
-    {
-        await base.OnParametersSetAsync();
-        if (_model.Id != Id)
-        {
-            var foundItem = _state.Value.MessageTemplates.FirstOrDefault(
-                item => item.Id == Id
-            );
-            _model.Fill(foundItem);
-        }
-    }
-    
     private async Task HandleSubmit()
     {
         var isValid = _editContext.Validate();
@@ -92,8 +67,8 @@ public partial class SetTemplateModal
             _isLoading = true;
             try
             {
-                var item = await _apiService.MessageTemplateSet(_model);
-                Dispatcher.Dispatch(new SetMessageTemplatesAction(item));
+                var item = await _apiService.NotificationRuleSet(_model);
+                // Dispatcher.Dispatch(new AddMessageTemplatesAction(item));
                 OnCloseAction();
                 IsShowAddModal = false;
                 _toastService.AddInfoMessage(NotificationResources.MessageTemplate_Added);
