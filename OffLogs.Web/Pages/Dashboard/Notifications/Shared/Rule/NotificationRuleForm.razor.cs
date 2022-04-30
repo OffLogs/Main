@@ -14,6 +14,8 @@ using OffLogs.Web.Services.Http;
 using OffLogs.Web.Shared.Ui;
 using OffLogs.Web.Shared.Ui.Form;
 using OffLogs.Web.Shared.Ui.Form.CustomDropDown;
+using OffLogs.Web.Store.Application;
+using OffLogs.Web.Store.Application.Actions;
 using OffLogs.Web.Store.Notification;
 using OffLogs.Web.Store.Notification.Actions;
 
@@ -29,6 +31,9 @@ public partial class NotificationRuleForm
     
     [Inject]
     private IState<NotificationRuleState> _state { get; set; }
+    
+    [Inject]
+    private IState<ApplicationsListState> _applicationState { get; set; }
     
     [Parameter]
     public RenderFragment ChildContent { get; set; }
@@ -48,15 +53,20 @@ public partial class NotificationRuleForm
 
     private bool _isNew => Id == 0;
 
-    private ICollection<DropDownListItem> _messageTemplateDownListItems
-    {
-        get => _state.Value.MessageTemplates.Select(item => new DropDownListItem
+    private ICollection<DropDownListItem> _messageTemplateDownListItems =>
+        _state.Value.MessageTemplates.Select(item => new DropDownListItem
         {
             Id = item.Id.ToString(),
             Label = item.Subject.Truncate(20),
             Description = item.Body.Truncate(20)
         }).ToList();
-    }
+    
+    private ICollection<DropDownListItem> _applicationDownListItems =>
+        _applicationState.Value.List.Select(item => new DropDownListItem
+        {
+            Id = item.Id.ToString(),
+            Label = item.Name
+        }).ToList();
 
     protected override async Task OnInitializedAsync()
     {
@@ -64,6 +74,7 @@ public partial class NotificationRuleForm
 
         _editContext = new EditContext(_model);
         Dispatcher.Dispatch(new FetchMessageTemplatesAction(true));
+        Dispatcher.Dispatch(new FetchNextListPageAction(true));
     }
 
     protected override async Task OnParametersSetAsync()
