@@ -6,19 +6,20 @@ using Fluxor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Message;
-using OffLogs.Web.Constants;
-using OffLogs.Web.Core.Models.Modal;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule;
+using OffLogs.Business.Common.Extensions;
 using OffLogs.Web.Resources;
 using OffLogs.Web.Services;
 using OffLogs.Web.Services.Http;
 using OffLogs.Web.Shared.Ui;
 using OffLogs.Web.Shared.Ui.Form;
+using OffLogs.Web.Shared.Ui.Form.CustomDropDown;
 using OffLogs.Web.Store.Notification;
 using OffLogs.Web.Store.Notification.Actions;
 
-namespace OffLogs.Web.Pages.Dashboard.Notifications.Form;
+namespace OffLogs.Web.Pages.Dashboard.Notifications.Shared.Rule;
 
-public partial class MessageTemplateForm
+public partial class NotificationRuleForm
 {
     [Inject]
     private IApiService _apiService { get; set; }
@@ -38,7 +39,7 @@ public partial class MessageTemplateForm
     [Parameter]
     public EventCallback<long> OnSaved { get; set; }
     
-    private SetMessageTemplateRequest _model = new();
+    private SetRuleRequest _model = new();
     private EditContext _editContext;
     private MyButton _btnSubmit;
     private MyEditForm _editForm;
@@ -47,11 +48,22 @@ public partial class MessageTemplateForm
 
     private bool _isNew => Id == 0;
 
+    private ICollection<DropDownListItem> _messageTemplateDownListItems
+    {
+        get => _state.Value.MessageTemplates.Select(item => new DropDownListItem
+        {
+            Id = item.Id.ToString(),
+            Label = item.Subject.Truncate(20),
+            Description = item.Body.Truncate(20)
+        }).ToList();
+    }
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
 
         _editContext = new EditContext(_model);
+        Dispatcher.Dispatch(new FetchMessageTemplatesAction(true));
     }
 
     protected override async Task OnParametersSetAsync()
@@ -59,7 +71,7 @@ public partial class MessageTemplateForm
         await base.OnParametersSetAsync();
         if (_model.Id != Id)
         {
-            var foundItem = _state.Value.MessageTemplates.FirstOrDefault(
+            var foundItem = _state.Value.Rules.FirstOrDefault(
                 item => item.Id == Id
             );
             _model.Fill(foundItem);
@@ -84,11 +96,11 @@ public partial class MessageTemplateForm
             _isLoading = true;
             try
             {
-                var item = await _apiService.MessageTemplateSet(_model);
+                var item = await _apiService.NotificationRuleSet(_model);
                 _toastService.AddInfoMessage(
                     _isNew ? NotificationResources.MessageTemplate_Added : NotificationResources.MessageTemplate_Saved    
                 );
-                Dispatcher.Dispatch(new SetMessageTemplatesAction(item));
+                // Dispatcher.Dispatch(new SetMessageTemplatesAction(item));
                 await InvokeAsync(async () =>
                 {
                     await OnSaved.InvokeAsync(item.Id);

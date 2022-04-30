@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Api.Requests.Abstractions;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Business.Common.Constants.Notificatiions;
@@ -13,12 +14,16 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
         [IsPositive(AllowZero = true)]
         public long? Id { get; set; }
 
-        [Required]
-        [IsPositive(AllowZero = false)]
+        [
+            Required,
+            IsPositive(AllowZero = false)
+        ]
         public long MessageId { get; set; }
         
-        [Required]
-        [IsPositive(AllowZero = false)]
+        [
+            Required,
+            IsPositive(AllowZero = false)
+        ]
         public long? ApplicationId { get; set; }
         
         [
@@ -45,5 +50,19 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
             MinLength(1)
         ]
         public ICollection<SetConditionRequest> Conditions { get; set; } = new List<SetConditionRequest>();
+
+        public void Fill(NotificationRuleDto item)
+        {
+            Id = item?.Id;
+            if (item != null)
+            {
+                MessageId = item.MessageTemplate.Id;
+                ApplicationId = item.Application.Id;
+                Type = item.Type.ToString();
+                LogicOperator = item.LogicOperator.ToString();
+                Period = item.Period;
+                Conditions = item.Conditions.Select(condition => new SetConditionRequest(condition)).ToList();
+            }
+        }
     }
 }

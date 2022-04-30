@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.Extensions.Logging;
@@ -14,18 +15,26 @@ public class FetchMessageTemplatesEffect: Effect<FetchMessageTemplatesAction>
 {
     private readonly IApiService _apiService;
     private readonly ILogger<FetchMessageTemplatesEffect> _logger;
+    private readonly IState<NotificationRuleState> _state;
 
     public FetchMessageTemplatesEffect(
         IApiService apiService,
-        ILogger<FetchMessageTemplatesEffect> logger
+        ILogger<FetchMessageTemplatesEffect> logger,
+        IState<NotificationRuleState> state
     )
     {
         _apiService = apiService;
         _logger = logger;
+        _state = state;
     }
 
     public override async Task HandleAsync(FetchMessageTemplatesAction pageAction, IDispatcher dispatcher)
     {
+        if (pageAction.IsLoadIfEmpty && _state.Value.MessageTemplates.Any())
+        {
+            return;
+        }
+
         ListDto<MessageTemplateDto> response = null;
         try
         {

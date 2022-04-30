@@ -11,15 +11,17 @@ namespace OffLogs.Api.Common.Dto.Entities
         
         public MessageTemplateDto MessageTemplate { get; set; }
         
+        public ApplicationDto Application { get; set; }
+        
         public NotificationType Type { get; set; }
         
         public LogicOperatorType LogicOperator { get; set; }
         
-        public long Period { get; set; }
+        public int Period { get; set; }
         
         public DateTime LastExecutionTime { get; set; }
-        
-        public ICollection<NotificationConditionDto> Conditions { get; set; }
+
+        public ICollection<NotificationConditionDto> Conditions { get; set; } = new List<NotificationConditionDto>();
         
         public virtual DateTime CreateTime { get; set; }
         

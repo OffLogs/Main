@@ -1,0 +1,58 @@
+﻿@using OffLogs.Web.Core.Components.Form
+@using Microsoft.AspNetCore.Components
+@using OffLogs.Web.Resources
+
+@inherits BaseComponent
+
+<h2>
+    @if (_isNew)
+    {
+        @NotificationResources.AddNewTemplate
+    }
+    else
+    {
+        <text>#@(_model.Id)</text>
+    }
+</h2>
+    
+<MyEditForm OnValidSubmit="@HandleSubmit"
+            EditContext="@_editContext"
+            @ref="@_editForm">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+    <p>
+        @* <CustomInputText *@
+        @*     IsDisabled="@_isLoading" *@
+        @*     Label="@NotificationResources.MessageTemplate_Subject" *@
+        @*     @bind-Value="@_model.Period"/> *@
+    </p>
+    <p>
+        <CustomDropDown
+            Items="@_messageTemplateDownListItems"
+        />
+    </p>
+    <hr/>
+    @if (_isLoading)
+    {
+        <Preloader />
+    }
+    else
+    {
+        <MyButton IsSubmit="true">
+            @if (_isNew)
+            {
+                @CommonResources.Add
+            }
+            else
+            {
+                @CommonResources.Save
+            }
+        </MyButton>
+    }
+</MyEditForm>
+
+<ConfirmationModal
+    Title="@NotificationResources.Confirmation_AreSureToDeleteTemplate" 
+    IsShow="@_isShowDeleteModal"
+    OnOk="@(async () => await OnDeleteAppAsync())"
+    OnCancel="@(() => _isShowDeleteModal = false)"/>
