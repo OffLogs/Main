@@ -4,6 +4,7 @@ using Fluxor;
 using Microsoft.Extensions.Logging;
 using OffLogs.Api.Common.Dto;
 using OffLogs.Api.Common.Dto.Entities;
+using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Services.Http;
 using OffLogs.Web.Store.Notification.Actions;
 
@@ -34,6 +35,9 @@ public class FetchMessageTemplatesEffect: Effect<FetchMessageTemplatesAction>
         {
             _logger.LogError(e.Message, e);
         }
-        dispatcher.Dispatch(new FetchMessageTemplatesResultAction(response));
+        finally
+        {
+            dispatcher.Dispatch(new FetchMessageTemplatesResultAction(response));    
+        }
     }
 }

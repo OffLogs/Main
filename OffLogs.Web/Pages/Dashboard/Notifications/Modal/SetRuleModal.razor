@@ -19,19 +19,8 @@
         <p>
             <CustomInputText
                 Label="@NotificationResources.MessageTemplate_Subject"
-                @bind-Value="@_model.Subject" 
+                @bind-Value="@_model.Type" 
             />
-        </p>
-        <p>
-            <CustomInputText
-                IsMulti="true"
-                Label="@NotificationResources.MessageTemplate_Body"
-                Placeholder="@NotificationResources.MessageTemplate_BodyPlaceholder"
-                @bind-Value="@_model.Body"
-            />
-        </p>
-        <p>
-            <Markdown MarkdownText="@_model.Body"></Markdown>
         </p>
     </MyEditForm>
 

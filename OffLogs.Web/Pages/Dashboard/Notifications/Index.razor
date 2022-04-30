@@ -12,7 +12,9 @@
     MenuItems="@_menuItems"
     ListItems="@_listItems"
     OnSelectMenuItem="OnSelectMenuItem"
+    OnSelectListItem="OnSelectListItem"
     BodyButtons="@_actionButtons"
+    @ref="_navigationLayout"
 >
     <BodyContent>
         IsLoading: @_state.Value.IsLoading
@@ -26,7 +28,8 @@
 }
 @if (_isShowAddTemplateModal)
 {
-    <AddTemplateModal
+    <SetTemplateModal
+        Id="@_selectedListItemId"
         OnClose="OnCloseModal"
         IsShowAddModal="@_isShowAddTemplateModal"
     />
