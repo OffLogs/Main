@@ -67,6 +67,7 @@ namespace OffLogs.Web.Services.Http
 
         Task<ListDto<MessageTemplateDto>> MessageTemplateGetList();
         Task<MessageTemplateDto> MessageTemplateSet(SetMessageTemplateRequest request);
+        Task MessageTemplateDelete(long id);
 
         #endregion
     }

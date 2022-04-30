@@ -48,4 +48,10 @@
     <data name="DashboardMenu_Statistic" xml:space="preserve">
         <value>Statistic</value>
     </data>
+    <data name="Save" xml:space="preserve">
+        <value>Save</value>
+    </data>
+    <data name="Add" xml:space="preserve">
+        <value>Add</value>
+    </data>
 </root>

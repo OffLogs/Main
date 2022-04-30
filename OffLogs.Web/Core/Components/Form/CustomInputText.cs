@@ -28,6 +28,9 @@ namespace OffLogs.Web.Core.Components.Form
 
         [Parameter]
         public bool IsMulti { get; set; } = false;
+        
+        [Parameter]
+        public bool IsDisabled { get; set; } = false;
 
         /// <inheritdoc />
         protected override void BuildRenderTree(RenderTreeBuilder builder)
@@ -70,6 +73,10 @@ namespace OffLogs.Web.Core.Components.Form
                 if (!string.IsNullOrEmpty(Placeholder))
                 {
                     builder.AddAttribute(sequence++, "placeholder", Placeholder);
+                }
+                if (IsDisabled)
+                {
+                    builder.AddAttribute(sequence++, "disabled", "disabled");
                 }
 
                 builder.CloseElement();

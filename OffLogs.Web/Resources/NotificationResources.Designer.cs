@@ -61,6 +61,24 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add new template.
+        /// </summary>
+        internal static string AddNewTemplate {
+            get {
+                return ResourceManager.GetString("AddNewTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove this template?.
+        /// </summary>
+        internal static string Confirmation_AreSureToDeleteTemplate {
+            get {
+                return ResourceManager.GetString("Confirmation_AreSureToDeleteTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add new rue.
         /// </summary>
         internal static string MenuItem_AddRule {
@@ -151,20 +169,29 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The message template was deleted.
+        /// </summary>
+        internal static string MessageTemplate_Deleted {
+            get {
+                return ResourceManager.GetString("MessageTemplate_Deleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New message template was saved.
+        /// </summary>
+        internal static string MessageTemplate_Saved {
+            get {
+                return ResourceManager.GetString("MessageTemplate_Saved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Subject.
         /// </summary>
         internal static string MessageTemplate_Subject {
             get {
                 return ResourceManager.GetString("MessageTemplate_Subject", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add new template.
-        /// </summary>
-        internal static string Modal_AddNewTemplate {
-            get {
-                return ResourceManager.GetString("Modal_AddNewTemplate", resourceCulture);
             }
         }
         

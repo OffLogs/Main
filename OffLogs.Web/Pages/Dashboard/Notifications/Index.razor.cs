@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using OffLogs.Business.Common.Extensions;
-using OffLogs.Web.Core.Helpers;
+using OffLogs.Web.Pages.Dashboard.Notifications.Form;
 using OffLogs.Web.Resources;
 using OffLogs.Web.Shared.Ui.NavigationLayout;
 using OffLogs.Web.Shared.Ui.NavigationLayout.Models;
@@ -21,12 +21,10 @@ public partial class Index
 
     private NavigationLayout _navigationLayout { get; set; }
     
+    private MessageTemplateForm _messageTemplateForm { get; set; }
+    
     private ICollection<HeaderMenuButton> _actionButtons = new List<HeaderMenuButton>();
-    
-    private bool _isShowAddRuleModal = false;
-    
-    private bool _isShowAddTemplateModal = false;
-    
+
     private static readonly MenuItem _menuItemRules = new()
     {
         Id = "rules",
@@ -95,19 +93,14 @@ public partial class Index
     private void OnClickAddButton()
     {
         _selectedListItemId = 0;
-        _isShowAddRuleModal = _selectedMenuItem == _menuItemRules;
-        _isShowAddTemplateModal = _selectedMenuItem == _menuItemTemplates;
     }
-    
-    private void OnClickEditButton()
-    {
-        OnClickAddButton();
-        _selectedListItemId = _selectedListItem?.GetIdAsLong() ?? 0;
-    }
-    
+
     private void OnClickDeleteButton()
     {
-        throw new NotImplementedException();
+        if (_selectedMenuItem == _menuItemTemplates)
+        {
+            _messageTemplateForm.Delete();
+        }
     }
 
     private void OnSelectMenuItem(OnSelectEventArgs menuEvent)
@@ -118,14 +111,17 @@ public partial class Index
     private void OnSelectListItem(OnSelectEventArgs menuEvent)
     {
         _selectedListItem = menuEvent.ListItem;
+        _selectedListItemId = _selectedListItem?.GetIdAsLong() ?? 0;
         SetMainMenu();
     }
-
-    private void OnCloseModal()
+    
+    private void OnSave(long itemId)
     {
-        _isShowAddTemplateModal = _isShowAddRuleModal = false;
+        _navigationLayout.SelectItem(
+            _listItems.FirstOrDefault(item => item.Id == itemId.ToString())    
+        );
     }
-
+    
     private void SetSelectedMenuItem(MenuItem item)
     {
         _selectedListItem = null;
@@ -146,24 +142,17 @@ public partial class Index
     private void SetMainMenu()
     {
         var addMenuTitle = "";
-        var editMenuTitle = "";
         if (_selectedMenuItem == _menuItemRules)
         {
             addMenuTitle = NotificationResources.MenuItem_AddRule;
-            editMenuTitle = NotificationResources.MenuItem_EditRule;
         }
         if (_selectedMenuItem == _menuItemTemplates)
         {
             addMenuTitle = NotificationResources.MenuItem_AddTemplate;
-            editMenuTitle = NotificationResources.MenuItem_EditTemplate;
         }
         
         _actionButtons.Clear();
         _actionButtons.Add(new HeaderMenuButton(addMenuTitle, "plus-square", OnClickAddButton));
-        _actionButtons.Add(new HeaderMenuButton(editMenuTitle, "pencil-alt-2", OnClickEditButton)
-        {
-            IsDisabled = _selectedListItem == null
-        });
         _actionButtons.Add(new HeaderMenuButton(NotificationResources.MenuItem_Delete, "basket", OnClickDeleteButton)
         {
             IsDisabled = _selectedListItem == null

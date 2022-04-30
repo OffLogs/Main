@@ -3,7 +3,7 @@
 
 @using OffLogs.Web.Shared.Ui.NavigationLayout
 @using OffLogs.Web.Resources
-@using OffLogs.Web.Pages.Dashboard.Notifications.Modal
+@using OffLogs.Web.Pages.Dashboard.Notifications.Form
 
 @inherits BaseComponent
 
@@ -17,20 +17,13 @@
     @ref="_navigationLayout"
 >
     <BodyContent>
-        IsLoading: @_state.Value.IsLoading
-        Test body
+        @if (_selectedMenuItem == _menuItemTemplates)
+        {
+            <MessageTemplateForm 
+                @ref="@_messageTemplateForm"
+                Id="@_selectedListItemId"
+                OnSaved="OnSave"
+            />    
+        }
     </BodyContent>
 </NavigationLayout>
-
-@if (_isShowAddRuleModal)
-{
-    
-}
-@if (_isShowAddTemplateModal)
-{
-    <SetTemplateModal
-        Id="@_selectedListItemId"
-        OnClose="OnCloseModal"
-        IsShowAddModal="@_isShowAddTemplateModal"
-    />
-}
