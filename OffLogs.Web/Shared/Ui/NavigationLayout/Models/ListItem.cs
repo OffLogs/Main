@@ -13,5 +13,11 @@ namespace OffLogs.Web.Shared.Ui.NavigationLayout.Models
         public string SubTitle { get; set; }
         
         public BootstrapColorType? BgColorType { get; set; }
+
+        public long GetIdAsLong()
+        {
+            long.TryParse(Id, out var result);
+            return result;
+        }
     }
 }

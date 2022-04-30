@@ -17,5 +17,12 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Messag
         [Required]
         [StringLength(5048, MinimumLength = 1)]
         public string Body { get; set; }
+
+        public void Fill(MessageTemplateDto dto)
+        {
+            Id = dto?.Id;
+            Subject = dto?.Subject;
+            Body = dto?.Body;
+        }
     }
 }

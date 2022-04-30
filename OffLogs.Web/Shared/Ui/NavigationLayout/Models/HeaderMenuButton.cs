@@ -10,6 +10,7 @@ namespace OffLogs.Web.Shared.Ui.NavigationLayout.Models
         public int Id { get; }
         public string Title { get; }
         public string Icon { get; }
+        public bool IsDisabled { get; set; } = false;
         public ICollection<HeaderMenuButton> PopupItems { get; }
         public EventCallback? OnClick;
 

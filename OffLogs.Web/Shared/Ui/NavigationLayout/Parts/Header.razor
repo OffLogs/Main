@@ -3,10 +3,10 @@
 <div class="w-header">
     @foreach (var button in Buttons)
     {
-        <div class="w-button" @onclick="@(async () => await OnClickMenuButtonAsync(button))">
+        <div class="@GetButtonClass(button)" @onclick="@(async () => await OnClickMenuButtonAsync(button))">
             <i class="icofont-@button.Icon"></i>
             <div>@button.Title</div>
-            @if (hasPopup(button)) 
+            @if (HasPopup(button)) 
             {
                 @if (visiblePopupId == button.Id)
                 {
@@ -16,7 +16,7 @@
                         ></div>
                         <div class="w-arrow"></div>
                         <ul class="dropdown-menu show">
-                            @foreach (var poupItem in button.PopupItems)
+                            @foreach (var popupItem in button.PopupItems)
                             {
                                 <li>
                                     <a class="dropdown-item"
@@ -24,7 +24,7 @@
                                        @onclick:preventDefault
                                        @onclick="@(async () => await EmitButtonEventAsync(button))"
                                     >
-                                        @poupItem.Title
+                                        @popupItem.Title
                                     </a>
                                 </li>
                             }
@@ -51,7 +51,11 @@
 
     private async Task OnClickMenuButtonAsync(HeaderMenuButton button)
     {
-        if (hasPopup(button))
+        if (button.IsDisabled)
+        {
+            return;
+        }
+        if (HasPopup(button))
         {
             visiblePopupId = button.Id;
             return;
@@ -74,8 +78,18 @@
         return Task.CompletedTask;
     }
 
-    private bool hasPopup(HeaderMenuButton button)
+    private bool HasPopup(HeaderMenuButton button)
     {
         return button.PopupItems != null && button.PopupItems.Count > 0;
+    }
+    
+    private string GetButtonClass(HeaderMenuButton button)
+    {
+        var result = "w-button";
+        if (button.IsDisabled)
+        {
+            result += " w-disabled";
+        }
+        return result;
     }
 }

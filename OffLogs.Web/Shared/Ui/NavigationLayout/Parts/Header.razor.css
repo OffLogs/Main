@@ -25,6 +25,13 @@
   font-weight: 400;
   font-size: 0.85rem;
 }
+.w-header .w-button.w-disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.w-header .w-button.w-disabled:hover {
+  background-color: transparent;
+}
 .w-header .w-button .dropdown-container {
   position: relative;
 }

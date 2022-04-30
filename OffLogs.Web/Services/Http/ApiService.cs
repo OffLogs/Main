@@ -43,10 +43,8 @@ namespace OffLogs.Web.Services.Http
         {
             // create request object
             var request = new HttpRequestMessage(httpMethod, $"{_apiUrl}/{requestUri}");
-            if (data != null)
-            {
-                request.Content = JsonContent.Create(data);    
-            }
+            data ??= new { };
+            request.Content = JsonContent.Create(data);
             // add authorization header
             if (!string.IsNullOrEmpty(jwtToken))
             {
@@ -81,9 +79,9 @@ namespace OffLogs.Web.Services.Http
         private async Task<TResponse> PostAsync<TResponse>(string requestUri, object data, string jwtToken = null)
         {
             return await RequestAsync<TResponse>(requestUri, jwtToken, data, HttpMethod.Post);
-        }    
-        
-        private async Task<TResponse> PostAuthorizedAsync<TResponse>(string requestUri, object data)
+        }
+
+        private async Task<TResponse> PostAuthorizedAsync<TResponse>(string requestUri, object data = null)
         {
             return await RequestAsync<TResponse>(
                 requestUri, 

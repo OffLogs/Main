@@ -10,7 +10,7 @@
                 {
                     <li 
                         @onclick="@(() => OnSelectMenuItem(menuItem))" 
-                        class="@(IsSelected(menuItem) ? "w-selected" : "")"
+                        class="@GetButtonClass(menuItem)"
                     >
                         <i class="icofont-@menuItem.Icon"></i>
                         @menuItem.Title
@@ -40,8 +40,14 @@
         Layout.SelectItem(menuItem);
     }
 
-    public bool IsSelected(MenuItem menuItem)
+    private string GetButtonClass(MenuItem menuItem)
     {
-        return SelectedItem?.Id == menuItem.Id;
+        var result = new List<string>();
+        if (SelectedItem?.Id == menuItem.Id)
+        {
+            result.Add("w-selected");
+        }
+        return string.Join(" ", result);
     }
+
 }
