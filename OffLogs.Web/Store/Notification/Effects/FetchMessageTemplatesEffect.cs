@@ -5,9 +5,7 @@ using Fluxor;
 using Microsoft.Extensions.Logging;
 using OffLogs.Api.Common.Dto;
 using OffLogs.Api.Common.Dto.Entities;
-using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Services.Http;
-using OffLogs.Web.Store.Notification.Actions;
 
 namespace OffLogs.Web.Store.Notification.Effects;
 

@@ -16,7 +16,6 @@ using OffLogs.Web.Shared.Ui.Form;
 using OffLogs.Web.Shared.Ui.Form.CustomDropDown;
 using OffLogs.Web.Store.Application;
 using OffLogs.Web.Store.Notification;
-using OffLogs.Web.Store.Notification.Actions;
 
 namespace OffLogs.Web.Pages.Dashboard.Notifications.Shared.Rule;
 

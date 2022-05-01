@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Fluxor;
@@ -11,7 +10,6 @@ using OffLogs.Web.Resources;
 using OffLogs.Web.Shared.Ui.NavigationLayout;
 using OffLogs.Web.Shared.Ui.NavigationLayout.Models;
 using OffLogs.Web.Store.Notification;
-using OffLogs.Web.Store.Notification.Actions;
 
 namespace OffLogs.Web.Pages.Dashboard.Notifications;
 
