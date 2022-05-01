@@ -21,26 +21,28 @@
             @ref="@_editForm">
     <DataAnnotationsValidator/>
     <ValidationSummary/>
-    <div>
-        @* <CustomInputText *@
-        @*     IsDisabled="@_isLoading" *@
-        @*     Label="@NotificationResources.MessageTemplate_Subject" *@
-        @*     @bind-Value="@_model.Period"/> *@
-    </div>
     <div class="row mb-3">
         <div class="col">
             <CustomDropDown
                 Items="@_messageTemplateDownListItems"
                 OnChanged="@(value => _model.TemplateId = value.IdAsLong)"/>
         </div>
-    </div>
-    <div class="row mb-3">
         <div class="col">
             <CustomDropDown
                 Items="@_applicationDownListItems"
                 OnChanged="@(value => _model.ApplicationId = value?.IdAsLong)"
             />
         </div>
+        <div class="col">
+            <CustomInputText
+                IsDisabled="@_isLoading"
+                Label="@NotificationResources.MessageTemplate_Subject"
+                @bind-Value="@_model.Period"
+            />
+        </div>
+    </div>
+    <div class="row mb-3">
+        
     </div>
     <div class="row mb-3">
         <div class="col">
