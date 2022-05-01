@@ -1,5 +1,6 @@
 ﻿@using OffLogs.Web.Core.Components.Form
 @using Microsoft.AspNetCore.Components
+@using OffLogs.Business.Common.Constants.Notificatiions
 @using OffLogs.Web.Resources
 
 @inherits BaseComponent
@@ -20,24 +21,35 @@
             @ref="@_editForm">
     <DataAnnotationsValidator/>
     <ValidationSummary/>
-    <p>
+    <div>
         @* <CustomInputText *@
         @*     IsDisabled="@_isLoading" *@
         @*     Label="@NotificationResources.MessageTemplate_Subject" *@
         @*     @bind-Value="@_model.Period"/> *@
-    </p>
-    <p>
-        <CustomDropDown
-            Items="@_messageTemplateDownListItems"
-            OnChanged="@(value => _model.TemplateId = value.IdAsLong)"
-        />
-    </p>
-    <p>
-        <CustomDropDown
-            Items="@_applicationDownListItems"
-            OnChanged="@(value => _model.ApplicationId = value?.IdAsLong)"
-        />
-    </p>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <CustomDropDown
+                Items="@_messageTemplateDownListItems"
+                OnChanged="@(value => _model.TemplateId = value.IdAsLong)"/>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <CustomDropDown
+                Items="@_applicationDownListItems"
+                OnChanged="@(value => _model.ApplicationId = value?.IdAsLong)"
+            />
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <CustomDropDown
+                Items="@_operatorTypesDownListItems"
+                OnChanged="@(value => { })"
+            />
+        </div>
+    </div>
     <hr/>
     @if (_isLoading)
     {

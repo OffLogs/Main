@@ -1,6 +1,5 @@
 .w-custom-drop-down {
   position: relative;
-  z-index: 100;
 }
 .w-custom-drop-down .dropdown-menu {
   position: absolute;

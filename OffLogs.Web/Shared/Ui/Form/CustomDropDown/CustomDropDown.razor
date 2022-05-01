@@ -3,6 +3,9 @@
 @using System.Collections
 @using OffLogs.Web.Constants
 @using OffLogs.Web.Services.Events
+
+@implements IDisposable
+
 @inject ToastService _toastService
 
 <div class="w-custom-drop-down @Class">
@@ -60,6 +63,8 @@
 
     protected bool _isOpened { get; set; } = false;
 
+    private static Action _onGlobalDropDownClose;
+
     protected string _selectedItemTitle
     {
         get
@@ -77,10 +82,12 @@
         base.OnInitialized();
 
         SelectedItem = Items.FirstOrDefault(item => item.IsSelected);
+        _onGlobalDropDownClose -= OnCloseModalFromOthers;
     }
 
     public void Dispose()
     {
+        _onGlobalDropDownClose -= OnCloseModalFromOthers;
     }
 
     public void AddItem(DropDownListItem item)
@@ -130,7 +137,16 @@
 
     protected void ShowDropDown(bool isShow)
     {
+        if (!isShow)
+        {
+            _onGlobalDropDownClose?.Invoke();
+        }
         _isOpened = isShow;
         StateHasChanged();
+    }
+
+    private void OnCloseModalFromOthers()
+    {
+        _isOpened = false;
     }
 }

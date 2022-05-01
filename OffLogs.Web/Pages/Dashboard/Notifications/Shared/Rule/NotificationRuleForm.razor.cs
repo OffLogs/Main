@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Message;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule;
+using OffLogs.Business.Common.Constants.Notificatiions;
 using OffLogs.Business.Common.Extensions;
+using OffLogs.Web.Core.Extensions;
 using OffLogs.Web.Resources;
 using OffLogs.Web.Services;
 using OffLogs.Web.Services.Http;
@@ -66,6 +68,8 @@ public partial class NotificationRuleForm
             Label = item.Name
         }).ToList();
 
+    private ICollection<DropDownListItem> _operatorTypesDownListItems => LogicOperatorType.Conjunction.ToDropDownList();
+    
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
