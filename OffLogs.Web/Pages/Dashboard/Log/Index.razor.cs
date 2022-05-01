@@ -75,16 +75,16 @@ public partial class Index
             new(LogResources.ShowStatistic, "chart-arrows-axis", () => ShowStatisticModal())    
         );
         
-        Dispatcher.Dispatch(new OffLogs.Web.Store.Application.Actions.FetchNextListPageAction());
+        Dispatcher.Dispatch(new OffLogs.Web.Store.Application.FetchNextListPageAction());
     }
 
     private Task LoadListAsync(bool isLoadNextPage = true)
     {
         if (!isLoadNextPage)
         {
-            Dispatcher.Dispatch(new ResetListAction()); 
+            Dispatcher.Dispatch(new OffLogs.Web.Store.Application.ResetListAction()); 
         }
-        Dispatcher.Dispatch(new FetchNextListPageAction());
+        Dispatcher.Dispatch(new OffLogs.Web.Store.Application.FetchNextListPageAction());
         return Task.CompletedTask;
     }
 

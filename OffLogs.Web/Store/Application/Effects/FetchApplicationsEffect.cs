@@ -5,7 +5,6 @@ using Fluxor;
 using Microsoft.Extensions.Logging;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application;
 using OffLogs.Web.Services.Http;
-using OffLogs.Web.Store.Application.Actions;
 
 namespace OffLogs.Web.Store.Application.Effects;
 

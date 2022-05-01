@@ -29,11 +29,13 @@
     <p>
         <CustomDropDown
             Items="@_messageTemplateDownListItems"
+            OnChanged="@(value => _model.TemplateId = value.IdAsLong)"
         />
     </p>
     <p>
         <CustomDropDown
             Items="@_applicationDownListItems"
+            OnChanged="@(value => _model.ApplicationId = value?.IdAsLong)"
         />
     </p>
     <hr/>

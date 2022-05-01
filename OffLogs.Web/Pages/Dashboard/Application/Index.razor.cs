@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Fluxor;
@@ -9,7 +8,6 @@ using OffLogs.Web.Resources;
 using OffLogs.Web.Services.Http;
 using OffLogs.Web.Shared.Ui.NavigationLayout.Models;
 using OffLogs.Web.Store.Application;
-using OffLogs.Web.Store.Application.Actions;
 
 namespace OffLogs.Web.Pages.Dashboard.Application;
 
