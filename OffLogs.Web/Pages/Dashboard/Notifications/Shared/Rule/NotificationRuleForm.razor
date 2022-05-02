@@ -8,11 +8,11 @@
 <h2>
     @if (_isNew)
     {
-        @NotificationResources.AddNewTemplate
+        @NotificationResources.AddNewRule
     }
     else
     {
-        <text>#@(_model.Id)</text>
+        <text>@NotificationResources.EditRule #@(_model.Id)</text>
     }
 </h2>
     
@@ -24,32 +24,52 @@
     <div class="row mb-3">
         <div class="col">
             <CustomDropDown
+                Label="@NotificationResources.Rules_MessageTemplate"
                 Items="@_messageTemplateDownListItems"
                 OnChanged="@(value => _model.TemplateId = value.IdAsLong)"/>
         </div>
         <div class="col">
             <CustomDropDown
+                Label="@NotificationResources.Rules_Application"
                 Items="@_applicationDownListItems"
                 OnChanged="@(value => _model.ApplicationId = value?.IdAsLong)"
             />
         </div>
         <div class="col">
             <CustomInputText
+                Label="@NotificationResources.Rules_Period"
                 IsDisabled="@_isLoading"
-                Label="@NotificationResources.MessageTemplate_Subject"
                 @bind-Value="@_model.Period"
             />
         </div>
     </div>
-    <div class="row mb-3">
-        
-    </div>
+    <hr/>
     <div class="row mb-3">
         <div class="col">
             <CustomDropDown
+                Label="@NotificationResources.Rules_HowToCombineConditions"
                 Items="@_operatorTypesDownListItems"
-                OnChanged="@(value => { })"
+                OnChanged="@(value => _model.LogicOperator = value.Id)"
             />
+        </div>
+        <div class="col">
+            <MyButton 
+                OnClick="OnAddCondition"
+                Type="BootstrapColorType.Success"
+            >
+                <Icon Name="ui-add"/>
+                @NotificationResources.Rules_AddCondition 
+            </MyButton>        
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            @foreach(var condition in _model.Conditions)
+            {
+                <ConditionForm 
+                    Condition="@condition"
+                />
+            }
         </div>
     </div>
     <hr/>
@@ -75,5 +95,5 @@
 <ConfirmationModal
     Title="@NotificationResources.Confirmation_AreSureToDeleteTemplate" 
     IsShow="@_isShowDeleteModal"
-    OnOk="@(async () => await OnDeleteAppAsync())"
-    OnCancel="@(() => _isShowDeleteModal = false)"/>
+    OnOk="@(async () => await OnDeleteTemplateAsync())"
+    OnCancel="@(() => _isShowDeleteModal = false)"></ConfirmationModal>

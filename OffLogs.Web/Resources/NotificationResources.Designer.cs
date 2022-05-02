@@ -61,6 +61,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add new rule.
+        /// </summary>
+        internal static string AddNewRule {
+            get {
+                return ResourceManager.GetString("AddNewRule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add new template.
         /// </summary>
         internal static string AddNewTemplate {
@@ -70,11 +79,29 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select field.
+        /// </summary>
+        internal static string Condition_FieldType {
+            get {
+                return ResourceManager.GetString("Condition_FieldType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to remove this template?.
         /// </summary>
         internal static string Confirmation_AreSureToDeleteTemplate {
             get {
                 return ResourceManager.GetString("Confirmation_AreSureToDeleteTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit rule.
+        /// </summary>
+        internal static string EditRule {
+            get {
+                return ResourceManager.GetString("EditRule", resourceCulture);
             }
         }
         
@@ -201,6 +228,60 @@ namespace OffLogs.Web.Resources {
         internal static string PageTitle {
             get {
                 return ResourceManager.GetString("PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add condition.
+        /// </summary>
+        internal static string Rules_AddCondition {
+            get {
+                return ResourceManager.GetString("Rules_AddCondition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application.
+        /// </summary>
+        internal static string Rules_Application {
+            get {
+                return ResourceManager.GetString("Rules_Application", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Condition value.
+        /// </summary>
+        internal static string Rules_ConditionValue {
+            get {
+                return ResourceManager.GetString("Rules_ConditionValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to How to combine conditions.
+        /// </summary>
+        internal static string Rules_HowToCombineConditions {
+            get {
+                return ResourceManager.GetString("Rules_HowToCombineConditions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message template.
+        /// </summary>
+        internal static string Rules_MessageTemplate {
+            get {
+                return ResourceManager.GetString("Rules_MessageTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Period (sec.).
+        /// </summary>
+        internal static string Rules_Period {
+            get {
+                return ResourceManager.GetString("Rules_Period", resourceCulture);
             }
         }
     }

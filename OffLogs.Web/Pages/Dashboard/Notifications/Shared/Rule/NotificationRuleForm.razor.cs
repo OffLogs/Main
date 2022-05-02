@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Fluxor;
@@ -44,7 +45,7 @@ public partial class NotificationRuleForm
     [Parameter]
     public EventCallback<long> OnSaved { get; set; }
     
-    private SetRuleRequest _model = new();
+    private SetRuleRequest _model = new() { Type = NotificationType.Email.ToString() };
     private EditContext _editContext;
     private MyButton _btnSubmit;
     private MyEditForm _editForm;
@@ -104,7 +105,7 @@ public partial class NotificationRuleForm
     private async Task HandleSubmit()
     {
         var isValid = _editContext.Validate();
-        if (isValid)
+        if (isValid && ValidateConditions())
         {
             _isLoading = true;
             try
@@ -136,7 +137,7 @@ public partial class NotificationRuleForm
         _editForm.ClickAsync().Wait();
     }
 
-    private async Task OnDeleteAppAsync()
+    private async Task OnDeleteTemplateAsync()
     {
         _isShowDeleteModal = false;
         _isLoading = true;
@@ -159,6 +160,29 @@ public partial class NotificationRuleForm
             _isLoading = false;
         }
         StateHasChanged();
+    }
+    
+    private void OnAddCondition()
+    {
+        _model.Conditions.Add(new SetConditionRequest());
+    }
+
+    private bool ValidateConditions()
+    {
+        foreach (var condition in _model.Conditions)
+        {
+            var context = new ValidationContext(condition, null, null);
+            var results = new List<ValidationResult>();
+
+            var isValid = Validator.TryValidateObject(condition, context, results, true);
+            if (!isValid)
+            {
+                _toastService.AddErrorMessage(results.First().ErrorMessage);
+                return false;
+            }
+        }
+
+        return true;
     }
 }
 

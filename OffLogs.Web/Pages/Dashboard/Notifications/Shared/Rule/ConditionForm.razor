@@ -1,0 +1,24 @@
+﻿@using OffLogs.Web.Core.Components.Form
+@using OffLogs.Web.Resources
+
+@inherits BaseComponent
+
+<div class="row mb-3">
+    <div class="col">
+        <CustomDropDown
+            NonSelectedLabel="@NotificationResources.Condition_FieldType"
+            Items="@_fieldTypeDownListItems"
+            BtnType="BootstrapColorType.Secondary"
+            OnChanged="@(value => _model.ConditionField = value.Id)"
+        />
+    </div>
+    <div class="col-2 text-center fs-3">
+        =
+    </div>
+    <div class="col">
+            <CustomInputText
+                Placeholder="@NotificationResources.Rules_ConditionValue"
+                @bind-Value="@_model.Value"
+            />
+    </div>
+</div>

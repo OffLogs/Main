@@ -4,6 +4,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Rendering;
+using OffLogs.Web.Core.Helpers;
 
 namespace OffLogs.Web.Core.Components.Form
 {
@@ -39,29 +40,8 @@ namespace OffLogs.Web.Core.Components.Form
         [Parameter]
         public string ParsingErrorMessage { get; set; } = "The {0} field must be a number.";
         
-        private static readonly string _stepAttributeValue = GetStepAttributeValue();
         private static readonly bool _isNumber = IsNumber();
 
-        private static string GetStepAttributeValue()
-        {
-            // Unwrap Nullable<T>, because InputBase already deals with the Nullable aspect
-            // of it for us. We will only get asked to parse the T for nonempty inputs.
-            var targetType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
-            if (targetType == typeof(int) ||
-                targetType == typeof(long) ||
-                targetType == typeof(short) ||
-                targetType == typeof(float) ||
-                targetType == typeof(double) ||
-                targetType == typeof(decimal))
-            {
-                return "any";
-            }
-            else
-            {
-                throw new InvalidOperationException($"The type '{targetType}' is not a supported numeric type.");
-            }
-        }
-        
         /// <inheritdoc />
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
@@ -77,7 +57,7 @@ namespace OffLogs.Web.Core.Components.Form
                 {
                     // Label
                     builder.OpenElement(sequence++, "label");
-                    builder.AddAttribute(sequence++, "class", "input-group-prepend");
+                    builder.AddAttribute(sequence++, "class", "form-label");
                     builder.AddContent(sequence++, Label);
                     builder.CloseElement();
                 }
@@ -111,7 +91,7 @@ namespace OffLogs.Web.Core.Components.Form
 
                 if (_isNumber)
                 {
-                    builder.AddAttribute(sequence++, "step", _stepAttributeValue);    
+                    builder.AddAttribute(sequence++, "step", "any");  
                 }
                 builder.AddAttribute(sequence++,  "type", GetInputType());
 
@@ -135,11 +115,9 @@ namespace OffLogs.Web.Core.Components.Form
                 validationErrorMessage = null;
                 return true;
             }
-            else
-            {
-                validationErrorMessage = string.Format(CultureInfo.InvariantCulture, ParsingErrorMessage, DisplayName ?? FieldIdentifier.FieldName);
-                return false;
-            }
+            
+            validationErrorMessage = string.Format(CultureInfo.InvariantCulture, ParsingErrorMessage, DisplayName ?? FieldIdentifier.FieldName);
+            return false;
         }
         
         /// <summary>

@@ -9,6 +9,10 @@
 @inject ToastService _toastService
 
 <div class="w-custom-drop-down @Class">
+     @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="form-label">@Label</label>
+    }
     <div class="btn-group">
         <button type="button"
                 class="btn btn-@BtnType.GetName() dropdown-toggle"
@@ -44,6 +48,9 @@
 </div>
 
 @code {
+    [Parameter]
+    public string Label { get; set; } = "";
+    
     [Parameter]
     public string Class { get; set; } = "";
     
