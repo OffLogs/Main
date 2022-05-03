@@ -241,6 +241,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New rule was added.
+        /// </summary>
+        internal static string Rules_Added {
+            get {
+                return ResourceManager.GetString("Rules_Added", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Application.
         /// </summary>
         internal static string Rules_Application {
@@ -282,6 +291,15 @@ namespace OffLogs.Web.Resources {
         internal static string Rules_Period {
             get {
                 return ResourceManager.GetString("Rules_Period", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The rule was saved.
+        /// </summary>
+        internal static string Rules_Saved {
+            get {
+                return ResourceManager.GetString("Rules_Saved", resourceCulture);
             }
         }
     }

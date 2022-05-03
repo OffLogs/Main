@@ -25,7 +25,7 @@ namespace OffLogs.Web.Services.Http
         public async Task<NotificationRuleDto> NotificationRuleSet(SetRuleRequest request)
         {
             var response = await PostAuthorizedAsync<NotificationRuleDto>(
-                MainApiUrl.NotificationRulesList,
+                MainApiUrl.NotificationRulesSet,
                 request
             );
             if (response == null)

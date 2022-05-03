@@ -11,12 +11,17 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
 {
     public class SetConditionRequest
     {
-        [Required]
-        [EnumDataType(typeof(ConditionFieldType))]
+        [
+            Required, 
+            EnumDataType(typeof(ConditionFieldType))
+        ]
         public string ConditionField { get; set; }
         
-        [Required]
-        [EnumDataType(typeof(LogLevel))]
+        [
+            Required,
+            EnumDataType(typeof(LogLevel)),
+            StringLength(100, MinimumLength = 1)
+        ]
         public string Value { get; set; }
 
         public SetConditionRequest()
@@ -27,6 +32,12 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
         {
             ConditionField = item.ConditionField.ToString();
             Value = item.Value;
+        }
+
+        public void Fill(SetConditionRequest from)
+        {
+            ConditionField = from.ConditionField;
+            Value = from.Value;
         }
     }
 }

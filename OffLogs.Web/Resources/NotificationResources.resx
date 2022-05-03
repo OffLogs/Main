@@ -93,4 +93,10 @@
     <data name="Condition_FieldType" xml:space="preserve">
         <value>Select field</value>
     </data>
+    <data name="Rules_Added" xml:space="preserve">
+        <value>New rule was added</value>
+    </data>
+    <data name="Rules_Saved" xml:space="preserve">
+        <value>The rule was saved</value>
+    </data>
 </root>

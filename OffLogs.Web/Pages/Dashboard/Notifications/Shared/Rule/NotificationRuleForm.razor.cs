@@ -11,6 +11,7 @@ using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule;
 using OffLogs.Business.Common.Constants.Notificatiions;
 using OffLogs.Business.Common.Extensions;
 using OffLogs.Web.Core.Extensions;
+using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Resources;
 using OffLogs.Web.Services;
 using OffLogs.Web.Services.Http;
@@ -45,7 +46,7 @@ public partial class NotificationRuleForm
     [Parameter]
     public EventCallback<long> OnSaved { get; set; }
     
-    private SetRuleRequest _model = new() { Type = NotificationType.Email.ToString() };
+    public SetRuleRequest Model = new() { Type = NotificationType.Email.ToString() };
     private EditContext _editContext;
     private MyButton _btnSubmit;
     private MyEditForm _editForm;
@@ -75,7 +76,7 @@ public partial class NotificationRuleForm
     {
         await base.OnInitializedAsync();
 
-        _editContext = new EditContext(_model);
+        _editContext = new EditContext(Model);
         Dispatcher.Dispatch(new FetchMessageTemplatesAction(true));
         Dispatcher.Dispatch(new FetchNextListPageAction(true));
     }
@@ -83,12 +84,12 @@ public partial class NotificationRuleForm
     protected override async Task OnParametersSetAsync()
     {
         await base.OnParametersSetAsync();
-        if (_model.Id != Id)
+        if (Model.Id != Id)
         {
             var foundItem = _state.Value.Rules.FirstOrDefault(
                 item => item.Id == Id
             );
-            _model.Fill(foundItem);
+            Model.Fill(foundItem);
         }
     }
     
@@ -105,14 +106,14 @@ public partial class NotificationRuleForm
     private async Task HandleSubmit()
     {
         var isValid = _editContext.Validate();
-        if (isValid && ValidateConditions())
+        if (isValid)
         {
             _isLoading = true;
             try
             {
-                var item = await _apiService.NotificationRuleSet(_model);
+                var item = await _apiService.NotificationRuleSet(Model);
                 _toastService.AddInfoMessage(
-                    _isNew ? NotificationResources.MessageTemplate_Added : NotificationResources.MessageTemplate_Saved    
+                    _isNew ? NotificationResources.Rules_Added : NotificationResources.Rules_Saved    
                 );
                 // Dispatcher.Dispatch(new SetMessageTemplatesAction(item));
                 await InvokeAsync(async () =>
@@ -136,53 +137,15 @@ public partial class NotificationRuleForm
     {
         _editForm.ClickAsync().Wait();
     }
-
-    private async Task OnDeleteTemplateAsync()
-    {
-        _isShowDeleteModal = false;
-        _isLoading = true;
-        try
-        {
-            await _apiService.MessageTemplateDelete(_model.Id.Value);
-            _toastService.AddInfoMessage(NotificationResources.MessageTemplate_Deleted);
-            Dispatcher.Dispatch(new DeleteMessageTemplatesAction(_model.Id.Value));
-            await InvokeAsync(async () =>
-            {
-                await OnSaved.InvokeAsync(0);
-            });
-        }
-        catch (Exception e)
-        {
-            _toastService.AddErrorMessage(e.Message);
-        }
-        finally
-        {
-            _isLoading = false;
-        }
-        StateHasChanged();
-    }
     
     private void OnAddCondition()
     {
-        _model.Conditions.Add(new SetConditionRequest());
+        Model.Conditions.Add(new SetConditionRequest());
     }
-
-    private bool ValidateConditions()
+    
+    private void OnDeleteCondition(SetConditionRequest condition)
     {
-        foreach (var condition in _model.Conditions)
-        {
-            var context = new ValidationContext(condition, null, null);
-            var results = new List<ValidationResult>();
-
-            var isValid = Validator.TryValidateObject(condition, context, results, true);
-            if (!isValid)
-            {
-                _toastService.AddErrorMessage(results.First().ErrorMessage);
-                return false;
-            }
-        }
-
-        return true;
+        Model.Conditions.Remove(condition);
     }
 }
 

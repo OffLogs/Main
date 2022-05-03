@@ -1,5 +1,6 @@
 ﻿@using OffLogs.Web.Core.Components.Form
 @using Microsoft.AspNetCore.Components
+@using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
 @using OffLogs.Business.Common.Constants.Notificatiions
 @using OffLogs.Web.Resources
 
@@ -12,11 +13,11 @@
     }
     else
     {
-        <text>@NotificationResources.EditRule #@(_model.Id)</text>
+        <text>@NotificationResources.EditRule #@(Model.Id)</text>
     }
 </h2>
     
-<MyEditForm OnValidSubmit="@HandleSubmit"
+<MyEditForm OnSubmit="@HandleSubmit"
             EditContext="@_editContext"
             @ref="@_editForm">
     <DataAnnotationsValidator/>
@@ -26,20 +27,22 @@
             <CustomDropDown
                 Label="@NotificationResources.Rules_MessageTemplate"
                 Items="@_messageTemplateDownListItems"
-                OnChanged="@(value => _model.TemplateId = value.IdAsLong)"/>
+                SelectedItemId="@($"{Model.MessageId}")"
+                OnChanged="@(value => Model.MessageId = value.IdAsLong)"/>
         </div>
         <div class="col">
             <CustomDropDown
                 Label="@NotificationResources.Rules_Application"
                 Items="@_applicationDownListItems"
-                OnChanged="@(value => _model.ApplicationId = value?.IdAsLong)"
+                SelectedItemId="@($"{Model.ApplicationId}")"
+                OnChanged="@(value => Model.ApplicationId = value?.IdAsLong)"
             />
         </div>
         <div class="col">
             <CustomInputText
                 Label="@NotificationResources.Rules_Period"
                 IsDisabled="@_isLoading"
-                @bind-Value="@_model.Period"
+                @bind-Value="@Model.Period"
             />
         </div>
     </div>
@@ -49,10 +52,11 @@
             <CustomDropDown
                 Label="@NotificationResources.Rules_HowToCombineConditions"
                 Items="@_operatorTypesDownListItems"
-                OnChanged="@(value => _model.LogicOperator = value.Id)"
+                SelectedItemId="@($"{Model.LogicOperator}")"
+                OnChanged="@(value => Model.LogicOperator = value.Id)"
             />
         </div>
-        <div class="col">
+        <div class="col align-self-end">
             <MyButton 
                 OnClick="OnAddCondition"
                 Type="BootstrapColorType.Success"
@@ -64,11 +68,14 @@
     </div>
     <div class="row mb-3">
         <div class="col">
-            @foreach(var condition in _model.Conditions)
+            @foreach(var condition in Model.Conditions)
             {
-                <ConditionForm 
-                    Condition="@condition"
-                />
+                <CascadingValue Value="this">
+                    <ConditionForm 
+                        OnDeleted="OnDeleteCondition"
+                        Condition="@condition"
+                    />
+                </CascadingValue>
             }
         </div>
     </div>
@@ -95,5 +102,5 @@
 <ConfirmationModal
     Title="@NotificationResources.Confirmation_AreSureToDeleteTemplate" 
     IsShow="@_isShowDeleteModal"
-    OnOk="@(async () => await OnDeleteTemplateAsync())"
+    OnOk="@(async () => {})"
     OnCancel="@(() => _isShowDeleteModal = false)"></ConfirmationModal>

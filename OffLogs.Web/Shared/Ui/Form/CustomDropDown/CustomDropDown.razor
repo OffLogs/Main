@@ -64,6 +64,9 @@
     public BootstrapColorType BtnType { get; set; } = BootstrapColorType.Primary;
 
     [Parameter]
+    public string SelectedItemId { get; set; }
+    
+    [Parameter]
     public EventCallback<DropDownListItem> OnChanged { get; set; }
 
     public DropDownListItem SelectedItem = null;
@@ -90,6 +93,19 @@
 
         SelectedItem = Items.FirstOrDefault(item => item.IsSelected);
         _onGlobalDropDownClose -= OnCloseModalFromOthers;
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if (SelectedItemId != SelectedItem?.Id)
+        {
+            var foundItem = Items.FirstOrDefault(item => item.Id == SelectedItemId);
+            if (foundItem != null)
+            {
+                SelectedItem = foundItem;
+            }
+        }
     }
 
     public void Dispose()

@@ -40,7 +40,7 @@ namespace OffLogs.Api.Controller.Board.Notifications.Rules.Actions
         {
             var userId = _requestService.GetUserIdFromJwt();
             var user = await _queryBuilder.FindByIdAsync<UserEntity>(userId);
-            var message = await _queryBuilder.FindByIdAsync<MessageTemplateEntity>(request.TemplateId);
+            var message = await _queryBuilder.FindByIdAsync<MessageTemplateEntity>(request.MessageId);
             
             if (message == null) throw new ItemNotFoundException("MessageId is incorrect");
             
