@@ -10,4 +10,19 @@
     <ProjectReference Include="..\OffLogs.Business.Orm\OffLogs.Business.Orm.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\RequestResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>RequestResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\RequestResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RequestResources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 </Project>

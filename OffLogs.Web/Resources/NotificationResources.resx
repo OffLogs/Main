@@ -54,6 +54,12 @@
     <data name="AddNewTemplate" xml:space="preserve">
         <value>Add new template</value>
     </data>
+    <data name="AddNewRule" xml:space="preserve">
+        <value>Add new rule</value>
+    </data>
+    <data name="EditRule" xml:space="preserve">
+        <value>Edit rule</value>
+    </data>
     <data name="MenuItem_EditRule" xml:space="preserve">
         <value>Edit rue</value>
     </data>
@@ -65,5 +71,32 @@
     </data>
     <data name="Confirmation_AreSureToDeleteTemplate" xml:space="preserve">
         <value>Are you sure you want to remove this template?</value>
+    </data>
+    <data name="Rules_Period" xml:space="preserve">
+        <value>Period (sec.)</value>
+    </data>
+    <data name="Rules_MessageTemplate" xml:space="preserve">
+        <value>Message template</value>
+    </data>
+    <data name="Rules_Application" xml:space="preserve">
+        <value>Application</value>
+    </data>
+    <data name="Rules_ConditionValue" xml:space="preserve">
+        <value>Condition value</value>
+    </data>
+    <data name="Rules_AddCondition" xml:space="preserve">
+        <value>Add condition</value>
+    </data>
+    <data name="Rules_HowToCombineConditions" xml:space="preserve">
+        <value>How to combine conditions</value>
+    </data>
+    <data name="Condition_FieldType" xml:space="preserve">
+        <value>Select field</value>
+    </data>
+    <data name="Rules_Added" xml:space="preserve">
+        <value>New rule was added</value>
+    </data>
+    <data name="Rules_Saved" xml:space="preserve">
+        <value>The rule was saved</value>
     </data>
 </root>

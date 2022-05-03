@@ -87,6 +87,7 @@
     <ItemGroup>
       <ProjectReference Include="..\OffLogs.Api.Common\OffLogs.Api.Common.csproj" />
       <ProjectReference Include="..\OffLogs.Business.Common\OffLogs.Business.Common.csproj" />
+      <ProjectReference Include="..\OffLogs.Business.Extensions\OffLogs.Business.Extensions.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,0 +1,33 @@
+﻿@using OffLogs.Web.Core.Components.Form
+@using OffLogs.Web.Resources
+
+@inherits BaseComponent
+
+<div class="row mb-3">
+    <div class="col">
+        <CustomDropDown
+            NonSelectedLabel="@NotificationResources.Condition_FieldType"
+            Items="@_fieldTypeDownListItems"
+            SelectedItemId="@($"{_model.ConditionField}")"
+            BtnType="BootstrapColorType.Secondary"
+            OnChanged="@(async (value) => await OnChangeFieldAsync(value.Id))"
+        />
+    </div>
+    <div class="col-2 text-center fs-3">
+        =
+    </div>
+    <div class="col">
+        <CustomInputText
+            Placeholder="@NotificationResources.Rules_ConditionValue"
+            @bind-Value="@_value"
+        />
+    </div>
+    <div class="col-2 text-center fs-3">
+        <MyButton 
+            OnClick="OnDelete"
+            Type="BootstrapColorType.Danger"
+        >
+            <Icon Name="ui-delete"/>
+        </MyButton>     
+    </div>
+</div>

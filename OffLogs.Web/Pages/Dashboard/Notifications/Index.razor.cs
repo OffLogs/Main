@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using OffLogs.Business.Common.Extensions;
-using OffLogs.Web.Pages.Dashboard.Notifications.Form;
+using OffLogs.Web.Pages.Dashboard.Notifications.Shared;
+using OffLogs.Web.Pages.Dashboard.Notifications.Shared.Rule;
 using OffLogs.Web.Resources;
 using OffLogs.Web.Shared.Ui.NavigationLayout;
 using OffLogs.Web.Shared.Ui.NavigationLayout.Models;
 using OffLogs.Web.Store.Notification;
-using OffLogs.Web.Store.Notification.Actions;
 
 namespace OffLogs.Web.Pages.Dashboard.Notifications;
 
@@ -22,6 +21,8 @@ public partial class Index
     private NavigationLayout _navigationLayout { get; set; }
     
     private MessageTemplateForm _messageTemplateForm { get; set; }
+    
+    private NotificationRuleForm _notificationRuleForm { get; set; }
     
     private ICollection<HeaderMenuButton> _actionButtons = new List<HeaderMenuButton>();
 
@@ -100,6 +101,10 @@ public partial class Index
         if (_selectedMenuItem == _menuItemTemplates)
         {
             _messageTemplateForm.Delete();
+        }
+        if (_selectedMenuItem == _menuItemRules)
+        {
+            _notificationRuleForm.Delete();
         }
     }
 

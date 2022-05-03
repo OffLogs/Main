@@ -1,12 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.Extensions.Logging;
-using OffLogs.Api.Common.Dto;
-using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application;
 using OffLogs.Web.Services.Http;
-using OffLogs.Web.Store.Application.Actions;
 
 namespace OffLogs.Web.Store.Application.Effects;
 
@@ -29,6 +27,11 @@ public class FetchApplicationsEffect: Effect<FetchNextListPageAction>
 
     public override async Task HandleAsync(FetchNextListPageAction pageAction, IDispatcher dispatcher)
     {
+        if (pageAction.IsLoadIfEmpty && _state.Value.List.Any())
+        {
+            return;
+        }
+        
         try
         {
             var response = await _apiService.GetApplicationsAsync(new GetListRequest

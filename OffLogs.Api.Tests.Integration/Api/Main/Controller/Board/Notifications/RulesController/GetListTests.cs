@@ -66,6 +66,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             {
                 Assert.True(item.Id > 0);
                 Assert.NotNull(item.MessageTemplate);
+                Assert.NotNull(item.Application);
                 Assert.True(item.Period > 0);
                 Assert.True(item.Conditions.Count > 0);
             });

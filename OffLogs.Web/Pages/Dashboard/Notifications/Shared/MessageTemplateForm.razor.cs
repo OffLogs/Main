@@ -1,22 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Message;
-using OffLogs.Web.Constants;
-using OffLogs.Web.Core.Models.Modal;
 using OffLogs.Web.Resources;
 using OffLogs.Web.Services;
 using OffLogs.Web.Services.Http;
 using OffLogs.Web.Shared.Ui;
 using OffLogs.Web.Shared.Ui.Form;
 using OffLogs.Web.Store.Notification;
-using OffLogs.Web.Store.Notification.Actions;
 
-namespace OffLogs.Web.Pages.Dashboard.Notifications.Form;
+namespace OffLogs.Web.Pages.Dashboard.Notifications.Shared;
 
 public partial class MessageTemplateForm
 {
