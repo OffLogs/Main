@@ -27,8 +27,8 @@
             <CustomDropDown
                 Label="@NotificationResources.Rules_MessageTemplate"
                 Items="@_messageTemplateDownListItems"
-                SelectedItemId="@($"{Model.MessageId}")"
-                OnChanged="@(value => Model.MessageId = value.IdAsLong)"/>
+                SelectedItemId="@($"{Model.TemplateId}")"
+                OnChanged="@(value => Model.TemplateId = value.IdAsLong)"/>
         </div>
         <div class="col">
             <CustomDropDown

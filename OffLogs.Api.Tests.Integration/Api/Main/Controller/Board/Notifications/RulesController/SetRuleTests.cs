@@ -66,7 +66,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
                 ApplicationId = _userModel.ApplicationId,
                 Type = NotificationType.Email.ToString(),
                 LogicOperator = expectedOperator.ToString(),
-                MessageId = _expectedMessageTemplate.Id,
+                TemplateId = _expectedMessageTemplate.Id,
                 Conditions = conditions
             });
             // Assert
@@ -92,7 +92,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
                 ApplicationId = _userModel.ApplicationId,
                 Type = NotificationType.Email.ToString(),
                 LogicOperator = expectedOperator.ToString(),
-                MessageId = _expectedMessageTemplate.Id,
+                TemplateId = _expectedMessageTemplate.Id,
                 Conditions = conditions
             });
             // Assert
@@ -127,7 +127,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
                 ApplicationId = _userModel.ApplicationId,
                 Type = NotificationType.Email.ToString(),
                 LogicOperator = expectedOperator.ToString(),
-                MessageId = _expectedMessageTemplate.Id,
+                TemplateId = _expectedMessageTemplate.Id,
                 Conditions = conditions
             });
             // Assert
@@ -163,7 +163,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
                 ApplicationId = _userModel.ApplicationId,
                 Type = NotificationType.Email.ToString(),
                 LogicOperator = expectedOperator.ToString(),
-                MessageId = _expectedMessageTemplate.Id,
+                TemplateId = _expectedMessageTemplate.Id,
                 Conditions = conditions
             });
             // Assert

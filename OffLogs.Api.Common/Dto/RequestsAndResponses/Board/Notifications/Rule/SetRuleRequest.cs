@@ -19,7 +19,7 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
             Required,
             IsPositive(AllowZero = false)
         ]
-        public long MessageId { get; set; }
+        public long TemplateId { get; set; }
         
         [IsPositive(AllowZero = false)]
         public long? ApplicationId { get; set; }
@@ -56,7 +56,7 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
             Id = item?.Id;
             if (item != null)
             {
-                MessageId = item.MessageTemplate.Id;
+                TemplateId = item.MessageTemplate.Id;
                 ApplicationId = item.Application?.Id;
                 Type = item.Type.ToString();
                 LogicOperator = item.LogicOperator.ToString();
