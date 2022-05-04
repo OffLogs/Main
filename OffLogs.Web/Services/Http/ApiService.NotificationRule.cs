@@ -39,7 +39,7 @@ namespace OffLogs.Web.Services.Http
         public async Task NotificationRuleDelete(long id)
         {
             await PostAuthorizedAsync<object>(
-                MainApiUrl.NotificationRulesDelete, 
+                MainApiUrl.NotificationRuleDelete, 
                 new IdRequest(id)    
             );
         }

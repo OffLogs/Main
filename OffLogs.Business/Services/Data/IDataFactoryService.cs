@@ -14,7 +14,7 @@ namespace OffLogs.Business.Services.Data
         Faker<LogTraceEntity> LogTraceFactory();
         Faker<LogPropertyEntity> LogPropertyFactory();
         Faker<NotificationConditionEntity> NotificationConditionFactory();
-        Faker<MessageTemplateEntity> NotificationMessageFactory();
+        Faker<MessageTemplateEntity> MessageTemplateFactory();
         Faker<NotificationRuleEntity> NotificationRuleFactory();
     }
 }

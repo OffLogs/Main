@@ -62,7 +62,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Notifications
             var expectedPeriod = 5 * 60;
             var user = await DataSeeder.CreateActivatedUser();
             
-            var message = DataFactory.NotificationMessageFactory().Generate();
+            var message = DataFactory.MessageTemplateFactory().Generate();
             message.User = user;
             await CommandBuilder.SaveAsync(message);
 

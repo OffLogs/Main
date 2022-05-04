@@ -211,7 +211,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
         {
             var expectedPeriod = 5 * 60;
             
-            var message = DataFactory.NotificationMessageFactory().Generate();
+            var message = DataFactory.MessageTemplateFactory().Generate();
             message.User = UserModel;
             await CommandBuilder.SaveAsync(message);
 

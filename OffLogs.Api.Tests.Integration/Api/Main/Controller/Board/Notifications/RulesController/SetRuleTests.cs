@@ -31,7 +31,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
         public SetRuleTests(ApiCustomWebApplicationFactory factory) : base(factory)
         {
             _userModel = DataSeeder.CreateActivatedUser().Result;
-            _messageFactory = DataFactory.NotificationMessageFactory();
+            _messageFactory = DataFactory.MessageTemplateFactory();
             _expectedMessageTemplate = _messageFactory.Generate();
             _expectedMessageTemplate.User = _userModel;
             CommandBuilder.SaveAsync(_expectedMessageTemplate).Wait();
