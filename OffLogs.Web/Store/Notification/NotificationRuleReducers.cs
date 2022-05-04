@@ -36,7 +36,7 @@ public class ApplicationReducers
     }
 
     [ReducerMethod]
-    public static NotificationRuleState ReduceAddMessageTemplatesAction(
+    public static NotificationRuleState ReduceSetMessageTemplatesAction(
         NotificationRuleState state,
         SetMessageTemplatesAction action
     )
@@ -87,6 +87,34 @@ public class ApplicationReducers
         return newState;
     }
 
+    [ReducerMethod]
+    public static NotificationRuleState ReduceSetMessageTemplatesAction(
+        NotificationRuleState state,
+        SetNotificationRuleAction action
+    )
+    {
+        var oldList = state.Rules.Where(
+            item => item.Id != action.Item.Id
+        ).ToList();
+        var newState = state.JsonClone<NotificationRuleState>();
+        newState.Rules = oldList;
+        newState.Rules.Add(action.Item);
+        newState.Rules = newState.Rules.OrderBy(item => item.Id).ToList();
+        return newState;
+    }
+    
+    [ReducerMethod]
+    public static NotificationRuleState ReduceDeleteMessageTemplatesAction(
+        NotificationRuleState state,
+        DeleteNotificationRuleAction action
+    )
+    {
+        var newState = state.JsonClone<NotificationRuleState>();
+        newState.Rules = state.Rules.Where(
+            item => item.Id != action.Id
+        ).ToList();
+        return newState;
+    }
     #endregion
 }
  

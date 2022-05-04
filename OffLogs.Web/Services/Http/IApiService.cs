@@ -60,6 +60,7 @@ namespace OffLogs.Web.Services.Http
 
         Task<ListDto<NotificationRuleDto>> NotificationRuleGetList();
         Task<NotificationRuleDto> NotificationRuleSet(SetRuleRequest request);
+        Task NotificationRuleDelete(long id);
 
         #endregion
 

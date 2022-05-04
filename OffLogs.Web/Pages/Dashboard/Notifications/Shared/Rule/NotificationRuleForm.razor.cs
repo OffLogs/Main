@@ -86,10 +86,18 @@ public partial class NotificationRuleForm
         await base.OnParametersSetAsync();
         if (Model.Id != Id)
         {
-            var foundItem = _state.Value.Rules.FirstOrDefault(
-                item => item.Id == Id
-            );
-            Model.Fill(foundItem);
+            Model.Id = Id;
+            if (_isNew)
+            {
+                Model = new SetRuleRequest();
+            }
+            else
+            {
+                var foundItem = _state.Value.Rules.FirstOrDefault(
+                    item => item.Id == Id
+                );
+                Model.Fill(foundItem);
+            }
         }
     }
     
@@ -115,7 +123,7 @@ public partial class NotificationRuleForm
                 _toastService.AddInfoMessage(
                     _isNew ? NotificationResources.Rules_Added : NotificationResources.Rules_Saved    
                 );
-                // Dispatcher.Dispatch(new SetMessageTemplatesAction(item));
+                Dispatcher.Dispatch(new SetNotificationRuleAction(item));
                 await InvokeAsync(async () =>
                 {
                     await OnSaved.InvokeAsync(item.Id);
@@ -146,6 +154,33 @@ public partial class NotificationRuleForm
     private void OnDeleteCondition(SetConditionRequest condition)
     {
         Model.Conditions.Remove(condition);
+    }
+
+    private async Task OnDeleteRuleAsync()
+    {
+        _isLoading = true;
+        try
+        {
+            var id = Model.Id.Value;
+            await _apiService.NotificationRuleDelete(id);
+            _toastService.AddInfoMessage(
+                _isNew ? NotificationResources.Rules_Added : NotificationResources.Rules_Saved    
+            );
+            Dispatcher.Dispatch(new DeleteNotificationRuleAction(id));
+            await InvokeAsync(async () =>
+            {
+                await OnSaved.InvokeAsync(0);
+            });
+        }
+        catch (Exception e)
+        {
+            _toastService.AddErrorMessage(e.Message);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+        StateHasChanged();
     }
 }
 
