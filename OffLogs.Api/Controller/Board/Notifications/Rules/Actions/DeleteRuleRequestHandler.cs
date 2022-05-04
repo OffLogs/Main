@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Api.Requests.Abstractions;
-using AutoMapper;
 using Commands.Abstractions;
 using Microsoft.Extensions.Logging;
-using OffLogs.Api.Common.Dto.RequestsAndResponses;
-using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Message;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule;
 using OffLogs.Business.Exceptions;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities.Notifications;
@@ -14,35 +12,32 @@ using OffLogs.Business.Services.Api;
 using Queries.Abstractions;
 using ValidationException = OffLogs.Business.Exceptions.ValidationException;
 
-namespace OffLogs.Api.Controller.Board.Notifications.Messages.Actions
+namespace OffLogs.Api.Controller.Board.Notifications.Rules.Actions
 {
-    public class DeleteMessageTemplateRequestHandler : IAsyncRequestHandler<DeleteMessageTemplateRequest>
+    public class DeleteRuleRequestHandler: IAsyncRequestHandler<DeleteRuleRequest>
     {
         private readonly IRequestService _requestService;
         private readonly IAsyncCommandBuilder _commandBuilder;
         private readonly IAsyncQueryBuilder _asyncQueryBuilder;
-        private readonly IMapper _mapper;
-        private readonly ILogger<DeleteMessageTemplateRequestHandler> _logger;
+        private readonly ILogger<DeleteRuleRequestHandler> _logger;
 
-        public DeleteMessageTemplateRequestHandler(
+        public DeleteRuleRequestHandler(
             IRequestService requestService,
             IAsyncCommandBuilder commandBuilder,
             IAsyncQueryBuilder asyncQueryBuilder,
-            IMapper mapper,
-            ILogger<DeleteMessageTemplateRequestHandler> logger
-            )
+            ILogger<DeleteRuleRequestHandler> logger
+        )
         {
             _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
             _commandBuilder = commandBuilder ?? throw new ArgumentNullException(nameof(commandBuilder));
             _asyncQueryBuilder = asyncQueryBuilder ?? throw new ArgumentNullException(nameof(asyncQueryBuilder));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task ExecuteAsync(DeleteMessageTemplateRequest request)
+        public async Task ExecuteAsync(DeleteRuleRequest request)
         {
             var userId = _requestService.GetUserIdFromJwt();
-            var message = await _asyncQueryBuilder.FindByIdAsync<MessageTemplateEntity>(request.Id);
+            var message = await _asyncQueryBuilder.FindByIdAsync<NotificationRuleEntity>(request.Id);
             if (message == null)
             {
                 throw new ItemNotFoundException("Message not found");
