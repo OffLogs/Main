@@ -3,6 +3,7 @@ using OffLogs.Business.Common.Constants;
 using OffLogs.Web.Core.Exceptions;
 using System.Threading.Tasks;
 using OffLogs.Api.Common.Dto;
+using OffLogs.Api.Common.Dto.RequestsAndResponses;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Message;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule;
 
@@ -33,6 +34,14 @@ namespace OffLogs.Web.Services.Http
                 throw new ServerErrorException();
             }
             return response;
+        }
+        
+        public async Task NotificationRuleDelete(long id)
+        {
+            await PostAuthorizedAsync<object>(
+                MainApiUrl.NotificationRulesDelete, 
+                new IdRequest(id)    
+            );
         }
     }
 }

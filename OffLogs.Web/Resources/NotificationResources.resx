@@ -72,6 +72,9 @@
     <data name="Confirmation_AreSureToDeleteTemplate" xml:space="preserve">
         <value>Are you sure you want to remove this template?</value>
     </data>
+    <data name="Confirmation_AreSureToDeleteRule" xml:space="preserve">
+        <value>Are you sure you want to remove this rule?</value>
+    </data>
     <data name="Rules_Period" xml:space="preserve">
         <value>Period (sec.)</value>
     </data>

@@ -88,6 +88,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove this rule?.
+        /// </summary>
+        internal static string Confirmation_AreSureToDeleteRule {
+            get {
+                return ResourceManager.GetString("Confirmation_AreSureToDeleteRule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to remove this template?.
         /// </summary>
         internal static string Confirmation_AreSureToDeleteTemplate {

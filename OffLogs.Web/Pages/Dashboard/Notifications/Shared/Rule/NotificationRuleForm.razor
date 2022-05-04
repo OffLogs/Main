@@ -100,7 +100,7 @@
 </MyEditForm>
 
 <ConfirmationModal
-    Title="@NotificationResources.Confirmation_AreSureToDeleteTemplate" 
+    Title="@NotificationResources.Confirmation_AreSureToDeleteRule" 
     IsShow="@_isShowDeleteModal"
-    OnOk="@(async () => {})"
+    OnOk="@(async () => await OnDeleteRuleAsync())"
     OnCancel="@(() => _isShowDeleteModal = false)"></ConfirmationModal>

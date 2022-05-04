@@ -2,6 +2,7 @@
 @using System.Timers
 @using System.Collections
 @using OffLogs.Web.Constants
+@using OffLogs.Web.Core.Helpers
 @using OffLogs.Web.Services.Events
 
 @implements IDisposable
@@ -64,8 +65,20 @@
     public BootstrapColorType BtnType { get; set; } = BootstrapColorType.Primary;
 
     [Parameter]
-    public string SelectedItemId { get; set; }
-    
+    public string SelectedItemId
+    {
+        get => _selectedItemId;
+        set
+        {
+            if (value != SelectedItem?.Id)
+            {
+                SetSelectedItemId(value, false);
+            }
+            _selectedItemId = value;
+        }
+    }
+    private string _selectedItemId;
+
     [Parameter]
     public EventCallback<DropDownListItem> OnChanged { get; set; }
 
@@ -95,19 +108,6 @@
         _onGlobalDropDownClose -= OnCloseModalFromOthers;
     }
 
-    protected override void OnParametersSet()
-    {
-        base.OnParametersSet();
-        if (SelectedItemId != SelectedItem?.Id)
-        {
-            var foundItem = Items.FirstOrDefault(item => item.Id == SelectedItemId);
-            if (foundItem != null)
-            {
-                SelectedItem = foundItem;
-            }
-        }
-    }
-
     public void Dispose()
     {
         _onGlobalDropDownClose -= OnCloseModalFromOthers;
@@ -130,7 +130,7 @@
         SetSelectedItemId(item?.Id);
     }
 
-    public void SetSelectedItemId(string id)
+    public void SetSelectedItemId(string id, bool isInvoke = true)
     {
         SelectedItem = Items.FirstOrDefault(record => record.Id == id);
         Items = Items.Select(record =>
@@ -139,9 +139,10 @@
             return record;
         }).ToList();
         StateHasChanged();
-        if (OnChanged.HasDelegate)
+        
+        if (isInvoke && OnChanged.HasDelegate)
         {
-            OnChanged.InvokeAsync(SelectedItem);
+            OnChanged.InvokeAsync(SelectedItem);    
         }
     }
 

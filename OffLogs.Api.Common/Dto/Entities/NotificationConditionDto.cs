@@ -11,9 +11,5 @@ namespace OffLogs.Api.Common.Dto.Entities
         public ConditionFieldType ConditionField { get; set; }
         
         public string Value { get; set; }
-        
-        public DateTime CreateTime { get; set; }
-        
-        public DateTime UpdateTime { get; set; }
     }
 }
