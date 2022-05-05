@@ -5,26 +5,27 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using OffLogs.Business.Services.Entities.NotificationRule;
+using OffLogs.Business.Services.Notifications;
 
 namespace OffLogs.WorkerService.Services
 {
     internal class NotificationRuleProcessingHostedService : ABackgroundService
     {
-        private readonly INotificationRuleService _ruleService;
+        private readonly INotificationRuleProcessingService _processingService;
 
         public NotificationRuleProcessingHostedService(
             ILogger<ABackgroundService> logger,
-            INotificationRuleService ruleService
+            INotificationRuleProcessingService processingService
         ) : base(logger)
         {
-            _ruleService = ruleService;
+            _processingService = processingService;
             ServiceName = "NotificationRuleProcessingHostedService";
         }
 
         protected override async Task DoWorkAsync(CancellationToken cancellationToken)
         {
             LogDebug($"Notification rules processing worker started at: {DateTime.UtcNow}");
-            await _ruleService.GetNextAndSetExecutingAsync(cancellationToken);
+            await _processingService.FindAndProcessWaitingRules(cancellationToken);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Notification.Abstractions;
@@ -40,12 +41,12 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
         _frontendUrl = configuration.GetValue<string>("App:FrontendUrl");
     }
 
-    public async Task FindAndProcessWaitingRules()
+    public async Task FindAndProcessWaitingRules(CancellationToken cancellationToken = default)
     {
         NotificationRuleEntity rule = null;
         do
         {
-            rule = await _notificationRuleService.GetNextAndSetExecutingAsync();
+            rule = await _notificationRuleService.GetNextAndSetExecutingAsync(cancellationToken);
             if (rule != null)
             {
                 var dataByRule = await _notificationRuleService.GetDataForNotificationRule(rule);
@@ -73,8 +74,8 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
                     }
                 }
 
-                await _notificationRuleService.SetAsExecutedAsync(rule);
-                await _sessionProvider.PerformCommitAsync();
+                await _notificationRuleService.SetAsExecutedAsync(rule, cancellationToken);
+                await _sessionProvider.PerformCommitAsync(cancellationToken);
             }
         } while (rule != null);
     }
