@@ -83,8 +83,13 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
     private string PrepareBody(NotificationRuleEntity rule, ProcessingDataDto ruleData) 
     {
         var builder = new TemplatedTextBuilder(rule.MessageTemplate.Body);
-        builder.AddPlaceholder("applicationName", rule.Application.Name);
-        builder.AddPlaceholder("navigateUrl", $"{_frontendUrl}/{_logsPageUrl}/{rule.Application.Id}");
+        builder.AddPlaceholder("applicationName", rule.Application?.Name);
+        var navigateUrl = $"{_frontendUrl}/{_logsPageUrl}";
+        if (rule.Application != null)
+        {
+            navigateUrl += $"/{rule.Application?.Id}";
+        }
+        builder.AddPlaceholder("navigateUrl", navigateUrl);
         builder.AddPlaceholder("logCount", ruleData.LogCount.ToString());
         return _markdownService.ToHtml(builder.Build());
     }
