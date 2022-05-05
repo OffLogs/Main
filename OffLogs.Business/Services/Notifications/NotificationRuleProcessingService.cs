@@ -68,6 +68,8 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
                         await _producerService.ProduceNotificationMessageAsync(notificationContext);
                     }
                 }
+
+                await _notificationRuleService.SetAsExecutedAsync(rule);
             }
         } while (rule != null);
     }
