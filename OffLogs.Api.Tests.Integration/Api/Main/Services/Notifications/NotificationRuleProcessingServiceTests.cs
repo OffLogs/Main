@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Bogus;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate.Linq;
 using OffLogs.Business.Common.Constants;
@@ -15,13 +16,15 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Notifications
 {
     public class NotificationRuleProcessingServiceTests : MyApiIntegrationTest
     {
-        protected readonly INotificationRuleService NotificationRuleService;
-        protected readonly INotificationRuleProcessingService ProcessingService;
+        private readonly INotificationRuleService _notificationRuleService;
+        private readonly INotificationRuleProcessingService _processingService;
+        private readonly Faker<NotificationRuleEntity> _ruleFactory;
         
         public NotificationRuleProcessingServiceTests(ApiCustomWebApplicationFactory factory) : base(factory)
         {
-            NotificationRuleService = _factory.Services.GetRequiredService<INotificationRuleService>();
-            ProcessingService = _factory.Services.GetRequiredService<INotificationRuleProcessingService>();
+            _notificationRuleService = _factory.Services.GetRequiredService<INotificationRuleService>();
+            _processingService = _factory.Services.GetRequiredService<INotificationRuleProcessingService>();
+            _ruleFactory = DataFactory.NotificationRuleFactory();
         }
 
         [Fact]
@@ -46,7 +49,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Notifications
             );
             
             await DbSessionProvider.PerformCommitAsync();
-            await ProcessingService.FindAndProcessWaitingRules();
+            await _processingService.FindAndProcessWaitingRules();
 
             var processedRecords = await KafkaNotificationsConsumerService.ProcessNotificationsAsync(false);
             Assert.True(processedRecords > 0);
@@ -78,8 +81,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Notifications
                 }    
             }
             
-            return await NotificationRuleService.SetRule(
+            return await _notificationRuleService.SetRule(
                 user,
+                _ruleFactory.Generate().Title,
                 expectedPeriod,
                 logicOperatorType,
                 NotificationType.Email,

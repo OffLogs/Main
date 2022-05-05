@@ -56,6 +56,7 @@ namespace OffLogs.Api.Controller.Board.Notifications.Rules.Actions
             Enum.TryParse<NotificationType>(request.Type, out var notificationType);
             var rule = await _notificationRuleService.SetRule(
                 user,
+                request.Title,
                 request.Period,
                 logicOperator,
                 notificationType,

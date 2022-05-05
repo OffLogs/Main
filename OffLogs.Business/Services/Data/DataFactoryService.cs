@@ -146,6 +146,10 @@ namespace OffLogs.Business.Services.Data
         {
             return new Faker<NotificationRuleEntity>()
                 .RuleFor(
+                    entity => entity.Title,
+                    (faker) => faker.Random.Words(2)
+                )
+                .RuleFor(
                     entity => entity.Type,
                     (faker) => NotificationType.Email
                 )

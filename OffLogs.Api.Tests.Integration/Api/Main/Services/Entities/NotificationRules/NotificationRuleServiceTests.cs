@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Bogus;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate.Linq;
 using OffLogs.Api.Tests.Integration.Core.Models;
@@ -16,14 +17,16 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
 {
     public class NotificationRuleServiceTests : MyApiIntegrationTest
     {
-        protected readonly INotificationRuleService NotificationRuleService;
+        private readonly INotificationRuleService _notificationRuleService;
+        private readonly Faker<NotificationRuleEntity> _ruleFactory;
 
         public UserTestModel UserModel { get; set; }
 
         public NotificationRuleServiceTests(ApiCustomWebApplicationFactory factory) : base(factory)
         {
-            NotificationRuleService = _factory.Services.GetRequiredService<INotificationRuleService>();
+            _notificationRuleService = _factory.Services.GetRequiredService<INotificationRuleService>();
             
+            _ruleFactory = DataFactory.NotificationRuleFactory();
             UserModel = DataSeeder.CreateActivatedUser().Result;
         }
 
@@ -50,8 +53,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
             var actualRule = await CreateRule();
             var expectedRule = await CreateRule();
             
-            var rule = await NotificationRuleService.SetRule(
+            var rule = await _notificationRuleService.SetRule(
                 expectedRule.User,
+                expectedRule.Title,
                 expectedRule.Period,
                 expectedRule.LogicOperator,
                 expectedRule.Type,
@@ -82,7 +86,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
             await CommandBuilder.SaveAsync(expectedRule);
             
             await DbSessionProvider.PerformCommitAsync();
-            var actualRule = await NotificationRuleService.GetNextAndSetExecutingAsync();
+            var actualRule = await _notificationRuleService.GetNextAndSetExecutingAsync();
             Assert.NotNull(actualRule);
         }
         
@@ -103,7 +107,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
             await CommandBuilder.SaveAsync(expectedRule);
 
             await DbSessionProvider.PerformCommitAsync();
-            var actualRule = await NotificationRuleService.GetNextAndSetExecutingAsync();
+            var actualRule = await _notificationRuleService.GetNextAndSetExecutingAsync();
             Assert.Null(actualRule);
         }
         
@@ -139,7 +143,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
                 expectedCount
             );
             
-            var data = await NotificationRuleService.GetDataForNotificationRule(expectedRule);
+            var data = await _notificationRuleService.GetDataForNotificationRule(expectedRule);
             Assert.Equal(expectedCount, data.LogCount);
         }
         
@@ -167,7 +171,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
                 expectedCount
             );
             
-            var data = await NotificationRuleService.GetDataForNotificationRule(expectedRule);
+            var data = await _notificationRuleService.GetDataForNotificationRule(expectedRule);
             Assert.Equal(expectedCount, data.LogCount);
         }
         
@@ -199,7 +203,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
                 expectedCount
             );
             
-            var data = await NotificationRuleService.GetDataForNotificationRule(expectedRule);
+            var data = await _notificationRuleService.GetDataForNotificationRule(expectedRule);
             Assert.Equal(0, data.LogCount);
         }
         
@@ -227,8 +231,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
                 }    
             }
             
-            return await NotificationRuleService.SetRule(
+            return await _notificationRuleService.SetRule(
                 UserModel,
+                _ruleFactory.Generate().Title,
                 expectedPeriod,
                 logicOperatorType,
                 NotificationType.Email,

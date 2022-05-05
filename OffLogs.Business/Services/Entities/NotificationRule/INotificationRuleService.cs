@@ -14,6 +14,7 @@ public interface INotificationRuleService: IDomainService
 
     Task<NotificationRuleEntity> SetRule(
         UserEntity user,
+        string title,
         int period,
         LogicOperatorType logicOperator,
         NotificationType type,

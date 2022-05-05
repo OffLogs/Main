@@ -45,6 +45,12 @@ namespace OffLogs.Business.Orm.Entities.Notifications
         
         [
             Property(NotNull = true),
+            Column(Name = "title", Length = 512, NotNull = true)
+        ]
+        public virtual string Title { get; set; }
+        
+        [
+            Property(NotNull = true),
             Column(Name = "notification_type_id", SqlType = "int", NotNull = true)
         ]
         public virtual NotificationType Type { get; set; }

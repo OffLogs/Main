@@ -24,6 +24,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
         private const int DefaultPeriod = 300;
 
         private readonly Faker<MessageTemplateEntity> _messageFactory;
+        private readonly Faker<NotificationRuleEntity> _ruleFactory;
         private readonly INotificationRuleService _notificationRuleService;
         private readonly MessageTemplateEntity _expectedMessageTemplate;
         private UserTestModel _userModel { get; set; }
@@ -32,6 +33,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
         {
             _userModel = DataSeeder.CreateActivatedUser().Result;
             _messageFactory = DataFactory.MessageTemplateFactory();
+            _ruleFactory = DataFactory.NotificationRuleFactory();
             _expectedMessageTemplate = _messageFactory.Generate();
             _expectedMessageTemplate.User = _userModel;
             CommandBuilder.SaveAsync(_expectedMessageTemplate).Wait();
@@ -78,6 +80,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
         public async Task ShouldAddNew()
         {
             var expectedOperator = LogicOperatorType.Conjunction;
+            var expectedTitle = _ruleFactory.Generate().Title;
 
             var conditions = new List<SetConditionRequest>()
             {
@@ -93,7 +96,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
                 Type = NotificationType.Email.ToString(),
                 LogicOperator = expectedOperator.ToString(),
                 TemplateId = _expectedMessageTemplate.Id,
-                Conditions = conditions
+                Conditions = conditions,
+                Title = expectedTitle
             });
             // Assert
             response.EnsureSuccessStatusCode();
@@ -103,6 +107,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             Assert.Equal(_expectedMessageTemplate.Id, data.MessageTemplate.Id);
             Assert.Equal(conditions.Count, data.Conditions.Count);
             Assert.Equal(expectedOperator, data.LogicOperator);
+            Assert.Equal(expectedTitle, data.Title);
         }
         
         [Fact]
@@ -128,7 +133,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
                 Type = NotificationType.Email.ToString(),
                 LogicOperator = expectedOperator.ToString(),
                 TemplateId = _expectedMessageTemplate.Id,
-                Conditions = conditions
+                Conditions = conditions,
+                Title = _ruleFactory.Generate().Title
             });
             // Assert
             response.EnsureSuccessStatusCode();
@@ -164,7 +170,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
                 Type = NotificationType.Email.ToString(),
                 LogicOperator = expectedOperator.ToString(),
                 TemplateId = _expectedMessageTemplate.Id,
-                Conditions = conditions
+                Conditions = conditions,
+                Title = _ruleFactory.Generate().Title
             });
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -175,6 +182,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
         )
         {
             var expectedPeriod = 5 * 60;
+            var fakeRule = _ruleFactory.Generate();
 
             var conditions = new List<NotificationConditionEntity>();
             var conditionsFactory = DataFactory.NotificationConditionFactory();
@@ -187,6 +195,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             
             return await _notificationRuleService.SetRule(
                 _userModel,
+                fakeRule.Title,
                 expectedPeriod,
                 LogicOperatorType.Conjunction,
                 NotificationType.Email,
