@@ -8,6 +8,7 @@ using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Constants.Notificatiions;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities.Notifications;
+using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Services.Entities.NotificationRule;
 using OffLogs.Business.Services.Notifications;
 using Xunit;
@@ -54,6 +55,11 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Notifications
             var processedRecords = await KafkaNotificationsConsumerService.ProcessNotificationsAsync(false);
             Assert.True(processedRecords > 0);
             Assert.True(EmailSendingService.IsEmailSent);
+
+            DbSessionProvider.CurrentSession.Clear();
+            var actualRule = await QueryBuilder.FindByIdAsync<NotificationRuleEntity>(expectedRule.Id);
+            Assert.NotEqual(expectedRule.LastExecutionTime, actualRule.LastExecutionTime);
+            Assert.False(actualRule.IsExecuting);
         }
         
         private async Task<NotificationRuleEntity> CreateRule(

@@ -117,6 +117,25 @@ public class NotificationRuleService: INotificationRuleService
         await _dbSessionProvider.PerformCommitAsync(cancellationToken);
         return notificationRule;
     }
+    
+    public async Task<NotificationRuleEntity> SetAsExecutedAsync(
+        NotificationRuleEntity rule,
+        CancellationToken cancellationToken = default
+    )
+    {
+        if (rule == null)
+        {
+            return null;
+        }
+        rule.IsExecuting = false;
+        rule.LastExecutionTime = DateTime.UtcNow;
+        await _commandBuilder.SaveAsync(
+            rule,
+            cancellationToken: cancellationToken
+        );
+        await _dbSessionProvider.PerformCommitAsync(cancellationToken);
+        return rule;
+    }
 
     public async Task<ProcessingDataDto> GetDataForNotificationRule(NotificationRuleEntity rule)
     {

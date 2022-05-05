@@ -26,4 +26,9 @@ public interface INotificationRuleService: IDomainService
     );
 
     Task<ProcessingDataDto> GetDataForNotificationRule(NotificationRuleEntity rule);
+
+    Task<NotificationRuleEntity> SetAsExecutedAsync(
+        NotificationRuleEntity rule,
+        CancellationToken cancellationToken = default
+    );
 }
