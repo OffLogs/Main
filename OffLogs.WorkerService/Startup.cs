@@ -23,6 +23,7 @@ namespace OffLogs.WorkerService
             services.AddHostedService<Services.LogsProcessingHostedService>();
             services.AddHostedService<Services.LogsDeletionHostedService>();
             services.AddHostedService<Services.NotificationProcessingHostedService>();
+            services.AddHostedService<Services.NotificationRuleProcessingHostedService>();
         }
 
         public void ConfigureContainer(ContainerBuilder containerBuilder)
