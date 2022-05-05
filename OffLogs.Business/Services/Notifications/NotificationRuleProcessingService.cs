@@ -10,6 +10,7 @@ using OffLogs.Business.Orm.Dto.Entities;
 using OffLogs.Business.Orm.Entities.Notifications;
 using OffLogs.Business.Services.Entities.NotificationRule;
 using OffLogs.Business.Services.Kafka;
+using Persistence.Transactions.Behaviors;
 
 namespace OffLogs.Business.Services.Notifications;
 
@@ -18,6 +19,7 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
     private readonly INotificationRuleService _notificationRuleService;
     private readonly IKafkaProducerService _producerService;
     private readonly IMarkdownService _markdownService;
+    private readonly IDbSessionProvider _sessionProvider;
     private readonly string _logsPageUrl;
     private readonly string _frontendUrl;
 
@@ -25,12 +27,14 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
         INotificationRuleService notificationRuleService,
         IKafkaProducerService producerService,
         IMarkdownService markdownService,
-        IConfiguration configuration
+        IConfiguration configuration,
+        IDbSessionProvider sessionProvider
     )
     {
         _notificationRuleService = notificationRuleService;
         _producerService = producerService;
         _markdownService = markdownService;
+        _sessionProvider = sessionProvider;
 
         _logsPageUrl = configuration.GetValue<string>("App:Urls:LogsPage");
         _frontendUrl = configuration.GetValue<string>("App:FrontendUrl");
@@ -70,6 +74,7 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
                 }
 
                 await _notificationRuleService.SetAsExecutedAsync(rule);
+                await _sessionProvider.PerformCommitAsync();
             }
         } while (rule != null);
     }
