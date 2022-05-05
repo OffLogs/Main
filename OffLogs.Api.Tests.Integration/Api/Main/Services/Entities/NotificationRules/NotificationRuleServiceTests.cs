@@ -107,8 +107,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
             await CommandBuilder.SaveAsync(expectedRule);
 
             await DbSessionProvider.PerformCommitAsync();
-            // var actualRule = await _notificationRuleService.GetNextAndSetExecutingAsync();
-            // Assert.Null(actualRule);
+            var actualRule = await _notificationRuleService.GetNextAndSetExecutingAsync();
+            Assert.Null(actualRule);
         }
         
         [Fact]
