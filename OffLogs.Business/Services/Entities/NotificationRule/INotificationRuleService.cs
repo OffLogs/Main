@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Domain.Abstractions;
 using OffLogs.Business.Common.Constants.Notificatiions;
@@ -10,7 +11,7 @@ namespace OffLogs.Business.Services.Entities.NotificationRule;
 
 public interface INotificationRuleService: IDomainService
 {
-    Task<NotificationRuleEntity> GetNextAndSetExecutingAsync();
+    Task<NotificationRuleEntity> GetNextAndSetExecutingAsync(CancellationToken cancellationToken = default);
 
     Task<NotificationRuleEntity> SetRule(
         UserEntity user,

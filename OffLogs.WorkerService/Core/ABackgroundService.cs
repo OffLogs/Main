@@ -47,7 +47,10 @@ namespace OffLogs.WorkerService.Core
                 {
                     if (_isShouldRunWork)
                     {
+                        var startTime = DateTime.UtcNow;
                         await DoWorkAsync(_cancelationToken);
+                        var difference = DateTime.UtcNow - startTime;
+                        LogDebug("Duration of work: " + difference.ToString("g"));
                         UpdateNextTickTime();
                     }
 

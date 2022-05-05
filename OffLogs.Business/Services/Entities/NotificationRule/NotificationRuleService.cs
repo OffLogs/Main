@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Commands.Abstractions;
 using OffLogs.Business.Common.Constants.Notificatiions;
@@ -98,16 +99,22 @@ public class NotificationRuleService: INotificationRuleService
         return rule;
     }
 
-    public async Task<NotificationRuleEntity> GetNextAndSetExecutingAsync()
+    public async Task<NotificationRuleEntity> GetNextAndSetExecutingAsync(CancellationToken cancellationToken = default)
     {
-        var notificationRule = await _queryBuilder.For<NotificationRuleEntity>().WithAsync(new GetNextNonActiveCriteria());
+        var notificationRule = await _queryBuilder.For<NotificationRuleEntity>().WithAsync(
+            new GetNextNonActiveCriteria(),
+            cancellationToken
+        );
         if (notificationRule == null)
         {
             return null;
         }
         notificationRule.IsExecuting = true;
-        await _commandBuilder.SaveAsync(notificationRule);
-        await _dbSessionProvider.PerformCommitAsync();
+        await _commandBuilder.SaveAsync(
+            notificationRule,
+            cancellationToken: cancellationToken
+        );
+        await _dbSessionProvider.PerformCommitAsync(cancellationToken);
         return notificationRule;
     }
 
