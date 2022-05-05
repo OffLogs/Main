@@ -205,6 +205,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You can not delete this template. Perhaps it already assigned to the notification rule.
+        /// </summary>
+        internal static string MessageTemplate_CantDelete {
+            get {
+                return ResourceManager.GetString("MessageTemplate_CantDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The message template was deleted.
         /// </summary>
         internal static string MessageTemplate_Deleted {
@@ -300,6 +309,15 @@ namespace OffLogs.Web.Resources {
         internal static string Rules_Period {
             get {
                 return ResourceManager.GetString("Rules_Period", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title.
+        /// </summary>
+        internal static string Rules_RuleTitle {
+            get {
+                return ResourceManager.GetString("Rules_RuleTitle", resourceCulture);
             }
         }
         

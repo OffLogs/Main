@@ -25,7 +25,6 @@ public class ApplicationReducers
         FetchMessageTemplatesResultAction action
     )
     {
-        Debug.Log(action);
         var newState = state.JsonClone<NotificationRuleState>();
         newState.IsLoading = false;
         newState.MessageTemplates = action.List?.Items

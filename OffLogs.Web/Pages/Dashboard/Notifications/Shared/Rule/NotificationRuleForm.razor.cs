@@ -89,7 +89,7 @@ public partial class NotificationRuleForm
             Model.Id = Id;
             if (_isNew)
             {
-                Model = new SetRuleRequest();
+                Model.Reset();
             }
             else
             {
@@ -158,6 +158,7 @@ public partial class NotificationRuleForm
 
     private async Task OnDeleteRuleAsync()
     {
+        _isShowDeleteModal = false;
         _isLoading = true;
         try
         {

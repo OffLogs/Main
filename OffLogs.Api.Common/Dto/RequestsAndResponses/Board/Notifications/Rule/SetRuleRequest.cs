@@ -12,6 +12,9 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
 {
     public class SetRuleRequest : IRequest<NotificationRuleDto>
     {
+        private const int defaultPeriod = 300;
+        private const NotificationType defaultType = NotificationType.Email;
+        
         [IsPositive(AllowZero = true)]
         public long? Id { get; set; }
 
@@ -29,12 +32,12 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
         
         [IsPositive(AllowZero = false)]
         public long? ApplicationId { get; set; }
-        
+
         [
-            Required, 
+            Required,
             EnumDataType(typeof(NotificationType))
         ]
-        public string Type { get; set; }
+        public string Type { get; set; } = defaultType.ToString();
         
         [
             Required,
@@ -48,7 +51,7 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
             IsPositive(AllowZero = false),
             Range(300, 2_678_400)
         ]
-        public int Period { get; set; } = 300;
+        public int Period { get; set; } = defaultPeriod;
 
         [
             Required,
@@ -62,6 +65,7 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
             Id = item?.Id;
             if (item != null)
             {
+                Title = item.Title;
                 TemplateId = item.MessageTemplate.Id;
                 ApplicationId = item.Application?.Id;
                 Type = item.Type.ToString();
@@ -69,6 +73,18 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
                 Period = item.Period;
                 Conditions = item.Conditions.Select(condition => new SetConditionRequest(condition)).ToList();
             }
+        }
+        
+        public void Reset()
+        {
+            Id = null;
+            Title = "";
+            TemplateId = 0;
+            ApplicationId = null;
+            Type = defaultType.ToString();
+            LogicOperator = null;
+            Period = defaultPeriod;
+            Conditions = new List<SetConditionRequest>();
         }
     }
 }

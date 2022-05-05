@@ -4,6 +4,7 @@ using AspNetCore.ApiControllers.Abstractions;
 using Domain.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using OffLogs.Business.Common.Exceptions.Api;
 using Persistence.Transactions.Behaviors;
 using Serilog.Core;
 
@@ -34,9 +35,11 @@ namespace OffLogs.Api.Frontend.Controllers
 
         private IActionResult ProcessFail(Exception exception)
         {
+            var message = exception?.Message;
             if (exception is not IDomainException)
             {
                 Logger.LogError(exception, exception?.Message);
+                exception = new ServerException();
             }
 
             return new BadRequestObjectResult(new

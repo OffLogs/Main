@@ -59,7 +59,7 @@ public partial class Index
                 return _state.Value.Rules.Select(item => new ListItem
                 {
                     Id = item.Id.ToString(),
-                    Title = item.Id.ToString()
+                    Title = string.IsNullOrEmpty(item.Title) ? "No name" : item.Title
                 }).ToList();
             }
             if (_selectedMenuItem == _menuItemTemplates)
