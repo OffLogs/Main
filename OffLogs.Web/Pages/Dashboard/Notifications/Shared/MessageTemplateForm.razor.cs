@@ -123,7 +123,9 @@ public partial class MessageTemplateForm
         }
         catch (Exception e)
         {
-            _toastService.AddErrorMessage(e.Message);
+            _toastService.AddErrorMessage(
+                NotificationResources.MessageTemplate_CantDelete    
+            );
         }
         finally
         {

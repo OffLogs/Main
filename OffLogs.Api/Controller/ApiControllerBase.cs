@@ -5,6 +5,7 @@ using Domain.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OffLogs.Api.Common.Dto.RequestsAndResponses;
+using OffLogs.Business.Common.Exceptions.Api;
 using Persistence.Transactions.Behaviors;
 
 namespace OffLogs.Api.Controller
@@ -26,9 +27,11 @@ namespace OffLogs.Api.Controller
 
         private IActionResult ProcessFail(Exception exception)
         {
+            var message = exception?.Message;
             if (exception is not IDomainException)
             {
                 Logger.LogError(exception, exception?.Message);
+                exception = new ServerException();
             }
 
             return new BadRequestObjectResult(new

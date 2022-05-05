@@ -116,13 +116,15 @@ namespace AspNetCore.ApiControllers.Extensions
                 apiController,
                 request,
                 success,
-                apiController.Fail);
+                apiController.Fail
+            );
 
         public static async Task<IActionResult> RequestAsync<TApiController, TRequest, TResponse>(
             this TApiController apiController,
             TRequest request,
             Func<TResponse, IActionResult> success,
-            Func<Exception, IActionResult> fail)
+            Func<Exception, IActionResult> fail
+        )
             where TApiController : 
                 ControllerBase, 
                 IAsyncApiController, 
@@ -142,7 +144,7 @@ namespace AspNetCore.ApiControllers.Extensions
 
             try
             {
-                TResponse response = await apiController.AsyncRequestBuilder.ExecuteAsync<TRequest, TResponse>(request);
+                var response = await apiController.AsyncRequestBuilder.ExecuteAsync<TRequest, TResponse>(request);
                 if (apiController.CommitPerformer != null)
                 {
                     await apiController.CommitPerformer.PerformCommitAsync();

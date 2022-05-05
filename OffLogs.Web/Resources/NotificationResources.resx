@@ -45,6 +45,9 @@
     <data name="MessageTemplate_Deleted" xml:space="preserve">
         <value>The message template was deleted</value>
     </data>
+    <data name="MessageTemplate_CantDelete" xml:space="preserve">
+        <value>You can not delete this template. Perhaps it already assigned to the notification rule</value>
+    </data>
     <data name="MenuItem_AddTemplate" xml:space="preserve">
         <value>Add new template</value>
     </data>

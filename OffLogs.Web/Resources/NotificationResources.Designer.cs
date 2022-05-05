@@ -205,6 +205,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You can not delete this template. Perhaps it already assigned to the notification rule.
+        /// </summary>
+        internal static string MessageTemplate_CantDelete {
+            get {
+                return ResourceManager.GetString("MessageTemplate_CantDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The message template was deleted.
         /// </summary>
         internal static string MessageTemplate_Deleted {
