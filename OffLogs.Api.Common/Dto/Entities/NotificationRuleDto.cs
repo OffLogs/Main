@@ -9,6 +9,8 @@ namespace OffLogs.Api.Common.Dto.Entities
     {
         public long Id { get; set; }
         
+        public string Title { get; set; }
+        
         public MessageTemplateDto MessageTemplate { get; set; }
         
         public ApplicationDto Application { get; set; }

@@ -19,7 +19,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
         
         public SetMessageTests(ApiCustomWebApplicationFactory factory) : base(factory)
         {
-            _messageFactory = DataFactory.NotificationMessageFactory();
+            _messageFactory = DataFactory.MessageTemplateFactory();
         }
 
         [Fact]

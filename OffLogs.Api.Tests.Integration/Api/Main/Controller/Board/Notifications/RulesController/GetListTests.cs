@@ -25,12 +25,14 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
         private const int DefaultPeriod = 300;
 
         private readonly Faker<MessageTemplateEntity> _messageFactory;
+        private readonly Faker<NotificationRuleEntity> _ruleFactory;
         private readonly INotificationRuleService _notificationRuleService;
         private readonly MessageTemplateEntity _expectedMessageTemplate;
 
         public GetListTests(ApiCustomWebApplicationFactory factory) : base(factory)
         {
-            _messageFactory = DataFactory.NotificationMessageFactory();
+            _messageFactory = DataFactory.MessageTemplateFactory();
+            _ruleFactory = DataFactory.NotificationRuleFactory();
             _notificationRuleService = _factory.Services.GetRequiredService<INotificationRuleService>();
         }
 
@@ -115,6 +117,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             
             return await _notificationRuleService.SetRule(
                 user,
+                _ruleFactory.Generate().Title,
                 5 * 60,
                 LogicOperatorType.Conjunction,
                 NotificationType.Email,

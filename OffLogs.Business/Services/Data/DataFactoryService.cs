@@ -146,6 +146,10 @@ namespace OffLogs.Business.Services.Data
         {
             return new Faker<NotificationRuleEntity>()
                 .RuleFor(
+                    entity => entity.Title,
+                    (faker) => faker.Random.Words(2)
+                )
+                .RuleFor(
                     entity => entity.Type,
                     (faker) => NotificationType.Email
                 )
@@ -168,10 +172,14 @@ namespace OffLogs.Business.Services.Data
                 .RuleFor(
                     entity => entity.CreateTime,
                     (faker) => faker.Date.Past().ToUniversalTime()
+                )
+                .RuleFor(
+                    entity => entity.UpdateTime,
+                    (faker) => faker.Date.Past().ToUniversalTime()
                 );
         }
         
-        public Faker<MessageTemplateEntity> NotificationMessageFactory()
+        public Faker<MessageTemplateEntity> MessageTemplateFactory()
         {
             return new Faker<MessageTemplateEntity>()
                 .RuleFor(

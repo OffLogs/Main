@@ -40,7 +40,7 @@ namespace OffLogs.Web.Services.Http
         {
             await PostAuthorizedAsync<object>(
                 MainApiUrl.NotificationMessageTemplateDelete,
-                new IdRequest(id)
+                new DeleteMessageTemplateRequest { Id = id }
             );
         }
     }

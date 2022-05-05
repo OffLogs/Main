@@ -17,6 +17,12 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
 
         [
             Required,
+            StringLength(512, MinimumLength = 3)
+        ]
+        public string Title { get; set; }
+        
+        [
+            Required,
             IsPositive(AllowZero = false)
         ]
         public long TemplateId { get; set; }

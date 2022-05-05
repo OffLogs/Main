@@ -35,6 +35,7 @@ public class NotificationRuleService: INotificationRuleService
 
     public async Task<NotificationRuleEntity> SetRule(
         UserEntity user,
+        string title,
         int period,
         LogicOperatorType logicOperator,
         NotificationType type,
@@ -76,7 +77,8 @@ public class NotificationRuleService: INotificationRuleService
             rule.LastExecutionTime = DateTime.UtcNow;
             rule.IsExecuting = false;
         }
-        
+
+        rule.Title = title;
         rule.Application = application;
         rule.MessageTemplate = messageTemplate;
         rule.Period = period;

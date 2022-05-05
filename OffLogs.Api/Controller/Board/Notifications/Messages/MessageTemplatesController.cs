@@ -41,7 +41,7 @@ namespace OffLogs.Api.Controller.Board.Notifications.Messages
         [HttpPost("delete")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public Task<IActionResult> DeleteMessage(IdRequest request)
+        public Task<IActionResult> DeleteMessage(DeleteMessageTemplateRequest request)
             => this.RequestAsync(request);
         
         
