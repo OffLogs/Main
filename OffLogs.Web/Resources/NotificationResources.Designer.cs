@@ -304,6 +304,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Title.
+        /// </summary>
+        internal static string Rules_RuleTitle {
+            get {
+                return ResourceManager.GetString("Rules_RuleTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The rule was saved.
         /// </summary>
         internal static string Rules_Saved {
