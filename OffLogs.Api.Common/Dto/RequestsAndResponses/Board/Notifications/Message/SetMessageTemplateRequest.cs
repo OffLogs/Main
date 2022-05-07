@@ -21,6 +21,8 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Messag
         public void Fill(MessageTemplateDto dto)
         {
             Id = dto?.Id;
+            if (Id == 0) 
+                Id = null;
             Subject = dto?.Subject;
             Body = dto?.Body;
         }

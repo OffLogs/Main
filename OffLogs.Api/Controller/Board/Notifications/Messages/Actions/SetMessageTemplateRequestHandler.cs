@@ -6,6 +6,7 @@ using Commands.Abstractions;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Message;
 using OffLogs.Business.Exceptions;
+using OffLogs.Business.Extensions;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Entities.Notifications;
@@ -38,19 +39,23 @@ namespace OffLogs.Api.Controller.Board.Notifications.Messages.Actions
         public async Task<MessageTemplateDto> ExecuteAsync(SetMessageTemplateRequest templateRequest)
         {
             var userId = _requestService.GetUserIdFromJwt();
-            var message = new MessageTemplateEntity();
-            if (templateRequest.Id.HasValue)
+            MessageTemplateEntity message = null;
+            if (templateRequest.Id.HasValue && templateRequest.Id.IsPositive())
             {
                 message = await _asyncQueryBuilder.FindByIdAsync<MessageTemplateEntity>(templateRequest.Id.Value);
-                if (!message.IsOwner(userId))
-                {
-                    throw new PermissionException("User has no permissions to change this message");
-                }
             }
-            else
+
+            if (message == null)
             {
-                message.User = await _asyncQueryBuilder.FindByIdAsync<UserEntity>(userId);
-                message.CreateTime = DateTime.UtcNow;
+                message = new MessageTemplateEntity
+                {
+                    User = await _asyncQueryBuilder.FindByIdAsync<UserEntity>(userId),
+                    CreateTime = DateTime.UtcNow
+                };
+            }
+            else if (!message.IsOwner(userId))
+            {
+                throw new PermissionException("User has no permissions to change this message");
             }
 
             message.UpdateTime = DateTime.UtcNow;

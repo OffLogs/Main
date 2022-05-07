@@ -111,6 +111,41 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
         }
         
         [Fact]
+        public async Task ShouldAddNewIfIdIsZero()
+        {
+            var expectedOperator = LogicOperatorType.Conjunction;
+            var expectedTitle = _ruleFactory.Generate().Title;
+
+            var conditions = new List<SetConditionRequest>()
+            {
+                new() { ConditionField = ConditionFieldType.LogLevel.ToString(), Value = "Information"},
+                new() { ConditionField = ConditionFieldType.LogLevel.ToString(), Value = "Warning"},
+            };
+            
+            // Act
+            var response = await PostRequestAsync(Url, _userModel.ApiToken, new SetRuleRequest
+            {
+                Id = 0,
+                Period = DefaultPeriod,
+                ApplicationId = _userModel.ApplicationId,
+                Type = NotificationType.Email.ToString(),
+                LogicOperator = expectedOperator.ToString(),
+                TemplateId = _expectedMessageTemplate.Id,
+                Conditions = conditions,
+                Title = expectedTitle
+            });
+            // Assert
+            response.EnsureSuccessStatusCode();
+            var data = await response.GetJsonDataAsync<NotificationRuleDto>();
+            Assert.True(data.Id > 0);
+            Assert.Equal(DefaultPeriod, data.Period);
+            Assert.Equal(_expectedMessageTemplate.Id, data.MessageTemplate.Id);
+            Assert.Equal(conditions.Count, data.Conditions.Count);
+            Assert.Equal(expectedOperator, data.LogicOperator);
+            Assert.Equal(expectedTitle, data.Title);
+        }
+        
+        [Fact]
         public async Task ShouldUpdate()
         {
             var expectedPeriod = 2000;

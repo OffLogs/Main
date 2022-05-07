@@ -62,8 +62,8 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
                     {
                         notificationContext = new EmailNotificationContext()
                         {
-                            Subject = rule.MessageTemplate.Subject,
-                            Body = PrepareBody(rule, dataByRule),
+                            Subject = "OffLogs - " + PrepareText(rule, dataByRule, true),
+                            Body = PrepareText(rule, dataByRule, false),
                             To = notificationReceivers
                         };
                     }
@@ -80,17 +80,31 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
         } while (rule != null);
     }
 
-    private string PrepareBody(NotificationRuleEntity rule, ProcessingDataDto ruleData) 
+    private string PrepareText(
+        NotificationRuleEntity rule, 
+        ProcessingDataDto ruleData,
+        bool isSubject = true
+    ) 
     {
-        var builder = new TemplatedTextBuilder(rule.MessageTemplate.Body);
+        var builder = new TemplatedTextBuilder(
+            isSubject ? rule.MessageTemplate.Subject : rule.MessageTemplate.Body    
+        );
+        builder.AddPlaceholder("ruleName", rule.Title);
         builder.AddPlaceholder("applicationName", rule.Application?.Name);
+        builder.AddPlaceholder("userName", rule.User?.UserName);
+        builder.AddPlaceholder("dateTime", rule.LastExecutionTime.ToString("MM/dd/yyyy H:mm"));
         var navigateUrl = $"{_frontendUrl}/{_logsPageUrl}";
         if (rule.Application != null)
         {
             navigateUrl += $"/{rule.Application?.Id}";
         }
         builder.AddPlaceholder("navigateUrl", navigateUrl);
-        builder.AddPlaceholder("logCount", ruleData.LogCount.ToString());
+        builder.AddPlaceholder("logsCount", ruleData.LogCount.ToString());
+        if (isSubject)
+        {
+            return builder.Build();    
+        }
+        
         return _markdownService.ToHtml(builder.Build());
     }
 }

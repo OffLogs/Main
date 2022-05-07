@@ -20,10 +20,20 @@ namespace OffLogs.Business.Extensions
 
         public static bool IsPositive(this int number)
         {
-            return (number > 0);
+            return ((long)number).IsPositive();
         }
 
         public static bool IsPositive(this int? number)
+        {
+            return number.HasValue && number.Value.IsPositive();
+        }
+        
+        public static bool IsPositive(this long number)
+        {
+            return (number > 0);
+        }
+
+        public static bool IsPositive(this long? number)
         {
             return number.HasValue && number.Value.IsPositive();
         }
