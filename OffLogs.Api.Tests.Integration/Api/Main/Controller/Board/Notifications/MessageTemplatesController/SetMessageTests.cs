@@ -58,6 +58,27 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
         }
         
         [Fact]
+        public async Task ShouldAddNewIfIdIsZero()
+        {
+            var expectedMessage = _messageFactory.Generate();
+            var user = await DataSeeder.CreateActivatedUser();
+
+            // Act
+            var response = await PostRequestAsync(Url, user.ApiToken, new SetMessageTemplateRequest()
+            {
+                Id = 0,
+                Subject = expectedMessage.Subject,
+                Body = expectedMessage.Body
+            });
+            // Assert
+            response.EnsureSuccessStatusCode();
+            var data = await response.GetJsonDataAsync<MessageTemplateDto>();
+            Assert.True(data.Id > 0);
+            Assert.Equal(expectedMessage.Subject, data.Subject);
+            Assert.Equal(expectedMessage.Body, data.Body);
+        }
+        
+        [Fact]
         public async Task ShouldUpdate()
         {
             var oldMessage = _messageFactory.Generate();

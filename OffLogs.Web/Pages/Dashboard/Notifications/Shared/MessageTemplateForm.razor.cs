@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Message;
+using OffLogs.Business.Common.Resources;
 using OffLogs.Web.Resources;
 using OffLogs.Web.Services;
 using OffLogs.Web.Services.Http;
@@ -58,6 +60,14 @@ public partial class MessageTemplateForm
             var foundItem = _state.Value.MessageTemplates.FirstOrDefault(
                 item => item.Id == Id
             );
+            if (foundItem == null)
+            {
+                foundItem = new MessageTemplateDto()
+                {
+                    Subject = GNotificationResources.MessageTemplate_Default_Subject,
+                    Body = GNotificationResources.MessageTemplate_Default_Body
+                };
+            }
             _model.Fill(foundItem);
         }
     }
