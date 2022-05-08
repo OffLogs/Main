@@ -1,15 +1,14 @@
 ﻿@using OffLogs.Web.Shared.Ui.Toast
 
-@inherits LayoutComponentBase
+@inherits BaseLayout
 
 <div class="page" @onclick="OnClickDocument">
-
     @if (_isShowMainMenu)
     {
         <NavMenu />
     }
 
-    @if (_isInitialized)
+    @if (CommonState.Value.IsInitialized)
     {
         <div class="main">
             <div class="container-fluid">

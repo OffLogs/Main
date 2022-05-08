@@ -17,6 +17,9 @@ namespace OffLogs.Web.Pages.Landing.Shared;
 
 public partial class Layout
 {
-    [Inject]
-    private IState<AuthState> AuthState { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        IsRedirectIfNotLoggedIn = false;
+        await base.OnInitializedAsync();
+    }
 }
