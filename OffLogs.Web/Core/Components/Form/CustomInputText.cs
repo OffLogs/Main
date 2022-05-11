@@ -21,6 +21,9 @@ namespace OffLogs.Web.Core.Components.Form
         public string? ParentClass { get; set; }
         
         [Parameter] 
+        public string? Class { get; set; }
+        
+        [Parameter] 
         public string? ErrorMessage { get; set; }
         
         [Parameter] 
@@ -77,7 +80,7 @@ namespace OffLogs.Web.Core.Components.Form
                 
                 builder.OpenElement(sequence++, IsMulti ? "textarea" : "input");
                 builder.AddMultipleAttributes(sequence++, AdditionalAttributes);
-                builder.AddAttribute(sequence++, "class", $"{bootstrapCssFiles} form-control {Size.GetSizeClass()}");
+                builder.AddAttribute(sequence++, "class", $"{bootstrapCssFiles} form-control {Size.GetSizeClass()} {Class}");
                 builder.AddAttribute(sequence++, "value", BindConverter.FormatValue(CurrentValue));
                 builder.AddAttribute(sequence++, "onchange", EventCallback.Factory.CreateBinder<string?>(this, __value => CurrentValueAsString = __value, CurrentValueAsString));
                 if (MaxLength.HasValue)
