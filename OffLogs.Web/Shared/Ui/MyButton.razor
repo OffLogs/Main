@@ -1,5 +1,6 @@
 ﻿@using OffLogs.Web.Core.Helpers
 @using OffLogs.Web.Constants
+@using OffLogs.Web.Constants.Bootstrap
 @inject IJSRuntime _js;
 
 <button 
@@ -8,6 +9,7 @@
   @onclick="@OnClick" 
   type="@(IsSubmit ? @"submit" : "button")"
   disabled="@IsDisabled"
+  @onclick:stopPropagation
   >
   @ChildContent
 </button>
@@ -23,7 +25,7 @@
     public bool IsDisabled { get; set; } = false;
 
     [Parameter]
-    public BootstrapColorType Type { get; set; } = BootstrapColorType.Primary;
+    public ColorType Type { get; set; } = ColorType.Primary;
 
     [Parameter]
     public string Class { get; set; }

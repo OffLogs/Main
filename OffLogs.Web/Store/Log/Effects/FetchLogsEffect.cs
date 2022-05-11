@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log;
 using OffLogs.Web.Services.Http;
 using OffLogs.Web.Store.Auth;
-using OffLogs.Web.Store.Log.Actions;
 
 namespace OffLogs.Web.Store.Log.Effects;
 

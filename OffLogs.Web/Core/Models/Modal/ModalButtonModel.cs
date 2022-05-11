@@ -1,6 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Components;
 using OffLogs.Web.Constants;
+using OffLogs.Web.Constants.Bootstrap;
 
 namespace OffLogs.Web.Core.Models.Modal
 {
@@ -9,7 +10,7 @@ namespace OffLogs.Web.Core.Models.Modal
         private static int _buttonkey = 0;
         
         public bool IsCloseAfterAction { get; set; } = true;
-        public BootstrapColorType Type { get; set; } = BootstrapColorType.Primary;
+        public ColorType Type { get; set; } = ColorType.Primary;
 
         public string Name { get; set; }
 
@@ -25,7 +26,7 @@ namespace OffLogs.Web.Core.Models.Modal
             Console.WriteLine("Assign key: " + Key);
         }
 
-        public ModalButtonModel(string name, Action? onClick, BootstrapColorType type = BootstrapColorType.Primary): base()
+        public ModalButtonModel(string name, Action? onClick, ColorType type = ColorType.Primary): base()
         {
             Type = type;
             Name = name;

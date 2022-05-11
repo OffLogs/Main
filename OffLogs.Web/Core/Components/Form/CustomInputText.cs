@@ -4,6 +4,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Rendering;
+using OffLogs.Web.Constants.Bootstrap;
 using OffLogs.Web.Core.Helpers;
 
 namespace OffLogs.Web.Core.Components.Form
@@ -33,6 +34,9 @@ namespace OffLogs.Web.Core.Components.Form
         
         [Parameter]
         public bool IsDisabled { get; set; } = false;
+        
+        [Parameter]
+        public FormControlSize Size { get; set; } = FormControlSize.Medium;
 
         /// <summary>
         /// Gets or sets the error message used when displaying an a parsing error.
@@ -73,7 +77,7 @@ namespace OffLogs.Web.Core.Components.Form
                 
                 builder.OpenElement(sequence++, IsMulti ? "textarea" : "input");
                 builder.AddMultipleAttributes(sequence++, AdditionalAttributes);
-                builder.AddAttribute(sequence++, "class", $"{bootstrapCssFiles} form-control");
+                builder.AddAttribute(sequence++, "class", $"{bootstrapCssFiles} form-control {Size.GetSizeClass()}");
                 builder.AddAttribute(sequence++, "value", BindConverter.FormatValue(CurrentValue));
                 builder.AddAttribute(sequence++, "onchange", EventCallback.Factory.CreateBinder<string?>(this, __value => CurrentValueAsString = __value, CurrentValueAsString));
                 if (MaxLength.HasValue)

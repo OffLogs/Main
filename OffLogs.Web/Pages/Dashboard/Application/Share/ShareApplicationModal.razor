@@ -6,6 +6,7 @@
 @using OffLogs.Business.Common.Constants.Permissions
 @using OffLogs.Web.Core.Models.Modal
 @using System.Runtime.InteropServices
+@using OffLogs.Web.Constants.Bootstrap
 @inject ILogger<ShareApplicationModal> _logger
 @inject IApiService _apiService
 @inject ToastService _toastService
@@ -64,7 +65,7 @@
         _modalButtons.Add(new (
             "Close",
             null,
-            BootstrapColorType.Light
+            ColorType.Light
         ));
     }
 

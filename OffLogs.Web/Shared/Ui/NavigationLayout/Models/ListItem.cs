@@ -1,4 +1,5 @@
 using OffLogs.Web.Constants;
+using OffLogs.Web.Constants.Bootstrap;
 
 namespace OffLogs.Web.Shared.Ui.NavigationLayout.Models
 {
@@ -12,7 +13,7 @@ namespace OffLogs.Web.Shared.Ui.NavigationLayout.Models
         
         public string SubTitle { get; set; }
         
-        public BootstrapColorType? BgColorType { get; set; }
+        public ColorType? BgColorType { get; set; }
 
         public long GetIdAsLong()
         {

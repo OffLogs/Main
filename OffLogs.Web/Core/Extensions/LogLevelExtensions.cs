@@ -1,29 +1,30 @@
 ﻿using OffLogs.Business.Common.Constants;
 using OffLogs.Web.Constants;
+using OffLogs.Web.Constants.Bootstrap;
 
 namespace OffLogs.Web.Extensions
 {
     public static class LogLevelExtensions
     {
-        public static BootstrapColorType GetBootstrapColorType(this LogLevel level)
+        public static ColorType GetBootstrapColorType(this LogLevel level)
         {
             if (level == LogLevel.Error)
             {
-                return BootstrapColorType.Danger;
+                return ColorType.Danger;
             }
             if (level == LogLevel.Information)
             {
-                return BootstrapColorType.Info;
+                return ColorType.Info;
             }
             if (level == LogLevel.Warning)
             {
-                return BootstrapColorType.Warning;
+                return ColorType.Warning;
             }
             if (level == LogLevel.Debug)
             {
-                return BootstrapColorType.Secondary;
+                return ColorType.Secondary;
             }
-            return BootstrapColorType.Secondary;
+            return ColorType.Secondary;
         }
     }
 }

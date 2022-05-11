@@ -12,9 +12,7 @@ using OffLogs.Web.Resources;
 using OffLogs.Web.Services.Http;
 using OffLogs.Web.Shared.Ui.Form.CustomDropDown;
 using OffLogs.Web.Shared.Ui.NavigationLayout.Models;
-using OffLogs.Web.Store.Application;
 using OffLogs.Web.Store.Log;
-using OffLogs.Web.Store.Log.Actions;
 
 namespace OffLogs.Web.Pages.Dashboard.Log;
 
@@ -27,7 +25,7 @@ public partial class Index
     private IState<LogsListState> State { get; set; }
     
     [Inject]
-    private IState<ApplicationsListState> ApplicationsState { get; set; }
+    private IState<OffLogs.Web.Store.Application.ApplicationsListState> ApplicationsState { get; set; }
     
     private bool _isShowStatistic = false;
     
@@ -72,7 +70,7 @@ public partial class Index
         await base.OnInitializedAsync();
         
         _menuButtons.Add(
-            new(LogResources.ShowStatistic, "chart-arrows-axis", () => ShowStatisticModal())    
+            new(LogResources.ShowStatistic, "chart-arrows-axis", ShowStatisticModal)    
         );
         
         Dispatcher.Dispatch(new OffLogs.Web.Store.Application.FetchNextListPageAction());
@@ -82,9 +80,9 @@ public partial class Index
     {
         if (!isLoadNextPage)
         {
-            Dispatcher.Dispatch(new OffLogs.Web.Store.Application.ResetListAction()); 
+            Dispatcher.Dispatch(new ResetListAction()); 
         }
-        Dispatcher.Dispatch(new OffLogs.Web.Store.Application.FetchNextListPageAction());
+        Dispatcher.Dispatch(new FetchNextListPageAction());
         return Task.CompletedTask;
     }
 

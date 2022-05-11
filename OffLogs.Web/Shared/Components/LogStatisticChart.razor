@@ -18,6 +18,7 @@
 @using OffLogs.Business.Common.Constants
 @using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log
 @using System.Timers
+@using OffLogs.Web.Constants.Bootstrap
 @inject IApiService _apiService
 @inject ToastService _toastService
 @implements IAsyncDisposable
@@ -34,7 +35,7 @@ else
     }
     else
     { 
-        <Alert Type="BootstrapColorType.Info">Statistic information not found...</Alert>
+        <Alert Type="ColorType.Info">Statistic information not found...</Alert>
     }
 }
 

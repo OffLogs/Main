@@ -3,6 +3,7 @@
 @using OffLogs.Web.Constants
 @using OffLogs.Web.Resources
 @using OffLogs.Api.Common.Dto.Entities
+@using OffLogs.Web.Constants.Bootstrap
 @inject IApiService _apiService
 @inject ToastService _toastService
 
@@ -46,7 +47,7 @@ else
         new (
             "Cancel",
             null,
-            BootstrapColorType.Light
+            ColorType.Light
         )
     };
 

@@ -1,4 +1,5 @@
 ﻿@using OffLogs.Web.Resources
+@using OffLogs.Web.Constants.Bootstrap
 
 @inherits BaseComponent
 
@@ -26,7 +27,7 @@
         <ul class="navbar-nav justify-content-end">
             <li class="nav-item">
                 <CustomDropDown 
-                    BtnType="BootstrapColorType.Light"
+                    BtnType="ColorType.Light"
                     Items="@_languageMenuItems"
                     OnChanged="@(async item => await OnSelectLanguageAsync(item))"></CustomDropDown>  
             </li>

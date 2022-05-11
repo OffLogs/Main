@@ -10,6 +10,7 @@
 @using OffLogs.Web.Services
 @using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application
 @using OffLogs.Api.Common.Dto.Entities
+@using OffLogs.Web.Constants.Bootstrap
 @inject IApiService _apiService
 @inject ToastService _toastService
 
@@ -69,7 +70,7 @@
         _modalButtons.Add(new (
             "Cancel",
             OnCloseAction,
-            BootstrapColorType.Light
+            ColorType.Light
         ));
     }
 
