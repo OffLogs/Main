@@ -24,7 +24,7 @@ namespace OffLogs.Business.Orm.Queries.Entities.Log
         )
         {
             var session = TransactionProvider.CurrentSession;
-            var pageSize = GlobalConstants.ListPageSize;
+            var pageSize = GlobalConstants.ListPageSize * 2;
             var page = criterion.Page - 1;
             var offset = (int)((page <= 0 ? 0 : page) * pageSize);
             

@@ -43,7 +43,7 @@
                 || type == ColorType.Light
             )
                 return type.GetName() + " text-dark";
-            return type.GetName();
+            return type.GetName() + " text-white";
         }
     }
 }
