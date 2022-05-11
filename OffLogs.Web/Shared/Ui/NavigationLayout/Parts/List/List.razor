@@ -8,14 +8,15 @@
         <ul>
             @if (ListItems != null && ListItems.Any())
             {
-                @foreach (var listItem in ListItems)
-                {
+                <Virtualize Items="@ListItems" Context="listItem">
                     <li 
                         @onclick="@(() => OnSelectMenuItem(listItem))" 
                         class="@GetItemClass(listItem)"
                     >
                         <span class="w-title">
-                            @listItem.Title
+                            <span class="@GetItemTitleClass(listItem)">
+                                @listItem.Title
+                            </span>
                         </span>
                         <span class="w-title-2">
                             @listItem.RightTitle
@@ -24,7 +25,7 @@
                             @listItem.SubTitle
                         </span>
                     </li>
-                }    
+                </Virtualize>
             }
             else
             {
@@ -94,13 +95,17 @@
         var classes = "";
         var isSelected = SelectedItem?.Id == menuItem.Id;
         classes += isSelected ? "w-selected" : "";
-
-        if (menuItem.BgColorType != null)
+        return classes;
+    }
+    
+    private string GetItemTitleClass(ListItem menuItem)
+    {
+        if (menuItem.TitleColorType != null)
         {
-            classes += $" bg-{menuItem.BgColorType.Value.GetBadgeClass()}";
+            return $"p-2 bg-{menuItem.TitleColorType.Value.GetBadgeClass()}";
         }
 
-        return classes;
+        return "";
     }
 
     private void OnClickMore()

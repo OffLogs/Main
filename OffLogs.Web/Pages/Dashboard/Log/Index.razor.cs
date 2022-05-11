@@ -59,7 +59,7 @@ public partial class Index
                     SubTitle = log.Message.Truncate(32),
                     RightTitle = log.LogTime.ToString("MM/dd/yyyy hh:mm tt"),
                     Title = log.Level.GetLabel(),
-                    BgColorType = log.Level.GetBootstrapColorType()
+                    TitleColorType = log.Level.GetBootstrapColorType()
                 }
             ).ToList();
         }
