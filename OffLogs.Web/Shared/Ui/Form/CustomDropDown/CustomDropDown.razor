@@ -2,6 +2,7 @@
 @using System.Timers
 @using System.Collections
 @using OffLogs.Web.Constants
+@using OffLogs.Web.Constants.Bootstrap
 @using OffLogs.Web.Core.Helpers
 @using OffLogs.Web.Services.Events
 
@@ -14,38 +15,39 @@
     {
         <label class="form-label">@Label</label>
     }
-    <div class="btn-group">
-        <button type="button"
-                class="btn btn-@BtnType.GetName() dropdown-toggle"
-                @onclick="@(() => { ShowDropDown(!_isOpened); })"
-                @onclick:stopPropagation>
-            @_selectedItemTitle
-        </button>
-        <div class="dropdown-menu @(_isOpened ? "show" : "")">
-            @foreach (var item in Items)
-            {
-                <a class="dropdown-item @(item.IsSelected ? "active" : "")"
-                   href="#"
-                   @onclick="@(async () => await OnClickSelectItemAsync(item))"
-                   @onclick:preventDefault="true"
-                   @onclick:stopPropagation>
-                    @item.Label
-                </a>
-            }
-            @if (!Items.Any())
-            {
-                <a class="dropdown-item"
-                   href="#"
-                   @onclick:preventDefault="true">
-                    Items not found
-                </a>
-            }
-        </div>
-        @if (_isOpened)
-        {
-            <div class="w-transparent-back" @onclick="@(() => { ShowDropDown(!_isOpened); })"></div>
-        }
-    </div>
+     <div class="btn-group">
+         <MyButton
+             OnClick="@(() => ShowDropDown(!_isOpened))"
+             Type="@BtnType"
+             IsSmall="@(Size == FormControlSize.Small)"
+         >
+             @_selectedItemTitle
+         </MyButton>
+         <div class="dropdown-menu @(_isOpened ? "show" : "")">
+             @foreach (var item in Items)
+             {
+                 <a class="dropdown-item @(item.IsSelected ? "active" : "")"
+                    href="#"
+                    @onclick="@(async () => await OnClickSelectItemAsync(item))"
+                    @onclick:preventDefault="true"
+                    @onclick:stopPropagation>
+                     @item.Label
+                 </a>
+             }
+             @if (!Items.Any())
+             {
+                 <a class="dropdown-item"
+                    href="#"
+                    @onclick:preventDefault="true">
+                     Items not found
+                 </a>
+             }
+         </div>
+         @if (_isOpened)
+         {
+             <div class="w-transparent-back" @onclick="@(() => { ShowDropDown(!_isOpened); })"></div>
+         }
+     </div>
 </div>
 
 @code {
@@ -62,8 +64,11 @@
     public ICollection<DropDownListItem> Items { get; set; } = new List<DropDownListItem>();
 
     [Parameter]
-    public BootstrapColorType BtnType { get; set; } = BootstrapColorType.Primary;
+    public ColorType BtnType { get; set; } = ColorType.Primary;
 
+    [Parameter]
+    public FormControlSize Size { get; set; } = FormControlSize.Medium;
+    
     [Parameter]
     public string SelectedItemId
     {

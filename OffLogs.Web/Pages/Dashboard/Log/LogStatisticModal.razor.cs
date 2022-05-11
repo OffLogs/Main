@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using OffLogs.Web.Constants;
+using OffLogs.Web.Constants.Bootstrap;
 using OffLogs.Web.Core.Models.Modal;
 
 namespace OffLogs.Web.Pages.Dashboard.Log;
@@ -27,7 +28,7 @@ public partial class LogStatisticModal
         _modalButtons.Add(new (
             "Cancel",
             OnCloseAction,
-            BootstrapColorType.Light
+            ColorType.Light
         ));
     }
     

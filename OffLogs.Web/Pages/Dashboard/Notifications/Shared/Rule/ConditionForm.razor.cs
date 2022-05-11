@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule;
+using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Constants.Notificatiions;
 using OffLogs.Web.Core.Extensions;
 using OffLogs.Web.Core.Helpers;
@@ -23,6 +24,7 @@ public partial class ConditionForm
     public EventCallback<SetConditionRequest> OnDeleted { get; set; }
     
     private ICollection<DropDownListItem> _fieldTypeDownListItems => ConditionFieldType.LogLevel.ToDropDownList();
+    private ICollection<DropDownListItem> _logLevelDownListItems => LogLevel.Warning.ToDropDownList();
     
     private SetConditionRequest _model = new();
 
@@ -47,6 +49,7 @@ public partial class ConditionForm
         if (Condition != null)
         {
             _model = Condition;
+            _model.ConditionField = ConditionFieldType.LogLevel.ToString();
         }
     }
 

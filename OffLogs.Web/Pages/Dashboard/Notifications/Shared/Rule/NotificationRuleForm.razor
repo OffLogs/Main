@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Components
 @using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
 @using OffLogs.Business.Common.Constants.Notificatiions
+@using OffLogs.Web.Constants.Bootstrap
 @using OffLogs.Web.Resources
 
 @inherits BaseComponent
@@ -68,7 +69,7 @@
         <div class="col align-self-end">
             <MyButton 
                 OnClick="OnAddCondition"
-                Type="BootstrapColorType.Success"
+                Type="ColorType.Success"
             >
                 <Icon Name="ui-add"/>
                 @NotificationResources.Rules_AddCondition 

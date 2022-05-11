@@ -15,18 +15,26 @@ public class LoadPersistedDataAEffect: AEffectPersistData<LoadPersistedDataActio
 {
     private readonly ILocalStorageService _localStorage;
     private readonly ILogger<LoadPersistedDataAEffect> _logger;
+    private readonly IState<CommonState> _state;
 
     public LoadPersistedDataAEffect(
         ILocalStorageService localStorage,
-        ILogger<LoadPersistedDataAEffect> logger
+        ILogger<LoadPersistedDataAEffect> logger,
+        IState<CommonState> state
     )
     {
         _localStorage = localStorage;
         _logger = logger;
+        _state = state;
     }
 
     public override async Task HandleAsync(LoadPersistedDataAction pageAction, IDispatcher dispatcher)
     {
+        if (_state.Value.IsInitialized)
+        {
+            return;
+        }
+
         _logger.LogDebug("Load persisted data from local storage");
         var authData = await GetData<AuthState>(AuthDataKey);
         if (authData != null && !string.IsNullOrEmpty(authData.Pem))
