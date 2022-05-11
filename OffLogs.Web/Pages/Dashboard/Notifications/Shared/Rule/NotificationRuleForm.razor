@@ -70,6 +70,7 @@
             <MyButton 
                 OnClick="OnAddCondition"
                 Type="ColorType.Success"
+                IsDisabled="@(!_canAddCondition)"
             >
                 <Icon Name="ui-add"/>
                 @NotificationResources.Rules_AddCondition 

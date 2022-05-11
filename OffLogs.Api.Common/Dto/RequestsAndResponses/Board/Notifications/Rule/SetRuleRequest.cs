@@ -56,6 +56,7 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
         [
             Required,
             MinLength(1),
+            MaxLength(10),
             ValidateListModels
         ]
         public ICollection<SetConditionRequest> Conditions { get; set; } = new List<SetConditionRequest>();

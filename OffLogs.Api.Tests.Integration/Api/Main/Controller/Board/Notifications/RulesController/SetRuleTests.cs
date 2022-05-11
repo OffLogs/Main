@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Bogus;
@@ -210,6 +212,37 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             });
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+        
+        [Fact]
+        public async Task ShouldFailIfConditionsTooMuch()
+        {
+            var expectedOperator = LogicOperatorType.Conjunction;
+            var expectedTitle = _ruleFactory.Generate().Title;
+
+            var conditions = new List<SetConditionRequest>();
+            for (var i = 0; i < 11; i++)
+            {
+                conditions.Add(
+                    new SetConditionRequest { ConditionField = ConditionFieldType.LogLevel.ToString(), Value = "Information"}
+                );
+            }
+
+            // Act
+            var response = await PostRequestAsync(Url, _userModel.ApiToken, new SetRuleRequest
+            {
+                Period = DefaultPeriod,
+                ApplicationId = _userModel.ApplicationId,
+                Type = NotificationType.Email.ToString(),
+                LogicOperator = expectedOperator.ToString(),
+                TemplateId = _expectedMessageTemplate.Id,
+                Conditions = conditions,
+                Title = expectedTitle
+            });
+            // Assert
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            var data = await response.GetDataAsStringAsync();
+            Assert.Contains("The field Conditions must be a string or array type with a maximum length of", data);
         }
         
         private async Task<NotificationRuleEntity> CreateRuleAsync(

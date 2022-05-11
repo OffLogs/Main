@@ -54,6 +54,7 @@ public partial class NotificationRuleForm
     private bool _isShowDeleteModal = false;
 
     private bool _isNew => Id == 0;
+    private bool _canAddCondition => Model.Conditions.Count < 10;
 
     private ICollection<DropDownListItem> _messageTemplateDownListItems =>
         _state.Value.MessageTemplates.Select(item => new DropDownListItem
