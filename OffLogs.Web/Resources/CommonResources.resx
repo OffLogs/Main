@@ -54,4 +54,10 @@
     <data name="Add" xml:space="preserve">
         <value>Add</value>
     </data>
+    <data name="ConfirmationModal_AreYouSure" xml:space="preserve">
+        <value>Are you sure?</value>
+    </data>
+    <data name="ConfirmationModal_AreYouSureYouWantToLogout" xml:space="preserve">
+        <value>Are you sure you want to logout?</value>
+    </data>
 </root>
