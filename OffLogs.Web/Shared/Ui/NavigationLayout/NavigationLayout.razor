@@ -3,6 +3,8 @@
 @using OffLogs.Web.Shared.Ui.NavigationLayout.Parts.Body
 @using OffLogs.Web.Shared.Ui.NavigationLayout.Parts.Menu
 @using OffLogs.Web.Shared.Ui.NavigationLayout.Parts.List
+@using OffLogs.Business.Common.Constants
+@using OffLogs.Api.Common.Dto
 
 <div class="w-navigation-layout">
     <CascadingValue Value="this" Name="layout">
@@ -53,11 +55,15 @@
     [Parameter]
     public ICollection<HeaderMenuButton> BodyButtons { get; set; } = new List<HeaderMenuButton>();
 
+    #region List
+    
     [Parameter]
     public EventCallback OnClickMoreBtn { get; set; }
     
     [Parameter]
     public bool IsShowMoreBtn { get; set; }
+
+    #endregion
     
     [Parameter]
     public bool IsReadOnly { get; set; }
