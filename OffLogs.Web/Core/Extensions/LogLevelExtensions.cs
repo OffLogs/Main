@@ -8,7 +8,7 @@ namespace OffLogs.Web.Extensions
     {
         public static ColorType GetBootstrapColorType(this LogLevel level)
         {
-            if (level == LogLevel.Error)
+            if (level == LogLevel.Error || level == LogLevel.Fatal)
             {
                 return ColorType.Danger;
             }
