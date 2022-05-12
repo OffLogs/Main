@@ -1,5 +1,6 @@
 ﻿@using OffLogs.Web.Shared.Ui
 @using OffLogs.Web.Constants
+@using OffLogs.Web.Resources
 @using OffLogs.Web.Store.Auth.Actions
 
 @inherits BaseComponent
@@ -23,7 +24,8 @@
         <NavLink href="@SiteUrl.DashboardSettings" Match="NavLinkMatch.All">
             <Icon Name="settings-alt" />
         </NavLink>
-        <a @onclick="OnLogout"
+        <a @onclick="@(() => IsShowLogoutConfirmation = true)"
+           @onclick:preventDefault
            href="#"
            class="ml-md-auto">
             <i class="icofont-logout"></i>
@@ -31,8 +33,17 @@
     </div>
 </div>
 
+<ConfirmationModal
+    Title="@CommonResources.ConfirmationModal_AreYouSureYouWantToLogout"
+    IsShow="@IsShowLogoutConfirmation"
+    OnCancel="@(() => IsShowLogoutConfirmation = false)"
+    OnOk="OnLogout"
+/>
+
 @code 
 {
+    private bool IsShowLogoutConfirmation { get; set; }
+    
     private Task OnLogout()
     {
         Dispatcher.Dispatch(new LogoutAction());

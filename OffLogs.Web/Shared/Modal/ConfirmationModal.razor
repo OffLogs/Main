@@ -1,5 +1,6 @@
 ﻿@using OffLogs.Web.Core.Models.Modal
 @using OffLogs.Web.Constants.Bootstrap
+@using OffLogs.Web.Resources
 
 <ModalWindow Buttons="_modalButtons" IsShow="IsShow" OnClose="OnCancelClicked">
     @Title
@@ -13,7 +14,7 @@
     public EventCallback OnCancel { get; set; }
 
     [Parameter]
-    public string Title { get; set; } = "Are you sure?";
+    public string Title { get; set; } = CommonResources.ConfirmationModal_AreYouSure;
 
     [Parameter]
     public bool IsShow { get; set; }

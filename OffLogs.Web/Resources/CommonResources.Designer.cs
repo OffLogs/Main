@@ -70,6 +70,24 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure?.
+        /// </summary>
+        internal static string ConfirmationModal_AreYouSure {
+            get {
+                return ResourceManager.GetString("ConfirmationModal_AreYouSure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to logout?.
+        /// </summary>
+        internal static string ConfirmationModal_AreYouSureYouWantToLogout {
+            get {
+                return ResourceManager.GetString("ConfirmationModal_AreYouSureYouWantToLogout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Statistic.
         /// </summary>
         internal static string DashboardMenu_Statistic {
