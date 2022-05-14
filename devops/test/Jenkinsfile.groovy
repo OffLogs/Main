@@ -135,7 +135,7 @@ enum Stage {
         for (def stage: values()) {
             result.add(stage.toString())
         }
-        return result
+        return result.reverse()
     }
 }
 
