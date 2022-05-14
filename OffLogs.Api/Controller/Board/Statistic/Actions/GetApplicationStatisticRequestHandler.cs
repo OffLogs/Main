@@ -3,24 +3,27 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Api.Requests.Abstractions;
 using AutoMapper;
+using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Statistic;
 using OffLogs.Business.Exceptions;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Orm.Queries.Entities.Log;
 using OffLogs.Business.Services.Api;
 using OffLogs.Business.Services.Security;
 using Queries.Abstractions;
 
-namespace OffLogs.Api.Controller.Board.Log.Actions
+namespace OffLogs.Api.Controller.Board.Statistic.Actions
 {
-    public class GetLogStatisticForNowRequestHandler : IAsyncRequestHandler<GetLogStatisticForNowRequest, LogStatisticForNowDto>
+    public class GetApplicationStatisticRequestHandler : IAsyncRequestHandler<GetApplicationStatisticRequest, ApplicationStatisticDto>
     {
         private readonly IAsyncQueryBuilder _queryBuilder;
         private readonly IRequestService _requestService;
         private readonly IAccessPolicyService _accessPolicyService;
         private readonly IMapper _mapper;
 
-        public GetLogStatisticForNowRequestHandler(
+        public GetApplicationStatisticRequestHandler(
             IAsyncQueryBuilder queryBuilder,
             IRequestService requestService,
             IAccessPolicyService accessPolicyService,
@@ -33,23 +36,16 @@ namespace OffLogs.Api.Controller.Board.Log.Actions
             _mapper = mapper;
         }
 
-        public async Task<LogStatisticForNowDto> ExecuteAsync(GetLogStatisticForNowRequest request)
+        public async Task<ApplicationStatisticDto> ExecuteAsync(GetApplicationStatisticRequest request)
         {
             var userId = _requestService.GetUserIdFromJwt();
-            if (request.ApplicationId.HasValue)
+            if (!await _accessPolicyService.HasReadAccessAsync<ApplicationEntity>(request.ApplicationId, userId))
             {
-                if (!await _accessPolicyService.HasReadAccessAsync<ApplicationEntity>(request.ApplicationId.Value, userId))
-                {
-                    throw new DataPermissionException();
-                }
+                throw new DataPermissionException();
             }
-            var statisticList = await _queryBuilder.For<ICollection<OffLogs.Business.Orm.Dto.Entities.LogStatisticForNowDto>>()
-                .WithAsync(
-                    new GetByApplicationOrUserCriteria(userId, request.ApplicationId)
-                );
-            return new LogStatisticForNowDto(
-                _mapper.Map<ICollection<LogStatisticForNowItemDto>>(statisticList)
-            );
+            var statistic = await _queryBuilder.For<OffLogs.Business.Orm.Dto.Entities.ApplicationStatisticDto>()
+                .WithAsync(new FindByIdCriteria(request.ApplicationId));
+            return _mapper.Map<ApplicationStatisticDto>(statistic);
         }
     }
 }

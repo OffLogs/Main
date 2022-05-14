@@ -1,7 +1,7 @@
 using OffLogs.Api.Common.Dto;
 using OffLogs.Api.Common.Dto.Entities;
-using OffLogs.Api.Common.Requests.Board.Log;
 using System.Threading.Tasks;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Message;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule;
 using OffLogs.Business.Common.Constants.Permissions;

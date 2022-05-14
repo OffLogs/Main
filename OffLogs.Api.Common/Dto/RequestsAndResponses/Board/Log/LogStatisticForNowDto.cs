@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using Api.Requests.Abstractions;
-using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log;
 
-namespace OffLogs.Api.Common.Requests.Board.Log
+namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log
 {
     public class LogStatisticForNowDto : List<LogStatisticForNowItemDto>, IResponse
     {
