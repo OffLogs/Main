@@ -79,7 +79,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         public async Task ShouldReceiveMoreThanOnePages(string url)
         {
             var user = await DataSeeder.CreateActivatedUser();
-            await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information, 25);
+            await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information, 50);
 
             // Act
             var response = await PostRequestAsync(url, user.ApiToken, new GetListRequest()
@@ -91,8 +91,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             response.EnsureSuccessStatusCode();
             // Assert
             var responseData = await response.GetJsonDataAsync<PaginatedListDto<LogListItemDto>>();
-            Assert.Equal(2, responseData.TotalPages);
-            Assert.Equal(GlobalConstants.ListPageSize, responseData.Items.Count);
+            Assert.Equal(3, responseData.TotalPages);
+            Assert.Equal(GlobalConstants.ListPageSize * 2, responseData.Items.Count);
         }
 
         [Theory]
