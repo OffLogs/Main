@@ -23,6 +23,7 @@ namespace OffLogs.Api.Profiles
                     )
                 );
             CreateMap<ApplicationEntity, ApplicationListItemDto>();
+            CreateMap<OffLogs.Business.Orm.Dto.Entities.ApplicationStatisticDto, ApplicationStatisticDto>();
         }
     }
 }

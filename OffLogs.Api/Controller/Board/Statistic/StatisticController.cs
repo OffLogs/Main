@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using OffLogs.Api.Common.Dto.Entities;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Statistic;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.User;
 using Persistence.Transactions.Behaviors;
 
@@ -26,7 +28,7 @@ namespace OffLogs.Api.Controller.Board.Statistic
         [HttpPost("application")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public Task<IActionResult> AddCommonLog(SearchRequest request)
-            => this.RequestAsync().For<UsersListDto>().With(request);
+        public Task<IActionResult> AddCommonLog(GetApplicationStatisticRequest request)
+            => this.RequestAsync().For<ApplicationStatisticDto>().With(request);
     }
 }

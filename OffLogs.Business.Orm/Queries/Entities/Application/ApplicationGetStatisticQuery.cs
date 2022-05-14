@@ -28,22 +28,60 @@ namespace OffLogs.Business.Orm.Queries.Entities.Application
             CancellationToken cancellationToken = default
         )
         {
-            var logsCountQuery = QueryOver.Of<LogEntity>()
-                .Where(entity => entity.Application.Id == criterion.Id)
+            var commonLogsQuery = QueryOver.Of<LogEntity>()
+                .Where(entity => entity.Application.Id == criterion.Id);
+            
+            var errorLogsCountQuery = commonLogsQuery.Clone()
+                .And(entity => entity.Level == LogLevel.Error)
+                .ToRowCountQuery();
+            
+            var debugLogsCountQuery = commonLogsQuery.Clone()
+                .And(entity => entity.Level == LogLevel.Debug)
+                .ToRowCountQuery();
+            
+            var fatalLogsCountQuery = commonLogsQuery.Clone()
+                .And(entity => entity.Level == LogLevel.Fatal)
+                .ToRowCountQuery();
+            
+            var infoLogsCountQuery = commonLogsQuery.Clone()
+                .And(entity => entity.Level == LogLevel.Information)
+                .ToRowCountQuery();
+            
+            var warningLogsCountQuery = commonLogsQuery.Clone()
+                .And(entity => entity.Level == LogLevel.Warning)
+                .ToRowCountQuery();
+            
+            var tracesCountQuery = QueryOver.Of<LogTraceEntity>()
+                .JoinQueryOver(property => property.Log)
+                    .Where(entity => entity.Application.Id == criterion.Id)
+                .ToRowCountQuery();
+            
+            var propertiesCountQuery = QueryOver.Of<LogPropertyEntity>()
+                .JoinQueryOver(property => property.Log)
+                    .Where(entity => entity.Application.Id == criterion.Id)
                 .ToRowCountQuery();
             
             var session = TransactionProvider.CurrentSession;
 
-            ApplicationStatisticDto statisticDtoAlias = null;
-            var resultList = await session.QueryOver<ApplicationStatisticDto>(() => statisticDtoAlias)
+            LogEntity aliasLog = null;
+            ApplicationStatisticDto aliasStatistic = null;
+            var resultList = await session.QueryOver<LogEntity>(() => aliasLog)
                 .SelectList(projections =>
                 {
-                    projections.SelectSubQuery(logsCountQuery)
-                        .WithAlias(() => statisticDtoAlias.LogsCount);
+                    projections.SelectCount(entity => entity.Id).WithAlias(() => aliasStatistic.LogsCount);
+                    projections.SelectSubQuery(errorLogsCountQuery).WithAlias(() => aliasStatistic.ErrorLogsCount);
+                    projections.SelectSubQuery(debugLogsCountQuery).WithAlias(() => aliasStatistic.DebugLogsCount);
+                    projections.SelectSubQuery(fatalLogsCountQuery).WithAlias(() => aliasStatistic.FatalLogsCount);
+                    projections.SelectSubQuery(infoLogsCountQuery).WithAlias(() => aliasStatistic.InformationLogsCount);
+                    projections.SelectSubQuery(warningLogsCountQuery).WithAlias(() => aliasStatistic.WarningLogsCount);
+                    projections.SelectSubQuery(tracesCountQuery).WithAlias(() => aliasStatistic.TracesCount);
+                    projections.SelectSubQuery(propertiesCountQuery).WithAlias(() => aliasStatistic.PropertiesCount);
+                    
                     return projections;
                 })
+                .Where(() => aliasLog.Application.Id == criterion.Id)
                 .TransformUsing(Transformers.AliasToBean<ApplicationStatisticDto>())
-                .ListAsync(cancellationToken);
+                .ListAsync<ApplicationStatisticDto>(cancellationToken);
             
             return resultList.FirstOrDefault();
         }
