@@ -1,7 +1,6 @@
 ﻿using OffLogs.Api.Common.Dto;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log;
-using OffLogs.Api.Common.Requests.Board.Log;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Web.Core.Exceptions;
 using System;
