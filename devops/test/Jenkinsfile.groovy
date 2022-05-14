@@ -90,15 +90,9 @@ node('vizit-mainframe-testing-node') {
                 sh 'dotnet run --no-restore --no-build --project ./OffLogs.Migrations'
             }
 
-            runStage(Stage.RUN_UNIT_TESTS_API) {
+            runStage(Stage.RUN_TESTS) {
                 sh 'dotnet test --logger trx --results-directory /tmp/test ./OffLogs.Api.Tests.Unit'
-            }
-
-            runStage(Stage.RUN_UNIT_TESTS_BUSINESS_LOGIC) {
                 sh 'dotnet test --logger trx --results-directory /tmp/test ./OffLogs.Business.Common.Tests.Unit'
-            }
-
-            runStage(Stage.RUN_INTEGRATION_TESTS_API) {
                 sh 'dotnet test --logger trx --results-directory /tmp/test ./OffLogs.Api.Tests.Integration'
             }
         }
@@ -114,9 +108,7 @@ enum Stage {
     INIT_KAFKA('Init Kafka'),
     INIT_DB('Init DB'),
     RUN_MIGRATIONS('Run migrations'),
-    RUN_UNIT_TESTS_API('Run unit tests. Api'),
-    RUN_UNIT_TESTS_BUSINESS_LOGIC('Run unit tests. Business logic'),
-    RUN_INTEGRATION_TESTS_API('Run unit tests. Business logic'),
+    RUN_TESTS('Run tests'),
 
 //    SAVE_ARTIFACTS('Save artifacts'),
 
