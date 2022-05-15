@@ -1,14 +1,11 @@
 using System;
 using System.Threading.Tasks;
-using Blazored.LocalStorage;
 using Fluxor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
-using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Services.Http;
 using OffLogs.Web.Store.Auth;
-using OffLogs.Web.Store.Auth.Actions;
 using OffLogs.Web.Store.Common.Actions;
 
 namespace OffLogs.Web.Services

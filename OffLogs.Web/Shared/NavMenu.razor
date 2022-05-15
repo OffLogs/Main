@@ -1,7 +1,7 @@
 ﻿@using OffLogs.Web.Shared.Ui
 @using OffLogs.Web.Constants
 @using OffLogs.Web.Resources
-@using OffLogs.Web.Store.Auth.Actions
+@using OffLogs.Web.Store.Auth
 
 @inherits BaseComponent
 
@@ -44,10 +44,9 @@
 {
     private bool IsShowLogoutConfirmation { get; set; }
     
-    private Task OnLogout()
+    private void OnLogout()
     {
         Dispatcher.Dispatch(new LogoutAction());
-        _navigationManager.NavigateTo("/");
-        return Task.CompletedTask;
+        _navigationManager.NavigateTo("/", true);
     }
 }
