@@ -29,7 +29,5 @@ namespace OffLogs.Business.Services.Entities.Log
         );
 
         Task<LogEntity> GetOneAsync(long logId, byte[] privateKey);
-        
-        Task<bool> SetIsFavoriteAsync(long userId, long logId, bool isFavorite);
     }
 }
