@@ -52,6 +52,11 @@ public class LogReducers
             }
         }
 
+        if (newState.SelectedLog?.Id == action.LogId)
+        {
+            newState.SelectedLog.IsFavorite = action.IsFavorite;
+        }
+
         return newState;
     }
     

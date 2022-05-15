@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Extensions;
+using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Extensions;
 using OffLogs.Web.Resources;
 using OffLogs.Web.Services.Http;
@@ -59,7 +60,8 @@ public partial class Index
                     SubTitle = log.Message.Truncate(32),
                     RightTitle = log.LogTime.ToString("MM/dd/yyyy hh:mm tt"),
                     Title = log.Level.GetLabel(),
-                    TitleColorType = log.Level.GetBootstrapColorType()
+                    TitleColorType = log.Level.GetBootstrapColorType(),
+                    IconName = log.IsFavorite ? "check-alt" : ""
                 }
             ).ToList();
         }
@@ -68,12 +70,37 @@ public partial class Index
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        
+
+        SetLogMenuButtons();
+        Dispatcher.Dispatch(new OffLogs.Web.Store.Application.FetchNextListPageAction());
+
+        State.StateChanged += OnStateChanged;
+    }
+
+    private void OnStateChanged(object sender, EventArgs e)
+    {
+        SetLogMenuButtons();
+    }
+    
+    private void SetLogMenuButtons()
+    {
+        _menuButtons.Clear();
+        if (State.Value.SelectedLog != null)
+        {
+            _menuButtons.Add(
+                State.Value.SelectedLog.IsFavorite
+                    ? new(LogResources.UnSetFavorite, "checked", () => SetIsFavorite(false))
+                    : new(LogResources.SetFavorite, "check", () => SetIsFavorite(true))
+            );
+        }
         _menuButtons.Add(
             new(LogResources.ShowStatistic, "chart-arrows-axis", ShowStatisticModal)    
         );
-        
-        Dispatcher.Dispatch(new OffLogs.Web.Store.Application.FetchNextListPageAction());
+    }
+
+    private void SetIsFavorite(bool isFavorite)
+    {
+        Dispatcher.Dispatch(new SetIsLogFavoriteAction(State.Value.SelectedLog.Id, isFavorite));
     }
 
     private Task LoadListAsync(bool isLoadNextPage = true)

@@ -15,19 +15,34 @@
                         <li
                             @onclick="@(() => OnSelectMenuItem(listItem))"
                             class="@GetItemClass(listItem)">
-                            <span class="w-title">
-                                <span class="@GetItemTitleClass(listItem)">
-                                    @listItem.Title
-                                </span>
-                            </span>
-                            <span class="w-title-2">
-                                @listItem.RightTitle
-                            </span>
-                            @if (!string.IsNullOrEmpty(listItem.SubTitle))
+                            <div class="@(_hasIcon ? "w-has-icon" : "")">
+                                <div class="d-flex justify-content-between w-100">
+                                    <span class="w-title">
+                                        <span class="@GetItemTitleClass(listItem)">
+                                            @listItem.Title
+                                        </span>
+                                    </span>
+                                    <span class="w-title-2">
+                                        @listItem.RightTitle
+                                    </span>
+                                </div>
+                                <div class="d-flex justify-content-between w-100">
+                                    @if (!string.IsNullOrEmpty(listItem.SubTitle))
+                                    {
+                                        <span class="w-sub-title">
+                                            @listItem.SubTitle
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+                            @if (_hasIcon)
                             {
-                                <span class="w-sub-title">
-                                    @listItem.SubTitle
-                                </span>    
+                                <div class="w-icon">
+                                    @if (!string.IsNullOrEmpty(listItem.IconName))
+                                    {
+                                        <Icon Name="@listItem.IconName"/>
+                                    }
+                                </div>    
                             }
                         </li>
                     </ItemContent>
@@ -90,7 +105,12 @@
     
     [Parameter]
     public bool IsLoading { get; set; }
-    
+
+    private bool _hasIcon
+    {
+        get => ListItems.Any(item => !string.IsNullOrEmpty(item.IconName));
+    }
+
     protected override Task OnInitializedAsync()
     {
         Buttons.Add(
