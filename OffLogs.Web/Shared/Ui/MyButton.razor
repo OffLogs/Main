@@ -5,7 +5,7 @@
 
 <button 
   id="@IdString"
-  class="btn btn@_classString" 
+  class="btn @_classString" 
   @onclick="@OnClick" 
   type="@(IsSubmit ? @"submit" : "button")"
   disabled="@IsDisabled"
@@ -55,9 +55,9 @@
             }
             if (IsOutlined)
             {
-                result += "-outline";
+                result += "btn-outline";
             }
-            result += $"-{Type.GetName()}";
+            result += $"btn-{Type.GetName()}";
             if (IsSmall)
             {
                 result += $" btn-sm";
