@@ -20,6 +20,7 @@
                 SelectedItem="@_selectedListItem"
                 Buttons="@SubMenuButtons"
                 IsShowMoreBtn="@IsShowMoreBtn"
+                IsLoading="@IsListLoading"
                 IsReadOnly="@IsReadOnly">
             </List>
         }
@@ -62,6 +63,9 @@
     
     [Parameter]
     public bool IsShowMoreBtn { get; set; }
+    
+    [Parameter]
+    public bool IsListLoading { get; set; }
 
     #endregion
     

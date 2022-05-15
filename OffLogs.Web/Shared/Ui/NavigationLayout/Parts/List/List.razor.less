@@ -23,7 +23,6 @@
                 display: flex;
                 flex-wrap: wrap;
                 border-left: 2px solid transparent;
-                padding: 0 0.5rem;
                 white-space: nowrap;
                 vertical-align: middle;
                 color: #2c363a;
@@ -33,6 +32,32 @@
                 opacity: 0.9;
                 cursor: pointer;
     
+                &:hover {
+                    opacity: 1;
+                }
+
+                & > div:first-child {
+                    width: 100%;
+                    padding-inline-end: 0.5rem;
+                    
+                    &.w-has-icon {
+                        width: calc(100% - 1.5rem);
+                        padding-inline-end: 0;
+                    }
+                }
+                
+                & > .w-icon {
+                    width: 1.5rem;
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: end;
+                    padding-block-start: 0.5rem;
+
+                    & > ::deep span {
+                        font-size: 1.2rem;
+                    }
+                }
+
                 .w-title {
                     overflow: hidden;
                     text-overflow: ellipsis;
@@ -41,17 +66,19 @@
                     color: #737677;
                     padding-right: .5rem;
                 }
-    
+
                 .w-title-2 {
                     font-size: 90%;
                     color: #737677;
+                    font-weight: lighter;
                 }
-    
+
                 .w-sub-title {
                     overflow: hidden;
                     text-overflow: ellipsis;
                     width: 100%;
                     user-select: none;
+                    padding-inline-start: 0.5rem;
                 }
     
                 &.w-selected {
@@ -88,6 +115,13 @@
             
             .w-text {
                 font-size: 0.75rem;
+            }
+            
+            ::deep .w-preloader {
+                .spinner-border {
+                    width: 1rem;
+                    height: 1rem;
+                }
             }
         }
     }

@@ -79,11 +79,29 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Set favorite.
+        /// </summary>
+        internal static string SetFavorite {
+            get {
+                return ResourceManager.GetString("SetFavorite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show statistic.
         /// </summary>
         internal static string ShowStatistic {
             get {
                 return ResourceManager.GetString("ShowStatistic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove from favorite.
+        /// </summary>
+        internal static string UnSetFavorite {
+            get {
+                return ResourceManager.GetString("UnSetFavorite", resourceCulture);
             }
         }
     }

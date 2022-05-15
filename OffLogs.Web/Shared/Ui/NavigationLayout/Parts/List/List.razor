@@ -15,17 +15,35 @@
                         <li
                             @onclick="@(() => OnSelectMenuItem(listItem))"
                             class="@GetItemClass(listItem)">
-                            <span class="w-title">
-                                <span class="@GetItemTitleClass(listItem)">
-                                    @listItem.Title
-                                </span>
-                            </span>
-                            <span class="w-title-2">
-                                @listItem.RightTitle
-                            </span>
-                            <span class="w-sub-title">
-                                @listItem.SubTitle
-                            </span>
+                            <div class="@(_hasIcon ? "w-has-icon" : "")">
+                                <div class="d-flex justify-content-between w-100">
+                                    <span class="w-title">
+                                        <span class="@GetItemTitleClass(listItem)">
+                                            @listItem.Title
+                                        </span>
+                                    </span>
+                                    <span class="w-title-2">
+                                        @listItem.RightTitle
+                                    </span>
+                                </div>
+                                <div class="d-flex justify-content-between w-100">
+                                    @if (!string.IsNullOrEmpty(listItem.SubTitle))
+                                    {
+                                        <span class="w-sub-title">
+                                            @listItem.SubTitle
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+                            @if (_hasIcon)
+                            {
+                                <div class="w-icon">
+                                    @if (!string.IsNullOrEmpty(listItem.IconName))
+                                    {
+                                        <Icon Name="@listItem.IconName"/>
+                                    }
+                                </div>    
+                            }
                         </li>
                     </ItemContent>
                     <Placeholder>
@@ -46,14 +64,20 @@
     @if (IsShowMoreBtn)
     {
         <div class="w-list-paginator">
-            <div 
+            <div
                 class="w-paginator-btn"
-                @onclick="OnClickMore"
-            >
-                <Icon Name="refresh"></Icon>
-                <span class="w-text">
-                    @CommonResources.LoadMore
-                </span>
+                @onclick="OnClickMore">
+                @if (IsLoading)
+                {
+                    <Preloader/>
+                }
+                else
+                {
+                    <Icon Name="refresh"></Icon>
+                    <span class="w-text">
+                        @CommonResources.LoadMore
+                    </span>    
+                }
             </div>
         </div>    
     }
@@ -79,6 +103,14 @@
     [Parameter]
     public bool IsReadOnly { get; set; }
     
+    [Parameter]
+    public bool IsLoading { get; set; }
+
+    private bool _hasIcon
+    {
+        get => ListItems.Any(item => !string.IsNullOrEmpty(item.IconName));
+    }
+
     protected override Task OnInitializedAsync()
     {
         Buttons.Add(
@@ -106,17 +138,18 @@
     
     private string GetItemTitleClass(ListItem menuItem)
     {
+        var result = "p-2";
         if (menuItem.TitleColorType != null)
         {
-            return $"p-2 bg-{menuItem.TitleColorType.Value.GetBadgeClass()}";
+            result += $" bg-{menuItem.TitleColorType.Value.GetBadgeClass()}";
         }
 
-        return "";
+        return result;
     }
 
     private void OnClickMore()
     {
-        if (IsReadOnly)
+        if (IsReadOnly || IsLoading)
         {
             return;
         }

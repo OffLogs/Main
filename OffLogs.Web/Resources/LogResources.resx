@@ -27,4 +27,10 @@
     <data name="ModalTitle_ApplicationStatistic" xml:space="preserve">
         <value>Application statistic</value>
     </data>
+    <data name="SetFavorite" xml:space="preserve">
+        <value>Set favorite</value>
+    </data>
+    <data name="UnSetFavorite" xml:space="preserve">
+        <value>Remove from favorite</value>
+    </data>
 </root>

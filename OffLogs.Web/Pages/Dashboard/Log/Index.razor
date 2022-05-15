@@ -15,6 +15,7 @@
     OnSelectMenuItem="@OnApplicationSelected"
     OnSelectListItem="async (menuEvent) => await OnSelectLogAsync(menuEvent)"
     IsShowMoreBtn="@State.Value.HasMoreItems"
+    IsListLoading="@State.Value.IsLoadingList"
     OnClickMoreBtn="async () => await OnClickMoreBtnAsync()"
     IsReadOnly="@State.Value.IsLoadingList"
 >

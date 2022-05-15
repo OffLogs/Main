@@ -14,6 +14,9 @@ namespace OffLogs.Web.Shared.Ui.NavigationLayout.Models
         public string SubTitle { get; set; }
         
         public ColorType? TitleColorType { get; set; }
+        
+        
+        public string IconName { get; set; }
 
         public long GetIdAsLong()
         {

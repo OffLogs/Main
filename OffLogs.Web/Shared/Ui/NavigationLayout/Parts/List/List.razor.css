@@ -22,7 +22,6 @@
   display: flex;
   flex-wrap: wrap;
   border-left: 2px solid transparent;
-  padding: 0 0.5rem;
   white-space: nowrap;
   vertical-align: middle;
   color: #2c363a;
@@ -31,6 +30,27 @@
   line-height: 35px;
   opacity: 0.9;
   cursor: pointer;
+}
+.w-list-container .w-list ul li:hover {
+  opacity: 1;
+}
+.w-list-container .w-list ul li > div:first-child {
+  width: 100%;
+  padding-inline-end: 0.5rem;
+}
+.w-list-container .w-list ul li > div:first-child.w-has-icon {
+  width: calc(100% - 1.5rem);
+  padding-inline-end: 0;
+}
+.w-list-container .w-list ul li > .w-icon {
+  width: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: end;
+  padding-block-start: 0.5rem;
+}
+.w-list-container .w-list ul li > .w-icon > ::deep span {
+  font-size: 1.2rem;
 }
 .w-list-container .w-list ul li .w-title {
   overflow: hidden;
@@ -43,12 +63,14 @@
 .w-list-container .w-list ul li .w-title-2 {
   font-size: 90%;
   color: #737677;
+  font-weight: lighter;
 }
 .w-list-container .w-list ul li .w-sub-title {
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
   user-select: none;
+  padding-inline-start: 0.5rem;
 }
 .w-list-container .w-list ul li.w-selected {
   background-color: #e8f5ff;
@@ -78,5 +100,9 @@
 }
 .w-list-container .w-list-paginator .w-paginator-btn .w-text {
   font-size: 0.75rem;
+}
+.w-list-container .w-list-paginator .w-paginator-btn ::deep .w-preloader .spinner-border {
+  width: 1rem;
+  height: 1rem;
 }
 /*# sourceMappingURL=List.razor.css.map */
