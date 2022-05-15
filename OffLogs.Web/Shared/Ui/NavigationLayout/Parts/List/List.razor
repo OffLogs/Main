@@ -23,9 +23,12 @@
                             <span class="w-title-2">
                                 @listItem.RightTitle
                             </span>
-                            <span class="w-sub-title">
-                                @listItem.SubTitle
-                            </span>
+                            @if (!string.IsNullOrEmpty(listItem.SubTitle))
+                            {
+                                <span class="w-sub-title">
+                                    @listItem.SubTitle
+                                </span>    
+                            }
                         </li>
                     </ItemContent>
                     <Placeholder>
@@ -46,14 +49,20 @@
     @if (IsShowMoreBtn)
     {
         <div class="w-list-paginator">
-            <div 
+            <div
                 class="w-paginator-btn"
-                @onclick="OnClickMore"
-            >
-                <Icon Name="refresh"></Icon>
-                <span class="w-text">
-                    @CommonResources.LoadMore
-                </span>
+                @onclick="OnClickMore">
+                @if (IsLoading)
+                {
+                    <Preloader/>
+                }
+                else
+                {
+                    <Icon Name="refresh"></Icon>
+                    <span class="w-text">
+                        @CommonResources.LoadMore
+                    </span>    
+                }
             </div>
         </div>    
     }
@@ -78,6 +87,9 @@
 
     [Parameter]
     public bool IsReadOnly { get; set; }
+    
+    [Parameter]
+    public bool IsLoading { get; set; }
     
     protected override Task OnInitializedAsync()
     {
@@ -106,17 +118,18 @@
     
     private string GetItemTitleClass(ListItem menuItem)
     {
+        var result = "p-2";
         if (menuItem.TitleColorType != null)
         {
-            return $"p-2 bg-{menuItem.TitleColorType.Value.GetBadgeClass()}";
+            result += $" bg-{menuItem.TitleColorType.Value.GetBadgeClass()}";
         }
 
-        return "";
+        return result;
     }
 
     private void OnClickMore()
     {
-        if (IsReadOnly)
+        if (IsReadOnly || IsLoading)
         {
             return;
         }
