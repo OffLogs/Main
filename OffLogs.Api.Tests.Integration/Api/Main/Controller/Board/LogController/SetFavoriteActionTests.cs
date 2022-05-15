@@ -3,6 +3,9 @@ using System.Net;
 using System.Threading.Tasks;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log;
 using OffLogs.Business.Common.Constants;
+using OffLogs.Business.Orm.Commands.Context;
+using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Orm.Queries.Entities.Log;
 using Xunit;
 
@@ -10,17 +13,18 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
 {
     public class SetFavoriteActionTests: MyApiIntegrationTest
     {
+        private const string Url = MainApiUrl.LogSetIsFavorite;
+        
         public SetFavoriteActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
         
-        [Theory]
-        [InlineData("/board/log/setFavorite")]
-        public async Task OnlyAuthorizedUsersCanSetAsFavorite(string url)
+        [Fact]
+        public async Task OnlyAuthorizedUsersCanSetAsFavorite()
         {
             var user = await DataSeeder.CreateActivatedUser();
             var logs = await DataSeeder.CreateLogsAsync(user.Applications.First().Id, LogLevel.Debug);
             
             // Act
-            var response = await PostRequestAsAnonymousAsync(url, new SetIsFavoriteRequest()
+            var response = await PostRequestAsAnonymousAsync(Url, new SetIsFavoriteRequest()
             {
                 LogId = logs.First().Id
             });
@@ -28,9 +32,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             Assert.True(response.StatusCode == HttpStatusCode.Unauthorized);
         }
         
-        [Theory]
-        [InlineData("/board/log/setFavorite")]
-        public async Task OnlyOwnerCanSetAsFavorite(string url)
+        [Fact]
+        public async Task OnlyOwnerCanSetAsFavorite()
         {
             var user1 = await DataSeeder.CreateActivatedUser();
             var logs = await DataSeeder.CreateLogsAsync(user1.Applications.First().Id, LogLevel.Debug);
@@ -38,7 +41,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             var user2 = await DataSeeder.CreateActivatedUser();
             
             // Act
-            var response = await PostRequestAsync(url, user2.ApiToken, new SetIsFavoriteRequest()
+            var response = await PostRequestAsync(Url, user2.ApiToken, new SetIsFavoriteRequest()
             {
                 LogId = logs.First().Id,
                 IsFavorite = true
@@ -47,17 +50,16 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             Assert.True(response.StatusCode == HttpStatusCode.BadRequest);
         }
         
-        [Theory]
-        [InlineData("/board/log/setFavorite")]
-        public async Task ShouldSetAsFavorite(string url)
+        [Fact]
+        public async Task ShouldSetAsFavorite()
         {
             var user = await DataSeeder.CreateActivatedUser();
             var logs = await DataSeeder.CreateLogsAsync(user.Applications.First().Id, LogLevel.Debug);
             
             var log = logs.First();
-            Assert.False(await IsFavorite(user.Id, log.Id));
+            Assert.False(await IsFavorite(log.Id));
             // Act
-            var response = await PostRequestAsync(url, user.ApiToken, new SetIsFavoriteRequest()
+            var response = await PostRequestAsync(Url, user.ApiToken, new SetIsFavoriteRequest()
             {
                 IsFavorite = true,
                 LogId = logs.First().Id
@@ -66,14 +68,34 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             // Assert
             await DbSessionProvider.PerformCommitAsync();
 
-            Assert.True(await IsFavorite(user.Id, log.Id));
+            Assert.True(await IsFavorite(log.Id));
         }
 
-        private async Task<bool> IsFavorite(long userId, long logId)
+        [Fact]
+        public async Task ShouldUnSetAsFavorite()
         {
-            return await QueryBuilder.For<bool>().WithAsync(
-                new LogIsFavoriteCriteria(userId, logId)
-            );
+            var user = await DataSeeder.CreateActivatedUser();
+            var logs = await DataSeeder.CreateLogsAsync(user.Applications.First().Id, LogLevel.Debug);
+            
+            var log = logs.First();
+            
+            Assert.False(await IsFavorite(log.Id));
+            // Act
+            var response = await PostRequestAsync(Url, user.ApiToken, new SetIsFavoriteRequest()
+            {
+                IsFavorite = false,
+                LogId = logs.First().Id
+            });
+            response.EnsureSuccessStatusCode();
+            // Assert
+            await DbSessionProvider.PerformCommitAsync();
+
+            Assert.True(!await IsFavorite(log.Id));
+        }
+        
+        private async Task<bool> IsFavorite(long logId)
+        {
+            return (await QueryBuilder.FindByIdAsync<LogEntity>(logId)).IsFavorite;
         }
     }
 }

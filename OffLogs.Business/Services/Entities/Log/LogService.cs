@@ -107,15 +107,8 @@ namespace OffLogs.Business.Services.Entities.Log
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
 
-            var isAlreadyFavorite = await _queryBuilder.For<bool>().WithAsync(
-                new LogIsFavoriteCriteria(userId, logId)
-            );
-            if (isAlreadyFavorite)
-            {
-                return false;
-            }
-            user.FavoriteLogs.Add(log);
-            await _commandBuilder.SaveAsync(user);
+            log.IsFavorite = isFavorite;
+            await _commandBuilder.SaveAsync(log);
             return true;
         }
     }
