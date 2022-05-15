@@ -14,6 +14,7 @@ using OffLogs.Web.Services.Http;
 using OffLogs.Web.Shared.Ui.Form.CustomDropDown;
 using OffLogs.Web.Shared.Ui.NavigationLayout.Models;
 using OffLogs.Web.Store.Log;
+using OffLogs.Web.Store.Log.Models;
 
 namespace OffLogs.Web.Pages.Dashboard.Log;
 
@@ -31,10 +32,11 @@ public partial class Index
     private bool _isShowStatistic = false;
     
     private long? _selectedApplicationId;
-    private LogLevel? _selectedLogLevel;
 
     private ICollection<HeaderMenuButton> _menuButtons = new List<HeaderMenuButton>();
 
+    private string _search;
+    
     private ICollection<MenuItem> _menuItems
     {
         get
@@ -116,10 +118,7 @@ public partial class Index
     private async Task OnApplicationSelected(OnSelectEventArgs menuEvent)
     {
         _selectedApplicationId = long.Parse(menuEvent.MenuItem.Id);
-        Dispatcher.Dispatch(new SetListFilterAction(
-            _selectedApplicationId.Value,
-            _selectedLogLevel
-        ));
+        Dispatcher.Dispatch(new SetApplication(_selectedApplicationId.Value));
         await LoadListAsync(false);
     }
 

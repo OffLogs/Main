@@ -88,6 +88,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only favorite.
+        /// </summary>
+        internal static string ShowOnlyFavorite {
+            get {
+                return ResourceManager.GetString("ShowOnlyFavorite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show statistic.
         /// </summary>
         internal static string ShowStatistic {

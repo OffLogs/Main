@@ -1,0 +1,22 @@
+.w-filter {
+  width: 100%;
+}
+.w-filter .w-text-search {
+  flex: 1;
+}
+.w-filter .w-text-search ::deep .w-icon {
+  width: 16px;
+  margin: 0 0.5rem;
+}
+.w-filter .w-text-search input[type=text] {
+  border: none;
+  width: calc(100% - 4.2rem);
+}
+.w-filter .w-text-search input[type=text]:focus-visible {
+  border: none;
+  outline: none;
+}
+.w-filter .w-filter {
+  border-top: 1px solid #f1f3f4;
+}
+/*# sourceMappingURL=ListFilter.razor.css.map */

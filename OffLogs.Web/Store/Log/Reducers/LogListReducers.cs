@@ -72,8 +72,15 @@ public class LogReducers
     public static LogsListState ReduceSetListFilterAction(LogsListState state, SetListFilterAction action)
     {
         var newState = state.Clone();
+        newState.Filter = action.Filter;
+        return newState;
+    }
+    
+    [ReducerMethod]
+    public static LogsListState ReduceSetListFilterAction(LogsListState state, SetApplication action)
+    {
+        var newState = state.Clone();
         newState.ApplicationId = action.ApplicationId;
-        newState.LogLevel = action.LogLevel;
         return newState;
     }
     #endregion

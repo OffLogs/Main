@@ -60,4 +60,7 @@
     <data name="ConfirmationModal_AreYouSureYouWantToLogout" xml:space="preserve">
         <value>Are you sure you want to logout?</value>
     </data>
+    <data name="LogLevel" xml:space="preserve">
+        <value>Log level</value>
+    </data>
 </root>

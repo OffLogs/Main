@@ -36,7 +36,7 @@ public class FetchLogsEffect: Effect<FetchNextListPageAction>
             {
                 Page = _state.Value.Page,
                 ApplicationId = _state.Value.ApplicationId,
-                LogLevel = _state.Value.LogLevel,
+                LogLevel = _state.Value.Filter.LogLevel,
                 PrivateKeyBase64 = _authState.Value.PrivateKeyBase64
             });
             dispatcher.Dispatch(new FetchListResultAction(response));

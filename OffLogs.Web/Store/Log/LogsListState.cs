@@ -4,6 +4,7 @@ using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Extensions;
 using OffLogs.Web.Core.Helpers;
+using OffLogs.Web.Store.Log.Models;
 
 namespace OffLogs.Web.Store.Log;
 
@@ -22,14 +23,10 @@ public class LogsListState
     
     public ICollection<LogDto> LogsDetails { get; set; } = new List<LogDto>();
 
-    #region Filter
-
     public long ApplicationId { get; set; }
     
-    public LogLevel? LogLevel { get; set; }
+    public LogFilterModel Filter { get; set; } = new();
 
-    #endregion
-    
     public LogsListState() { }
 
     public LogsListState(ICollection<LogListItemDto> list)

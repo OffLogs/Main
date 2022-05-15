@@ -1,6 +1,7 @@
 ﻿using OffLogs.Api.Common.Dto;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Business.Common.Constants;
+using OffLogs.Web.Store.Log.Models;
 
 namespace OffLogs.Web.Store.Log;
 
@@ -20,4 +21,6 @@ public record struct SelectLogAction(long? Id);
 
 public record struct SetIsLogFavoriteAction(long LogId, bool IsFavorite);
 
-public record struct SetListFilterAction(long ApplicationId, LogLevel? LogLevel = null);
+public record struct SetApplication(long ApplicationId);
+
+public record struct SetListFilterAction(LogFilterModel Filter);

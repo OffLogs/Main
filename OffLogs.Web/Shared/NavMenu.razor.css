@@ -3,37 +3,30 @@
   width: 78px;
   height: 100%;
 }
-.w-left-menu .w-task-menu {
+.w-left-menu .w-main-menu {
   margin: 0;
   text-align: center;
   white-space: nowrap;
   border-color: #ddd;
 }
-.w-left-menu .w-task-menu ::deep a {
+.w-left-menu .w-main-menu ::deep a {
   padding: 0;
   height: 36px;
   font-size: 1rem;
   position: relative;
   overflow: initial;
   width: 78px;
-  display: block;
   float: none;
   line-height: 1.5;
   cursor: pointer;
   text-align: center;
-}
-.w-left-menu .w-task-menu ::deep a:hover,
-.w-left-menu .w-task-menu ::deep a.active {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-.w-left-menu .w-task-menu ::deep a i {
-  position: absolute;
-  z-index: 999;
-  padding: 3px 5px;
-  line-height: 1rem;
   color: #333;
-  top: 0.5rem;
-  left: 1.7rem;
-  opacity: 0.9;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+.w-left-menu .w-main-menu ::deep a:hover,
+.w-left-menu .w-main-menu ::deep a.active {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 /*# sourceMappingURL=NavMenu.razor.css.map */

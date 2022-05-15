@@ -33,4 +33,7 @@
     <data name="UnSetFavorite" xml:space="preserve">
         <value>Remove from favorite</value>
     </data>
+    <data name="ShowOnlyFavorite" xml:space="preserve">
+        <value>Only favorite</value>
+    </data>
 </root>

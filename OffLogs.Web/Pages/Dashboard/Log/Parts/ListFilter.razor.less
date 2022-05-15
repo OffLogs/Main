@@ -1,0 +1,26 @@
+﻿.w-filter {
+    width: 100%;
+    
+    .w-text-search {
+        flex: 1;
+        
+        ::deep .w-icon {
+            width: 16px;
+            margin: 0 0.5rem;
+        }
+        
+        input[type=text] {
+            border: none;
+            width: calc(100% - 4.2rem);
+
+            &:focus-visible {
+                border: none;
+                outline: none;
+            }
+        }    
+    }
+    
+    .w-filter {
+        border-top: 1px solid #f1f3f4;
+    }
+}
