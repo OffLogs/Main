@@ -6,6 +6,7 @@ using Commands.Abstractions;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Exceptions;
 using OffLogs.Business.Orm.Commands.Context;
+using OffLogs.Business.Orm.Commands.Entities.Log;
 using OffLogs.Business.Orm.Dto;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries;
@@ -96,27 +97,6 @@ namespace OffLogs.Business.Services.Entities.Log
             }
 
             return await _logAssembler.AssembleDecryptedLogAsync(log, privateKey);
-        }
-        
-        public async Task<bool> SetIsFavoriteAsync(long userId, long logId, bool isFavorite)
-        {
-            var log = await _queryBuilder.FindByIdAsync<LogEntity>(logId);
-            if (log == null)
-                throw new ArgumentNullException(nameof(log));
-            var user = await _queryBuilder.FindByIdAsync<UserEntity>(userId);
-            if (user == null)
-                throw new ArgumentNullException(nameof(user));
-
-            var isAlreadyFavorite = await _queryBuilder.For<bool>().WithAsync(
-                new LogIsFavoriteCriteria(userId, logId)
-            );
-            if (isAlreadyFavorite)
-            {
-                return false;
-            }
-            user.FavoriteLogs.Add(log);
-            await _commandBuilder.SaveAsync(user);
-            return true;
         }
     }
 }

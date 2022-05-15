@@ -6,6 +6,7 @@ using OffLogs.Api.Common.Dto;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log;
 using OffLogs.Business.Common.Constants;
+using OffLogs.Business.Orm.Commands.Entities.Log;
 using OffLogs.Business.Test.Extensions;
 using Xunit;
 
@@ -154,9 +155,9 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
         public async Task ShouldReceiveCorrectIsFavoriteValue(string url)
         {
             var user = await DataSeeder.CreateActivatedUser();
-            var logs = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information, 3);            
-            await LogService.SetIsFavoriteAsync(user.Id, logs.First().Id, true);
-            await LogService.SetIsFavoriteAsync(user.Id, logs.Last().Id, true);
+            var logs = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information, 3);       
+            await CommandBuilder.ExecuteAsync(new LogSetIsFavoriteCommandContext(user.Id, logs.First().Id, true));
+            await CommandBuilder.ExecuteAsync(new LogSetIsFavoriteCommandContext(user.Id, logs.Last().Id, true));
 
             // Act
             var response = await PostRequestAsync(url, user.ApiToken, new GetListRequest()

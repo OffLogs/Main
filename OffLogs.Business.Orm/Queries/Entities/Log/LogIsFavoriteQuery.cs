@@ -4,9 +4,12 @@ using System.Threading.Tasks;
 using NHibernate.Linq;
 using OffLogs.Business.Orm.Entities;
 using Persistence.Transactions.Behaviors;
+using Queries.Abstractions;
 
 namespace OffLogs.Business.Orm.Queries.Entities.Log
 {
+    public record struct LogIsFavoriteCriteria(long UserId, long LogId) : ICriterion;
+    
     public class LogIsFavoriteQuery : LinqAsyncQueryBase<LogIsFavoriteCriteria, bool>
     {
         public LogIsFavoriteQuery(IDbSessionProvider transactionProvider) 
@@ -16,12 +19,12 @@ namespace OffLogs.Business.Orm.Queries.Entities.Log
 
         public override async Task<bool> AskAsync(LogIsFavoriteCriteria criterion, CancellationToken cancellationToken = default)
         {
-            var result = await TransactionProvider.CurrentSession
-                .GetNamedQuery("Log.getFavoriteCount")
-                .SetParameter("userId", criterion.UserId)
-                .SetParameter("logId", criterion.LogId)
-                .UniqueResultAsync<long>(cancellationToken);
-            return result > 0;
+            var isFound = await TransactionProvider.CurrentSession
+                .Query<UserEntity>()
+                .Where(user => user.Id == criterion.UserId)
+                .FetchMany(user => user.FavoriteLogs)
+                .AnyAsync(user => user.FavoriteLogs.Any(log => log.Id == criterion.LogId), cancellationToken: cancellationToken);
+            return isFound;
         }
     }
 }

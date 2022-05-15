@@ -60,7 +60,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Log
             log3.CreateTime = DateTime.UtcNow.AddDays(-29);
             await CommandBuilder.SaveAsync(log3);
             await LogShareService.Share(log3);
-            await LogService.SetIsFavoriteAsync(userModel.Id, log3.Id, true);
+            await CommandBuilder.ExecuteAsync(new LogSetIsFavoriteCommandContext(userModel.Id, log3.Id, true));
             await DbSessionProvider.PerformCommitAsync();
 
             await CommandBuilder.ExecuteAsync(new LogDeleteSpoiledCommandContext());
@@ -87,7 +87,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Log
             var log1 = await CreateLog(application, LogLevel.Error);
             log1.CreateTime = DateTime.UtcNow.AddDays(-31);
             await CommandBuilder.SaveAsync(log1);
-            await LogService.SetIsFavoriteAsync(userModel.Id, log1.Id, true);
+            await CommandBuilder.ExecuteAsync(new LogSetIsFavoriteCommandContext(userModel.Id, log1.Id, true));
 
             await DbSessionProvider.PerformCommitAsync();
             await CommandBuilder.ExecuteAsync(new LogDeleteSpoiledCommandContext());
