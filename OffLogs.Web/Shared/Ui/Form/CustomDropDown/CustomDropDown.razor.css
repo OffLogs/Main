@@ -5,11 +5,11 @@
   position: absolute;
   top: 2.5rem;
 }
+.w-custom-drop-down .dropdown-menu.w-with-label {
+  top: 4.7rem;
+}
 .w-custom-drop-down ul li {
   cursor: pointer;
-}
-.w-custom-drop-down .btn-group {
-  width: 100%;
 }
 .w-custom-drop-down .w-transparent-back {
   z-index: 99;
@@ -19,5 +19,8 @@
   bottom: 0;
   left: 0;
   right: 0;
+}
+.w-custom-drop-down ::deep .btn-group > .btn:not(:first-child) {
+  margin-left: -2px;
 }
 /*# sourceMappingURL=CustomDropDown.razor.css.map */

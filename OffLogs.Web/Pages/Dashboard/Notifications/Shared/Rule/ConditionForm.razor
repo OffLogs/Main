@@ -30,31 +30,30 @@
         =
     </div>
     <div class="col">
-        @if (_model.ConditionField == ConditionFieldType.LogLevel.ToString())
-        {
-            <CustomDropDown
-                NonSelectedLabel="@NotificationResources.Condition_FieldType"
-                Items="@_logLevelDownListItems"
-                SelectedItemId="@($"{_model.Value}")"
-                BtnType="ColorType.Secondary"
-                Size="FormControlSize.Small"
-                OnChanged="@(value => _value = value.Id)"/>    
-        }
-        else
-        {
-            <CustomInputText
-                Placeholder="@NotificationResources.Rules_ConditionValue"
-                Size="FormControlSize.Small"
-                @bind-Value="@_value"/>
-        }
-    </div>
-    <div class="col-2 text-center">
-        <MyButton 
-            OnClick="OnDelete"
-            Type="ColorType.Danger"
-            IsSmall="@true"
-        >
-            <Icon Name="ui-delete"/>
-        </MyButton>     
+        <div class="btn-group">
+            @if (_model.ConditionField == ConditionFieldType.LogLevel.ToString())
+            {
+                <CustomDropDown
+                    NonSelectedLabel="@NotificationResources.Condition_FieldType"
+                    Items="@_logLevelDownListItems"
+                    SelectedItemId="@($"{_model.Value}")"
+                    BtnType="ColorType.Secondary"
+                    Size="FormControlSize.Small"
+                    OnChanged="@(value => _value = value.Id)"/>
+            }
+            else
+            {
+                <CustomInputText
+                    Placeholder="@NotificationResources.Rules_ConditionValue"
+                    Size="FormControlSize.Small"
+                    @bind-Value="@_value"/>
+            }
+            <MyButton
+                OnClick="OnDelete"
+                Type="ColorType.Danger"
+                IsSmall="@true">
+                <Icon Name="ui-delete"/>
+            </MyButton>
+        </div>
     </div>
 </div>

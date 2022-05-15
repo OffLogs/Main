@@ -11,19 +11,27 @@
 @inject ToastService _toastService
 
 <div class="w-custom-drop-down @Class">
-     @if (!string.IsNullOrEmpty(Label))
+     @if (_hasLabel)
     {
         <label class="form-label">@Label</label>
     }
-     <div class="btn-group">
-         <MyButton
-             OnClick="@(() => ShowDropDown(!_isOpened))"
-             Type="@BtnType"
-             IsSmall="@(Size == FormControlSize.Small)"
-         >
-             @_selectedItemTitle
-         </MyButton>
-         <div class="dropdown-menu @(_isOpened ? "show" : "")">
+     <div>
+         <div class="btn-group">
+             <MyButton
+                 OnClick="@(() => ShowDropDown(!_isOpened))"
+                 Type="@BtnType"
+                 IsSmall="@(Size == FormControlSize.Small)"
+                 Class="dropdown-toggle">
+                 @_selectedItemTitle
+             </MyButton>
+             <MyButton
+                 OnClick="Reset"
+                 Type="@BtnType"
+                 IsSmall="@(Size == FormControlSize.Small)">
+                 <Icon Name="close"/>
+             </MyButton>
+         </div>
+         <div class="dropdown-menu @(_isOpened ? "show" : "") @(_hasLabel ? "w-with-label" : "")">
              @foreach (var item in Items)
              {
                  <a class="dropdown-item @(item.IsSelected ? "active" : "")"
@@ -75,6 +83,10 @@
         get => _selectedItemId;
         set
         {
+            if (_isPreventOnSelectedItemChangeFromParent)
+            {
+                return;
+            }
             if (value != SelectedItem?.Id)
             {
                 SetSelectedItemId(value, false);
@@ -90,6 +102,7 @@
     public DropDownListItem SelectedItem = null;
 
     protected bool _isOpened { get; set; } = false;
+    protected bool _isPreventOnSelectedItemChangeFromParent { get; set; } = false;
 
     private static Action _onGlobalDropDownClose;
 
@@ -105,6 +118,14 @@
         }
     }
 
+    protected bool _hasLabel
+    {
+        get
+        {
+            return !string.IsNullOrEmpty(Label);
+        }
+    }
+    
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -135,7 +156,7 @@
         SetSelectedItemId(item?.Id);
     }
 
-    public void SetSelectedItemId(string id, bool isInvoke = true)
+    public void SetSelectedItemId(string id, bool isInvoke = true, bool isPreventFromParentChange = false)
     {
         SelectedItem = Items.FirstOrDefault(record => record.Id == id);
         Items = Items.Select(record =>
@@ -147,7 +168,13 @@
         
         if (isInvoke && OnChanged.HasDelegate)
         {
-            OnChanged.InvokeAsync(SelectedItem);    
+            InvokeAsync(async () =>
+            {
+                _isPreventOnSelectedItemChangeFromParent = true;
+                await OnChanged.InvokeAsync(SelectedItem);
+                _isPreventOnSelectedItemChangeFromParent = false;
+            });
+            
         }
     }
 
@@ -172,6 +199,11 @@
         }
         _isOpened = isShow;
         StateHasChanged();
+    }
+    
+    protected void Reset()
+    {
+        SetSelectedItemId(null, true, true);
     }
 
     private void OnCloseModalFromOthers()
