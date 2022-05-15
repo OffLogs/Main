@@ -93,7 +93,6 @@
     <ItemGroup>
       <Folder Include="Pages\Dashboard\Settings\" />
       <Folder Include="Shared\Ui\Form\AutoComplete\" />
-      <Folder Include="Store\Auth\Effects" />
     </ItemGroup>
 
     <ItemGroup>
