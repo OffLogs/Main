@@ -54,6 +54,14 @@ public partial class ListFilter
     {
         _isFilterOpened = false;
         Dispatcher.Dispatch(new SetListFilterAction(_model));
+        Dispatcher.Dispatch(new ResetListAction());
+        Dispatcher.Dispatch(new FetchNextListPageAction());
         await InvokeAsync(() => OnFilterChanged.InvokeAsync());
+    }
+    
+    private async Task Reset()
+    {
+        _model = new LogFilterModel();
+        await OnSave();
     }
 }

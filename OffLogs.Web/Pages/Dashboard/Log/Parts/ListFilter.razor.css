@@ -2,7 +2,9 @@
   width: 100%;
 }
 .w-filter .w-text-search {
-  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .w-filter .w-text-search ::deep .w-icon {
   width: 16px;
