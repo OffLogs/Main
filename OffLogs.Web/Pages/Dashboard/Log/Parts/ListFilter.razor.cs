@@ -23,8 +23,8 @@ public partial class ListFilter
     private bool _isFilterOpened { get; set; }
 
     private LogFilterModel _model;
-    
-    private ICollection<DropDownListItem> _logLevelDownListItems => LogLevel.Warning.ToDropDownList();
+
+    private static ICollection<DropDownListItem> _logLevelDownListItems => LogLevel.Warning.ToDropDownList();
 
     protected override async Task OnInitializedAsync()
     {
