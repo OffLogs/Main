@@ -2,6 +2,7 @@
 using System.Linq;
 using Fluxor;
 using OffLogs.Api.Common.Dto.Entities;
+using OffLogs.Web.Store.Log.Models;
 
 namespace OffLogs.Web.Store.Log.Reducers;
 
@@ -72,8 +73,42 @@ public class LogReducers
     public static LogsListState ReduceSetListFilterAction(LogsListState state, SetListFilterAction action)
     {
         var newState = state.Clone();
+        newState.Filter = action.Filter;
+        return newState;
+    }
+    
+    [ReducerMethod]
+    public static LogsListState ReduceSetListFilterAction(LogsListState state, SetApplication action)
+    {
+        var newState = state.Clone();
         newState.ApplicationId = action.ApplicationId;
-        newState.LogLevel = action.LogLevel;
+        return newState;
+    }
+    
+    [ReducerMethod]
+    public static LogsListState ReduceSetListFilterSearchAction(LogsListState state, SetListFilterSearchAction action)
+    {
+        var newState = state.Clone();
+        newState.Filter = state.Filter with
+        {
+            Search = action.Search
+        };
+        return newState;
+    }
+    
+    [ReducerMethod(typeof(UpdateFilteredItemsAction))]
+    public static LogsListState ReduceSetListFilterSearchAction(LogsListState state)
+    {
+        var newState = state.Clone();
+        newState.FilteredList = state.List.Where(item =>
+        {
+            if (string.IsNullOrEmpty(state.Filter.Search))
+            {
+                return true;
+            }
+
+            return item.Message.Contains(state.Filter.Search);
+        }).ToList();
         return newState;
     }
     #endregion

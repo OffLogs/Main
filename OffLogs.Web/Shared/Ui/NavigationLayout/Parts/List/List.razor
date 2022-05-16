@@ -8,6 +8,12 @@
     <Header Buttons="@Buttons"></Header>
     <div class="w-list">
         <ul>
+            @if (TopContent != null)
+            {
+                <li>
+                    @TopContent
+                </li>
+            }
             @if (ListItems != null && ListItems.Any())
             {
                 <Virtualize Items="@ListItems" Context="listItem">
@@ -42,7 +48,7 @@
                                     {
                                         <Icon Name="@listItem.IconName"/>
                                     }
-                                </div>    
+                                </div>
                             }
                         </li>
                     </ItemContent>
@@ -106,6 +112,9 @@
     [Parameter]
     public bool IsLoading { get; set; }
 
+    [Parameter]
+    public RenderFragment TopContent { get; set; }
+    
     private bool _hasIcon
     {
         get => ListItems.Any(item => !string.IsNullOrEmpty(item.IconName));

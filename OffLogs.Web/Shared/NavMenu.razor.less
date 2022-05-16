@@ -3,7 +3,7 @@
     width: 78px;
     height: 100%;
 
-    .w-task-menu {
+    .w-main-menu {
         margin: 0;
         text-align: center;
         white-space: nowrap;
@@ -16,25 +16,18 @@
             position: relative;
             overflow: initial;
             width: 78px;
-            display: block;
             float: none;
             line-height: 1.5;
             cursor: pointer;
             text-align: center;
+            color: #333;
+
+            justify-content: center;
+            display: flex;
+            align-items: center;
 
             &:hover, &.active {
                 background-color: rgba(0, 0, 0, 0.1);
-            }
-
-            i {
-                position: absolute;
-                z-index: 999;
-                padding: 3px 5px;
-                line-height: 1rem;
-                color: #333;
-                top: 0.5rem;
-                left: 1.7rem;
-                opacity: 0.9;
             }
         }
     }

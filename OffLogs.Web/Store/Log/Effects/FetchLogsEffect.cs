@@ -32,14 +32,21 @@ public class FetchLogsEffect: Effect<FetchNextListPageAction>
     {
         try
         {
+            if (_state.Value.ApplicationId == 0)
+            {
+                _logger.LogDebug("Application was not selected. Skip fetching logs");
+                return;
+            }
+
             var response = await _apiService.GetLogsAsync(new GetListRequest
             {
                 Page = _state.Value.Page,
                 ApplicationId = _state.Value.ApplicationId,
-                LogLevel = _state.Value.LogLevel,
+                LogLevel = _state.Value.Filter.LogLevel,
                 PrivateKeyBase64 = _authState.Value.PrivateKeyBase64
             });
             dispatcher.Dispatch(new FetchListResultAction(response));
+            dispatcher.Dispatch(new UpdateFilteredItemsAction());
         }
         catch (Exception e)
         {

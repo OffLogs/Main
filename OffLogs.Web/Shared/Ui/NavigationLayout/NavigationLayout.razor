@@ -22,10 +22,13 @@
                 IsShowMoreBtn="@IsShowMoreBtn"
                 IsLoading="@IsListLoading"
                 IsReadOnly="@IsReadOnly">
+                <TopContent>
+                    @ListTopContent
+                </TopContent>
             </List>
         }
         <Body Buttons="@BodyButtons">
-        @BodyContent
+            @BodyContent
         </Body>
     </CascadingValue>
 </div>
@@ -52,6 +55,9 @@
     
     [Parameter]
     public RenderFragment BodyContent { get; set; }
+    
+    [Parameter]
+    public RenderFragment ListTopContent { get; set; }
 
     [Parameter]
     public ICollection<HeaderMenuButton> BodyButtons { get; set; } = new List<HeaderMenuButton>();

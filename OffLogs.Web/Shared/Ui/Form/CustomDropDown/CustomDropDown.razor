@@ -24,15 +24,18 @@
                  Class="dropdown-toggle">
                  @_selectedItemTitle
              </MyButton>
-             <MyButton
-                 OnClick="Reset"
-                 Type="@BtnType"
-                 IsSmall="@(Size == FormControlSize.Small)">
-                 <Icon Name="close"/>
-             </MyButton>
+             @if (IsShowResetBtn)
+             {
+                 <MyButton
+                     OnClick="Reset"
+                     Type="ColorType.Secondary"
+                     IsSmall="@(Size == FormControlSize.Small)">
+                     <Icon Name="close"/>
+                 </MyButton>
+             }
          </div>
          <div class="dropdown-menu @(_isOpened ? "show" : "") @(_hasLabel ? "w-with-label" : "")">
-             @foreach (var item in Items)
+             @foreach (var item in _items)
              {
                  <a class="dropdown-item @(item.IsSelected ? "active" : "")"
                     href="#"
@@ -68,8 +71,18 @@
     [Parameter]
     public string NonSelectedLabel { get; set; } = "Select item";
 
+    private ICollection<DropDownListItem> _items = new List<DropDownListItem>();
+
     [Parameter]
-    public ICollection<DropDownListItem> Items { get; set; } = new List<DropDownListItem>();
+    public ICollection<DropDownListItem> Items
+    {
+        get => _items;
+        set
+        {
+            _items = value;
+            SetSelectedItemId(_selectedItemId, false, false);
+        }
+    }
 
     [Parameter]
     public ColorType BtnType { get; set; } = ColorType.Primary;
@@ -96,6 +109,9 @@
     }
     private string _selectedItemId;
 
+    [Parameter]
+    public bool IsShowResetBtn { get; set; } = true;
+    
     [Parameter]
     public EventCallback<DropDownListItem> OnChanged { get; set; }
 
@@ -158,8 +174,8 @@
 
     public void SetSelectedItemId(string id, bool isInvoke = true, bool isPreventFromParentChange = false)
     {
-        SelectedItem = Items.FirstOrDefault(record => record.Id == id);
-        Items = Items.Select(record =>
+        SelectedItem = _items.FirstOrDefault(record => record.Id == id);
+        _items = _items.Select(record =>
         {
             record.IsSelected = record == SelectedItem;
             return record;

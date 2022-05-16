@@ -1,0 +1,32 @@
+.w-filter {
+  width: 100%;
+}
+.w-filter .w-text-search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.w-filter .w-text-search ::deep .w-icon {
+  width: 16px;
+  margin: 0 0.5rem;
+}
+.w-filter .w-text-search input[type=text] {
+  border: none;
+  width: calc(100% - 6.2rem);
+}
+.w-filter .w-text-search input[type=text]:focus-visible {
+  border: none;
+  outline: none;
+}
+.w-filter .w-filter {
+  border-top: 1px solid #f1f3f4;
+}
+.w-filter .w-filter .form-check {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.w-filter .w-filter .form-check label {
+  margin-inline-start: 0.5rem;
+}
+/*# sourceMappingURL=ListFilter.razor.css.map */

@@ -61,6 +61,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filter records.
+        /// </summary>
+        internal static string FilterRecords {
+            get {
+                return ResourceManager.GetString("FilterRecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Application statistic.
         /// </summary>
         internal static string ModalTitle_ApplicationStatistic {
@@ -79,11 +88,29 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search by loaded records.
+        /// </summary>
+        internal static string SearchByLoadedRecords {
+            get {
+                return ResourceManager.GetString("SearchByLoadedRecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Set favorite.
         /// </summary>
         internal static string SetFavorite {
             get {
                 return ResourceManager.GetString("SetFavorite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only favorite.
+        /// </summary>
+        internal static string ShowOnlyFavorite {
+            get {
+                return ResourceManager.GetString("ShowOnlyFavorite", resourceCulture);
             }
         }
         

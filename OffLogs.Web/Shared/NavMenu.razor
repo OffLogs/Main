@@ -8,7 +8,7 @@
 @inject NavigationManager _navigationManager
 
 <div class="w-left-menu">
-    <div class="w-task-menu">
+    <div class="w-main-menu">
         <NavLink href="@SiteUrl.Dashboard" Match="NavLinkMatch.All">
             <Icon Name="dashboard-web" />
         </NavLink>
@@ -28,7 +28,7 @@
            @onclick:preventDefault
            href="#"
            class="ml-md-auto">
-            <i class="icofont-logout"></i>
+            <Icon Name="logout"/>
         </a>
     </div>
 </div>

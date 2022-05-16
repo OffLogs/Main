@@ -28,6 +28,7 @@
             <li class="nav-item">
                 <CustomDropDown 
                     BtnType="ColorType.Light"
+                    IsShowResetBtn="false"
                     Items="@_languageMenuItems"
                     OnChanged="@(async item => await OnSelectLanguageAsync(item))"></CustomDropDown>  
             </li>
