@@ -36,4 +36,10 @@
     <data name="ShowOnlyFavorite" xml:space="preserve">
         <value>Only favorite</value>
     </data>
+    <data name="SearchByLoadedRecords" xml:space="preserve">
+        <value>Search by loaded records</value>
+    </data>
+    <data name="FilterRecords" xml:space="preserve">
+        <value>Filter records</value>
+    </data>
 </root>

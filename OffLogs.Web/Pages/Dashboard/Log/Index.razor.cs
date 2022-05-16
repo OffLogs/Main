@@ -55,7 +55,7 @@ public partial class Index
     {
         get
         {
-            return State.Value.List.Select(
+            return State.Value.FilteredList.Select(
                 log => new ListItem()
                 {
                     Id = log.Id.ToString(),

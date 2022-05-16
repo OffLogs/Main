@@ -19,6 +19,8 @@ public class LogsListState
 
     public ICollection<LogListItemDto> List { get; set; } = new List<LogListItemDto>();
     
+    public ICollection<LogListItemDto> FilteredList { get; set; } = new List<LogListItemDto>();
+    
     public LogListItemDto SelectedLog { get; set; }
     
     public ICollection<LogDto> LogsDetails { get; set; } = new List<LogDto>();

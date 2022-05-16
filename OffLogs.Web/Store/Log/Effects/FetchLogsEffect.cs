@@ -46,6 +46,7 @@ public class FetchLogsEffect: Effect<FetchNextListPageAction>
                 PrivateKeyBase64 = _authState.Value.PrivateKeyBase64
             });
             dispatcher.Dispatch(new FetchListResultAction(response));
+            dispatcher.Dispatch(new UpdateFilteredItemsAction());
         }
         catch (Exception e)
         {

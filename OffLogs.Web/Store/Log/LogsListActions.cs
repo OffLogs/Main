@@ -9,6 +9,8 @@ public record struct AddLogDetailsAction(LogDto Log);
 
 public record struct FetchListResultAction(PaginatedListDto<LogListItemDto> Data);
 
+public record struct UpdateFilteredItemsAction();
+
 public record struct FetchLogAction(long LogId);
 
 public record struct FetchNextListPageAction();
@@ -24,3 +26,5 @@ public record struct SetIsLogFavoriteAction(long LogId, bool IsFavorite);
 public record struct SetApplication(long ApplicationId);
 
 public record struct SetListFilterAction(LogFilterModel Filter);
+
+public record struct SetListFilterSearchAction(string Search);

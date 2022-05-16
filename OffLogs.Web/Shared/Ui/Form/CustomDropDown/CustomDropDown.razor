@@ -24,12 +24,15 @@
                  Class="dropdown-toggle">
                  @_selectedItemTitle
              </MyButton>
-             <MyButton
-                 OnClick="Reset"
-                 Type="ColorType.Secondary"
-                 IsSmall="@(Size == FormControlSize.Small)">
-                 <Icon Name="close"/>
-             </MyButton>
+             @if (IsShowResetBtn)
+             {
+                 <MyButton
+                     OnClick="Reset"
+                     Type="ColorType.Secondary"
+                     IsSmall="@(Size == FormControlSize.Small)">
+                     <Icon Name="close"/>
+                 </MyButton>
+             }
          </div>
          <div class="dropdown-menu @(_isOpened ? "show" : "") @(_hasLabel ? "w-with-label" : "")">
              @foreach (var item in _items)
@@ -106,6 +109,9 @@
     }
     private string _selectedItemId;
 
+    [Parameter]
+    public bool IsShowResetBtn { get; set; } = true;
+    
     [Parameter]
     public EventCallback<DropDownListItem> OnChanged { get; set; }
 

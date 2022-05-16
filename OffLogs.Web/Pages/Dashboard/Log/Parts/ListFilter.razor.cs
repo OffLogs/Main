@@ -24,6 +24,17 @@ public partial class ListFilter
 
     private LogFilterModel _model;
 
+    private string _search
+    {
+        get => _model.Search;
+        set
+        {
+            _model.Search = value;
+            Dispatcher.Dispatch(new SetListFilterSearchAction(_model.Search));
+            Dispatcher.Dispatch(new UpdateFilteredItemsAction());
+        }
+    }
+
     private bool _isApplied
     {
         get => _model.IsOnlyFavorite || _model.LogLevel.HasValue;
