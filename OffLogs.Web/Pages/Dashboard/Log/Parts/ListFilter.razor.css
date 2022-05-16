@@ -10,7 +10,7 @@
 }
 .w-filter .w-text-search input[type=text] {
   border: none;
-  width: calc(100% - 4.2rem);
+  width: calc(100% - 6.2rem);
 }
 .w-filter .w-text-search input[type=text]:focus-visible {
   border: none;

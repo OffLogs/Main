@@ -24,6 +24,11 @@ public partial class ListFilter
 
     private LogFilterModel _model;
 
+    private bool _isApplied
+    {
+        get => _model.IsOnlyFavorite || _model.LogLevel.HasValue;
+    }
+    
     private static ICollection<DropDownListItem> _logLevelDownListItems => LogLevel.Warning.ToDropDownList();
 
     protected override async Task OnInitializedAsync()

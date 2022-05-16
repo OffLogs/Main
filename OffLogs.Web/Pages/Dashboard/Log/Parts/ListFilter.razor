@@ -8,6 +8,12 @@
     <div class="w-text-search">
         <Icon Name="search-2"/>
         <input type="text"/>
+        @if (_isApplied)
+        {
+            <Icon 
+                Class="text-primary"
+                Name="ui-check"/>    
+        }
         <Icon
             Name="@(_isFilterOpened ? "rounded-up" : "rounded-down")"
             OnClick="@(() => _isFilterOpened = !_isFilterOpened)"/>
