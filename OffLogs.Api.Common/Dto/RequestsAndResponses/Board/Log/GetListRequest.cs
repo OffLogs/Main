@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Api.Requests.Abstractions;
 using OffLogs.Api.Common.Dto;
 using OffLogs.Api.Common.Dto.Entities;
@@ -23,5 +24,11 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log
         public long ApplicationId { get; set; }
 
         public LogLevel? LogLevel { get; set; }
+
+        public bool IsFavorite { get; set; } = false;
+
+        public DateTime? CreateTimeFrom { get; set; }
+        
+        public DateTime? CreateTimeTo { get; set; }
     }
 }

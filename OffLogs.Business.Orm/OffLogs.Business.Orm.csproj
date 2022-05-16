@@ -40,7 +40,6 @@
       <EmbeddedResource Include="Hibernate\Queries\Log\deleteSpoiled.hbm.xml" />
       <EmbeddedResource Include="Hibernate\Queries\Log\getFavoriteCount.hbm.xml" />
       <EmbeddedResource Include="Hibernate\Queries\Log\getStatisticForNow.hbm.xml" />
-      <EmbeddedResource Include="Hibernate\Queries\Log\getList.hbm.xml" />
     </ItemGroup>
 
     <ItemGroup>

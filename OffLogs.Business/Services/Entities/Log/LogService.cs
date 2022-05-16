@@ -71,14 +71,16 @@ namespace OffLogs.Business.Services.Entities.Log
             long applicationId,
             int page,
             byte[] privateKey,
-            LogLevel? level = null
+            LogLevel? level = null,
+            long? favoriteForUserId = null
         )
         {
             var list = await _queryBuilder.For<ListDto<LogEntity>>()
                 .WithAsync(new LogGetListCriteria { 
                     ApplicationId = applicationId,
                     LogLevel = level,
-                    Page = page
+                    Page = page,
+                    FavoriteForUserId = favoriteForUserId
                 });
             var decryptedItems = new List<LogEntity>();
             foreach (var log in list.Items)

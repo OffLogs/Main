@@ -25,7 +25,8 @@ namespace OffLogs.Business.Services.Entities.Log
             long applicationId,
             int page,
             byte[] privateKey,
-            LogLevel? level = null
+            LogLevel? level = null,
+            long? favoriteForUserId = null
         );
 
         Task<LogEntity> GetOneAsync(long logId, byte[] privateKey);
