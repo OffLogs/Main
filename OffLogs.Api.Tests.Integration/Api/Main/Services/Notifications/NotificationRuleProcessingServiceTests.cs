@@ -36,11 +36,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Notifications
             var expectedCount = 2;
             var expectedLogLevel = LogLevel.Information;
             var expectedPeriod = 5 * 60; // 5 minutes
+            var expectedExecutionTime = DateTime.UtcNow.AddSeconds(-expectedPeriod - 5);
 
             var expectedRule = await CreateRule();
             expectedRule.IsExecuting = false;
             expectedRule.Period = expectedPeriod;
-            expectedRule.LastExecutionTime = DateTime.UtcNow.AddSeconds(-expectedPeriod - 5);
+            expectedRule.LastExecutionTime = expectedExecutionTime;
             await CommandBuilder.SaveAsync(expectedRule);
 
             await DataSeeder.CreateLogsAsync(
@@ -48,17 +49,17 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Notifications
                 expectedLogLevel,
                 expectedCount
             );
-            
             await DbSessionProvider.PerformCommitAsync();
+            
             await _processingService.FindAndProcessWaitingRules();
-
+            
             var processedRecords = await KafkaNotificationsConsumerService.ProcessNotificationsAsync(false);
             Assert.True(processedRecords > 0);
             Assert.True(EmailSendingService.IsEmailSent);
 
             DbSessionProvider.CurrentSession.Clear();
             var actualRule = await QueryBuilder.FindByIdAsync<NotificationRuleEntity>(expectedRule.Id);
-            Assert.NotEqual(expectedRule.LastExecutionTime, actualRule.LastExecutionTime);
+            Assert.True(actualRule.LastExecutionTime > expectedExecutionTime);
             Assert.False(actualRule.IsExecuting);
         }
         

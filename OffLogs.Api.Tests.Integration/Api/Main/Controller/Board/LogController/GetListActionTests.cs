@@ -14,16 +14,17 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
 {
     public class GetListActionTests: MyApiIntegrationTest
     {
+        private const string Url = MainApiUrl.LogList;
+        
         public GetListActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
 
-        [Theory]
-        [InlineData(MainApiUrl.LogList)]
-        public async Task OnlyAuthorizedUsersCanReceiveList(string url)
+        [Fact]
+        public async Task OnlyAuthorizedUsersCanReceiveList()
         {
             var user = await DataSeeder.CreateActivatedUser();
 
             // Act
-            var response = await PostRequestAsAnonymousAsync(url, new GetListRequest()
+            var response = await PostRequestAsAnonymousAsync(Url, new GetListRequest()
             {
                 Page = 1,
                 ApplicationId = user.Applications.First().Id,
@@ -33,15 +34,14 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             Assert.True(response.StatusCode == HttpStatusCode.Unauthorized);
         }
 
-        [Theory]
-        [InlineData(MainApiUrl.LogList)]
-        public async Task OnlyOwnerCanReceiveApplications(string url)
+        [Fact]
+        public async Task OnlyOwnerCanReceiveApplications()
         {
             var user1 = await DataSeeder.CreateActivatedUser();
             var user2 = await DataSeeder.CreateActivatedUser();
 
             // Act
-            var response = await PostRequestAsync(url, user1.ApiToken, new GetListRequest()
+            var response = await PostRequestAsync(Url, user1.ApiToken, new GetListRequest()
             {
                 Page = 1,
                 ApplicationId = user2.Applications.First().Id,
@@ -51,9 +51,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             Assert.True(response.StatusCode == HttpStatusCode.BadRequest);
         }
 
-        [Theory]
-        [InlineData(MainApiUrl.LogList)]
-        public async Task ShouldReceiveLogsList(string url)
+        [Fact]
+        public async Task ShouldReceiveLogsList()
         {
             var user = await DataSeeder.CreateActivatedUser();
             await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Error, 3);
@@ -62,7 +61,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             await DataSeeder.CreateLogsAsync(user2.ApplicationId, LogLevel.Error, 2);
 
             // Act
-            var response = await PostRequestAsync(url, user.ApiToken, new GetListRequest()
+            var response = await PostRequestAsync(Url, user.ApiToken, new GetListRequest()
             {
                 Page = 1,
                 ApplicationId = user.ApplicationId,
@@ -75,9 +74,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             Assert.Equal(3, responseData.Items.Count);
         }
 
-        [Theory]
-        [InlineData(MainApiUrl.LogList)]
-        public async Task ShouldReceiveMoreThanOnePages(string url)
+        [Fact]
+        public async Task ShouldReceiveMoreThanOnePages()
         {
             var totalLogs = GlobalConstants.ListPageSize * 2 + 1;
             var user = await DataSeeder.CreateActivatedUser();
@@ -88,7 +86,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             );
 
             // Act
-            var response = await PostRequestAsync(url, user.ApiToken, new GetListRequest()
+            var response = await PostRequestAsync(Url, user.ApiToken, new GetListRequest()
             {
                 Page = 1,
                 ApplicationId = user.ApplicationId,
@@ -101,16 +99,15 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             Assert.Equal(totalLogs - 1, responseData.Items.Count);
         }
 
-        [Theory]
-        [InlineData(MainApiUrl.LogList)]
-        public async Task ShouldReceiveOrderedList(string url)
+        [Fact]
+        public async Task ShouldReceiveOrderedList()
         {
             var user = await DataSeeder.CreateActivatedUser();
             var logs1 = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information);
             var logs2 = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information);
 
             // Act
-            var response = await PostRequestAsync(url, user.ApiToken, new GetListRequest()
+            var response = await PostRequestAsync(Url, user.ApiToken, new GetListRequest()
             {
                 Page = 1,
                 ApplicationId = user.ApplicationId,
@@ -124,16 +121,15 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             Assert.Equal(logs1.First().Id, responseData.Items.Last().Id);
         }
 
-        [Theory]
-        [InlineData(MainApiUrl.LogList)]
-        public async Task ShouldReceiveOrderedListFilteredByLogLevel(string url)
+        [Fact]
+        public async Task ShouldReceiveOrderedListFilteredByLogLevel()
         {
             var user = await DataSeeder.CreateActivatedUser();
             await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information, 3);
             await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Debug, 7);
 
             // Act
-            var response = await PostRequestAsync(url, user.ApiToken, new GetListRequest()
+            var response = await PostRequestAsync(Url, user.ApiToken, new GetListRequest()
             {
                 Page = 1,
                 ApplicationId = user.ApplicationId,
@@ -150,9 +146,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             }
         }
 
-        [Theory]
-        [InlineData(MainApiUrl.LogList)]
-        public async Task ShouldReceiveCorrectIsFavoriteValue(string url)
+        [Fact]
+        public async Task ShouldReceiveCorrectIsFavoriteValue()
         {
             var user = await DataSeeder.CreateActivatedUser();
             var logs = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information, 3);       
@@ -160,7 +155,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             await CommandBuilder.ExecuteAsync(new LogSetIsFavoriteCommandContext(user.Id, logs.Last().Id, true));
 
             // Act
-            var response = await PostRequestAsync(url, user.ApiToken, new GetListRequest()
+            var response = await PostRequestAsync(Url, user.ApiToken, new GetListRequest()
             {
                 Page = 1,
                 ApplicationId = user.ApplicationId,
@@ -173,9 +168,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             Assert.True(responseData.Items.Last().IsFavorite);
         }
 
-        [Theory]
-        [InlineData(MainApiUrl.LogList)]
-        public async Task ShouldReceiveLogsForSharedApplications(string url)
+        [Fact]
+        public async Task ShouldReceiveLogsForSharedApplications()
         {
             var user = await DataSeeder.CreateActivatedUser();
             var user2 = await DataSeeder.CreateActivatedUser();
@@ -186,7 +180,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             var logs2 = await DataSeeder.CreateLogsAsync(user2.ApplicationId, LogLevel.Information);
 
             // Act
-            var response = await PostRequestAsync(url, user.ApiToken, new GetListRequest()
+            var response = await PostRequestAsync(Url, user.ApiToken, new GetListRequest()
             {
                 Page = 1,
                 ApplicationId = user2.ApplicationId,
@@ -201,9 +195,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             Assert.Contains(responseData.Items, l => l.Id == logs1.First().Id);
         }
         
-        [Theory]
-        [InlineData(MainApiUrl.LogList)]
-        public async Task ShouldCreateSeveralLogsAndReceiveEncryptedLog(string url)
+        [Fact]
+        public async Task ShouldCreateSeveralLogsAndReceiveEncryptedLog()
         {
             var user = await DataSeeder.CreateActivatedUser();
             var log1 = (await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information)).First();
@@ -224,7 +217,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             );
             
             // Act
-            var response = await PostRequestAsync(url, user.ApiToken, new GetListRequest()
+            var response = await PostRequestAsync(Url, user.ApiToken, new GetListRequest()
             {
                 Page = 1,
                 ApplicationId = user.ApplicationId,
@@ -249,6 +242,77 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
                 return item.Id == log3.Id
                        && item.Message == log3.Message;
             });
+        }
+        
+        [Fact]
+        public async Task ShouldReceiveFilteredFavoriteLogs()
+        {
+            var user = await DataSeeder.CreateActivatedUser();
+            var logs = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Error, 3);
+            foreach (var log in logs)
+            {
+                await CommandBuilder.ExecuteAsync(new LogSetIsFavoriteCommandContext(user.Id, log.Id, true));
+            }
+            await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Information, 2);
+            await DbSessionProvider.PerformCommitAsync();
+            
+            // Act
+            var response = await PostRequestAsync(Url, user.ApiToken, new GetListRequest()
+            {
+                Page = 1,
+                ApplicationId = user.ApplicationId,
+                IsFavorite = true,
+                PrivateKeyBase64 = user.PrivateKeyBase64
+            });
+            response.EnsureSuccessStatusCode();
+            // Assert
+            var responseData = await response.GetJsonDataAsync<PaginatedListDto<LogListItemDto>>();
+            Assert.Equal(1, responseData.TotalPages);
+            Assert.Equal(3, responseData.TotalCount);
+            Assert.Equal(3, responseData.Items.Count);
+        }
+        
+        [Fact]
+        public async Task ShouldReceiveFilteredLogsByCreateTime()
+        {
+            var timeFrom = DateTime.UtcNow.AddMinutes(-30);
+            var timeTo = DateTime.UtcNow.AddMinutes(30);
+            
+            var user = await DataSeeder.CreateActivatedUser();
+            var logs = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Error, 6);
+            var past1 = logs[0];
+            var filtered1 = logs[1];
+            var filtered2 = logs[2];
+            var filtered3 = logs[3];
+            var feature1 = logs[4];
+            var feature2 = logs[5];
+
+            past1.CreateTime = timeFrom.AddMinutes(-1);
+            filtered1.CreateTime = timeFrom;
+            filtered2.CreateTime = timeFrom.AddMinutes(5);
+            filtered3.CreateTime = timeTo;
+            feature1.CreateTime = timeTo.AddMinutes(1);
+            feature2.CreateTime = timeTo.AddMinutes(20);
+            
+            await DbSessionProvider.PerformCommitAsync();
+            
+            // Act
+            var response = await PostRequestAsync(Url, user.ApiToken, new GetListRequest()
+            {
+                Page = 1,
+                ApplicationId = user.ApplicationId,
+                CreateTimeFrom = timeFrom,
+                CreateTimeTo = timeTo,
+                PrivateKeyBase64 = user.PrivateKeyBase64
+            });
+            response.EnsureSuccessStatusCode();
+            // Assert
+            var responseData = await response.GetJsonDataAsync<PaginatedListDto<LogListItemDto>>();
+            Assert.Equal(1, responseData.TotalPages);
+            Assert.Equal(3, responseData.TotalCount);
+            Assert.Contains(responseData.Items, item => item.CreateTime.ToLongTimeString() == filtered1.CreateTime.ToLongTimeString());
+            Assert.Contains(responseData.Items, item => item.CreateTime.ToLongTimeString() == filtered2.CreateTime.ToLongTimeString());
+            Assert.Contains(responseData.Items, item => item.CreateTime.ToLongTimeString() == filtered3.CreateTime.ToLongTimeString());
         }
     }
 }
