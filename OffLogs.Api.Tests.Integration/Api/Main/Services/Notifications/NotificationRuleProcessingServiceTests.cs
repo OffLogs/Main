@@ -58,7 +58,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Notifications
 
             DbSessionProvider.CurrentSession.Clear();
             var actualRule = await QueryBuilder.FindByIdAsync<NotificationRuleEntity>(expectedRule.Id);
-            Assert.NotEqual(expectedRule.LastExecutionTime, actualRule.LastExecutionTime);
+            Assert.NotEqual(expectedRule.LastExecutionTime.ToLongTimeString(), actualRule.LastExecutionTime.ToLongTimeString());
             Assert.False(actualRule.IsExecuting);
         }
         
