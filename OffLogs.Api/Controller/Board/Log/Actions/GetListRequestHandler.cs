@@ -29,6 +29,7 @@ namespace OffLogs.Api.Controller.Board.Log.Actions
         private readonly IRequestService _requestService;
         private readonly IAccessPolicyService _accessPolicyService;
         private readonly ILogService _logService;
+        private readonly ILogAssembler _logAssembler;
 
         public GetListRequestHandler(
             IJwtAuthService jwtAuthService,
@@ -37,7 +38,8 @@ namespace OffLogs.Api.Controller.Board.Log.Actions
             IApplicationService applicationService,
             IRequestService requestService,
             IAccessPolicyService accessPolicyService,
-            ILogService logService
+            ILogService logService,
+            ILogAssembler logAssembler
         )
         {
             _jwtAuthService = jwtAuthService ?? throw new ArgumentNullException(nameof(jwtAuthService));
@@ -47,6 +49,7 @@ namespace OffLogs.Api.Controller.Board.Log.Actions
             _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
             _accessPolicyService = accessPolicyService ?? throw new ArgumentNullException(nameof(accessPolicyService));
             _logService = logService ?? throw new ArgumentNullException(nameof(logService));
+            _logAssembler = logAssembler;
         }
 
         public async Task<PaginatedListDto<LogListItemDto>> ExecuteAsync(GetListRequest request)
@@ -62,19 +65,24 @@ namespace OffLogs.Api.Controller.Board.Log.Actions
                 throw new DataPermissionException();
             }
 
-            var list = await _logService.GetListAsync(
-                request.ApplicationId,
-                request.Page,
-                Convert.FromBase64String(request.PrivateKeyBase64),
-                request.LogLevel,
-                request.IsFavorite ? userId : null
-                
-            );
-            
-            var responseItems = _mapper.Map<List<LogListItemDto>>(list.Items);
+            var privateKey = Convert.FromBase64String(request.PrivateKeyBase64);
+            var encryptedList = await _queryBuilder.For<Business.Orm.Dto.ListDto<LogEntity>>()
+                .WithAsync(new LogGetListCriteria { 
+                    ApplicationId = request.ApplicationId,
+                    LogLevel = request.LogLevel,
+                    Page = request.Page,
+                    FavoriteForUserId = request.IsFavorite ? userId : null
+                });
+            var list = new List<LogEntity>();
+            foreach (var log in encryptedList.Items)
+            {
+                list.Add(await _logAssembler.AssembleDecryptedLogAsync(log, privateKey));
+            }
+
+            var responseItems = _mapper.Map<List<LogListItemDto>>(list);
             return new PaginatedListDto<LogListItemDto>(
                 responseItems,
-                list.TotalCount
+                encryptedList.TotalCount
             );
         }
     }

@@ -66,30 +66,7 @@ namespace OffLogs.Business.Services.Entities.Log
             await _commandBuilder.SaveAsync(log);
             return log;
         }
-        
-        public async Task<ListDto<LogEntity>> GetListAsync(
-            long applicationId,
-            int page,
-            byte[] privateKey,
-            LogLevel? level = null,
-            long? favoriteForUserId = null
-        )
-        {
-            var list = await _queryBuilder.For<ListDto<LogEntity>>()
-                .WithAsync(new LogGetListCriteria { 
-                    ApplicationId = applicationId,
-                    LogLevel = level,
-                    Page = page,
-                    FavoriteForUserId = favoriteForUserId
-                });
-            var decryptedItems = new List<LogEntity>();
-            foreach (var log in list.Items)
-            {
-                decryptedItems.Add(await _logAssembler.AssembleDecryptedLogAsync(log, privateKey));
-            }
-            return new ListDto<LogEntity>(decryptedItems, list.TotalCount);
-        }
-        
+
         public async Task<LogEntity> GetOneAsync(long logId, byte[] privateKey)
         {
             var log = await _queryBuilder.FindByIdAsync<LogEntity>(logId);
