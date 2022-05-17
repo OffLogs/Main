@@ -271,5 +271,48 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             Assert.Equal(3, responseData.TotalCount);
             Assert.Equal(3, responseData.Items.Count);
         }
+        
+        [Fact]
+        public async Task ShouldReceiveFilteredLogsByCreateTime()
+        {
+            var timeFrom = DateTime.UtcNow.AddMinutes(-30);
+            var timeTo = DateTime.UtcNow.AddMinutes(30);
+            
+            var user = await DataSeeder.CreateActivatedUser();
+            var logs = await DataSeeder.CreateLogsAsync(user.ApplicationId, LogLevel.Error, 6);
+            var past1 = logs[0];
+            var filtered1 = logs[1];
+            var filtered2 = logs[2];
+            var filtered3 = logs[3];
+            var feature1 = logs[4];
+            var feature2 = logs[5];
+
+            past1.CreateTime = timeFrom.AddMinutes(-1);
+            filtered1.CreateTime = timeFrom;
+            filtered2.CreateTime = timeFrom.AddMinutes(5);
+            filtered3.CreateTime = timeTo;
+            feature1.CreateTime = timeTo.AddMinutes(1);
+            feature2.CreateTime = timeTo.AddMinutes(20);
+            
+            await DbSessionProvider.PerformCommitAsync();
+            
+            // Act
+            var response = await PostRequestAsync(Url, user.ApiToken, new GetListRequest()
+            {
+                Page = 1,
+                ApplicationId = user.ApplicationId,
+                CreateTimeFrom = timeFrom,
+                CreateTimeTo = timeTo,
+                PrivateKeyBase64 = user.PrivateKeyBase64
+            });
+            response.EnsureSuccessStatusCode();
+            // Assert
+            var responseData = await response.GetJsonDataAsync<PaginatedListDto<LogListItemDto>>();
+            Assert.Equal(1, responseData.TotalPages);
+            Assert.Equal(3, responseData.TotalCount);
+            Assert.Contains(responseData.Items, item => item.CreateTime.ToLongTimeString() == filtered1.CreateTime.ToLongTimeString());
+            Assert.Contains(responseData.Items, item => item.CreateTime.ToLongTimeString() == filtered2.CreateTime.ToLongTimeString());
+            Assert.Contains(responseData.Items, item => item.CreateTime.ToLongTimeString() == filtered3.CreateTime.ToLongTimeString());
+        }
     }
 }

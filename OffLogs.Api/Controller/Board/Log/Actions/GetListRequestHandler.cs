@@ -71,7 +71,9 @@ namespace OffLogs.Api.Controller.Board.Log.Actions
                     ApplicationId = request.ApplicationId,
                     LogLevel = request.LogLevel,
                     Page = request.Page,
-                    FavoriteForUserId = request.IsFavorite ? userId : null
+                    FavoriteForUserId = request.IsFavorite ? userId : null,
+                    CreateTimeFrom = request.CreateTimeFrom,
+                    CreateTimeTo = request.CreateTimeTo
                 });
             var list = new List<LogEntity>();
             foreach (var log in encryptedList.Items)
