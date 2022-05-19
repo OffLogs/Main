@@ -1,12 +1,11 @@
 ﻿@page "/login"
 @page "/{locale}/login"
 
-@using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User
-@using OffLogs.Web.Core.Components.Form
 @using OffLogs.Web.Resources
 @using System.IO
 @using Microsoft.AspNetCore.Components
 @using Microsoft.Extensions.Logging
+@using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User
 
 @inherits BaseComponent
 
@@ -16,53 +15,73 @@
 @inject ILogger<Login> _logger
 @inject IReCaptchaService _reCaptchaService;
 
-<div class="card w-login-page">
-    <div class="card-body">
-        <h5 class="card-title">Login to your account</h5>
-        <div class="card-text">
-            <EditForm Model="@model" OnSubmit="@HandleSubmit">
-                <DataAnnotationsValidator />
-                <ValidationSummary />
-                <InputFile OnChange="@(async args => await OnSelectFiles(args))" />
-                <p>
-                    @PasswordError
-                    <CustomInputText Label="Password:"
-                                     @bind-Value="model.Password"
-                                     type="password"
-                                     ErrorMessage="@PasswordError" />
-                </p>
+<div class="row d-flex px-3 justify-content-center">
+    <div class="col-xl-4 p-3">
+        <RadzenCard>
+            <h2 class="mb-4">Login to your account</h2>
+            <RadzenTemplateForm TItem="LoginRequest" Data="@model" Submit="@HandleSubmit">
+
+                <DataAnnotationsValidator/>
+                <ValidationSummary/>
+
+                <div class="row">
+                    <RadzenLabel
+                        Text="Select secret file:"
+                        class="col-sm-3 mb-3"/>
+                    <InputFile
+                        OnChange="@(async args => await OnSelectFiles(args))"
+                        class="w-100 mb-3 col"/>
+                </div>
+
+                <div class="row">
+                    <RadzenLabel 
+                        Text="Password:"
+                        class="col-sm-3 mb-3"/>
+                    <RadzenPassword
+                        @bind-Value="model.Password"
+                        Placeholder="Enter password..."
+                        Class="w-100 mb-3 col"/>
+                </div>
+
                 @if (_isLoading)
                 {
-                    <Preloader />
+                    <Preloader/>
                 }
                 else
                 {
-                    <MyButton IsSubmit="true">Login</MyButton>
+                    <RadzenButton
+                        ButtonType="ButtonType.Submit"
+                        Text="Submit"/>
                 }
-            </EditForm>
-        </div>
+            </RadzenTemplateForm>
+        </RadzenCard>
     </div>
 </div>
 
 @code
 {
     private LoginRequest model = new();
-    private EditContext _editContext;
     private bool _isLoading;
-    
-    private string PasswordError
+
+    // private string PasswordError
+    // {
+    //     get
+    //     {
+    //         var messages = _editContext.GetValidationMessages(() => model.Password);
+    //         return messages.FirstOrDefault();
+    //     }
+    // }
+
+    protected override async Task OnInitializedAsync()
     {
-        get
-        {
-            var messages = _editContext.GetValidationMessages(() => model.Password);
-            return messages.FirstOrDefault();
-        }
+        await base.OnInitializedAsync();
+        _isLoading = false;
+        await UpdateReCaptchaAsync();
     }
 
-    protected override void OnInitialized()
+    private async Task UpdateReCaptchaAsync()
     {
-        _isLoading = false;
-        _editContext = new EditContext(model);
+        model.ReCaptcha = await _reCaptchaService.GetReCaptchaTokenAsync();
     }
 
     private async Task OnSelectFiles(InputFileChangeEventArgs changeEvent)
@@ -89,34 +108,29 @@
             _toastService.AddErrorMessage(AuthResources.Login_PleaseEnterCorrectKeyFile);
         }
         _isLoading = false;
-        await Task.CompletedTask;
+        await UpdateReCaptchaAsync();
     }
 
     private async Task HandleSubmit()
     {
-        model.ReCaptcha = await _reCaptchaService.GetReCaptchaTokenAsync();
-        var isValid = _editContext.Validate();
-        if (isValid)
+        _isLoading = true;
+        try
         {
-            _isLoading = true;
-            try
+            var isLoggedIn = await _authorizationService.LoginAsync(model);
+            if (isLoggedIn)
             {
-                var isLoggedIn = await _authorizationService.LoginAsync(model);
-                if (isLoggedIn)
-                {
-                    _navigationManager.NavigateTo(SiteUrl.Dashboard);
-                    return;
-                }
+                _navigationManager.NavigateTo(SiteUrl.Dashboard);
+                return;
             }
-            catch (Exception e)
-            {
-                _logger.LogError(e.Message, e);
-                _toastService.AddErrorMessage("Login or password is incorrect");
-            }
-            finally
-            {
-                _isLoading = false;
-            }
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message, e);
+            _toastService.AddErrorMessage("Login or password is incorrect");
+        }
+        finally
+        {
+            _isLoading = false;
         }
         StateHasChanged();
     }

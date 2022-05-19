@@ -65,4 +65,9 @@ public class ReCaptchaService: IReCaptchaService
         }
         return false;    
     }
+
+    public bool HasSecretKey()
+    {
+        return !string.IsNullOrEmpty(_secretKey);
+    }
 }

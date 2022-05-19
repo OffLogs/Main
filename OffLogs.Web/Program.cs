@@ -16,6 +16,7 @@ using OffLogs.Web.Services.Http;
 using OffLogs.Web.Services.i18;
 using OffLogs.Web.Services.IO;
 using OffLogs.Web.Services.Validation;
+using Radzen;
 
 namespace OffLogs.Web
 {
@@ -67,6 +68,11 @@ namespace OffLogs.Web
             );
             builder.Services.AddBlazoredLocalStorage();
 
+            builder.Services.AddScoped<ContextMenuService>();
+            builder.Services.AddScoped<DialogService>();
+            builder.Services.AddScoped<TooltipService>();
+            
+            
             // Custom services
             builder.Services.AddLocalization();
             builder.Services.AddScoped<ILocalizationService, LocalizationService>();
