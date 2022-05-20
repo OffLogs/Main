@@ -8,6 +8,7 @@ using OffLogs.Web.Resources;
 using OffLogs.Web.Services;
 using OffLogs.Web.Services.Http;
 using OffLogs.Web.Services.Validation;
+using Radzen;
 
 namespace OffLogs.Web.Pages.User.Registration;
 
@@ -18,10 +19,7 @@ public partial class Step1
     
     [Inject] 
     private NavigationManager _navigationManager { get; set; }
-    
-    [Inject] 
-    private ToastService _toastService { get; set; }
-    
+
     [Inject] 
     private IReCaptchaService _reCaptchaService { get; set; }
     
@@ -47,13 +45,21 @@ public partial class Step1
             var isOk = await _apiService.RegistrationStep1Async(model);
             if (isOk)
             {
-                _toastService.AddInfoMessage(AuthResources.Registration_EmailIsSent);
+                NotificationService.Notify(new NotificationMessage()
+                {
+                    Severity = NotificationSeverity.Info,
+                    Summary = AuthResources.Registration_EmailIsSent
+                });
                 model.Email = "";
             }
         }
         catch (Exception)
         {
-            _toastService.AddErrorMessage(AuthResources.Registration_RegistrationError);
+            NotificationService.Notify(new NotificationMessage()
+            {
+                Severity = NotificationSeverity.Error,
+                Summary = AuthResources.Registration_RegistrationError
+            });
         }
         finally
         {

@@ -2,135 +2,57 @@
 @using Microsoft.AspNetCore.Components
 @using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User
 @using OffLogs.Web.Resources
-@using OffLogs.Web.Services.Http
-@using OffLogs.Web.Core.Components.Form
-@using OffLogs.Web.Core.Helpers
 
 @inherits BaseComponent
 
-@inject IApiService _apiService
-@inject NavigationManager _navigationManager
-@inject ToastService _toastService
-@inject IAuthorizationService _authorizationService
-@inject IJSRuntime _js
-
-<div class="card w-registration-verification-page">
-    <div class="card-body">
-        <h5 class="card-title">@CommonResources.Registration</h5>
-        <div class="card-text">
+<div class="row d-flex px-3 justify-content-center">
+    <div class="col-xl-4 p-3">
+        <RadzenCard>
+            <h2 class="mb-4">@CommonResources.Registration</h2>
+            
             @if (_isRegistered)
             {
-                <div>
-                    <MyButton
-                        @onclick="@(async () => await SaveFile())"
-                        IsDisabled="@_isLoading">
-                        @AuthResources.Registration_SaveKey
-                    </MyButton>
-                    <MyButton
-                        @onclick="@(async () => await LoginAndContinue())"
-                        IsDisabled="@(_isLoading || !_isSecretFileSaved)">
-                        @AuthResources.Registration_Login
-                    </MyButton>
+                <div class="row">
+                    <div class="col">
+                        <RadzenButton
+                            Click="SaveFile"
+                            Disabled="@_isLoading"
+                            Text="@AuthResources.Registration_SaveKey"/>
+                    </div>
+                    <div class="col">
+                        <RadzenButton
+                            Disabled="@(_isLoading || !_isSecretFileSaved)"
+                            Click="LoginAndContinue"
+                            Text="@AuthResources.Registration_Login"/>
+                    </div>
                 </div>
             }
             else
             {
-                <EditForm Model="@model" OnSubmit="@HandleSubmit">
+                <RadzenTemplateForm TItem="RegistrationStep2Request" Data="@model" Submit="HandleSubmit">
                     <DataAnnotationsValidator/>
                     <ValidationSummary/>
-                    <div class="mb-2">
-                        @PasswordError
-                        <CustomInputText
-                            Label="@AuthResources.Registration_EnterPassword"
+
+                    <div class="row">
+                        <RadzenLabel
+                            Text="@AuthResources.Registration_EnterPassword"
+                            class="col-sm-3 mb-3"/>
+                        <RadzenPassword
                             @bind-Value="model.Password"
-                            type="password"
-                            ErrorMessage="@PasswordError"/>
+                            Class="w-100 mb-3 col"/>
                     </div>
                     @if (!_isLoading)
                     {
-                        <MyButton IsSubmit="true">@AuthResources.Registration_ReceiveSecret</MyButton>
+                        <RadzenButton
+                            ButtonType="ButtonType.Submit"
+                            Text="@AuthResources.Registration_ReceiveSecret"/>
                     }
-                </EditForm>    
+                </RadzenTemplateForm>
             }
             @if (_isLoading)
             {
-                <Preloader/>
+                <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"/>
             }
-        </div>
+        </RadzenCard>
     </div>
 </div>
-
-@code {
-    [Parameter]
-    public string? VerificationToken { get; set; }
-    
-    private RegistrationStep2Request model = new();
-    private EditContext _editContext;
-    private bool _isLoading;
-    private bool _isSecretFileSaved = false;
-    private RegistrationStep2ResponseDto _registrationResponse = null;
-    private bool _isRegistered => _registrationResponse != null;
-    
-    private string PasswordError
-    {
-        get => _editContext.GetValidationMessages(() => model.Password).FirstOrDefault();
-    }
-
-    protected override void OnInitialized()
-    {
-        _isLoading = false;
-        _editContext = new EditContext(model);
-    }
-
-    private async Task HandleSubmit()
-    {
-        if (_editContext.Validate())
-        {
-            _isLoading = true;
-            try
-            {
-                model.Token = VerificationToken;
-                _registrationResponse = await _apiService.RegistrationStep2Async(model);
-                if (_registrationResponse != null)
-                {
-                    _toastService.AddInfoMessage(AuthResources.Registration_EmailIsSent);
-                }
-            }
-            catch (Exception)
-            {
-                _toastService.AddErrorMessage(AuthResources.Registration_RegistrationError);
-            }
-            finally
-            {
-                _isLoading = false;
-            }
-        }
-        StateHasChanged();
-    }
-    
-    private Task LoginAndContinue()
-    {
-        if (!_isRegistered)
-        {
-            return Task.CompletedTask;
-        }
-        _authorizationService.Login(
-            _registrationResponse.JwtToken,
-            _registrationResponse.Pem,
-            _registrationResponse.PrivateKeyBase64
-        );
-        _navigationManager.NavigateTo(SiteUrl.Dashboard);
-        return Task.CompletedTask;
-    }
-    
-    private async Task SaveFile()
-    {
-        if (!_isRegistered)
-        {
-            return;
-        }
-        _isSecretFileSaved = true;
-        var pemBytes = System.Text.Encoding.UTF8.GetBytes(_registrationResponse.Pem);
-        await FileHelpers.SaveAsAsync(_js, "offlogs_secrets.pem", pemBytes);
-    }
-}

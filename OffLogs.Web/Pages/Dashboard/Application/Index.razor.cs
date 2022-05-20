@@ -8,6 +8,7 @@ using OffLogs.Web.Resources;
 using OffLogs.Web.Services.Http;
 using OffLogs.Web.Shared.Ui.NavigationLayout.Models;
 using OffLogs.Web.Store.Application;
+using Radzen;
 
 namespace OffLogs.Web.Pages.Dashboard.Application;
 
@@ -79,7 +80,11 @@ public partial class Index
     {
         if (!State.Value.SelectedApplicationId.HasValue)
         {
-            ToastService.AddInfoMessage(ApplicationResources.SelectApplication);
+            NotificationService.Notify(new NotificationMessage()
+            {
+                Severity = NotificationSeverity.Error,
+                Summary = ApplicationResources.SelectApplication
+            });
             return;
         }
         _isShowDeleteModal = true;
