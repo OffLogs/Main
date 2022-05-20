@@ -2,24 +2,16 @@
 @page "/{locale}/login"
 
 @using OffLogs.Web.Resources
-@using System.IO
 @using Microsoft.AspNetCore.Components
-@using Microsoft.Extensions.Logging
 @using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User
 
 @inherits BaseComponent
-
-@inject IAuthorizationService _authorizationService
-@inject NavigationManager _navigationManager
-@inject NotificationService _notificationService
-@inject ILogger<Login> _logger
-@inject IReCaptchaService _reCaptchaService;
 
 <div class="row d-flex px-3 justify-content-center">
     <div class="col-xl-4 p-3">
         <RadzenCard>
             <h2 class="mb-4">Login to your account</h2>
-            <RadzenTemplateForm TItem="LoginRequest" Data="@model" Submit="@HandleSubmit">
+            <RadzenTemplateForm TItem="LoginRequest" Data="@model" Submit="HandleSubmit">
 
                 <DataAnnotationsValidator/>
                 <ValidationSummary/>
@@ -29,7 +21,7 @@
                         Text="Select secret file:"
                         class="col-sm-3 mb-3"/>
                     <InputFile
-                        OnChange="@(async args => await OnSelectFiles(args))"
+                        OnChange="OnSelectFiles"
                         class="w-100 mb-3 col"/>
                 </div>
 
@@ -68,72 +60,3 @@
         </RadzenCard>
     </div>
 </div>
-
-@code
-{
-    private LoginRequest model = new();
-    private bool _isLoading;
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        _isLoading = false;
-        await UpdateReCaptchaAsync();
-    }
-
-    private async Task UpdateReCaptchaAsync()
-    {
-        model.ReCaptcha = await _reCaptchaService.GetReCaptchaTokenAsync();
-    }
-
-    private async Task OnSelectFiles(InputFileChangeEventArgs changeEvent)
-    {
-        _isLoading = true;
-        var keyFile = changeEvent.GetMultipleFiles(1).FirstOrDefault();
-        try
-        {
-            if (keyFile == null)
-            {
-                throw new Exception();
-            }
-            using var stream = keyFile.OpenReadStream(5000000);
-            using var reader = new StreamReader(stream);
-            model.Pem = await reader.ReadToEndAsync();
-            if (string.IsNullOrEmpty(model.Pem))
-            {
-                throw new Exception("Empty key file");
-            }
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e.Message, e);
-            _notificationService.Notify(NotificationSeverity.Error, AuthResources.Login_PleaseEnterCorrectKeyFile);
-        }
-        _isLoading = false;
-        await UpdateReCaptchaAsync();
-    }
-
-    private async Task HandleSubmit()
-    {
-        _isLoading = true;
-        try
-        {
-            var isLoggedIn = await _authorizationService.LoginAsync(model);
-            if (isLoggedIn)
-            {
-                _navigationManager.NavigateTo(SiteUrl.Dashboard);
-                return;
-            }
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e.Message, e);
-            _notificationService.Notify(NotificationSeverity.Error, AuthResources.Login_SecretOrPasswordIsIncorrect);
-        }
-        finally
-        {
-            _isLoading = false;
-        }
-        StateHasChanged();
-    }
-}
