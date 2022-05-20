@@ -46,6 +46,11 @@ public partial class Login
         model.ReCaptcha = await _reCaptchaService.GetReCaptchaTokenAsync();
     }
 
+    private void OnClickSignUp()
+    {
+        _navigationManager.NavigateTo(SiteUrl.Registration_Step1);
+    }
+    
     private async Task OnSelectFiles(InputFileChangeEventArgs changeEvent)
     {
         _isLoading = true;
