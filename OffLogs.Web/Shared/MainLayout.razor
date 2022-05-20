@@ -2,33 +2,27 @@
 
 @inherits BaseLayout
 
-<div class="page" @onclick="OnClickDocument">
+<RadzenLayout>
     @if (_isShowMainMenu)
     {
-        <NavMenu />
+        <NavMenu/>
     }
-
-    @if (CommonState.Value.IsInitialized)
-    {
-        <div class="main">
-            <div class="container-fluid">
-                @Body
-            </div>
-            <ToastMessageContainer/>
+    <RadzenBody>
+        <div class="container-fluid">
+            @Body
         </div>
-    }
-    
-    @if (!_isShowReCaptcha)
-    {
-        <style>
-            .grecaptcha-badge { 
-                visibility: hidden;
-            }
-        </style>
-    }
-</div>
+        @if (!_isShowReCaptcha)
+        {
+            <style>
+                .grecaptcha-badge {
+                    visibility: hidden;
+                }
+            </style>
+        }
+    </RadzenBody>
+</RadzenLayout>
 
 <RadzenContextMenu/>
-<RadzenDialog />
-<RadzenTooltip />
+<RadzenDialog/>
+<RadzenTooltip/>
 <RadzenNotification/>

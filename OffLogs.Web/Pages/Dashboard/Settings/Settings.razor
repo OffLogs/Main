@@ -1,10 +1,13 @@
 ﻿@page "/dashboard/settings"
 @page "/{locale}/dashboard/settings"
 
-@using OffLogs.Web.Shared.Ui.NavigationLayout
+@using OffLogs.Web.Resources
 
 @inherits BaseComponent
 
-<NavigationLayout MenuItems="@_menuItems">
-    <BodyContent>Test body</BodyContent>
-</NavigationLayout>
+<RadzenCard class="m-3">
+    <h3 class="h5">@CommonResources.Settings</h3>
+    <div class="d-flex flex-row">
+        My settings :)
+    </div>
+</RadzenCard>

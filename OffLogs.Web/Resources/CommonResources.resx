@@ -66,4 +66,10 @@
     <data name="LogLevel" xml:space="preserve">
         <value>Log level</value>
     </data>
+    <data name="LogsStatistic" xml:space="preserve">
+        <value>Logs statistic</value>
+    </data>
+    <data name="Settings" xml:space="preserve">
+        <value>Settings</value>
+    </data>
 </root>
