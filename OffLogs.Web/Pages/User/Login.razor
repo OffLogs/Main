@@ -11,7 +11,7 @@
 
 @inject IAuthorizationService _authorizationService
 @inject NavigationManager _navigationManager
-@inject ToastService _toastService
+@inject NotificationService _notificationService
 @inject ILogger<Login> _logger
 @inject IReCaptchaService _reCaptchaService;
 
@@ -34,7 +34,7 @@
                 </div>
 
                 <div class="row">
-                    <RadzenLabel 
+                    <RadzenLabel
                         Text="Password:"
                         class="col-sm-3 mb-3"/>
                     <RadzenPassword
@@ -45,15 +45,26 @@
 
                 @if (_isLoading)
                 {
-                    <Preloader/>
+                    <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"/>
                 }
                 else
                 {
                     <RadzenButton
                         ButtonType="ButtonType.Submit"
-                        Text="Submit"/>
+                        Text="@AuthResources.Login"/>
                 }
             </RadzenTemplateForm>
+
+            <div class="row mt-5">
+                <div class="col-md-3 mb-3 text-center">
+                    @AuthResources.Login_DontHaveAnAccount
+                </div>
+                <div class="col text-center">
+                    <RadzenButton
+                        ButtonType="ButtonType.Submit"
+                        Text="@AuthResources.Login_Registration"/>
+                </div>
+            </div>
         </RadzenCard>
     </div>
 </div>
@@ -62,15 +73,6 @@
 {
     private LoginRequest model = new();
     private bool _isLoading;
-
-    // private string PasswordError
-    // {
-    //     get
-    //     {
-    //         var messages = _editContext.GetValidationMessages(() => model.Password);
-    //         return messages.FirstOrDefault();
-    //     }
-    // }
 
     protected override async Task OnInitializedAsync()
     {
@@ -105,7 +107,7 @@
         catch (Exception e)
         {
             _logger.LogError(e.Message, e);
-            _toastService.AddErrorMessage(AuthResources.Login_PleaseEnterCorrectKeyFile);
+            _notificationService.Notify(NotificationSeverity.Error, AuthResources.Login_PleaseEnterCorrectKeyFile);
         }
         _isLoading = false;
         await UpdateReCaptchaAsync();
@@ -126,7 +128,7 @@
         catch (Exception e)
         {
             _logger.LogError(e.Message, e);
-            _toastService.AddErrorMessage("Login or password is incorrect");
+            _notificationService.Notify(NotificationSeverity.Error, AuthResources.Login_SecretOrPasswordIsIncorrect);
         }
         finally
         {

@@ -61,11 +61,47 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Login.
+        /// </summary>
+        internal static string Login {
+            get {
+                return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t have an account yet?.
+        /// </summary>
+        internal static string Login_DontHaveAnAccount {
+            get {
+                return ResourceManager.GetString("Login_DontHaveAnAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The key file is invalid. Please enter correct file.
         /// </summary>
         internal static string Login_PleaseEnterCorrectKeyFile {
             get {
                 return ResourceManager.GetString("Login_PleaseEnterCorrectKeyFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sign Up.
+        /// </summary>
+        internal static string Login_Registration {
+            get {
+                return ResourceManager.GetString("Login_Registration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Secret or password is incorrect.
+        /// </summary>
+        internal static string Login_SecretOrPasswordIsIncorrect {
+            get {
+                return ResourceManager.GetString("Login_SecretOrPasswordIsIncorrect", resourceCulture);
             }
         }
         

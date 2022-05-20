@@ -52,7 +52,19 @@
     <data name="Login_PleaseEnterCorrectKeyFile" xml:space="preserve">
         <value>The key file is invalid. Please enter correct file</value>
     </data>
+    <data name="Login_SecretOrPasswordIsIncorrect" xml:space="preserve">
+        <value>Secret or password is incorrect</value>
+    </data>
+    <data name="Login_Registration" xml:space="preserve">
+        <value>Sign Up</value>
+    </data>
+    <data name="Login_DontHaveAnAccount" xml:space="preserve">
+        <value>Don't have an account yet?</value>
+    </data>
     <data name="Logout" xml:space="preserve">
         <value>Logout</value>
+    </data>
+    <data name="Login" xml:space="preserve">
+        <value>Login</value>
     </data>
 </root>
