@@ -11,8 +11,10 @@
 @using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application
 @using OffLogs.Api.Common.Dto.Entities
 @using OffLogs.Web.Constants.Bootstrap
+
+@inherits BaseComponent
+
 @inject IApiService _apiService
-@inject ToastService _toastService
 
 <ModalWindow
     IsShow="IsShowAddModal"
@@ -86,11 +88,19 @@
                 await OnAdded.InvokeAsync(application);
                 OnCloseAction();
                 IsShowAddModal = false;
-                _toastService.AddInfoMessage("New application was added");
+                NotificationService.Notify(new NotificationMessage()
+                {
+                    Severity = NotificationSeverity.Info,
+                    Summary = "New application was added"
+                });
             }
             catch (Exception e)
             {
-                _toastService.AddErrorMessage(e.Message);
+                NotificationService.Notify(new NotificationMessage()
+                {
+                    Severity = NotificationSeverity.Error,
+                    Summary = e.Message
+                });
             }
             finally
             {

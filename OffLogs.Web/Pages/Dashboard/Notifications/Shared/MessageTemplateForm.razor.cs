@@ -13,6 +13,7 @@ using OffLogs.Web.Services.Http;
 using OffLogs.Web.Shared.Ui;
 using OffLogs.Web.Shared.Ui.Form;
 using OffLogs.Web.Store.Notification;
+using Radzen;
 
 namespace OffLogs.Web.Pages.Dashboard.Notifications.Shared;
 
@@ -21,9 +22,6 @@ public partial class MessageTemplateForm
     [Inject]
     private IApiService _apiService { get; set; }
 
-    [Inject]
-    private ToastService _toastService { get; set; }
-    
     [Inject]
     private IState<NotificationRuleState> _state { get; set; }
     
@@ -91,9 +89,11 @@ public partial class MessageTemplateForm
             try
             {
                 var item = await _apiService.MessageTemplateSet(_model);
-                _toastService.AddInfoMessage(
-                    _isNew ? NotificationResources.MessageTemplate_Added : NotificationResources.MessageTemplate_Saved    
-                );
+                NotificationService.Notify(new NotificationMessage()
+                {
+                    Severity = NotificationSeverity.Info,
+                    Summary = _isNew ? NotificationResources.MessageTemplate_Added : NotificationResources.MessageTemplate_Saved    
+                });
                 Dispatcher.Dispatch(new SetMessageTemplatesAction(item));
                 await InvokeAsync(async () =>
                 {
@@ -102,7 +102,11 @@ public partial class MessageTemplateForm
             }
             catch (Exception e)
             {
-                _toastService.AddErrorMessage(e.Message);
+                NotificationService.Notify(new NotificationMessage()
+                {
+                    Severity = NotificationSeverity.Error,
+                    Summary = e.Message
+                });
             }
             finally
             {
@@ -124,7 +128,11 @@ public partial class MessageTemplateForm
         try
         {
             await _apiService.MessageTemplateDelete(_model.Id.Value);
-            _toastService.AddInfoMessage(NotificationResources.MessageTemplate_Deleted);
+            NotificationService.Notify(new NotificationMessage()
+            {
+                Severity = NotificationSeverity.Info,
+                Summary = NotificationResources.MessageTemplate_Deleted
+            });
             Dispatcher.Dispatch(new DeleteMessageTemplatesAction(_model.Id.Value));
             await InvokeAsync(async () =>
             {
@@ -133,9 +141,11 @@ public partial class MessageTemplateForm
         }
         catch (Exception e)
         {
-            _toastService.AddErrorMessage(
-                NotificationResources.MessageTemplate_CantDelete    
-            );
+            NotificationService.Notify(new NotificationMessage()
+            {
+                Severity = NotificationSeverity.Error,
+                Summary = NotificationResources.MessageTemplate_CantDelete    
+            });
         }
         finally
         {

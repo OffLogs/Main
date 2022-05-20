@@ -20,6 +20,7 @@ using OffLogs.Web.Shared.Ui.Form;
 using OffLogs.Web.Shared.Ui.Form.CustomDropDown;
 using OffLogs.Web.Store.Application;
 using OffLogs.Web.Store.Notification;
+using Radzen;
 
 namespace OffLogs.Web.Pages.Dashboard.Notifications.Shared.Rule;
 
@@ -28,9 +29,6 @@ public partial class NotificationRuleForm
     [Inject]
     private IApiService _apiService { get; set; }
 
-    [Inject]
-    private ToastService _toastService { get; set; }
-    
     [Inject]
     private IState<NotificationRuleState> _state { get; set; }
     
@@ -121,9 +119,11 @@ public partial class NotificationRuleForm
             try
             {
                 var item = await _apiService.NotificationRuleSet(Model);
-                _toastService.AddInfoMessage(
-                    _isNew ? NotificationResources.Rules_Added : NotificationResources.Rules_Saved    
-                );
+                NotificationService.Notify(new NotificationMessage()
+                {
+                    Severity = NotificationSeverity.Info,
+                    Summary = _isNew ? NotificationResources.Rules_Added : NotificationResources.Rules_Saved    
+                });
                 Dispatcher.Dispatch(new SetNotificationRuleAction(item));
                 await InvokeAsync(async () =>
                 {
@@ -132,7 +132,11 @@ public partial class NotificationRuleForm
             }
             catch (Exception e)
             {
-                _toastService.AddErrorMessage(e.Message);
+                NotificationService.Notify(new NotificationMessage()
+                {
+                    Severity = NotificationSeverity.Error,
+                    Summary = e.Message
+                });
             }
             finally
             {
@@ -165,9 +169,11 @@ public partial class NotificationRuleForm
         {
             var id = Model.Id.Value;
             await _apiService.NotificationRuleDelete(id);
-            _toastService.AddInfoMessage(
-                _isNew ? NotificationResources.Rules_Added : NotificationResources.Rules_Saved    
-            );
+            NotificationService.Notify(new NotificationMessage()
+            {
+                Severity = NotificationSeverity.Info,
+                Summary = _isNew ? NotificationResources.Rules_Added : NotificationResources.Rules_Saved    
+            });
             Dispatcher.Dispatch(new DeleteNotificationRuleAction(id));
             await InvokeAsync(async () =>
             {
@@ -176,7 +182,11 @@ public partial class NotificationRuleForm
         }
         catch (Exception e)
         {
-            _toastService.AddErrorMessage(e.Message);
+            NotificationService.Notify(new NotificationMessage()
+            {
+                Severity = NotificationSeverity.Error,
+                Summary = e.Message
+            });
         }
         finally
         {

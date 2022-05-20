@@ -7,9 +7,11 @@
 @using OffLogs.Web.Core.Models.Modal
 @using System.Runtime.InteropServices
 @using OffLogs.Web.Constants.Bootstrap
+
+@inherits BaseComponent
+
 @inject ILogger<ShareApplicationModal> _logger
 @inject IApiService _apiService
-@inject ToastService _toastService
 
 <ModalWindow
     IsShow="IsShowModal"
@@ -101,12 +103,20 @@
                 _application.Id
             );
 
-            _toastService.AddInfoMessage($"Application was shared for {user.UserName}");
+            NotificationService.Notify(new NotificationMessage()
+            {
+                Severity = NotificationSeverity.Info,
+                Summary = $"Application was shared for {user.UserName}"
+            });
             InvokeAsync(async () => await LoadSharedUsersAsync());
         }
         catch (Exception e)
         {
-            _toastService.AddErrorMessage(e.Message);
+            NotificationService.Notify(new NotificationMessage()
+            {
+                Severity = NotificationSeverity.Error,
+                Summary = e.Message
+            });
         }
         await InvokeAsync(StateHasChanged);
     }
@@ -120,12 +130,20 @@
                 user.Id,
                 _application.Id
             );
-            _toastService.AddInfoMessage($"User access to the application has been removed");
+            NotificationService.Notify(new NotificationMessage()
+            {
+                Severity = NotificationSeverity.Info,
+                Summary = $"User access to the application has been removed"
+            });
             InvokeAsync(async () => await LoadSharedUsersAsync());
         }
         catch (Exception e)
         {
-            _toastService.AddErrorMessage(e.Message);
+            NotificationService.Notify(new NotificationMessage()
+            {
+                Severity = NotificationSeverity.Error,
+                Summary = e.Message
+            });
         }
         await InvokeAsync(StateHasChanged);
     }
@@ -146,7 +164,11 @@
         }
         catch (Exception e)
         {
-            _toastService.AddServerErrorMessage();
+            NotificationService.Notify(new NotificationMessage()
+            {
+                Severity = NotificationSeverity.Error,
+                Summary = "Server error"
+            });
         }
         finally
         {

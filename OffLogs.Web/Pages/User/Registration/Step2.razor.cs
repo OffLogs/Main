@@ -9,6 +9,7 @@ using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Resources;
 using OffLogs.Web.Services;
 using OffLogs.Web.Services.Http;
+using Radzen;
 
 namespace OffLogs.Web.Pages.User.Registration;
 
@@ -26,10 +27,7 @@ public partial class Step2
     
     [Inject] 
     private NavigationManager _navigationManager { get; set; }
-    
-    [Inject] 
-    private ToastService _toastService { get; set; }
-    
+
     [Inject] 
     private IAuthorizationService _authorizationService { get; set; }
     
@@ -53,12 +51,20 @@ public partial class Step2
             _registrationResponse = await _apiService.RegistrationStep2Async(model);
             if (_registrationResponse != null)
             {
-                _toastService.AddInfoMessage(AuthResources.Registration_EmailIsSent);
+                NotificationService.Notify(new NotificationMessage()
+                {
+                    Severity = NotificationSeverity.Info,
+                    Summary = AuthResources.Registration_EmailIsSent
+                });
             }
         }
         catch (Exception)
         {
-            _toastService.AddErrorMessage(AuthResources.Registration_RegistrationError);
+            NotificationService.Notify(new NotificationMessage()
+            {
+                Severity = NotificationSeverity.Error,
+                Summary = AuthResources.Registration_RegistrationError
+            });
         }
         finally
         {
