@@ -14,9 +14,16 @@ public class BaseComponent: Fluxor.Blazor.Web.Components.FluxorComponent
     [Inject]
     protected IDispatcher Dispatcher { get; set; }
     
+    [Inject]
+    protected IJSRuntime Js { get; set; }
+    
+    #region Radzen
+    
     [Inject] 
     protected NotificationService NotificationService { get; set; }
     
     [Inject]
-    protected IJSRuntime Js { get; set; }
+    protected DialogService DialogService { get; set; }
+    
+    #endregion
 }

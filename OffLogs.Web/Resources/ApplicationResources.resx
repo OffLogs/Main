@@ -36,4 +36,7 @@
     <data name="SelectApplication" xml:space="preserve">
         <value>Please select application</value>
     </data>
+    <data name="DeleteConfirmation" xml:space="preserve">
+        <value>Are you sure you want to remove this application?</value>
+    </data>
 </root>

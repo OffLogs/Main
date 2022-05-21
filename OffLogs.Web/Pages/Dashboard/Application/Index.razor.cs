@@ -4,11 +4,13 @@ using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using OffLogs.Api.Common.Dto.Entities;
+using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Resources;
 using OffLogs.Web.Services.Http;
 using OffLogs.Web.Shared.Ui.NavigationLayout.Models;
 using OffLogs.Web.Store.Application;
 using Radzen;
+using Radzen.Blazor;
 
 namespace OffLogs.Web.Pages.Dashboard.Application;
 
@@ -23,6 +25,8 @@ public partial class Index
     private bool _isShowAddModal = false;
     
     private bool _isShowDeleteModal = false;
+    
+    RadzenDataGrid<ApplicationListItemDto> _grid;
 
     private ICollection<HeaderMenuButton> _buttons = new List<HeaderMenuButton>();
 
@@ -109,5 +113,42 @@ public partial class Index
     private void OnCloseAddModal()
     {
         _isShowAddModal = false;
+    }
+    
+    //------------------
+    
+    async Task EditRow(ApplicationListItemDto app)
+    {
+        Debug.Log("111", app);
+        await _grid.EditRow(app);
+    }
+
+    void OnUpdateRow(ApplicationListItemDto app)
+    {
+        
+    }
+
+    async Task SaveRow(ApplicationListItemDto app)
+    {
+        await _grid.UpdateRow(app);
+    }
+
+    void CancelEdit(ApplicationListItemDto app)
+    {
+        _grid.CancelEditRow(app);
+    }
+
+    private async Task DeleteRow(ApplicationListItemDto app)
+    {
+        var isOk = await DialogService.Confirm(
+            ApplicationResources.DeleteConfirmation,
+            CommonResources.DeletionConfirmation,
+            new ConfirmOptions()
+            {
+                OkButtonText = "Ok",
+                CancelButtonText = CommonResources.Cancel
+            }
+        );
+        Debug.Log("Deletion " + isOk);
     }
 }

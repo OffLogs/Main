@@ -70,6 +70,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure?.
         /// </summary>
         internal static string ConfirmationModal_AreYouSure {
@@ -93,6 +102,15 @@ namespace OffLogs.Web.Resources {
         internal static string DashboardMenu_Statistic {
             get {
                 return ResourceManager.GetString("DashboardMenu_Statistic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm deletion.
+        /// </summary>
+        internal static string DeletionConfirmation {
+            get {
+                return ResourceManager.GetString("DeletionConfirmation", resourceCulture);
             }
         }
         

@@ -5,30 +5,107 @@
 @using OffLogs.Web.Pages.Dashboard.Application.Info
 @using OffLogs.Web.Resources
 @using OffLogs.Web.Shared.Ui.NavigationLayout
+@using OffLogs.Api.Common.Dto.Entities
+@using Microsoft.AspNetCore.Components
 
 @inherits BaseComponent
 
-<AddApplicationModal
-    OnAdded="OnApplicationAdded"
-    OnClose="OnCloseAddModal"
-    IsShowAddModal="@_isShowAddModal"
-/>
-<ConfirmationModal
-    Title="Are you sure you want to remove this application?" 
-    IsShow="@_isShowDeleteModal"
-    OnOk="OnDeleteAppAsync"
-    OnCancel="@(() => _isShowDeleteModal = false)"/>
+@* <AddApplicationModal *@
+@*     OnAdded="OnApplicationAdded" *@
+@*     OnClose="OnCloseAddModal" *@
+@*     IsShowAddModal="@_isShowAddModal" *@
+@* /> *@
+@* <ConfirmationModal *@
+@*     Title="Are you sure you want to remove this application?"  *@
+@*     IsShow="@_isShowDeleteModal" *@
+@*     OnOk="OnDeleteAppAsync" *@
+@*     OnCancel="@(() => _isShowDeleteModal = false)"/> *@
 
-<NavigationLayout
-    MenuTitle="@ApplicationResources.PageTitle_Applications"
-    MenuItems="@_menuItems"
-    BodyButtons="@_buttons"
-    OnSelectMenuItem="OnApplicationSelected"
->
-    <BodyContent>
-        @if (State.Value.SelectedApplicationId != null)
-        {
-            <AppInfoBlock ApplicationId="@State.Value.SelectedApplicationId"/>
-        }
-    </BodyContent>
-</NavigationLayout>
+@* <NavigationLayout *@
+@*     MenuTitle="@ApplicationResources.PageTitle_Applications" *@
+@*     MenuItems="@_menuItems" *@
+@*     BodyButtons="@_buttons" *@
+@*     OnSelectMenuItem="OnApplicationSelected" *@
+@* > *@
+@*     <BodyContent> *@
+@*         @if (State.Value.SelectedApplicationId != null) *@
+@*         { *@
+@*             <AppInfoBlock ApplicationId="@State.Value.SelectedApplicationId"/> *@
+@*         } *@
+@*     </BodyContent> *@
+@* </NavigationLayout> *@
+
+<RadzenCard class="m-3">
+    
+    <RadzenDataGrid
+        @ref="_grid"
+        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+        AllowPaging="true"
+        PageSize="10"
+        AllowSorting="true"
+        Data="@State.Value.List"
+        EditMode="DataGridEditMode.Single"
+        TItem="ApplicationListItemDto"
+        ColumnWidth="200px">
+        
+        <Columns>
+            <RadzenDataGridColumn TItem="ApplicationListItemDto" Property="Id" Title="ID"/>
+            <RadzenDataGridColumn TItem="ApplicationListItemDto" Property="Name" Title="Name">
+                <EditTemplate Context="app">
+                    <RadzenTextBox @bind-Value="@app.Name" Style="width:100%; display: block" Name="Name"/>
+                    <RadzenLengthValidator
+                        Component="Name"
+                        Min="3"
+                        Max="255"
+                        Popup=true
+                        Style="position: absolute"/>
+                </EditTemplate>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="ApplicationListItemDto" Property="CreateTime" Title="CreateTime"/>
+            <RadzenDataGridColumn
+                TItem="ApplicationListItemDto"
+                Context="app" Filterable="false"
+                Sortable="false"
+                TextAlign="TextAlign.Center"
+                Width="120px">
+
+                <Template Context="app">
+
+                    <RadzenButton
+                        Icon="edit"
+                        ButtonStyle="ButtonStyle.Light"
+                        Class="m-1"
+                        Click="@(args => EditRow(app))"
+                        @onclick:stopPropagation="true">
+                    </RadzenButton>
+                </Template>
+                <EditTemplate Context="app">
+
+                    <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Primary" Class="m-1" Click="@((args) => SaveRow(app))">
+                    </RadzenButton>
+                    <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Class="m-1" Click="@((args) => CancelEdit(app))">
+                    </RadzenButton>
+                </EditTemplate>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn
+                TItem="ApplicationListItemDto"
+                Context="app"
+                Filterable="false"
+                Sortable="false"
+                TextAlign="TextAlign.Center"
+                Width="60px">
+
+                <Template Context="app">
+                    <RadzenButton
+                        ButtonStyle="ButtonStyle.Danger"
+                        Icon="delete"
+                        Size="ButtonSize.Small"
+                        Class="m-1"
+                        Click="@(args => DeleteRow(app))"
+                        @onclick:stopPropagation="true">
+                    </RadzenButton>
+                </Template>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
+</RadzenCard>
