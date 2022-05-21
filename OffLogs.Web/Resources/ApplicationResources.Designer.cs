@@ -88,6 +88,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The application was updated.
+        /// </summary>
+        internal static string ApplicationWasUpdated {
+            get {
+                return ResourceManager.GetString("ApplicationWasUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         internal static string DeleteApplication {

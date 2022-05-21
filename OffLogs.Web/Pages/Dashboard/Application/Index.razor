@@ -37,6 +37,15 @@
 
 <RadzenCard class="m-3">
     
+    <h2>@ApplicationResources.PageTitle_Applications</h2>
+    
+    <RadzenButton 
+        Icon="add_circle_outline"
+        class="mb-3" 
+        Text="@ApplicationResources.AddApplication" 
+        Click="@InsertRow" 
+        Disabled=@(_applicationToInsert != null) />
+    
     <RadzenDataGrid
         @ref="_grid"
         FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"

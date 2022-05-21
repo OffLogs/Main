@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Fluxor;
@@ -30,6 +31,8 @@ public partial class Index
 
     private ICollection<HeaderMenuButton> _buttons = new List<HeaderMenuButton>();
 
+    private ApplicationListItemDto _applicationToInsert = null;
+    
     private ICollection<MenuItem> _menuItems
     {
         get
@@ -68,18 +71,6 @@ public partial class Index
         return Task.CompletedTask;
     }
 
-    private Task OnApplicationAdded(ApplicationDto application)
-    {
-        Dispatcher.Dispatch(new AddApplicationAction(new ApplicationListItemDto
-        {
-            Id = application.Id,
-            CreateTime = application.CreateTime,
-            Name = application.Name,
-            UserId = application.UserId
-        }));
-        return Task.CompletedTask;
-    }
-
     private void OnDeleteApplicationClick()
     {
         if (!State.Value.SelectedApplicationId.HasValue)
@@ -92,6 +83,56 @@ public partial class Index
             return;
         }
         _isShowDeleteModal = true;
+    }
+    
+    private async Task UpdateApplication(ApplicationListItemDto app)
+    {
+        try
+        {
+            var application = await ApiService.UpdateApplicationAsync(app.Id, app.Name);
+            Dispatcher.Dispatch(new UpdateApplicationAction(application));
+            NotificationService.Notify(new NotificationMessage()
+            {
+                Severity = NotificationSeverity.Info,
+                Summary = ApplicationResources.ApplicationWasUpdated
+            });
+        }
+        catch (Exception e)
+        {
+            NotificationService.Notify(new NotificationMessage()
+            {
+                Severity = NotificationSeverity.Error,
+                Summary = e.Message
+            });
+        }
+    }
+    
+    private async Task AddApplication(ApplicationListItemDto app)
+    {
+        try
+        {
+            var application = await ApiService.AddApplicationAsync(app.Name);
+            Dispatcher.Dispatch(new AddApplicationAction(new ApplicationListItemDto
+            {
+                Id = application.Id,
+                CreateTime = application.CreateTime,
+                Name = application.Name,
+                UserId = application.UserId
+            }));
+            NotificationService.Notify(new NotificationMessage()
+            {
+                Severity = NotificationSeverity.Info,
+                Summary = "New application was added"
+            });
+        }
+        catch (Exception e)
+        {
+            NotificationService.Notify(new NotificationMessage()
+            {
+                Severity = NotificationSeverity.Error,
+                Summary = e.Message
+            });
+        }
     }
     
     private async Task OnDeleteAppAsync()
@@ -114,32 +155,48 @@ public partial class Index
     {
         _isShowAddModal = false;
     }
-    
-    //------------------
+
+    async Task InsertRow()
+    {
+        _applicationToInsert = new ApplicationListItemDto();
+        await _grid.InsertRow(_applicationToInsert);
+    }
     
     async Task EditRow(ApplicationListItemDto app)
     {
-        Debug.Log("111", app);
         await _grid.EditRow(app);
-    }
-
-    void OnUpdateRow(ApplicationListItemDto app)
-    {
-        
     }
 
     async Task SaveRow(ApplicationListItemDto app)
     {
         await _grid.UpdateRow(app);
+        if (app == _applicationToInsert)
+        {
+            _applicationToInsert = null;
+            await AddApplication(app);
+        }
+        else
+        {
+            await UpdateApplication(app);
+        }
     }
 
     void CancelEdit(ApplicationListItemDto app)
     {
+        if (app == _applicationToInsert)
+        {
+            _applicationToInsert = null;
+        }
         _grid.CancelEditRow(app);
     }
 
     private async Task DeleteRow(ApplicationListItemDto app)
     {
+        if (app == _applicationToInsert)
+        {
+            _applicationToInsert = null;
+        }
+        
         var isOk = await DialogService.Confirm(
             ApplicationResources.DeleteConfirmation,
             CommonResources.DeletionConfirmation,
@@ -149,6 +206,11 @@ public partial class Index
                 CancelButtonText = CommonResources.Cancel
             }
         );
-        Debug.Log("Deletion " + isOk);
+        if (isOk.HasValue && isOk.Value)
+        {
+            Dispatcher.Dispatch(new DeleteApplicationAction(
+                app.Id
+            ));
+        }
     }
 }

@@ -4,6 +4,7 @@ using OffLogs.Api.Common.Dto.Entities;
 namespace OffLogs.Web.Store.Application;
 
 public record struct AddApplicationAction(ApplicationListItemDto Application);
+public record struct UpdateApplicationAction(ApplicationDto Application);
 
 public record struct DeleteApplicationAction(long Id);
 

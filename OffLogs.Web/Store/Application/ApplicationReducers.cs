@@ -55,6 +55,20 @@ public class ApplicationReducers
     }
     
     [ReducerMethod]
+    public static ApplicationsListState ReduceUpdateApplicationActionAction(ApplicationsListState state, UpdateApplicationAction action)
+    {
+        var newState = state with { };
+        foreach (var app in newState.List)
+        {
+            if (app.Id == action.Application.Id)
+            {
+                app.Name = action.Application.Name;
+            }
+        }
+        return newState;
+    }
+    
+    [ReducerMethod]
     public static ApplicationsListState ReduceSelectApplicationAction(ApplicationsListState state, SelectApplicationAction action)
     {
         var newState = state.JsonClone<ApplicationsListState>();

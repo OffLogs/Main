@@ -5,7 +5,7 @@ using OffLogs.Api.Common.Dto.Entities;
 namespace OffLogs.Web.Store.Application;
 
 [FeatureState]
-public class ApplicationsListState
+public record ApplicationsListState
 {
     public bool IsLoading { get; set; }
     
