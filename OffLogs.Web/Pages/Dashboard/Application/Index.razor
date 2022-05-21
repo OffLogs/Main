@@ -29,10 +29,11 @@
         
         PageSize="@GlobalConstants.ListPageSize"
         Data="@State.Value.PaginatedList"
-        AllowPaging="true"
+        AllowPaging="false"
         IsLoading="@State.Value.IsLoading"
         Count="@State.Value.TotalCount"
         LoadData="@OnLoadApplicationsList"
+        ShowPagingSummary="true"
         
         ColumnWidth="200px">
         

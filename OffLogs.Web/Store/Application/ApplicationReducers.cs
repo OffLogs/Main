@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Fluxor;
+using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Business.Common.Extensions;
 
 namespace OffLogs.Web.Store.Application;
@@ -49,10 +50,16 @@ public class ApplicationReducers
     }
     
     [ReducerMethod]
-    public static ApplicationsListState ReduceAddApplicationActionAction(ApplicationsListState state, AddApplicationAction action)
+    public static ApplicationsListState ReduceAddApplicationListItemAction(ApplicationsListState state, AddApplicationListItemAction action)
     {
-        var newState = state.JsonClone<ApplicationsListState>();
-        newState.List.Add(action.Application);
+        var newState = state with {};
+        newState.List.Add(new ApplicationListItemDto
+        {
+            Id = action.Item.Id,
+            CreateTime = action.Item.CreateTime,
+            Name = action.Item.Name,
+            UserId = action.Item.UserId
+        });
         return newState;
     }
     

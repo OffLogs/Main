@@ -3,7 +3,10 @@ using OffLogs.Api.Common.Dto.Entities;
 
 namespace OffLogs.Web.Store.Application;
 
-public record struct AddApplicationAction(ApplicationListItemDto Application);
+public record struct AddApplicationAction(string Name);
+
+public record struct AddApplicationListItemAction(ApplicationDto Item);
+
 public record struct UpdateApplicationAction(ApplicationDto Application);
 
 public record struct DeleteApplicationAction(long Id);

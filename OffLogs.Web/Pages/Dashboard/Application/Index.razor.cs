@@ -61,40 +61,13 @@ public partial class Index
             });
         }
     }
-    
-    private async Task AddApplication(ApplicationListItemDto app)
-    {
-        try
-        {
-            var application = await ApiService.AddApplicationAsync(app.Name);
-            Dispatcher.Dispatch(new AddApplicationAction(new ApplicationListItemDto
-            {
-                Id = application.Id,
-                CreateTime = application.CreateTime,
-                Name = application.Name,
-                UserId = application.UserId
-            }));
-            NotificationService.Notify(new NotificationMessage()
-            {
-                Severity = NotificationSeverity.Info,
-                Summary = "New application was added"
-            });
-        }
-        catch (Exception e)
-        {
-            NotificationService.Notify(new NotificationMessage()
-            {
-                Severity = NotificationSeverity.Error,
-                Summary = e.Message
-            });
-        }
-    }
 
     #region Grid
     
     private async Task InsertRow()
     {
         _applicationToInsert = new ApplicationListItemDto();
+        Debug.Log(_applicationToInsert);
         await _grid.InsertRow(_applicationToInsert);
     }
     
@@ -152,13 +125,19 @@ public partial class Index
         await UpdateApplication(app);
     }
 
-    private async Task OnCreateRow(ApplicationListItemDto app)
+    private Task OnCreateRow(ApplicationListItemDto app)
     {
         if (app == _applicationToInsert)
         {
             _applicationToInsert = null;
         }
-        await AddApplication(app);
+        Dispatcher.Dispatch(new AddApplicationAction(app.Name));
+        NotificationService.Notify(new NotificationMessage()
+        {
+            Severity = NotificationSeverity.Info,
+            Summary = "New application was added"
+        });
+        return Task.CompletedTask;
     }
     
     #endregion
