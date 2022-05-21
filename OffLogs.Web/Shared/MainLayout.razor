@@ -2,25 +2,28 @@
 
 @inherits BaseLayout
 
-<RadzenLayout>
-    @if (_isShowMainMenu)
-    {
-        <NavMenu/>
-    }
-    <RadzenBody>
-        <div class="container-fluid">
-            @Body
-        </div>
-        @if (!_isShowReCaptcha)
+@if (CommonState.Value.IsInitialized)
+{
+    <RadzenLayout>
+        @if (_isShowMainMenu)
         {
-            <style>
+            <NavMenu/>
+        }
+        <RadzenBody>
+            <div class="container-fluid">
+                @Body
+            </div>
+            @if (!_isShowReCaptcha)
+            {
+                <style>
                 .grecaptcha-badge {
                     visibility: hidden;
                 }
             </style>
-        }
-    </RadzenBody>
-</RadzenLayout>
+            }
+        </RadzenBody>
+    </RadzenLayout>    
+}
 
 <RadzenContextMenu/>
 <RadzenDialog/>

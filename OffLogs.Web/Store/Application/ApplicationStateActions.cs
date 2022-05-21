@@ -10,11 +10,13 @@ public record struct DeleteApplicationAction(long Id);
 
 public record struct FetchListResultAction(
     ICollection<ApplicationListItemDto> Items,
-    long TotalPages,
-    long PageSize,
-    long TotalCount,
+    int TotalPages,
+    int PageSize,
+    int TotalCount,
     bool IsHasMore
 );
+
+public record struct SetPaginationInfoAction(int SkipItems);
 
 public record struct RemoveApplicationFromListAction(long Id);
 

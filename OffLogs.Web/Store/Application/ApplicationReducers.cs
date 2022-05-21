@@ -21,6 +21,7 @@ public class ApplicationReducers
         var newState = state.JsonClone<ApplicationsListState>();
         newState.IsLoading = false;
         newState.Page = 0;
+        newState.SkipItems = 0;
         newState.List.Clear();
         return newState;
     }
@@ -31,6 +32,7 @@ public class ApplicationReducers
         var newState = state.JsonClone<ApplicationsListState>();
         newState.IsLoading = false;
         newState.HasMoreItems = action.IsHasMore;
+        newState.TotalCount = action.TotalCount;
         newState.List = state.List.Concat(action.Items).ToList();
         return newState;
     }
@@ -51,6 +53,14 @@ public class ApplicationReducers
     {
         var newState = state.JsonClone<ApplicationsListState>();
         newState.List.Add(action.Application);
+        return newState;
+    }
+    
+    [ReducerMethod]
+    public static ApplicationsListState ReduceSetPaginationInfoAction(ApplicationsListState state, SetPaginationInfoAction action)
+    {
+        var newState = state.JsonClone<ApplicationsListState>();
+        newState.SkipItems = action.SkipItems;
         return newState;
     }
     

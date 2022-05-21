@@ -1,39 +1,12 @@
 ﻿@page "/dashboard/applications"
 @page "/{locale}/dashboard/applications"
 
-@using OffLogs.Web.Pages.Dashboard.Application.Add
-@using OffLogs.Web.Pages.Dashboard.Application.Info
 @using OffLogs.Web.Resources
-@using OffLogs.Web.Shared.Ui.NavigationLayout
 @using OffLogs.Api.Common.Dto.Entities
 @using Microsoft.AspNetCore.Components
+@using OffLogs.Business.Common.Constants
 
 @inherits BaseComponent
-
-@* <AddApplicationModal *@
-@*     OnAdded="OnApplicationAdded" *@
-@*     OnClose="OnCloseAddModal" *@
-@*     IsShowAddModal="@_isShowAddModal" *@
-@* /> *@
-@* <ConfirmationModal *@
-@*     Title="Are you sure you want to remove this application?"  *@
-@*     IsShow="@_isShowDeleteModal" *@
-@*     OnOk="OnDeleteAppAsync" *@
-@*     OnCancel="@(() => _isShowDeleteModal = false)"/> *@
-
-@* <NavigationLayout *@
-@*     MenuTitle="@ApplicationResources.PageTitle_Applications" *@
-@*     MenuItems="@_menuItems" *@
-@*     BodyButtons="@_buttons" *@
-@*     OnSelectMenuItem="OnApplicationSelected" *@
-@* > *@
-@*     <BodyContent> *@
-@*         @if (State.Value.SelectedApplicationId != null) *@
-@*         { *@
-@*             <AppInfoBlock ApplicationId="@State.Value.SelectedApplicationId"/> *@
-@*         } *@
-@*     </BodyContent> *@
-@* </NavigationLayout> *@
 
 <RadzenCard class="m-3">
     
@@ -47,14 +20,20 @@
         Disabled=@(_applicationToInsert != null) />
     
     <RadzenDataGrid
-        @ref="_grid"
-        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-        AllowPaging="true"
-        PageSize="10"
-        AllowSorting="true"
-        Data="@State.Value.List"
-        EditMode="DataGridEditMode.Single"
         TItem="ApplicationListItemDto"
+        @ref="_grid"
+        AllowSorting="true"
+        EditMode="DataGridEditMode.Single"
+        RowUpdate="@OnUpdateRow" 
+        RowCreate="@OnCreateRow"
+        
+        PageSize="@GlobalConstants.ListPageSize"
+        Data="@State.Value.PaginatedList"
+        AllowPaging="true"
+        IsLoading="@State.Value.IsLoading"
+        Count="@State.Value.TotalCount"
+        LoadData="@OnLoadApplicationsList"
+        
         ColumnWidth="200px">
         
         <Columns>
@@ -66,7 +45,6 @@
                         Component="Name"
                         Min="3"
                         Max="255"
-                        Popup=true
                         Style="position: absolute"/>
                 </EditTemplate>
             </RadzenDataGridColumn>
@@ -90,9 +68,9 @@
                 </Template>
                 <EditTemplate Context="app">
 
-                    <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Primary" Class="m-1" Click="@((args) => SaveRow(app))">
+                    <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Primary" Class="m-1" Click="@((args) => OnClickSaveRow(app))">
                     </RadzenButton>
-                    <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Class="m-1" Click="@((args) => CancelEdit(app))">
+                    <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Class="m-1" Click="@((args) => OnClickCancelEditMode(app))">
                     </RadzenButton>
                 </EditTemplate>
             </RadzenDataGridColumn>

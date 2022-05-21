@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using OffLogs.Web.Services;
+using OffLogs.Web.Services.Http;
 using Radzen;
 
 namespace OffLogs.Web.Core.Components;
@@ -16,6 +17,9 @@ public class BaseComponent: Fluxor.Blazor.Web.Components.FluxorComponent
     
     [Inject]
     protected IJSRuntime Js { get; set; }
+    
+    [Inject]
+    protected IApiService ApiService { get; set; }
     
     #region Radzen
     

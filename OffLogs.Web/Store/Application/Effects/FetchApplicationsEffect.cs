@@ -41,8 +41,8 @@ public class FetchApplicationsEffect: Effect<FetchNextListPageAction>
             dispatcher.Dispatch(new FetchListResultAction(
                 response.Items,
                 response.TotalPages,
-                response.TotalCount,
                 response.PageSize,
+                response.TotalCount,
                 response.IsHasMore
             ));
         }

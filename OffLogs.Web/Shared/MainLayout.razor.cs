@@ -22,9 +22,4 @@ public partial class MainLayout: IDisposable
         IsRedirectIfNotLoggedIn = true;
         await base.OnInitializedAsync();
     }
-
-    private void OnClickDocument()
-    {
-        EventsService.InvokeOnClickDocumentAsync();
-    }
 }

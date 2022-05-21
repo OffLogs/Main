@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using OffLogs.Api.Common.Dto.Entities;
+using OffLogs.Business.Common.Constants;
 using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Resources;
-using OffLogs.Web.Services.Http;
-using OffLogs.Web.Shared.Ui.NavigationLayout.Models;
 using OffLogs.Web.Store.Application;
 using Radzen;
 using Radzen.Blazor;
@@ -18,73 +17,29 @@ namespace OffLogs.Web.Pages.Dashboard.Application;
 public partial class Index
 {
     [Inject]
-    private IApiService ApiService { get; set; }
-
-    [Inject]
     private IState<ApplicationsListState> State { get; set; }
 
-    private bool _isShowAddModal = false;
-    
-    private bool _isShowDeleteModal = false;
-    
-    RadzenDataGrid<ApplicationListItemDto> _grid;
-
-    private ICollection<HeaderMenuButton> _buttons = new List<HeaderMenuButton>();
+    private  RadzenDataGrid<ApplicationListItemDto> _grid;
 
     private ApplicationListItemDto _applicationToInsert = null;
-    
-    private ICollection<MenuItem> _menuItems
-    {
-        get
-        {
-            return State.Value.List.Select(
-                application => new MenuItem()
-                {
-                    Id = application.Id.ToString(),
-                    Title = application.Name
-                }
-            ).ToList();
-        }
-    }
-    
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         
-        _buttons.Add(
-            new HeaderMenuButton(ApplicationResources.AddApplication, "plus-square", () => _isShowAddModal = true)
-        );
-        _buttons.Add(
-            new HeaderMenuButton(ApplicationResources.DeleteApplication, "basket", OnDeleteApplicationClick)
-        );
-        
-        await LoadListAsync(false);
+        Dispatcher.Dispatch(new FetchNextListPageAction());
     }
 
-    private Task LoadListAsync(bool isLoadNextPage = true)
+    private Task OnLoadApplicationsList(LoadDataArgs arg)
     {
-        if (!isLoadNextPage)
+        if (State.Value.HasMoreItems)
         {
-            Dispatcher.Dispatch(new ResetListAction());
+            Dispatcher.Dispatch(new FetchNextListPageAction());    
         }
-        Dispatcher.Dispatch(new FetchNextListPageAction());
+        Dispatcher.Dispatch(new SetPaginationInfoAction(arg.Skip ?? 0));
         return Task.CompletedTask;
     }
 
-    private void OnDeleteApplicationClick()
-    {
-        if (!State.Value.SelectedApplicationId.HasValue)
-        {
-            NotificationService.Notify(new NotificationMessage()
-            {
-                Severity = NotificationSeverity.Error,
-                Summary = ApplicationResources.SelectApplication
-            });
-            return;
-        }
-        _isShowDeleteModal = true;
-    }
-    
     private async Task UpdateApplication(ApplicationListItemDto app)
     {
         try
@@ -134,54 +89,26 @@ public partial class Index
             });
         }
     }
-    
-    private async Task OnDeleteAppAsync()
-    {
-        Dispatcher.Dispatch(new DeleteApplicationAction(
-            State.Value.SelectedApplicationId.Value    
-        ));
-        _isShowDeleteModal = false;
-        await Task.CompletedTask;
-    }
-    
-    private void OnApplicationSelected(OnSelectEventArgs menuEvent)
-    {
-        Dispatcher.Dispatch(new SelectApplicationAction(
-            long.Parse(menuEvent.MenuItem.Id)
-        ));
-    }
-    
-    private void OnCloseAddModal()
-    {
-        _isShowAddModal = false;
-    }
 
-    async Task InsertRow()
+    #region Grid
+    
+    private async Task InsertRow()
     {
         _applicationToInsert = new ApplicationListItemDto();
         await _grid.InsertRow(_applicationToInsert);
     }
     
-    async Task EditRow(ApplicationListItemDto app)
+    private async Task EditRow(ApplicationListItemDto app)
     {
         await _grid.EditRow(app);
     }
 
-    async Task SaveRow(ApplicationListItemDto app)
+    private async Task OnClickSaveRow(ApplicationListItemDto app)
     {
         await _grid.UpdateRow(app);
-        if (app == _applicationToInsert)
-        {
-            _applicationToInsert = null;
-            await AddApplication(app);
-        }
-        else
-        {
-            await UpdateApplication(app);
-        }
     }
 
-    void CancelEdit(ApplicationListItemDto app)
+    private void OnClickCancelEditMode(ApplicationListItemDto app)
     {
         if (app == _applicationToInsert)
         {
@@ -195,6 +122,8 @@ public partial class Index
         if (app == _applicationToInsert)
         {
             _applicationToInsert = null;
+            _grid.CancelEditRow(app);
+            return;
         }
         
         var isOk = await DialogService.Confirm(
@@ -213,4 +142,24 @@ public partial class Index
             ));
         }
     }
+
+    private async Task OnUpdateRow(ApplicationListItemDto app)
+    {
+        if (app == _applicationToInsert)
+        {
+            _applicationToInsert = null;
+        }
+        await UpdateApplication(app);
+    }
+
+    private async Task OnCreateRow(ApplicationListItemDto app)
+    {
+        if (app == _applicationToInsert)
+        {
+            _applicationToInsert = null;
+        }
+        await AddApplication(app);
+    }
+    
+    #endregion
 }
