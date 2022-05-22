@@ -9,12 +9,12 @@ namespace OffLogs.Web.Store.Application;
 
 public class ApplicationReducers
 {
-    [ReducerMethod(typeof(FetchNextListPageAction))]
-    public static ApplicationsListState ReduceFetchApplicationListAction(ApplicationsListState state)
+    [ReducerMethod(typeof(FetchListPageAction))]
+    public static ApplicationsListState ReduceFetchListPageAction(ApplicationsListState state)
     {
         var newState = state.JsonClone<ApplicationsListState>();
         newState.IsLoading = true;
-        newState.Page = state.Page + 1;
+        newState.SkipItems = state.SkipItems;
         return newState;
     }
     
@@ -23,7 +23,6 @@ public class ApplicationReducers
     {
         var newState = state.JsonClone<ApplicationsListState>();
         newState.IsLoading = false;
-        newState.Page = 0;
         newState.SkipItems = 0;
         newState.List.Clear();
         return newState;
@@ -32,12 +31,13 @@ public class ApplicationReducers
     [ReducerMethod]
     public static ApplicationsListState ReduceFetchListResultActionAction(ApplicationsListState state, FetchListResultAction action)
     {
-        var newState = state.JsonClone<ApplicationsListState>();
-        newState.IsLoading = false;
-        newState.HasMoreItems = action.IsHasMore;
-        newState.TotalCount = action.TotalCount;
-        newState.List = state.List.Concat(action.Items).ToList();
-        return newState;
+        return state with
+        {
+            IsLoading = false,
+            HasMoreItems = action.IsHasMore,
+            TotalCount = action.TotalCount,
+            List = action.Items
+        };
     }
     
     [ReducerMethod]

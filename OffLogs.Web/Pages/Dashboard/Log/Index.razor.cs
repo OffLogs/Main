@@ -74,7 +74,7 @@ public partial class Index
         await base.OnInitializedAsync();
 
         SetLogMenuButtons();
-        Dispatcher.Dispatch(new OffLogs.Web.Store.Application.FetchNextListPageAction());
+        Dispatcher.Dispatch(new OffLogs.Web.Store.Application.FetchListPageAction());
 
         State.StateChanged += OnStateChanged;
     }

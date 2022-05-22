@@ -23,16 +23,12 @@ public partial class Index
     {
         await base.OnInitializedAsync();
         
-        Dispatcher.Dispatch(new FetchNextListPageAction());
+        Dispatcher.Dispatch(new FetchListPageAction(0));
     }
 
     private Task OnLoadApplicationsList(LoadDataArgs arg)
     {
-        if (State.Value.HasMoreItems)
-        {
-            Dispatcher.Dispatch(new FetchNextListPageAction());    
-        }
-        Dispatcher.Dispatch(new SetPaginationInfoAction(arg.Skip ?? 0));
+        Dispatcher.Dispatch(new FetchListPageAction(arg.Skip ?? 0));
         return Task.CompletedTask;
     }
 
@@ -63,7 +59,7 @@ public partial class Index
     private async Task InsertRow()
     {
         Dispatcher.Dispatch(new AddApplicationToAddListItemAction());
-        await _grid.GoToPage(0);
+        // await _grid.GoToPage(0);
         await EditRow(State.Value.ItemToAdd);
     }
     

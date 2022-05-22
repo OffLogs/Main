@@ -31,4 +31,4 @@ public record struct ResetListAction;
 
 public record struct SelectApplicationAction(long? ApplicationId);
 
-public record struct FetchNextListPageAction(bool IsLoadIfEmpty);
+public record struct FetchListPageAction(int Skip);

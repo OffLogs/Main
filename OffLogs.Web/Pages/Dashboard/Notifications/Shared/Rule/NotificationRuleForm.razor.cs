@@ -77,7 +77,7 @@ public partial class NotificationRuleForm
 
         _editContext = new EditContext(Model);
         Dispatcher.Dispatch(new FetchMessageTemplatesAction(true));
-        Dispatcher.Dispatch(new FetchNextListPageAction(true));
+        Dispatcher.Dispatch(new FetchListPageAction());
     }
 
     protected override async Task OnParametersSetAsync()

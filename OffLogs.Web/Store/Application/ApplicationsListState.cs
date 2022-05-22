@@ -9,10 +9,10 @@ namespace OffLogs.Web.Store.Application;
 [FeatureState]
 public record ApplicationsListState
 {
+    public int PageSize { get; set; } = GlobalConstants.ListPageSize;
+    
     public bool IsLoading { get; set; }
-    
-    public int Page { get; set; }
-    
+
     public int TotalCount { get; set; }
     
     public bool HasMoreItems { get; set; }
