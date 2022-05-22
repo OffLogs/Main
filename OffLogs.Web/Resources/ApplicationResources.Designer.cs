@@ -79,6 +79,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Application info.
+        /// </summary>
+        internal static string ApplicationInfoModalTitle {
+            get {
+                return ResourceManager.GetString("ApplicationInfoModalTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The application has been deleted.
         /// </summary>
         internal static string ApplicationIsDeleted {

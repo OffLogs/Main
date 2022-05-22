@@ -42,4 +42,8 @@
     <data name="ApplicationWasUpdated" xml:space="preserve">
         <value>The application was updated</value>
     </data>
+    <data name="ApplicationInfoModalTitle" xml:space="preserve">
+        <value>Application info</value>
+    </data>
 </root>
+

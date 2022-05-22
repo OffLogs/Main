@@ -13,7 +13,7 @@ namespace OffLogs.Web.Constants
         
         public static readonly string Login = "/login";
         
-        public static readonly string Dashboard = "/dashboard";
+        public static readonly string Dashboard = "/dashboard/main";
         public static readonly string DashboardApplications = "/dashboard/applications";
         public static readonly string DashboardLogs = "/dashboard/logs";
         public static readonly string DashboardSettings = "/dashboard/settings";

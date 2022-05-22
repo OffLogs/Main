@@ -66,6 +66,17 @@
                         Click="@(args => EditRow(app))"
                         @onclick:stopPropagation="true">
                     </RadzenButton>
+                    
+                    @if (app.Id > 0)
+                    {
+                        <RadzenButton
+                            Icon="info"
+                            ButtonStyle="ButtonStyle.Light"
+                            Class="m-1"
+                            Click="@(args => ShowInfoModal(app))"
+                            @onclick:stopPropagation="true">
+                        </RadzenButton>
+                    }
                 </Template>
                 <EditTemplate Context="app">
 
@@ -84,14 +95,17 @@
                 Width="60px">
 
                 <Template Context="app">
-                    <RadzenButton
-                        ButtonStyle="ButtonStyle.Danger"
-                        Icon="delete"
-                        Size="ButtonSize.Small"
-                        Class="m-1"
-                        Click="@(args => DeleteRow(app))"
-                        @onclick:stopPropagation="true">
-                    </RadzenButton>
+                    @if (app.Id > 0)
+                    {
+                        <RadzenButton
+                            ButtonStyle="ButtonStyle.Danger"
+                            Icon="delete"
+                            Size="ButtonSize.Small"
+                            Class="m-1"
+                            Click="@(args => DeleteRow(app))"
+                            @onclick:stopPropagation="true">
+                        </RadzenButton>    
+                    }
                 </Template>
             </RadzenDataGridColumn>
         </Columns>

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using OffLogs.Api.Common.Dto.Entities;
+using OffLogs.Web.Pages.Dashboard.Application.Info;
 using OffLogs.Web.Resources;
 using OffLogs.Web.Store.Application;
 using Radzen;
@@ -125,5 +127,13 @@ public partial class Index
         });
     }
 
+    private async Task ShowInfoModal(ApplicationListItemDto app)
+    {
+        await DialogService.OpenAsync<AppInfoBlock>(
+            ApplicationResources.ApplicationInfoModalTitle,
+            new Dictionary<string, object>() { { "ApplicationId", app.Id } },
+            new DialogOptions { Width = "700px", Height = "570px", Resizable = true, Draggable = false }
+        );
+    }
     #endregion
 }
