@@ -3,35 +3,42 @@
 
 @using OffLogs.Web.Pages.Dashboard.Log.Parts
 @using OffLogs.Web.Resources
-@using OffLogs.Web.Shared.Ui.NavigationLayout
+@using OffLogs.Web.Shared.Ui.Form.DropDowns
 
 @inherits BaseComponent
 
-<NavigationLayout
-    MenuTitle="@LogResources.PageTitle"
-    MenuItems="@_menuItems"
-    ListItems="@_logsList"
-    BodyButtons="@_menuButtons"
-    OnSelectMenuItem="@OnApplicationSelected"
-    OnSelectListItem="async (menuEvent) => await OnSelectLogAsync(menuEvent)"
-    IsShowMoreBtn="@State.Value.HasMoreItems"
-    IsListLoading="@State.Value.IsLoadingList"
-    OnClickMoreBtn="async () => await OnClickMoreBtnAsync()"
-    IsReadOnly="@State.Value.IsLoadingList"
->
-    <BodyContent>
-        @if (State.Value.SelectedLog != null)
-        {
-            <LogInfoBlock LogId="@State.Value.SelectedLog.Id"/>    
-        }
-    </BodyContent>
-    <ListTopContent>
-        <ListFilter/>
-    </ListTopContent>
-</NavigationLayout>
+<RadzenCard class="m-3">
+    
+    <h2>@LogResources.PageTitle</h2>
 
-<LogStatisticModal
-    IsShowModal="@_isShowStatistic"
-    ApplicationId="@_selectedApplicationId"
-    OnClose="@(() => _isShowStatistic = false)"
-/>
+    <ApplicationsDropDown/>
+</RadzenCard>
+
+@* <NavigationLayout *@
+@*     MenuTitle="@LogResources.PageTitle" *@
+@*     MenuItems="@_menuItems" *@
+@*     ListItems="@_logsList" *@
+@*     BodyButtons="@_menuButtons" *@
+@*     OnSelectMenuItem="@OnApplicationSelected" *@
+@*     OnSelectListItem="async (menuEvent) => await OnSelectLogAsync(menuEvent)" *@
+@*     IsShowMoreBtn="@State.Value.HasMoreItems" *@
+@*     IsListLoading="@State.Value.IsLoadingList" *@
+@*     OnClickMoreBtn="async () => await OnClickMoreBtnAsync()" *@
+@*     IsReadOnly="@State.Value.IsLoadingList" *@
+@* > *@
+@*     <BodyContent> *@
+@*         @if (State.Value.SelectedLog != null) *@
+@*         { *@
+@*             <LogInfoBlock LogId="@State.Value.SelectedLog.Id"/>     *@
+@*         } *@
+@*     </BodyContent> *@
+@*     <ListTopContent> *@
+@*         <ListFilter/> *@
+@*     </ListTopContent> *@
+@* </NavigationLayout> *@
+@* *@
+@* <LogStatisticModal *@
+@*     IsShowModal="@_isShowStatistic" *@
+@*     ApplicationId="@_selectedApplicationId" *@
+@*     OnClose="@(() => _isShowStatistic = false)" *@
+@* /> *@
