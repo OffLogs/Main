@@ -23,9 +23,27 @@ public record ApplicationsListState
     
     public ICollection<ApplicationListItemDto> PaginatedList
     {
-        get => List.Skip(SkipItems).Take(GlobalConstants.ListPageSize).ToList();
+        get
+        {
+            var query = List.AsQueryable();
+            if (HasItemToAdd)
+            {
+                query = query.OrderBy(item => item.Id);
+            }
+            return query.Skip(SkipItems).Take(GlobalConstants.ListPageSize).ToList();
+        }
     }
 
+    public bool HasItemToAdd
+    {
+        get => ItemToAdd != null;
+    }
+    
+    public ApplicationListItemDto ItemToAdd
+    {
+        get => List.FirstOrDefault(item => item.Id == 0);
+    }
+    
     public long? SelectedApplicationId  { get; set; }
     
     public ApplicationsListState() { }

@@ -7,6 +7,10 @@ public record struct AddApplicationAction(string Name);
 
 public record struct AddApplicationListItemAction(ApplicationDto Item);
 
+public record struct AddApplicationToAddListItemAction();
+
+public record struct RemoveApplicationToAddListItemAction();
+
 public record struct UpdateApplicationAction(ApplicationDto Application);
 
 public record struct DeleteApplicationAction(long Id);

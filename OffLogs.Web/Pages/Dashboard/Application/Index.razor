@@ -4,6 +4,7 @@
 @using OffLogs.Web.Resources
 @using OffLogs.Api.Common.Dto.Entities
 @using Microsoft.AspNetCore.Components
+@using Newtonsoft.Json
 @using OffLogs.Business.Common.Constants
 
 @inherits BaseComponent
@@ -11,25 +12,24 @@
 <RadzenCard class="m-3">
     
     <h2>@ApplicationResources.PageTitle_Applications</h2>
-    
+
     <RadzenButton 
         Icon="add_circle_outline"
         class="mb-3" 
         Text="@ApplicationResources.AddApplication" 
         Click="@InsertRow" 
-        Disabled=@(_applicationToInsert != null) />
+        Disabled="@State.Value.HasItemToAdd" />
     
     <RadzenDataGrid
         TItem="ApplicationListItemDto"
         @ref="_grid"
         AllowSorting="true"
         EditMode="DataGridEditMode.Single"
-        RowUpdate="@OnUpdateRow" 
-        RowCreate="@OnCreateRow"
-        
+        RowUpdate="@OnUpdateRow"
+
         PageSize="@GlobalConstants.ListPageSize"
         Data="@State.Value.PaginatedList"
-        AllowPaging="false"
+        AllowPaging="true"
         IsLoading="@State.Value.IsLoading"
         Count="@State.Value.TotalCount"
         LoadData="@OnLoadApplicationsList"

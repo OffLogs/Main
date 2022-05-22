@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Fluxor;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Business.Common.Extensions;
+using OffLogs.Web.Core.Helpers;
 
 namespace OffLogs.Web.Store.Application;
 
@@ -92,4 +94,31 @@ public class ApplicationReducers
         newState.SelectedApplicationId = action.ApplicationId;
         return newState;
     }
+    
+    #region Add new item
+    
+    [ReducerMethod(typeof(AddApplicationToAddListItemAction))]
+    public static ApplicationsListState ReduceAddApplicationToAddListItemAction(ApplicationsListState state)
+    {
+        var newList = state.List.ToList();
+        newList.Add(new ApplicationListItemDto()
+        {
+            Id = 0
+        });
+        return state with
+        {
+            List = newList
+        };
+    }
+    
+    [ReducerMethod(typeof(RemoveApplicationToAddListItemAction))]
+    public static ApplicationsListState ReduceRemoveApplicationToAddListItemAction(ApplicationsListState state)
+    {
+        return state with
+        {
+            List = state.List.Where(item => item.Id != 0).ToList()
+        };
+    }
+    
+    #endregion
 }

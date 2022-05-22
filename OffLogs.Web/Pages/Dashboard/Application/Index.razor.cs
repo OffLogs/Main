@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using OffLogs.Api.Common.Dto.Entities;
-using OffLogs.Business.Common.Constants;
-using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Resources;
 using OffLogs.Web.Store.Application;
 using Radzen;
@@ -20,9 +16,7 @@ public partial class Index
     private IState<ApplicationsListState> State { get; set; }
 
     private  RadzenDataGrid<ApplicationListItemDto> _grid;
-
-    private ApplicationListItemDto _applicationToInsert = null;
-
+    
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -66,9 +60,9 @@ public partial class Index
     
     private async Task InsertRow()
     {
-        _applicationToInsert = new ApplicationListItemDto();
-        Debug.Log(_applicationToInsert);
-        await _grid.InsertRow(_applicationToInsert);
+        Dispatcher.Dispatch(new AddApplicationToAddListItemAction());
+        await _grid.GoToPage(0);
+        await EditRow(State.Value.ItemToAdd);
     }
     
     private async Task EditRow(ApplicationListItemDto app)
@@ -83,18 +77,15 @@ public partial class Index
 
     private void OnClickCancelEditMode(ApplicationListItemDto app)
     {
-        if (app == _applicationToInsert)
-        {
-            _applicationToInsert = null;
-        }
+        Dispatcher.Dispatch(new RemoveApplicationToAddListItemAction());
         _grid.CancelEditRow(app);
     }
 
     private async Task DeleteRow(ApplicationListItemDto app)
     {
-        if (app == _applicationToInsert)
+        if (State.Value.HasItemToAdd)
         {
-            _applicationToInsert = null;
+            Dispatcher.Dispatch(new RemoveApplicationToAddListItemAction());
             _grid.CancelEditRow(app);
             return;
         }
@@ -118,27 +109,21 @@ public partial class Index
 
     private async Task OnUpdateRow(ApplicationListItemDto app)
     {
-        if (app == _applicationToInsert)
+        Dispatcher.Dispatch(new RemoveApplicationToAddListItemAction());
+        if (app.Id > 0)
         {
-            _applicationToInsert = null;
+            await UpdateApplication(app);
+            return;
         }
-        await UpdateApplication(app);
-    }
 
-    private Task OnCreateRow(ApplicationListItemDto app)
-    {
-        if (app == _applicationToInsert)
-        {
-            _applicationToInsert = null;
-        }
+        Dispatcher.Dispatch(new RemoveApplicationToAddListItemAction());
         Dispatcher.Dispatch(new AddApplicationAction(app.Name));
         NotificationService.Notify(new NotificationMessage()
         {
             Severity = NotificationSeverity.Info,
             Summary = "New application was added"
         });
-        return Task.CompletedTask;
     }
-    
+
     #endregion
 }
