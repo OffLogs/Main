@@ -1,9 +1,14 @@
-﻿@inherits BaseLayout
+﻿@using OffLogs.Web.Shared.Ui.Toast
+
+@inherits BaseLayout
 
 @if (CommonState.Value.IsInitialized)
 {
     <RadzenLayout>
-        <NavMenu/>
+        @if (_isShowMainMenu)
+        {
+            <NavMenu/>
+        }
         <RadzenBody>
             <div class="container-fluid">
                 @Body

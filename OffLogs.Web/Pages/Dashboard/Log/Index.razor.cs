@@ -15,6 +15,8 @@ using OffLogs.Web.Shared.Ui.Form.CustomDropDown;
 using OffLogs.Web.Shared.Ui.NavigationLayout.Models;
 using OffLogs.Web.Store.Log;
 using OffLogs.Web.Store.Log.Models;
+using Radzen;
+using Radzen.Blazor;
 
 namespace OffLogs.Web.Pages.Dashboard.Log;
 
@@ -37,44 +39,11 @@ public partial class Index
 
     private string _search;
     
-    private ICollection<MenuItem> _menuItems
-    {
-        get
-        {
-            return ApplicationsState.Value.List.Select(
-                application => new MenuItem()
-                {
-                    Id = application.Id.ToString(),
-                    Title = application.Name
-                }
-            ).ToList();
-        }
-    }
-    
-    private ICollection<ListItem> _logsList
-    {
-        get
-        {
-            return State.Value.FilteredList.Select(
-                log => new ListItem()
-                {
-                    Id = log.Id.ToString(),
-                    SubTitle = log.Message.Truncate(32),
-                    RightTitle = log.LogTime.ToString("MM/dd/yyyy hh:mm tt"),
-                    Title = log.Level.GetLabel(),
-                    TitleColorType = log.Level.GetBootstrapColorType(),
-                    IconName = log.IsFavorite ? "check-alt" : ""
-                }
-            ).ToList();
-        }
-    }
-    
+    private RadzenDataGrid<LogListItemDto> _grid;
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-
-        SetLogMenuButtons();
-        Dispatcher.Dispatch(new OffLogs.Web.Store.Application.FetchListPageAction());
 
         State.StateChanged += OnStateChanged;
     }
@@ -105,53 +74,13 @@ public partial class Index
         Dispatcher.Dispatch(new SetIsLogFavoriteAction(State.Value.SelectedLog.Id, isFavorite));
     }
 
-    private Task LoadListAsync(bool isLoadNextPage = true)
-    {
-        if (!isLoadNextPage)
-        {
-            Dispatcher.Dispatch(new ResetListAction());
-        }
-        Dispatcher.Dispatch(new FetchNextListPageAction());
-        return Task.CompletedTask;
-    }
 
-    private async Task OnApplicationSelected(OnSelectEventArgs menuEvent)
+    private async Task OnApplicationSelected(ApplicationListItemDto app)
     {
-        _selectedApplicationId = long.Parse(menuEvent.MenuItem.Id);
-        Dispatcher.Dispatch(new SetApplication(_selectedApplicationId.Value));
-        await LoadListAsync(false);
-    }
-
-    private async Task OnSelectedApplication(DropDownListItem selectListItem)
-    {
-        await LoadListAsync(false);
-    }
-
-    private async Task OnSelectLogAsync(OnSelectEventArgs menuEvent)
-    {
-        Dispatcher.Dispatch(new SelectLogAction(
-            long.Parse(menuEvent.ListItem.Id)    
-        ));
-        await Task.CompletedTask;
-    }
-    
-    private async Task<ICollection<DropDownListItem>> OnLoadApplicationsAsync()
-    {
-        try
-        {
-            var response = await ApiService.GetApplicationsAsync();
-            return response.Items.Select(record => new DropDownListItem()
-            {
-                Id = $"{record.Id}",
-                Label = record.Name
-            }).ToList();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message, e);
-        }
-        StateHasChanged();
-        return default;
+        _selectedApplicationId = app?.Id;
+        Dispatcher.Dispatch(new SetApplication(app?.Id ?? 0));
+        await _grid.GoToPage(0);
+        Dispatcher.Dispatch(new FetchListPageAction());
     }
     
     private Task OnClickIsFavoriteAsync(LogListItemDto log)
@@ -160,17 +89,23 @@ public partial class Index
         return Task.CompletedTask;
     }
     
-    private async Task OnClickMoreBtnAsync()
-    {
-        await LoadListAsync();
-    }
-    
     private void ShowStatisticModal()
     {
         if (_selectedApplicationId.HasValue)
         {
             _isShowStatistic = true;    
         }
+    }
+
+    private Task OnLoadList(LoadDataArgs arg)
+    {
+        Dispatcher.Dispatch(new FetchListPageAction(arg.Skip ?? 0));
+        return Task.CompletedTask;
+    }
+
+    private void ShowInfoModal(LogListItemDto value)
+    {
+        throw new NotImplementedException();
     }
 }
 

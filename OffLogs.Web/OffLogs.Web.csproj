@@ -94,6 +94,7 @@
     <ItemGroup>
       <Folder Include="Pages\Dashboard\Settings\" />
       <Folder Include="Shared\Ui\Form\AutoComplete\" />
+      <Folder Include="Store\Log\Reducers" />
     </ItemGroup>
 
     <ItemGroup>

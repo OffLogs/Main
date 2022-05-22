@@ -13,7 +13,7 @@ public record struct UpdateFilteredItemsAction();
 
 public record struct FetchLogAction(long LogId);
 
-public record struct FetchNextListPageAction();
+public record struct FetchListPageAction(int SkipItems);
 
 public record struct ResetListAction();
 

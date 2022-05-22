@@ -48,7 +48,11 @@ public partial class BaseLayout
 
     protected bool _isShowMainMenu
     {
-        get => AuthState.Value.IsLoggedIn && NavigationManager.GetPath().ToLower().StartsWith(SiteUrl.Dashboard);
+        get
+        {
+            return AuthState.Value.IsLoggedIn
+                && NavigationManager.GetPath().ToLower().StartsWith(SiteUrl.DashboardBase);
+        }
     }
 
     protected bool _isShowReCaptcha = false;

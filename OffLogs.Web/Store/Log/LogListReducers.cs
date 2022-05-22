@@ -2,19 +2,18 @@
 using System.Linq;
 using Fluxor;
 using OffLogs.Api.Common.Dto.Entities;
-using OffLogs.Web.Store.Log.Models;
 
-namespace OffLogs.Web.Store.Log.Reducers;
+namespace OffLogs.Web.Store.Log;
 
 public class LogReducers
 {
     #region Logs list
     
-    [ReducerMethod(typeof(FetchNextListPageAction))]
-    public static LogsListState ReduceFetchApplicationListAction(LogsListState state)
+    [ReducerMethod]
+    public static LogsListState ReduceFetchApplicationListAction(LogsListState state, FetchListPageAction action)
     {
-        var newState = state.Clone();
-        newState.Page += 1;
+        var newState = state with {};
+        newState.SkipItems = action.SkipItems;
         newState.IsLoadingList = true;
         return newState;
     }
@@ -22,28 +21,32 @@ public class LogReducers
     [ReducerMethod(typeof(ResetListAction))]
     public static LogsListState ReduceResetListAction(LogsListState state)
     {
-        var newState = state.Clone();
-        newState.IsLoadingList = false;
-        newState.Page = 0;
-        newState.List = new List<LogListItemDto>();
-        newState.SelectedLog = null;
-        return newState;
+        return state with
+        {
+            IsLoadingList = false,
+            SkipItems = 0,
+            TotalCount = 0,
+            List = new List<LogListItemDto>(),
+            SelectedLog = null
+        };
     }
     
     [ReducerMethod]
     public static LogsListState ReduceFetchListResultAction(LogsListState state, FetchListResultAction action)
     {
-        var newState = state.Clone();
-        newState.IsLoadingList = false;
-        newState.List = newState.List.Concat(action.Data.Items).ToList();
-        newState.HasMoreItems = action.Data.IsHasMore;
-        return newState;
+        return state with
+        {
+            IsLoadingList = false,
+            List = action.Data.Items,
+            HasMoreItems = action.Data.IsHasMore,
+            TotalCount = action.Data.TotalCount
+        };
     }
     
     [ReducerMethod]
     public static LogsListState ReduceSetIsLogFavoriteAction(LogsListState state, SetIsLogFavoriteAction action)
     {
-        var newState = state.Clone();
+        var newState = state with {};
         newState.IsLoadingList = false;
         foreach (var log in newState.List)
         {
@@ -64,7 +67,7 @@ public class LogReducers
     [ReducerMethod]
     public static LogsListState ReduceSelectLogAction(LogsListState state, SelectLogAction action)
     {
-        var newState = state.Clone();
+        var newState = state with {};
         newState.SelectedLog = newState.List.FirstOrDefault(log => log.Id == action.Id);
         return newState;
     }
@@ -72,7 +75,7 @@ public class LogReducers
     [ReducerMethod]
     public static LogsListState ReduceSetListFilterAction(LogsListState state, SetListFilterAction action)
     {
-        var newState = state.Clone();
+        var newState = state with {};
         newState.Filter = action.Filter;
         return newState;
     }
@@ -80,7 +83,7 @@ public class LogReducers
     [ReducerMethod]
     public static LogsListState ReduceSetListFilterAction(LogsListState state, SetApplication action)
     {
-        var newState = state.Clone();
+        var newState = state with {};
         newState.ApplicationId = action.ApplicationId;
         return newState;
     }
@@ -88,7 +91,7 @@ public class LogReducers
     [ReducerMethod]
     public static LogsListState ReduceSetListFilterSearchAction(LogsListState state, SetListFilterSearchAction action)
     {
-        var newState = state.Clone();
+        var newState = state with {};
         newState.Filter = state.Filter with
         {
             Search = action.Search
@@ -99,7 +102,7 @@ public class LogReducers
     [ReducerMethod(typeof(UpdateFilteredItemsAction))]
     public static LogsListState ReduceSetListFilterSearchAction(LogsListState state)
     {
-        var newState = state.Clone();
+        var newState = state with {};
         newState.FilteredList = state.List.Where(item =>
         {
             if (string.IsNullOrEmpty(state.Filter.Search))
@@ -117,7 +120,7 @@ public class LogReducers
     [ReducerMethod]
     public static LogsListState ReduceAddLogDetailsAction(LogsListState state, AddLogDetailsAction action)
     {
-        var newState = state.Clone();
+        var newState = state with {};
         newState.LogsDetails.Add(action.Log);
         return newState;
     }
@@ -125,7 +128,7 @@ public class LogReducers
     [ReducerMethod]
     public static LogsListState ReduceResetLogDetailsAction(LogsListState state, ResetLogDetailsAction action)
     {
-        var newState = state.Clone();
+        var newState = state with {};
         newState.LogsDetails = new List<LogDto>();
         return newState;
     }

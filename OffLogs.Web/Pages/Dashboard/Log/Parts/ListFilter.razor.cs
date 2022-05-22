@@ -66,7 +66,7 @@ public partial class ListFilter
         _isFilterOpened = false;
         Dispatcher.Dispatch(new SetListFilterAction(_model));
         Dispatcher.Dispatch(new ResetListAction());
-        Dispatcher.Dispatch(new FetchNextListPageAction());
+        Dispatcher.Dispatch(new FetchListPageAction());
         await InvokeAsync(() => OnFilterChanged.InvokeAsync());
     }
     

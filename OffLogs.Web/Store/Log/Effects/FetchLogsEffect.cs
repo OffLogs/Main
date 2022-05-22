@@ -3,12 +3,13 @@ using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.Extensions.Logging;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log;
+using OffLogs.Web.Core.Utils;
 using OffLogs.Web.Services.Http;
 using OffLogs.Web.Store.Auth;
 
 namespace OffLogs.Web.Store.Log.Effects;
 
-public class FetchLogsEffect: Effect<FetchNextListPageAction>
+public class FetchLogsEffect: Effect<FetchListPageAction>
 {
     private readonly IState<LogsListState> _state;
     private readonly IState<AuthState> _authState;
@@ -28,19 +29,21 @@ public class FetchLogsEffect: Effect<FetchNextListPageAction>
         _logger = logger;
     }
 
-    public override async Task HandleAsync(FetchNextListPageAction pageAction, IDispatcher dispatcher)
+    public override async Task HandleAsync(FetchListPageAction pageAction, IDispatcher dispatcher)
     {
         try
         {
             if (_state.Value.ApplicationId == 0)
             {
                 _logger.LogDebug("Application was not selected. Skip fetching logs");
+                dispatcher.Dispatch(new ResetListAction());
                 return;
             }
 
+            var page = PaginationUtils.CalculatePage(_state.Value.SkipItems, _state.Value.PageSize);
             var response = await _apiService.GetLogsAsync(new GetListRequest
             {
-                Page = _state.Value.Page,
+                Page = page,
                 ApplicationId = _state.Value.ApplicationId,
                 LogLevel = _state.Value.Filter.LogLevel,
                 PrivateKeyBase64 = _authState.Value.PrivateKeyBase64
