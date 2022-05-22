@@ -31,7 +31,6 @@ public class FetchApplicationsEffect: Effect<FetchListPageAction>
     {   
         try
         {
-            Debug.Log(pageAction.Skip, _state.Value.PageSize, pageAction.Skip / _state.Value.PageSize);
             var page = (int) Math.Ceiling((decimal) (pageAction.Skip / _state.Value.PageSize));
             page = page == 0 ? 1 : page + 1;
             var response = await _apiService.GetApplicationsAsync(new GetListRequest

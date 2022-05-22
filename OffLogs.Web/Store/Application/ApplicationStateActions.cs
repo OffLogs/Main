@@ -23,12 +23,8 @@ public record struct FetchListResultAction(
     bool IsHasMore
 );
 
-public record struct SetPaginationInfoAction(int SkipItems);
-
 public record struct RemoveApplicationFromListAction(long Id);
 
 public record struct ResetListAction;
-
-public record struct SelectApplicationAction(long? ApplicationId);
 
 public record struct FetchListPageAction(int Skip);

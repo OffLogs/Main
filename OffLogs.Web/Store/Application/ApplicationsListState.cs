@@ -17,23 +17,24 @@ public record ApplicationsListState
     
     public bool HasMoreItems { get; set; }
 
-    public ICollection<ApplicationListItemDto> List { get; set; } = new List<ApplicationListItemDto>();
+    private ICollection<ApplicationListItemDto> _list { get; set; } = new List<ApplicationListItemDto>();
 
-    public int SkipItems { get; set; } = 0;
-    
-    public ICollection<ApplicationListItemDto> PaginatedList
+    public ICollection<ApplicationListItemDto> List
     {
         get
         {
-            var query = List.AsQueryable();
+            var query = _list.AsQueryable();
             if (HasItemToAdd)
             {
                 query = query.OrderBy(item => item.Id);
             }
-            return query.Skip(SkipItems).Take(GlobalConstants.ListPageSize).ToList();
+            return query.ToList();
         }
+        set => _list = value;
     }
 
+    public int SkipItems { get; set; } = 0;
+    
     public bool HasItemToAdd
     {
         get => ItemToAdd != null;
@@ -41,10 +42,8 @@ public record ApplicationsListState
     
     public ApplicationListItemDto ItemToAdd
     {
-        get => List.FirstOrDefault(item => item.Id == 0);
+        get => _list.FirstOrDefault(item => item.Id == 0);
     }
-    
-    public long? SelectedApplicationId  { get; set; }
-    
+
     public ApplicationsListState() { }
 }

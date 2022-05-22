@@ -47,7 +47,6 @@ public class ApplicationReducers
         newState.List = state.List.Where(
             i => i.Id != action.Id
         ).ToList();
-        newState.SelectedApplicationId = null;
         return newState;
     }
     
@@ -64,15 +63,7 @@ public class ApplicationReducers
         });
         return newState;
     }
-    
-    [ReducerMethod]
-    public static ApplicationsListState ReduceSetPaginationInfoAction(ApplicationsListState state, SetPaginationInfoAction action)
-    {
-        var newState = state.JsonClone<ApplicationsListState>();
-        newState.SkipItems = action.SkipItems;
-        return newState;
-    }
-    
+
     [ReducerMethod]
     public static ApplicationsListState ReduceUpdateApplicationActionAction(ApplicationsListState state, UpdateApplicationAction action)
     {
@@ -86,15 +77,7 @@ public class ApplicationReducers
         }
         return newState;
     }
-    
-    [ReducerMethod]
-    public static ApplicationsListState ReduceSelectApplicationAction(ApplicationsListState state, SelectApplicationAction action)
-    {
-        var newState = state.JsonClone<ApplicationsListState>();
-        newState.SelectedApplicationId = action.ApplicationId;
-        return newState;
-    }
-    
+
     #region Add new item
     
     [ReducerMethod(typeof(AddApplicationToAddListItemAction))]
