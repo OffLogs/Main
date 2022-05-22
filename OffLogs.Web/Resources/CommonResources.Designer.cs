@@ -97,6 +97,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create time.
+        /// </summary>
+        internal static string CreateTime {
+            get {
+                return ResourceManager.GetString("CreateTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Statistic.
         /// </summary>
         internal static string DashboardMenu_Statistic {
@@ -246,6 +255,15 @@ namespace OffLogs.Web.Resources {
         internal static string TableItemsNotFound {
             get {
                 return ResourceManager.GetString("TableItemsNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value.
+        /// </summary>
+        internal static string Value {
+            get {
+                return ResourceManager.GetString("Value", resourceCulture);
             }
         }
     }

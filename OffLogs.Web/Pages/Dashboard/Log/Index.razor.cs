@@ -9,6 +9,7 @@ using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Extensions;
 using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Extensions;
+using OffLogs.Web.Pages.Dashboard.Log.Parts;
 using OffLogs.Web.Resources;
 using OffLogs.Web.Services.Http;
 using OffLogs.Web.Shared.Ui.Form.CustomDropDown;
@@ -41,37 +42,9 @@ public partial class Index
     
     private RadzenDataGrid<LogListItemDto> _grid;
 
-    protected override async Task OnInitializedAsync()
+    private void SetIsFavorite(LogListItemDto log, bool isFavorite)
     {
-        await base.OnInitializedAsync();
-
-        State.StateChanged += OnStateChanged;
-    }
-
-    private void OnStateChanged(object sender, EventArgs e)
-    {
-        SetLogMenuButtons();
-    }
-    
-    private void SetLogMenuButtons()
-    {
-        _menuButtons.Clear();
-        if (State.Value.SelectedLog != null)
-        {
-            _menuButtons.Add(
-                State.Value.SelectedLog.IsFavorite
-                    ? new(LogResources.UnSetFavorite, "checked", () => SetIsFavorite(false))
-                    : new(LogResources.SetFavorite, "check", () => SetIsFavorite(true))
-            );
-        }
-        _menuButtons.Add(
-            new(LogResources.ShowStatistic, "chart-arrows-axis", ShowStatisticModal)    
-        );
-    }
-
-    private void SetIsFavorite(bool isFavorite)
-    {
-        Dispatcher.Dispatch(new SetIsLogFavoriteAction(State.Value.SelectedLog.Id, isFavorite));
+        Dispatcher.Dispatch(new SetIsLogFavoriteAction(log.Id, isFavorite));
     }
 
 
@@ -82,20 +55,6 @@ public partial class Index
         await _grid.GoToPage(0);
         Dispatcher.Dispatch(new FetchListPageAction());
     }
-    
-    private Task OnClickIsFavoriteAsync(LogListItemDto log)
-    {
-        Dispatcher.Dispatch(new SetIsLogFavoriteAction(log.Id, !log.IsFavorite));
-        return Task.CompletedTask;
-    }
-    
-    private void ShowStatisticModal()
-    {
-        if (_selectedApplicationId.HasValue)
-        {
-            _isShowStatistic = true;    
-        }
-    }
 
     private Task OnLoadList(LoadDataArgs arg)
     {
@@ -103,9 +62,13 @@ public partial class Index
         return Task.CompletedTask;
     }
 
-    private void ShowInfoModal(LogListItemDto value)
+    private async Task ShowInfoModal(LogListItemDto log)
     {
-        throw new NotImplementedException();
+        await DialogService.OpenAsync<LogInfoBlock>(
+            LogResources.LogInfo,
+            new Dictionary<string, object>() { { "LogId", log.Id } },
+            new DialogOptions { Width = "700px", Height = "570px", Resizable = true, Draggable = false }
+        );
     }
 }
 

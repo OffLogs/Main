@@ -1,52 +1,63 @@
-﻿@using OffLogs.Web.Services.Http
-@using OffLogs.Api.Common.Dto.Entities
+﻿@using OffLogs.Api.Common.Dto.Entities
 @using Fluxor
+@using OffLogs.Web.Resources
 @using OffLogs.Web.Store.Log
 
 @inherits BaseComponent
 
-@inject IApiService _apiService
 @inject IState<LogsListState> _state
 
 @if (_log == null)
 {
-    <Preloader />
+    <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"/>
 }
 else
 {
-    <div>
-        <b>Time:</b> @_log.LogTime.ToFullDateTime()
-    </div>
-    <div>
-        <b>Message:</b> @_log.Message
-    </div>
-    <div class="row mt-1">
-        @if (_log.Properties.Any())
+    <RadzenCard class="m-3">
+        <h3 class="h5">@_log.Message</h3>
+        <div class="mb-3">
+            <div>@LogResources.LogTime</div>
+            <b>@_log.LogTime.ToFullDateTime()</b>
+            <div>@CommonResources.CreateTime</div>
+            <b>@_log.CreateTime.ToFullDateTime()</b>
+        </div>
+
+        <h5>@LogResources.Properties</h5>
+        <RadzenDataGrid
+            TItem="KeyValuePair<string, string>"
+            AllowSorting="false"
+            Data="@_log.Properties"
+            PageSize="10"
+            AllowPaging="true"
+            class="mb-3">
+
+            <Columns>
+                <RadzenDataGridColumn TItem="KeyValuePair<string, string>" Property="Key" Title="@CommonResources.Name"/>
+                <RadzenDataGridColumn TItem="KeyValuePair<string, string>" Property="Value" Title="@CommonResources.Value"/>
+            </Columns>
+        </RadzenDataGrid>
+
+        @if (@_log.Traces.Any())
         {
-            <div class="col-6">
-                <b>Properties:</b>
-                @foreach (var property in _log.Properties)
-                {
-                    <div>
-                        <b>@property.Key:</b> @property.Value
-                    </div>
-                }
-            </div>    
+            <h5>@LogResources.Traces</h5>
+            <RadzenDataGrid
+                TItem="string"
+                AllowSorting="false"
+                Data="@_log.Traces"
+                PageSize="10"
+                AllowPaging="true"
+                class="mb-3">
+
+                <Columns>
+                    <RadzenDataGridColumn TItem="string" Property="Value" Title="@CommonResources.Value"/>
+                </Columns>
+            </RadzenDataGrid>
         }
-        @if (_log.Traces.Any())
-        {
-            <div class="col-6">
-                <b>Traces:</b>
-                @foreach (var trace in _log.Traces)
-                {
-                    <div>@trace</div>
-                }
-            </div>
-        }
-    </div>    
+    </RadzenCard>
 }
 
 @code {
+
     [Parameter]
     public long LogId { get; set; }
 
@@ -56,7 +67,7 @@ else
     {
         return Task.CompletedTask;
     }
-    
+
     protected override async Task OnParametersSetAsync()
     {
         await base.OnParametersSetAsync();
@@ -66,4 +77,5 @@ else
         }
         Dispatcher.Dispatch(new FetchLogAction(LogId));
     }
+
 }

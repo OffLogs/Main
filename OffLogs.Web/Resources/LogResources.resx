@@ -42,4 +42,16 @@
     <data name="FilterRecords" xml:space="preserve">
         <value>Filter records</value>
     </data>
+    <data name="LogTime" xml:space="preserve">
+        <value>Log time</value>
+    </data>
+    <data name="Properties" xml:space="preserve">
+        <value>Properties</value>
+    </data>
+    <data name="Traces" xml:space="preserve">
+        <value>Traces</value>
+    </data>
+    <data name="LogInfo" xml:space="preserve">
+        <value>Log Info</value>
+    </data>
 </root>

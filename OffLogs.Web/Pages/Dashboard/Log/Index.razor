@@ -24,7 +24,7 @@
     <RadzenDataGrid
         @ref="@_grid"
         TItem="LogListItemDto"
-        AllowSorting="true"
+        AllowSorting="false"
         EditMode="DataGridEditMode.Single"
         PageSize="@State.Value.PageSize"
         Data="@State.Value.List"
@@ -61,7 +61,7 @@
                 Context="app" Filterable="false"
                 Sortable="false"
                 TextAlign="TextAlign.Center"
-                Width="80px">
+                Width="100px">
 
                 <Template Context="app">
                     @if (app.Id > 0)
@@ -74,37 +74,28 @@
                             @onclick:stopPropagation="true">
                         </RadzenButton>
                     }
+                    @if (app.IsFavorite)
+                    {
+                        <RadzenButton
+                            Icon="favorite"
+                            ButtonStyle="ButtonStyle.Danger"
+                            Class="m-1"
+                            Click="@(() => SetIsFavorite(app, false))"
+                            @onclick:stopPropagation="true">
+                        </RadzenButton>
+                    }
+                    else
+                    {
+                        <RadzenButton
+                            Icon="favorite_border"
+                            ButtonStyle="ButtonStyle.Light"
+                            Class="m-1"
+                            Click="@(() => SetIsFavorite(app, true))"
+                            @onclick:stopPropagation="true">
+                        </RadzenButton>
+                    }
                 </Template>
             </RadzenDataGridColumn>
         </Columns>
     </RadzenDataGrid>
 </RadzenCard>
-
-@* <NavigationLayout *@
-@*     MenuTitle="@LogResources.PageTitle" *@
-@*     MenuItems="@_menuItems" *@
-@*     ListItems="@_logsList" *@
-@*     BodyButtons="@_menuButtons" *@
-@*     OnSelectMenuItem="@OnApplicationSelected" *@
-@*     OnSelectListItem="async (menuEvent) => await OnSelectLogAsync(menuEvent)" *@
-@*     IsShowMoreBtn="@State.Value.HasMoreItems" *@
-@*     IsListLoading="@State.Value.IsLoadingList" *@
-@*     OnClickMoreBtn="async () => await OnClickMoreBtnAsync()" *@
-@*     IsReadOnly="@State.Value.IsLoadingList" *@
-@* > *@
-@*     <BodyContent> *@
-@*         @if (State.Value.SelectedLog != null) *@
-@*         { *@
-@*             <LogInfoBlock LogId="@State.Value.SelectedLog.Id"/>     *@
-@*         } *@
-@*     </BodyContent> *@
-@*     <ListTopContent> *@
-@*         <ListFilter/> *@
-@*     </ListTopContent> *@
-@* </NavigationLayout> *@
-@* *@
-@* <LogStatisticModal *@
-@*     IsShowModal="@_isShowStatistic" *@
-@*     ApplicationId="@_selectedApplicationId" *@
-@*     OnClose="@(() => _isShowStatistic = false)" *@
-@* /> *@
