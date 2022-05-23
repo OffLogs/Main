@@ -6,6 +6,7 @@
 @using Microsoft.AspNetCore.Components
 @using OffLogs.Business.Common.Constants
 @using OffLogs.Web.Core.Extensions
+@using OffLogs.Web.Pages.Dashboard.Log.Parts
 
 @inherits BaseComponent
 
@@ -13,17 +14,7 @@
 
     <h2>@LogResources.PageTitle</h2>
 
-    <div class="row">
-        <div class="col col-md-6">
-            <ApplicationsDropDown
-                ValueChanged="OnApplicationSelected"/>
-        </div>
-        <div class="col">
-            <LogLevelDropDown
-                ValueChanged="arg => { }"
-            />
-        </div>
-    </div>
+    <ListFilter OnFilterChanged="OnFilterChanged"/>
 
     <RadzenDataGrid
         @ref="@_grid"

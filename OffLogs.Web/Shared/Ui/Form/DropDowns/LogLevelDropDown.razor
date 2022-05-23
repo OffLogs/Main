@@ -10,7 +10,9 @@
     Data="@_list"
     TextProperty="Name"
     ValueProperty="Id"
-    @bind-Value="@_value">
+    Placeholder="@Placeholder"
+    Value="@_value"
+    ValueChanged="OnItemSelected">
 
     <Template Context="level">
         <text>@level</text>

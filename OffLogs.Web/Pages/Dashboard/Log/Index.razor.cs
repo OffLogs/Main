@@ -33,8 +33,6 @@ public partial class Index
     private IState<OffLogs.Web.Store.Application.ApplicationsListState> ApplicationsState { get; set; }
     
     private bool _isShowStatistic = false;
-    
-    private long? _selectedApplicationId;
 
     private ICollection<HeaderMenuButton> _menuButtons = new List<HeaderMenuButton>();
 
@@ -45,15 +43,6 @@ public partial class Index
     private void SetIsFavorite(LogListItemDto log, bool isFavorite)
     {
         Dispatcher.Dispatch(new SetIsLogFavoriteAction(log.Id, isFavorite));
-    }
-
-
-    private async Task OnApplicationSelected(ApplicationListItemDto app)
-    {
-        _selectedApplicationId = app?.Id;
-        Dispatcher.Dispatch(new SetApplication(app?.Id ?? 0));
-        await _grid.GoToPage(0);
-        Dispatcher.Dispatch(new FetchListPageAction());
     }
 
     private Task OnLoadList(LoadDataArgs arg)
@@ -69,6 +58,12 @@ public partial class Index
             new Dictionary<string, object>() { { "LogId", log.Id } },
             new DialogOptions { Width = "700px", Height = "570px", Resizable = true, Draggable = false }
         );
+    }
+
+    private async Task OnFilterChanged(object arg)
+    {
+        await _grid.GoToPage(0);
+        Dispatcher.Dispatch(new FetchListPageAction());
     }
 }
 

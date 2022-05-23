@@ -7,6 +7,7 @@ using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application;
 using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Core.Utils;
+using OffLogs.Web.Resources;
 using OffLogs.Web.Services.Http;
 using Radzen;
 
@@ -15,15 +16,21 @@ namespace OffLogs.Web.Shared.Ui.Form.DropDowns;
 public partial class ApplicationsDropDown
 {
     [Parameter]
-    public ApplicationListItemDto Value
+    public long Value
     {
-        get => _selectedItem;
-        set => _selectedItem = value;
+        get => _selectedId;
+        set => _selectedId = value;
     }
     
     [Parameter]
-    public EventCallback<ApplicationListItemDto> ValueChanged { get; set; }
+    public EventCallback<long> ValueChanged { get; set; }
 
+    [Parameter]
+    public EventCallback<ApplicationListItemDto> SelectedItemChanged { get; set; }
+    
+    [Parameter]
+    public string Placeholder { get; set; } = CommonResources.SelectApplication;
+    
     [Inject]
     public ILogger<ApplicationsDropDown> _logger { get; set; }
     
@@ -46,18 +53,7 @@ public partial class ApplicationsDropDown
 
     private ApplicationListItemDto _selectedItem;
 
-    private long _selectedId
-    {
-        get
-        {
-            return _selectedItem?.Id ?? 0;
-        }
-        set
-        {
-            _selectedItem = _list.FirstOrDefault(item => item.Id == value);
-            ValueChanged.InvokeAsync(_selectedItem);
-        }
-    }
+    private long _selectedId = 0;
 
     protected override async Task OnInitializedAsync()
     {
@@ -103,10 +99,11 @@ public partial class ApplicationsDropDown
             _list = _list.Concat(response.Items).ToList();
         }
     }
-
-    private async Task OnItemSelected(long args)
+    
+    private void OnValueChanged(long selectedId)
     {
-        Debug.Log(args);
-        await Task.CompletedTask;
+        _selectedItem = _list.FirstOrDefault(item => item.Id == selectedId);
+        SelectedItemChanged.InvokeAsync(_selectedItem);
+        ValueChanged.InvokeAsync(selectedId);
     }
 }

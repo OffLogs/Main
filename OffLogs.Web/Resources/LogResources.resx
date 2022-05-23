@@ -54,4 +54,10 @@
     <data name="LogInfo" xml:space="preserve">
         <value>Log Info</value>
     </data>
+    <data name="FromTime" xml:space="preserve">
+        <value>From time</value>
+    </data>
+    <data name="ToTime" xml:space="preserve">
+        <value>To time</value>
+    </data>
 </root>

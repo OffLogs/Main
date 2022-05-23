@@ -33,7 +33,7 @@ public class FetchLogsEffect: Effect<FetchListPageAction>
     {
         try
         {
-            if (_state.Value.ApplicationId == 0)
+            if (_state.Value.Filter.ApplicationId == 0)
             {
                 _logger.LogDebug("Application was not selected. Skip fetching logs");
                 dispatcher.Dispatch(new ResetListAction());
@@ -44,8 +44,11 @@ public class FetchLogsEffect: Effect<FetchListPageAction>
             var response = await _apiService.GetLogsAsync(new GetListRequest
             {
                 Page = page,
-                ApplicationId = _state.Value.ApplicationId,
+                ApplicationId = _state.Value.Filter.ApplicationId,
                 LogLevel = _state.Value.Filter.LogLevel,
+                IsFavorite = _state.Value.Filter.IsOnlyFavorite,
+                CreateTimeFrom = _state.Value.Filter.CreateTimeFrom,
+                CreateTimeTo = _state.Value.Filter.CreateTimeTo,
                 PrivateKeyBase64 = _authState.Value.PrivateKeyBase64
             });
             dispatcher.Dispatch(new FetchListResultAction(response));

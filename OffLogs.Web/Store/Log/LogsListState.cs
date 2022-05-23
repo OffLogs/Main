@@ -29,8 +29,6 @@ public record LogsListState
     
     public ICollection<LogDto> LogsDetails { get; set; } = new List<LogDto>();
 
-    public long ApplicationId { get; set; }
-    
     public LogFilterModel Filter { get; set; } = new();
 
     public LogsListState() { }

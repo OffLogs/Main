@@ -54,6 +54,9 @@
     <data name="Save" xml:space="preserve">
         <value>Save</value>
     </data>
+    <data name="Apply" xml:space="preserve">
+        <value>Apply</value>
+    </data>
     <data name="Add" xml:space="preserve">
         <value>Add</value>
     </data>
@@ -86,5 +89,8 @@
     </data>
     <data name="Value" xml:space="preserve">
         <value>Value</value>
+    </data>
+    <data name="SelectApplication" xml:space="preserve">
+        <value>Select application...</value>
     </data>
 </root>

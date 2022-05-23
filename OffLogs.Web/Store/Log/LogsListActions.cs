@@ -23,8 +23,6 @@ public record struct SelectLogAction(long? Id);
 
 public record struct SetIsLogFavoriteAction(long LogId, bool IsFavorite);
 
-public record struct SetApplication(long ApplicationId);
-
 public record struct SetListFilterAction(LogFilterModel Filter);
 
 public record struct SetListFilterSearchAction(string Search);

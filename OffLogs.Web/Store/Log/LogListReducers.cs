@@ -75,19 +75,13 @@ public class LogReducers
     [ReducerMethod]
     public static LogsListState ReduceSetListFilterAction(LogsListState state, SetListFilterAction action)
     {
-        var newState = state with {};
-        newState.Filter = action.Filter;
+        var newState = state with
+        {
+            Filter = action.Filter
+        };
         return newState;
     }
-    
-    [ReducerMethod]
-    public static LogsListState ReduceSetListFilterAction(LogsListState state, SetApplication action)
-    {
-        var newState = state with {};
-        newState.ApplicationId = action.ApplicationId;
-        return newState;
-    }
-    
+
     [ReducerMethod]
     public static LogsListState ReduceSetListFilterSearchAction(LogsListState state, SetListFilterSearchAction action)
     {

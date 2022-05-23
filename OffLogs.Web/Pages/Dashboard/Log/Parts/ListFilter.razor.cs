@@ -19,8 +19,6 @@ public partial class ListFilter
     
     [Parameter]
     public EventCallback OnFilterChanged { get; set; }
-    
-    private bool _isFilterOpened { get; set; }
 
     private LogFilterModel _model;
 
@@ -39,8 +37,6 @@ public partial class ListFilter
     {
         get => _model.IsOnlyFavorite || _model.LogLevel.HasValue;
     }
-    
-    private static ICollection<DropDownListItem> _logLevelDownListItems => LogLevel.Warning.ToDropDownList();
 
     protected override async Task OnInitializedAsync()
     {
@@ -49,30 +45,18 @@ public partial class ListFilter
         _model = State.Value.Filter;
     }
 
-    private void OnChangeLogLevel(DropDownListItem item)
-    {
-        if (item == null)
-        {
-            _model.LogLevel = null;
-            return;
-        }
-
-        Enum.TryParse<LogLevel>(item?.Id, out var logLevel);
-        _model.LogLevel = logLevel;
-    }
-    
     private async Task OnSave()
     {
-        _isFilterOpened = false;
         Dispatcher.Dispatch(new SetListFilterAction(_model));
-        Dispatcher.Dispatch(new ResetListAction());
-        Dispatcher.Dispatch(new FetchListPageAction());
         await InvokeAsync(() => OnFilterChanged.InvokeAsync());
     }
     
     private async Task Reset()
     {
-        _model = new LogFilterModel();
+        _model = new LogFilterModel()
+        {
+            ApplicationId = _model.ApplicationId
+        };
         await OnSave();
     }
 }

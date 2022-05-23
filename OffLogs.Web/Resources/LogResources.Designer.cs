@@ -70,6 +70,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to From time.
+        /// </summary>
+        internal static string FromTime {
+            get {
+                return ResourceManager.GetString("FromTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Log Info.
         /// </summary>
         internal static string LogInfo {
@@ -147,6 +156,15 @@ namespace OffLogs.Web.Resources {
         internal static string ShowStatistic {
             get {
                 return ResourceManager.GetString("ShowStatistic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To time.
+        /// </summary>
+        internal static string ToTime {
+            get {
+                return ResourceManager.GetString("ToTime", resourceCulture);
             }
         }
         

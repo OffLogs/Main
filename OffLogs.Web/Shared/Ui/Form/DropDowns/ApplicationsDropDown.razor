@@ -14,7 +14,9 @@
     Data="@_listToShow"
     TextProperty="Name"
     ValueProperty="Id"
-    @bind-Value="@_selectedId">
+    Placeholder="@Placeholder"
+    Value="@_selectedId"
+    ValueChanged="OnValueChanged">
 
     <Columns>
         <RadzenDropDownDataGridColumn Property="Id" Title="ID"/>
