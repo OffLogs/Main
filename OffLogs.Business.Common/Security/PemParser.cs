@@ -1,5 +1,5 @@
 ﻿using System.Text.RegularExpressions;
-using OffLogs.Business.Common.Extensions;
+using OffLogs.Business.Extensions;
 
 namespace OffLogs.Business.Common.Security;
 

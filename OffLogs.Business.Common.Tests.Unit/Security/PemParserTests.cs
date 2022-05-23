@@ -3,6 +3,7 @@ using System.Text;
 using OffLogs.Business.Common.Encryption;
 using OffLogs.Business.Common.Extensions;
 using OffLogs.Business.Common.Security;
+using OffLogs.Business.Extensions;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.OpenSsl;

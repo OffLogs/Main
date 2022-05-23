@@ -5,7 +5,7 @@ using OffLogs.Api.Common.Dto.Entities;
 namespace OffLogs.Web.Store.Notification;
 
 [FeatureState]
-public class NotificationRuleState
+public record NotificationRuleState
 {
     public bool IsLoading { get; set; }
 

@@ -10,6 +10,7 @@ using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Message;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule;
 using OffLogs.Business.Common.Constants.Notificatiions;
 using OffLogs.Business.Common.Extensions;
+using OffLogs.Business.Extensions;
 using OffLogs.Web.Core.Extensions;
 using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Resources;

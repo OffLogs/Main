@@ -12,13 +12,13 @@ namespace OffLogs.Api.Common.Dto
         public override ICollection<TItem> Items { get; set; }
 
         [JsonPropertyName("totalCount")]
-        public override long TotalCount { get; set; }
+        public override int TotalCount { get; set; }
 
         public ListDto()
         {
         }
         
-        public ListDto(ICollection<TItem> items, long count) : base(items, count)
+        public ListDto(ICollection<TItem> items, int count) : base(items, count)
         {
         }
     }

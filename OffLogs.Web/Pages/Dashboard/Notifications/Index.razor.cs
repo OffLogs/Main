@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using OffLogs.Business.Common.Extensions;
+using OffLogs.Business.Extensions;
 using OffLogs.Web.Pages.Dashboard.Notifications.Shared;
 using OffLogs.Web.Pages.Dashboard.Notifications.Shared.Rule;
 using OffLogs.Web.Resources;
