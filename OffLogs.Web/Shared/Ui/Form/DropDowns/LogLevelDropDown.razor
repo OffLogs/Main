@@ -1,0 +1,18 @@
+﻿@using OffLogs.Business.Common.Constants
+@using OffLogs.Business.Common.Extensions
+
+<RadzenDropDown
+    AllowClear="true"
+    TValue="LogLevel"
+    Class="w-100"
+    AllowFiltering="false"
+    AllowVirtualization="false"
+    Data="@_list"
+    TextProperty="Name"
+    ValueProperty="Id"
+    @bind-Value="@_value">
+
+    <Template Context="level">
+        <text>@level</text>
+    </Template>
+</RadzenDropDown>
