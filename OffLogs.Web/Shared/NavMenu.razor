@@ -9,57 +9,36 @@
 
 <RadzenSidebar>
     <RadzenPanelMenu>
-        <RadzenPanelMenuItem Text="Dashboard" Path="@SiteUrl.Dashboard" ></RadzenPanelMenuItem>
-        <RadzenPanelMenuItem Text="Applications" Path="@SiteUrl.DashboardApplications"></RadzenPanelMenuItem>
-        <RadzenPanelMenuItem Text="Logs" Path="@SiteUrl.DashboardLogs"></RadzenPanelMenuItem>
-        <RadzenPanelMenuItem Text="Notifications" Path="@SiteUrl.DashboardNotifications"></RadzenPanelMenuItem>
-        <RadzenPanelMenuItem Text="Settings" Path="@SiteUrl.DashboardSettings"></RadzenPanelMenuItem>
-        
-        @* <RadzenPanelMenuItem Text="More" Icon="dashboard-web"> *@
-        @*     <RadzenPanelMenuItem Text="Item1"></RadzenPanelMenuItem> *@
-        @*     <RadzenPanelMenuItem Text="Item2"></RadzenPanelMenuItem> *@
-        @*     <RadzenPanelMenuItem Text="More items"> *@
-        @*         <RadzenPanelMenuItem Text="More sub items"> *@
-        @*             <RadzenPanelMenuItem Text="Item1"></RadzenPanelMenuItem> *@
-        @*             <RadzenPanelMenuItem Text="Item2"></RadzenPanelMenuItem> *@
-        @*         </RadzenPanelMenuItem> *@
-        @*     </RadzenPanelMenuItem> *@
-        @* </RadzenPanelMenuItem> *@
+        <RadzenPanelMenuItem 
+            Icon="dashboard"
+            Text="Dashboard"
+            Path="@SiteUrl.Dashboard"/>
+        <RadzenPanelMenuItem 
+            Icon="apps"
+            Text="Applications" 
+            Path="@SiteUrl.DashboardApplications"/>
+        <RadzenPanelMenuItem 
+            Icon="fact_check" 
+            Text="Logs" 
+            Path="@SiteUrl.DashboardLogs"/>
+        <RadzenPanelMenuItem
+            Icon="notifications_active" 
+            Text="Notifications">
+            <RadzenPanelMenuItem
+                Icon="rule"
+                Text="@NotificationResources.MenuItem_Rules" 
+                Path="@SiteUrl.DashboardNotificationRules"/>
+            <RadzenPanelMenuItem 
+                Icon="history_edu"
+                Text="@NotificationResources.MenuItem_MessageTemplates" 
+                Path="@SiteUrl.DashboardNotificationTemplates"/>
+        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem 
+            Icon="settings"
+            Text="Settings" 
+            Path="@SiteUrl.DashboardSettings"/>
     </RadzenPanelMenu>
 </RadzenSidebar>
-
-@* <div class="w-left-menu"> *@
-@*     <div class="w-main-menu"> *@
-@*         <NavLink href="@SiteUrl.Dashboard" Match="NavLinkMatch.All"> *@
-@*             <Icon Name="dashboard-web" /> *@
-@*         </NavLink> *@
-@*         <NavLink href="@SiteUrl.DashboardApplications" Match="NavLinkMatch.All"> *@
-@*             <Icon Name="box" /> *@
-@*         </NavLink> *@
-@*         <NavLink href="@SiteUrl.DashboardLogs" Match="NavLinkMatch.All"> *@
-@*             <Icon Name="inbox" /> *@
-@*         </NavLink> *@
-@*         <NavLink href="@SiteUrl.DashboardNotifications" Match="NavLinkMatch.All"> *@
-@*             <Icon Name="notification" /> *@
-@*         </NavLink> *@
-@*         <NavLink href="@SiteUrl.DashboardSettings" Match="NavLinkMatch.All"> *@
-@*             <Icon Name="settings-alt" /> *@
-@*         </NavLink> *@
-@*         <a @onclick="@(() => IsShowLogoutConfirmation = true)" *@
-@*            @onclick:preventDefault *@
-@*            href="#" *@
-@*            class="ml-md-auto"> *@
-@*             <Icon Name="logout"/> *@
-@*         </a> *@
-@*     </div> *@
-@* </div> *@
-@* *@
-@* <ConfirmationModal *@
-@*     Title="@CommonResources.ConfirmationModal_AreYouSureYouWantToLogout" *@
-@*     IsShow="@IsShowLogoutConfirmation" *@
-@*     OnCancel="@(() => IsShowLogoutConfirmation = false)" *@
-@*     OnOk="OnLogout" *@
-@* /> *@
 
 @code 
 {
