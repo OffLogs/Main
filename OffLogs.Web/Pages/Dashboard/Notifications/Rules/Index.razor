@@ -1,4 +1,37 @@
 ﻿@page "/dashboard/notifications/rules"
 @page "/{locale}/dashboard/notifications/rules"
 
+@using OffLogs.Web.Resources
+@using OffLogs.Api.Common.Dto.Entities
+@using Fluxor
+
 @inherits BaseComponent
+
+<RadzenCard class="m-3">
+    
+    <h2>@NotificationResources.MenuItem_Rules</h2>
+    
+    <RadzenDataGrid
+        TItem="NotificationRuleDto"
+        @ref="_grid"
+        AllowSorting="false"
+
+        SelectionMode="DataGridSelectionMode.Single"
+        Data="@_state.Value.Rules"
+        AllowPaging="true"
+        IsLoading="@_state.Value.IsLoading"
+        ShowPagingSummary="false">
+        
+        <Columns>
+            <RadzenDataGridColumn TItem="NotificationRuleDto" Property="Id" Title="ID"/>
+            <RadzenDataGridColumn TItem="NotificationRuleDto" Property="Title" Title="Title"/>
+            <RadzenDataGridColumn TItem="NotificationRuleDto" Property="UpdateTime" Title="Update Time">
+                <Template Context="template">
+                    @template.UpdateTime.ToFullDateTime()
+                </Template>
+            </RadzenDataGridColumn>
+        </Columns>
+        
+    </RadzenDataGrid>
+    
+</RadzenCard>
