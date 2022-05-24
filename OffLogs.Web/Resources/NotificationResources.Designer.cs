@@ -322,6 +322,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The rule was deleted.
+        /// </summary>
+        internal static string Rules_RuleDeleted {
+            get {
+                return ResourceManager.GetString("Rules_RuleDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Title.
         /// </summary>
         internal static string Rules_RuleTitle {

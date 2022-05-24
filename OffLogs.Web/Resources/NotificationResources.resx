@@ -102,6 +102,9 @@
     <data name="Rules_HowToCombineConditions" xml:space="preserve">
         <value>How to combine conditions</value>
     </data>
+    <data name="Rules_RuleDeleted" xml:space="preserve">
+        <value>The rule was deleted</value>
+    </data>
     <data name="Condition_FieldType" xml:space="preserve">
         <value>Select field</value>
     </data>

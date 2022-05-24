@@ -22,6 +22,12 @@ public partial class ListFilter
 
     private LogFilterModel _model;
 
+    private LogLevel _logLevel
+    {
+        get => _model.LogLevel ?? default;
+        set => _model.LogLevel = value;
+    }
+
     private string _search
     {
         get => _model.Search;

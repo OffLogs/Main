@@ -1,0 +1,27 @@
+﻿@using OffLogs.Web.Resources
+@using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
+@inherits BaseComponent
+
+<RadzenCard class="m-3">
+
+    <h3 class="h5">
+        @if (_isNew)
+        {
+            @NotificationResources.AddNewRule
+        }
+        else
+        {
+            <text>@_model.Title</text>
+        }
+    </h3>
+
+    <RadzenTemplateForm TItem="SetRuleRequest" Data="@_model" Submit="HandleSubmit">
+
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+
+        
+        
+    </RadzenTemplateForm>
+
+</RadzenCard>

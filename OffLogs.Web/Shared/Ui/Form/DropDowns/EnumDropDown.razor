@@ -1,9 +1,11 @@
 ﻿@using OffLogs.Business.Common.Constants
 @using OffLogs.Business.Common.Extensions
 
+@typeparam TItem where TItem: struct, IConvertible
+
 <RadzenDropDown
     AllowClear="true"
-    TValue="LogLevel"
+    TValue="TItem"
     Class="w-100"
     AllowFiltering="false"
     AllowVirtualization="false"

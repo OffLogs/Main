@@ -1,6 +1,7 @@
 ﻿@using OffLogs.Web.Resources
 @using OffLogs.Web.Constants.Bootstrap
 @using OffLogs.Web.Shared.Ui.Form.DropDowns
+@using OffLogs.Business.Common.Constants
 
 @inherits BaseComponent
 
@@ -14,7 +15,9 @@
 <h4>2. @LogResources.FilterRecords</h4>
 <div class="row mb-3">
     <div class="col col-md-6">
-        <LogLevelDropDown @bind-Value="@_model.LogLevel"/>
+        <EnumDropDown
+            TItem="LogLevel"
+            @bind-Value="@_logLevel"/>
     </div>
     <div class="col col-md-6 d-flex align-items-center">
         <RadzenSwitch @bind-Value="@_model.IsOnlyFavorite"/>

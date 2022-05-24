@@ -3,7 +3,6 @@
 
 @using OffLogs.Web.Resources
 @using OffLogs.Api.Common.Dto.Entities
-@using Fluxor
 
 @inherits BaseComponent
 
@@ -20,6 +19,7 @@
         Data="@_state.Value.Rules"
         AllowPaging="true"
         IsLoading="@_state.Value.IsLoading"
+        ValueChanged="async (items) => await OnItemSelectedAsync(items.FirstOrDefault())"
         ShowPagingSummary="false">
         
         <Columns>
