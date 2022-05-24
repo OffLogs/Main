@@ -83,7 +83,7 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
             TemplateId = 0;
             ApplicationId = null;
             Type = defaultType.ToString();
-            LogicOperator = null;
+            LogicOperator = string.Empty;
             Period = defaultPeriod;
             Conditions = new List<SetConditionRequest>();
         }

@@ -31,6 +31,9 @@ public partial class ApplicationsDropDown
     [Parameter]
     public string Placeholder { get; set; } = CommonResources.SelectApplication;
     
+    [Parameter]
+    public string Class { get; set; }
+    
     [Inject]
     public ILogger<ApplicationsDropDown> _logger { get; set; }
     
@@ -100,10 +103,11 @@ public partial class ApplicationsDropDown
         }
     }
     
-    private void OnValueChanged(long selectedId)
+    private Task OnValueChanged(long selectedId)
     {
         _selectedItem = _list.FirstOrDefault(item => item.Id == selectedId);
         SelectedItemChanged.InvokeAsync(_selectedItem);
         ValueChanged.InvokeAsync(selectedId);
+        return Task.CompletedTask;
     }
 }

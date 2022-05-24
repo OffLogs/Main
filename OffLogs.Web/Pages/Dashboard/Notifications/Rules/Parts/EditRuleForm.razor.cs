@@ -33,16 +33,32 @@ public partial class EditRuleForm
 
     [Parameter]
     public long Id { get; set; }
-    
-    [Parameter]
-    public EventCallback<long> OnSaved { get; set; }
-    
+
     public SetRuleRequest _model = new() { Type = NotificationType.Email.ToString() };
     private EditContext _editContext;
     private MyButton _btnSubmit;
     private MyEditForm _editForm;
     private bool _isLoading = false;
     private bool _isShowDeleteModal = false;
+
+    private LogicOperatorType _logicOperatorType
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(_model.LogicOperator))
+            {
+                return default;
+            }
+            return Enum.Parse<LogicOperatorType>(_model.LogicOperator);
+        }
+        set => _model.LogicOperator = value.ToString();
+    }
+    
+    private long _applicationId
+    {
+        get => _model.ApplicationId ?? default;
+        set => _model.ApplicationId = value;
+    }
 
     private bool _isNew => Id == 0;
     private bool _canAddCondition => _model.Conditions.Count < 10;

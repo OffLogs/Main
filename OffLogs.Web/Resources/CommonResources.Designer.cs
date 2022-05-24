@@ -259,6 +259,24 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select item....
+        /// </summary>
+        internal static string SelectItem {
+            get {
+                return ResourceManager.GetString("SelectItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select message template....
+        /// </summary>
+        internal static string SelectMessageTemplate {
+            get {
+                return ResourceManager.GetString("SelectMessageTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         internal static string Settings {

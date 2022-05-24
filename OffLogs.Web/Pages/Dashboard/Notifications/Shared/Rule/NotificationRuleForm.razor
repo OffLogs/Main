@@ -59,12 +59,12 @@
     <hr/>
     <div class="row mb-3">
         <div class="col">
-            <CustomDropDown
-                Class="align-self-start"
-                Label="@NotificationResources.Rules_HowToCombineConditions"
-                Items="@_operatorTypesDownListItems"
-                SelectedItemId="@($"{Model.LogicOperator}")"
-                OnChanged="@(value => Model.LogicOperator = value.Id)"/>
+            @* <CustomDropDown *@
+            @*     Class="align-self-start" *@
+            @*     Label="@NotificationResources.Rules_HowToCombineConditions" *@
+            @*     Items="@_operatorTypesDownListItems" *@
+            @*     SelectedItemId="@($"{Model.LogicOperator}")" *@
+            @*     OnChanged="@(value => Model.LogicOperator = value.Id)"/> *@
         </div>
         <div class="col align-self-end">
             <MyButton 

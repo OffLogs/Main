@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using OffLogs.Api.Common.Dto.Entities;
+using OffLogs.Web.Pages.Dashboard.Notifications.Rules.Parts;
 using OffLogs.Web.Pages.Dashboard.Notifications.Templates.Parts;
 using OffLogs.Web.Resources;
 using OffLogs.Web.Store.Notification;
@@ -29,17 +30,12 @@ public partial class Index
     
     private async Task OnItemSelectedAsync(NotificationRuleDto rule)
     {
-        await DeleteRuleAsync(rule.Id);
         DialogService.Close();
     }
     
-    private async Task ShowEditModal(long id)
+    private async Task AddNewRule()
     {
-        await DialogService.OpenAsync<MessageTemplateForm>(
-            id == 0 ? NotificationResources.AddNewTemplate : NotificationResources.EditTemplate,
-            new Dictionary<string, object> { { "Id", id } },
-            new DialogOptions { Width = "700px", Height = "570px", Resizable = true, Draggable = false }
-        );
+        await ShowEditModal(0);
     }
     
     private async Task DeleteRuleAsync(long id)
@@ -68,5 +64,14 @@ public partial class Index
             _isLoading = false;
         }
         StateHasChanged();
+    }
+
+    private async Task ShowEditModal(long id)
+    {
+        await DialogService.OpenAsync<EditRuleForm>(
+            id == 0 ? NotificationResources.AddNewTemplate : NotificationResources.EditTemplate,
+            new Dictionary<string, object> { { "Id", id } },
+            new DialogOptions { Width = "700px", Height = "570px", Resizable = true, Draggable = false }
+        );
     }
 }

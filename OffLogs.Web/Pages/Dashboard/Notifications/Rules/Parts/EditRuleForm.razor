@@ -1,5 +1,6 @@
 ﻿@using OffLogs.Web.Resources
 @using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
+@using OffLogs.Business.Common.Constants.Notificatiions
 @inherits BaseComponent
 
 <RadzenCard class="m-3">
@@ -20,8 +21,42 @@
         <DataAnnotationsValidator/>
         <ValidationSummary/>
 
-        
-        
+        <RadzenLabel
+            Text="@NotificationResources.Rules_RuleTitle"
+            class="col-sm-3 mb-3"/>
+        <RadzenTextBox
+            @bind-Value="_model.Title"
+            Class="w-100 mb-3 col"/>
+
+        <RadzenLabel
+            Text="@NotificationResources.Rules_MessageTemplate"
+            class="col-sm-3 mb-3"/>
+        <NotificationTemplatesDropDown 
+            Class="mb-3"
+            @bind-Value="_model.TemplateId"/>
+
+        <RadzenLabel
+            Text="@NotificationResources.Rules_Application"
+            class="col-sm-3 mb-3"/>
+        <ApplicationsDropDown 
+            Class="mb-3"
+            @bind-Value="_applicationId"/>
+
+        <RadzenLabel
+            Text="@NotificationResources.Rules_Period"
+            class="col-sm-3 mb-3"/>
+        <RadzenNumeric
+            @bind-Value="_model.Period"
+            Class="w-100 mb-3 col"/>
+
+        <RadzenLabel
+            Text="@NotificationResources.Rules_HowToCombineConditions"
+            class="col-sm-3 mb-3"/>
+        <EnumDropDown
+            TItem="LogicOperatorType"
+            Class="mb-3"
+            @bind-Value="@_logicOperatorType"/>
+
     </RadzenTemplateForm>
 
 </RadzenCard>

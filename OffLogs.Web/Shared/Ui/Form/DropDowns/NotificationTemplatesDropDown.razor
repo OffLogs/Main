@@ -2,24 +2,23 @@
 @using Newtonsoft.Json
 @using OffLogs.Business.Common.Constants
 
-<RadzenDropDownDataGrid
-    PageSize="GlobalConstants.ListPageSize"
+@inherits BaseComponent
+
+<RadzenDropDown
     AllowClear="true"
     TValue="long"
     Class="@("w-100 " + Class)"
-    LoadData="@LoadData"
     AllowFiltering="false"
     AllowVirtualization="true"
-    Count="@_count"
-    Data="@_listToShow"
-    TextProperty="Name"
+    Data="@_state.Value.MessageTemplates"
+    TextProperty="Subject"
     ValueProperty="Id"
     Placeholder="@Placeholder"
     Value="@_selectedId"
-    ValueChanged="async (value) => await OnValueChanged(value)">
+    ValueChanged="OnValueChanged">
 
     <Columns>
         <RadzenDropDownDataGridColumn Property="Id" Title="ID"/>
-        <RadzenDropDownDataGridColumn Property="Name" Title="Application Name"/>
+        <RadzenDropDownDataGridColumn Property="Subject" Title="Subject"/>
     </Columns>
-</RadzenDropDownDataGrid>
+</RadzenDropDown>

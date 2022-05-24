@@ -20,7 +20,10 @@ public partial class EnumDropDown<TItem>
     public EventCallback<TItem> ValueChanged { get; set; }
 
     [Parameter]
-    public string Placeholder { get; set; } = CommonResources.LogLevel;
+    public string Placeholder { get; set; } = CommonResources.SelectItem;
+    
+    [Parameter]
+    public string Class { get; set; }
     
     private List<TItem> _list;
     private TItem _value;

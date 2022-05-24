@@ -93,4 +93,10 @@
     <data name="SelectApplication" xml:space="preserve">
         <value>Select application...</value>
     </data>
+    <data name="SelectMessageTemplate" xml:space="preserve">
+        <value>Select message template...</value>
+    </data>
+    <data name="SelectItem" xml:space="preserve">
+        <value>Select item...</value>
+    </data>
 </root>
