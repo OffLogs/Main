@@ -20,9 +20,7 @@ public partial class Index
     private IState<NotificationRuleState> _state { get; set; }
 
     private NavigationLayout _navigationLayout { get; set; }
-    
-    private MessageTemplateForm _messageTemplateForm { get; set; }
-    
+
     private NotificationRuleForm _notificationRuleForm { get; set; }
     
     private ICollection<HeaderMenuButton> _actionButtons = new List<HeaderMenuButton>();
@@ -101,7 +99,7 @@ public partial class Index
     {
         if (_selectedMenuItem == _menuItemTemplates)
         {
-            _messageTemplateForm.Delete();
+           
         }
         if (_selectedMenuItem == _menuItemRules)
         {

@@ -11,6 +11,13 @@
 
     <h2>@NotificationResources.MenuItem_MessageTemplates</h2>
 
+    <RadzenButton
+        Icon="add_circle_outline"
+        class="mb-3"
+        Text="@NotificationResources.AddNewTemplate"
+        Disabled="@_isLoading"
+        Click="@AddNewTemplate"/>
+
     <RadzenDataGrid
         TItem="MessageTemplateDto"
         @ref="_grid"
@@ -20,7 +27,7 @@
         Data="@State.Value.MessageTemplates"
         AllowPaging="true"
         IsLoading="@State.Value.IsLoading"
-        ValueChanged="OnTemplateSelected"
+        ValueChanged="async (item) => await OnTemplateSelected(item.FirstOrDefault()?.Id ?? 0)"
         ShowPagingSummary="false">
 
         <Columns>
@@ -33,6 +40,26 @@
             <RadzenDataGridColumn TItem="MessageTemplateDto" Property="Body" Title="Body">
                 <Template Context="template">
                     @template.Body.Truncate(32)
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn
+                TItem="MessageTemplateDto"
+                Context="app"
+                Filterable="false"
+                Sortable="false"
+                TextAlign="TextAlign.Center"
+                Width="60px">
+
+                <Template Context="app">
+                    <RadzenButton
+                        ButtonStyle="ButtonStyle.Danger"
+                        Icon="delete"
+                        Size="ButtonSize.Small"
+                        Class="m-1"
+                        Disabled="@_isLoading"
+                        Click="@(async () => await DeleteRowAsync(app))"
+                        @onclick:stopPropagation="true">
+                    </RadzenButton>
                 </Template>
             </RadzenDataGridColumn>
         </Columns>

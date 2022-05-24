@@ -18,14 +18,6 @@
     @ref="_navigationLayout"
 >
     <BodyContent>
-        @if (_selectedMenuItem == _menuItemTemplates)
-        {
-            <MessageTemplateForm 
-                @ref="@_messageTemplateForm"
-                Id="@_selectedListItemId"
-                OnSaved="OnSave"
-            />    
-        }
         @if (_selectedMenuItem == _menuItemRules)
         {
             <NotificationRuleForm 

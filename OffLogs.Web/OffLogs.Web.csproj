@@ -101,13 +101,8 @@
       <Content Include="Pages\Dashboard\Application\Add\AddApplicationModal.razor.less" />
       <Content Include="Pages\Dashboard\Application\Index.razor.less" />
       <Content Include="Pages\Dashboard\Log\Index.razor.less" />
-      <Content Include="Pages\Dashboard\Log\Info\LogInfoModal.razor.less" />
       <Content Include="Pages\Dashboard\Log\Parts\LogInfoBlock.razor.less" />
       <None Include="Shared\MainLayout.razor.less" />
-      <Content Include="Pages\Dashboard\Notifications\Shared\MessageTemplateForm.razor.css" />
-      <Content Include="Pages\Dashboard\Notifications\Shared\MessageTemplateForm.razor.less">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      </Content>
       <Content Include="Shared\Ui\Form\CustomDropDown\CustomDropDown.razor.less" />
       <Content Include="Shared\Ui\MyButton.razor.less" />
       <Content Include="Shared\Ui\Preloader.razor.less" />

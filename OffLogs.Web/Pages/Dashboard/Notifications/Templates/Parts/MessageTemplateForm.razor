@@ -1,1 +1,64 @@
-﻿@inherits BaseComponent
+﻿@using OffLogs.Web.Resources
+@using OffLogs.Business.Extensions
+@using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Message
+@inherits BaseComponent
+
+<RadzenCard class="m-3">
+
+    <h3 class="h5">
+        @if (_isNew)
+        {
+            @NotificationResources.AddNewTemplate
+        }
+        else
+        {
+            @_model.Subject.Truncate(200)
+        }
+    </h3>
+
+    <RadzenTemplateForm TItem="SetMessageTemplateRequest" Data="@_model" Submit="HandleSubmit">
+
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+
+        <RadzenLabel
+            Text="@NotificationResources.MessageTemplate_Subject"
+            class="col-sm-3 mb-3"/>
+        <RadzenTextBox
+            @bind-Value="_model.Subject"
+            Class="w-100 mb-3 col"/>
+
+        <RadzenTabs
+            TabPosition="TabPosition.Top"
+            style="width: 100%;"
+            class="mb-3"
+            RenderMode="TabRenderMode.Client">
+            <Tabs>
+                <RadzenTabsItem Text="Message Body">
+                    <RadzenLabel
+                        Text="@NotificationResources.MessageTemplate_Body"
+                        class="col-sm-3 mb-3"/>
+                    <RadzenTextArea
+                        @bind-Value="_model.Body"
+                        Rows="8"
+                        Placeholder="@NotificationResources.MessageTemplate_BodyPlaceholder"
+                        Class="w-100 mb-3 col"/>
+                </RadzenTabsItem>
+                <RadzenTabsItem Text="Preview">
+                    <Markdown MarkdownText="@_model.Body"></Markdown>
+                </RadzenTabsItem>
+            </Tabs>
+        </RadzenTabs>
+
+        @if (_isLoading)
+        {
+            <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"/>
+        }
+        else
+        {
+            <RadzenButton
+                ButtonType="ButtonType.Submit"
+                Text="@(_isNew ? CommonResources.Add : CommonResources.Save)"/>
+        }
+    </RadzenTemplateForm>
+</RadzenCard>
