@@ -10,6 +10,7 @@ using OffLogs.Web.Core.Utils;
 using OffLogs.Web.Resources;
 using OffLogs.Web.Services.Http;
 using Radzen;
+using Radzen.Blazor;
 
 namespace OffLogs.Web.Shared.Ui.Form.DropDowns;
 
@@ -57,6 +58,8 @@ public partial class ApplicationsDropDown
     private ApplicationListItemDto _selectedItem;
 
     private long _selectedId = 0;
+    
+    private RadzenDropDownDataGrid<long> _listReference;
 
     protected override async Task OnInitializedAsync()
     {
@@ -67,15 +70,16 @@ public partial class ApplicationsDropDown
     private async Task LoadData(LoadDataArgs filter)
     {
         await LoadNextList();
+        var query = _list.AsQueryable();
         if (filter.Skip.HasValue)
         {
-            _skip = filter.Skip.Value;
+            query = query.Skip(filter.Skip.Value);
         }
         if (filter.Top.HasValue)
         {
-            _take = filter.Top.Value;
+            query = query.Take(filter.Top.Value);
         }
-        _listToShow = _list.Skip(_skip).Take(_take).ToList();   
+        _listToShow = query.ToList();
     }
 
     private async Task LoadNextList()
@@ -100,6 +104,12 @@ public partial class ApplicationsDropDown
         lock (_list)
         {
             _list = _list.Concat(response.Items).ToList();
+        }
+        var selectedItem = _list.FirstOrDefault(item => item.Id == _selectedId);
+        long.TryParse(_listReference.SelectedValue?.ToString(), out var selectedValue);
+        if (selectedItem != null && selectedValue != _selectedId)
+        {
+            await _listReference.SelectItem(selectedItem);    
         }
     }
     
