@@ -1,10 +1,9 @@
-﻿@using OffLogs.Web.Shared.Ui.Toast
-
-@inherits BaseLayout
+﻿@inherits BaseLayout
 
 @if (CommonState.Value.IsInitialized)
 {
     <RadzenLayout>
+        @_isShowMainMenu
         @if (_isShowMainMenu)
         {
             <NavMenu/>

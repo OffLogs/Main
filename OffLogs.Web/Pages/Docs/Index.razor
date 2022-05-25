@@ -3,25 +3,9 @@
 
 @using OffLogs.Web.Resources
 @using OffLogs.Web.Shared.Ui.NavigationLayout
+@using OffLogs.Web.Pages.Docs.Shared
 
+@layout Layout
 @inherits BaseComponent
 
-<NavigationLayout
-    @ref="_navigationLayout"
-    MenuTitle="@DocResources.PageTitle"
-    MenuItems="@_menuItems"
-    ListItems="@_documentsList"
-    OnSelectMenuItem="@OnMenuItemSelected"
-    OnSelectListItem="@(async (menuEvent) => await OnSelectPageAsync(menuEvent))"
->
-    <BodyContent>
-        @if (_isLoading)
-        {
-            <Preloader/>
-        }
-        else
-        {
-            <Markdown MarkdownText="@_markdownString"/>
-        }
-    </BodyContent>
-</NavigationLayout>
+111
