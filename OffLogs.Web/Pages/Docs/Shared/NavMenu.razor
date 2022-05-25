@@ -5,37 +5,56 @@
 
 @inherits BaseComponent
 
-@inject NavigationManager _navigationManager
-
 <RadzenSidebar>
     <RadzenPanelMenu>
-        <RadzenPanelMenuItem 
-            Icon="dashboard"
-            Text="Dashboard"
-            Path="@SiteUrl.Dashboard"/>
-        <RadzenPanelMenuItem 
-            Icon="apps"
-            Text="Applications" 
-            Path="@SiteUrl.DashboardApplications"/>
-        <RadzenPanelMenuItem 
-            Icon="fact_check" 
-            Text="Logs" 
-            Path="@SiteUrl.DashboardLogs"/>
         <RadzenPanelMenuItem
-            Icon="notifications_active" 
-            Text="Notifications">
+            Icon="article"
+            Text="@DocResources.MenuItem_Common">
+
             <RadzenPanelMenuItem
-                Icon="rule"
-                Text="@NotificationResources.MenuItem_Rules" 
-                Path="@SiteUrl.DashboardNotificationRules"/>
-            <RadzenPanelMenuItem 
-                Icon="history_edu"
-                Text="@NotificationResources.MenuItem_MessageTemplates" 
-                Path="@SiteUrl.DashboardNotificationTemplates"/>
+                Icon="short_text"
+                Text="Common Info"
+                Path="documentation/common/1_1_common"/>
+            <RadzenPanelMenuItem
+                Icon="short_text"
+                Text="How it works?"
+                Path="documentation/common/1_2_how_it_works"/>
+            <RadzenPanelMenuItem
+                Icon="short_text"
+                Text="Common Info"
+                Path="documentation/common/1_3_applications"/>
         </RadzenPanelMenuItem>
-        <RadzenPanelMenuItem 
-            Icon="settings"
-            Text="Settings" 
-            Path="@SiteUrl.DashboardSettings"/>
+
+        <RadzenPanelMenuItem
+            Icon="article"
+            Text="@DocResources.MenuItem_Api">
+
+            <RadzenPanelMenuItem
+                Icon="short_text"
+                Text="@DocResources.DocumentTitle_RestApi"
+                Path="documentation/api/2_1_rest_api"/>
+            <RadzenPanelMenuItem
+                Icon="short_text"
+                Text="@DocResources.DocumentTitle_DotNet"
+                Path="documentation/api/2_2_dot_net"/>
+            <RadzenPanelMenuItem
+                Icon="short_text"
+                Text="@DocResources.DocumentTitle_DotNetCore"
+                Path="documentation/api/2_3_net_core_extension"/>
+            <RadzenPanelMenuItem
+                Icon="short_text"
+                Text="@DocResources.DocumentTitle_SerilogExtension"
+                Path="documentation/api/2_4_serilog_extension"/>
+        </RadzenPanelMenuItem>
+
+        <RadzenPanelMenuItem
+            Icon="article"
+            Text="@DocResources.MenuItem_MessageResource">
+
+            <RadzenPanelMenuItem
+                Icon="short_text"
+                Text="@DocResources.DocumentTitle_LogLevel"
+                Path="documentation/message_resource/3_1_log_level"/>
+        </RadzenPanelMenuItem>
     </RadzenPanelMenu>
 </RadzenSidebar>
