@@ -30,7 +30,14 @@ public partial class Index
     
     private async Task OnItemSelectedAsync(NotificationRuleDto rule)
     {
-        DialogService.Close();
+        if (rule == null)
+        {
+            // Un-select row
+            return;
+        }
+
+        await ShowEditModal(rule.Id);
+        await _grid.SelectRow(null);
     }
     
     private async Task AddNewRule()

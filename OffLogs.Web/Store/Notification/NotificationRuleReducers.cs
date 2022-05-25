@@ -95,7 +95,7 @@ public class ApplicationReducers
         var oldList = state.Rules.Where(
             item => item.Id != action.Item.Id
         ).ToList();
-        var newState = state with {};;
+        var newState = state with {};
         newState.Rules = oldList;
         newState.Rules.Add(action.Item);
         newState.Rules = newState.Rules.OrderBy(item => item.Id).ToList();
