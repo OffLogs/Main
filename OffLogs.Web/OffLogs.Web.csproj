@@ -137,6 +137,8 @@
       <_ContentIncludedByDefault Remove="wwwroot\img\logo\favicon\icons8-login-as-user-16.png" />
       <_ContentIncludedByDefault Remove="wwwroot\img\logo\favicon\icons8-login-as-user-32.png" />
       <_ContentIncludedByDefault Remove="wwwroot\img\logo\favicon\icons8-login-as-user-96.png" />
+      <_ContentIncludedByDefault Remove="Pages\Dashboard\Notifications\Shared\Rule\ConditionForm.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Dashboard\Notifications\Shared\Rule\NotificationRuleForm.razor" />
     </ItemGroup>
 
     <ItemGroup>

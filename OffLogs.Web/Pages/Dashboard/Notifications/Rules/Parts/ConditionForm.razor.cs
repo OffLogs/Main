@@ -7,7 +7,6 @@ using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Constants.Notificatiions;
 using OffLogs.Web.Core.Extensions;
-using OffLogs.Web.Pages.Dashboard.Notifications.Shared.Rule;
 using OffLogs.Web.Shared.Ui.Form.CustomDropDown;
 
 namespace OffLogs.Web.Pages.Dashboard.Notifications.Rules.Parts;
@@ -18,14 +17,11 @@ public partial class ConditionForm
     public SetConditionRequest Condition { get; set; }
 
     [CascadingParameter]
-    protected NotificationRuleForm? Parent { get; set; }
+    protected EditRuleForm? Parent { get; set; }
     
     [Parameter]
     public EventCallback<SetConditionRequest> OnDeleted { get; set; }
-    
-    private ICollection<DropDownListItem> _fieldTypeDownListItems => ConditionFieldType.LogLevel.ToDropDownList();
-    private ICollection<DropDownListItem> _logLevelDownListItems => LogLevel.Warning.ToDropDownList();
-    
+
     private SetConditionRequest _model = new();
 
     private string _value
@@ -71,11 +67,6 @@ public partial class ConditionForm
             _model.Value = value.ToString();
             UpdateParentModel();
         }
-    }
-    
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
     }
 
     protected override void OnParametersSet()

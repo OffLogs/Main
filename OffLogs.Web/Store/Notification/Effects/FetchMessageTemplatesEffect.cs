@@ -30,6 +30,7 @@ public class FetchMessageTemplatesEffect: Effect<FetchMessageTemplatesAction>
     {
         if (pageAction.IsLoadIfEmpty && _state.Value.MessageTemplates.Any())
         {
+            dispatcher.Dispatch(new SetIsLoading(false));
             return;
         }
 
@@ -44,7 +45,7 @@ public class FetchMessageTemplatesEffect: Effect<FetchMessageTemplatesAction>
         }
         finally
         {
-            dispatcher.Dispatch(new FetchMessageTemplatesResultAction(response));    
+            dispatcher.Dispatch(new FetchMessageTemplatesResultAction(response));
         }
     }
 }

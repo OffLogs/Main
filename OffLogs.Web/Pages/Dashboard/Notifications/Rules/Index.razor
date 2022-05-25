@@ -7,38 +7,62 @@
 @inherits BaseComponent
 
 <RadzenCard class="m-3">
-    
+
     <h2>@NotificationResources.MenuItem_Rules</h2>
-    
+
     <RadzenButton
-            Icon="add_circle_outline"
-            class="mb-3"
-            Text="@NotificationResources.AddNewRule"
-            Disabled="@_isLoading"
-            Click="@AddNewRule"/>
-    
+        Icon="add_circle_outline"
+        class="mb-3"
+        Text="@NotificationResources.AddNewRule"
+        Disabled="@_isLoading"
+        Click="@AddNewRule"/>
+
     <RadzenDataGrid
         TItem="NotificationRuleDto"
         @ref="_grid"
         AllowSorting="false"
 
-        SelectionMode="DataGridSelectionMode.Single"
         Data="@_state.Value.Rules"
-        AllowPaging="true"
+        AllowPaging="false"
         IsLoading="@_state.Value.IsLoading"
-        ValueChanged="async (items) => await OnItemSelectedAsync(items.FirstOrDefault())"
         ShowPagingSummary="false">
-        
+
         <Columns>
             <RadzenDataGridColumn TItem="NotificationRuleDto" Property="Id" Title="ID"/>
             <RadzenDataGridColumn TItem="NotificationRuleDto" Property="Title" Title="Title"/>
             <RadzenDataGridColumn TItem="NotificationRuleDto" Property="UpdateTime" Title="Update Time">
-                <Template Context="template">
-                    @template.UpdateTime.ToFullDateTime()
+                <Template Context="rule">
+                    @rule.UpdateTime.ToFullDateTime()
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn
+                TItem="NotificationRuleDto"
+                Context="rule"
+                Filterable="false"
+                Sortable="false"
+                TextAlign="TextAlign.Center"
+                Width="100px">
+
+                <Template Context="app">
+                    <RadzenButton
+                        ButtonStyle="ButtonStyle.Primary"
+                        Icon="edit"
+                        Size="ButtonSize.Small"
+                        Class="m-1"
+                        Click="@(args => OnEditItemAsync(app))">
+                    </RadzenButton>
+                    <RadzenButton
+                        ButtonStyle="ButtonStyle.Danger"
+                        Icon="delete"
+                        Size="ButtonSize.Small"
+                        Class="m-1"
+                        Click="@(args => OnDeleteRule(app))"
+                        @onclick:stopPropagation="true">
+                    </RadzenButton>
                 </Template>
             </RadzenDataGridColumn>
         </Columns>
-        
+
     </RadzenDataGrid>
-    
+
 </RadzenCard>

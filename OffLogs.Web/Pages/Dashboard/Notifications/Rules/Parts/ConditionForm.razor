@@ -4,7 +4,7 @@
 
 @inherits BaseComponent
 
-<div class="row mb-3">
+<div class="row mb-1">
     <div class="col">
         @if (true)
         {
@@ -12,7 +12,7 @@
                 Placeholder="@NotificationResources.Condition_FieldType"
                 @bind-Value="@_model.ConditionField"
                 Disabled="true"
-                Class="w-100 mb-3 col"/>
+                Class="w-100 col"/>
         }
         else
         {
@@ -21,11 +21,11 @@
                 @bind-Value="@_conditionField"/>  
         }
     </div>
-    <div class="col-2 text-center fs-3">
+    <div class="col-2 text-center fs-3 d-flex align-items-center fw-bold">
         =
     </div>
     <div class="col">
-        <div class="btn-group">
+        <div class="d-flex justify-content-between">
             @if (_model.ConditionField == ConditionFieldType.LogLevel.ToString())
             {
                 <EnumDropDown 
@@ -38,7 +38,7 @@
                     Placeholder="@NotificationResources.Rules_ConditionValue"
                     @bind-Value="@_value"
                     Disabled="true"
-                    Class="w-100 mb-3 col"/>
+                    Class="w-100 col"/>
             }
             <RadzenButton
                     ButtonStyle="ButtonStyle.Danger"

@@ -9,6 +9,17 @@ namespace OffLogs.Web.Store.Notification;
 
 public class ApplicationReducers
 {
+    [ReducerMethod]
+    public static NotificationRuleState ReduceSetIsLoading(
+        NotificationRuleState state,
+        SetIsLoading action
+    )
+    {
+        var newState = state with {};;
+        newState.IsLoading = action.IsLoading;
+        return newState;
+    }
+    
     #region Message Templates
 
     [ReducerMethod(typeof(FetchMessageTemplatesAction))]

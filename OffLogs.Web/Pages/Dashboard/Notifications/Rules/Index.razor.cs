@@ -28,35 +28,47 @@ public partial class Index
         Dispatcher.Dispatch(new FetchNotificationRulesAction());
     }
     
-    private async Task OnItemSelectedAsync(NotificationRuleDto rule)
+    private async Task OnEditItemAsync(NotificationRuleDto rule)
     {
         if (rule == null)
         {
             // Un-select row
             return;
         }
-
         await ShowEditModal(rule.Id);
-        await _grid.SelectRow(null);
     }
     
     private async Task AddNewRule()
     {
         await ShowEditModal(0);
     }
-    
-    private async Task DeleteRuleAsync(long id)
+
+    private async Task OnDeleteRule(NotificationRuleDto value)
     {
+        var isOk = await DialogService.Confirm(
+            NotificationResources.Confirmation_AreSureToDeleteRule,
+            CommonResources.DeletionConfirmation,
+            new ConfirmOptions()
+            {
+                OkButtonText = "Ok",
+                CancelButtonText = CommonResources.Cancel
+            }
+        );
+        if (!isOk.HasValue || !isOk.Value)
+        {
+            return;
+        }
+        
         _isLoading = true;
         try
         {
-            await ApiService.NotificationRuleDelete(id);
+            await ApiService.NotificationRuleDelete(value.Id);
             NotificationService.Notify(new NotificationMessage()
             {
                 Severity = NotificationSeverity.Info,
                 Summary = NotificationResources.Rules_RuleDeleted
             });
-            Dispatcher.Dispatch(new DeleteNotificationRuleAction(id));
+            Dispatcher.Dispatch(new DeleteNotificationRuleAction(value.Id));
         }
         catch (Exception e)
         {
@@ -70,9 +82,8 @@ public partial class Index
         {
             _isLoading = false;
         }
-        StateHasChanged();
     }
-
+    
     private async Task ShowEditModal(long id)
     {
         await DialogService.OpenAsync<EditRuleForm>(

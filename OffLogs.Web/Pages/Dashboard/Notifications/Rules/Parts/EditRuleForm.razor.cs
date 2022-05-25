@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule;
 using OffLogs.Business.Common.Constants.Notificatiions;
-using OffLogs.Business.Extensions;
-using OffLogs.Web.Core.Extensions;
 using OffLogs.Web.Resources;
-using OffLogs.Web.Services.Http;
-using OffLogs.Web.Shared.Ui;
-using OffLogs.Web.Shared.Ui.Form;
-using OffLogs.Web.Shared.Ui.Form.CustomDropDown;
 using OffLogs.Web.Store.Application;
 using OffLogs.Web.Store.Notification;
 using Radzen;
@@ -30,31 +22,31 @@ public partial class EditRuleForm
 
     [Parameter] public long Id { get; set; }
 
-    public SetRuleRequest _model = new() {Type = NotificationType.Email.ToString()};
+    public SetRuleRequest Model = new() {Type = NotificationType.Email.ToString()};
     private bool _isLoading = false;
 
     private LogicOperatorType _logicOperatorType
     {
         get
         {
-            if (string.IsNullOrEmpty(_model.LogicOperator))
+            if (string.IsNullOrEmpty(Model.LogicOperator))
             {
                 return default;
             }
 
-            return Enum.Parse<LogicOperatorType>(_model.LogicOperator);
+            return Enum.Parse<LogicOperatorType>(Model.LogicOperator);
         }
-        set => _model.LogicOperator = value.ToString();
+        set => Model.LogicOperator = value.ToString();
     }
 
     private long _applicationId
     {
-        get => _model.ApplicationId ?? default;
-        set => _model.ApplicationId = value;
+        get => Model.ApplicationId ?? default;
+        set => Model.ApplicationId = value;
     }
 
     private bool _isNew => Id == 0;
-    private bool _canAddCondition => _model.Conditions.Count < 10;
+    private bool _canAddCondition => Model.Conditions.Count < 10;
 
     protected override async Task OnInitializedAsync()
     {
@@ -66,19 +58,19 @@ public partial class EditRuleForm
     protected override async Task OnParametersSetAsync()
     {
         await base.OnParametersSetAsync();
-        if (_model.Id != Id)
+        if (Model.Id != Id)
         {
-            _model.Id = Id;
+            Model.Id = Id;
             if (_isNew)
             {
-                _model.Reset();
+                Model.Reset();
             }
             else
             {
                 var foundItem = _state.Value.Rules.FirstOrDefault(
                     item => item.Id == Id
                 );
-                _model.Fill(foundItem);
+                Model.Fill(foundItem);
             }
         }
     }
@@ -88,14 +80,14 @@ public partial class EditRuleForm
         _isLoading = true;
         try
         {
-            var item = await ApiService.NotificationRuleSet(_model);
+            var item = await ApiService.NotificationRuleSet(Model);
+            DialogService.Close();
             NotificationService.Notify(new NotificationMessage()
             {
                 Severity = NotificationSeverity.Info,
                 Summary = _isNew ? NotificationResources.Rules_Added : NotificationResources.Rules_Saved
             });
             Dispatcher.Dispatch(new SetNotificationRuleAction(item));
-            DialogService.Close();
         }
         catch (Exception e)
         {
@@ -115,11 +107,11 @@ public partial class EditRuleForm
 
     private void OnAddCondition()
     {
-        _model.Conditions.Add(new SetConditionRequest());
+        Model.Conditions.Add(new SetConditionRequest());
     }
     
     private void OnDeleteCondition(SetConditionRequest condition)
     {
-        _model.Conditions.Remove(condition);
+        Model.Conditions.Remove(condition);
     }
 }

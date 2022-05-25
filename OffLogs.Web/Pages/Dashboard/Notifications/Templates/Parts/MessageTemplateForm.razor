@@ -3,7 +3,7 @@
 @using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Message
 @inherits BaseComponent
 
-<RadzenCard class="m-3">
+<div class="m-3">
 
     <h3 class="h5">
         @if (_isNew)
@@ -61,4 +61,4 @@
                 Text="@(_isNew ? CommonResources.Add : CommonResources.Save)"/>
         }
     </RadzenTemplateForm>
-</RadzenCard>
+</div>

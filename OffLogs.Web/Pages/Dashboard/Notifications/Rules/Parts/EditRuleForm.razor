@@ -12,11 +12,11 @@
         }
         else
         {
-            <text>@_model.Title</text>
+            <text>@Model.Title</text>
         }
     </h3>
 
-    <RadzenTemplateForm TItem="SetRuleRequest" Data="@_model" Submit="HandleSubmit">
+    <RadzenTemplateForm TItem="SetRuleRequest" Data="@Model" Submit="HandleSubmit">
 
         <DataAnnotationsValidator/>
         <ValidationSummary/>
@@ -28,7 +28,7 @@
                         Text="@NotificationResources.Rules_RuleTitle"
                         class="mb-3"/>
                     <RadzenTextBox
-                        @bind-Value="_model.Title"
+                        @bind-Value="Model.Title"
                         Class="w-100 mb-3 col"/>
 
                     <RadzenLabel
@@ -36,14 +36,14 @@
                         class="mb-3"/>
                     <NotificationTemplatesDropDown
                         Class="mb-3"
-                        @bind-Value="_model.TemplateId"/>
+                        @bind-Value="Model.TemplateId"/>
 
                     <div class="row">
                         <div class="col col-md-6">
                             <RadzenLabel
                                 Text="@NotificationResources.Rules_Application"
                                 class="mb-3"/>
-                            @_applicationId
+
                             <ApplicationsDropDown
                                 Class="mb-3"
                                 @bind-Value="_applicationId"/>
@@ -53,7 +53,7 @@
                                 Text="@NotificationResources.Rules_Period"
                                 class="mb-3"/>
                             <RadzenNumeric
-                                @bind-Value="_model.Period"
+                                @bind-Value="Model.Period"
                                 Class="w-100 mb-3 col"/>
                         </div>
                     </div>
@@ -79,7 +79,7 @@
                         Text="@NotificationResources.Rules_AddCondition">
                     </RadzenButton>
 
-                    @foreach (var condition in _model.Conditions)
+                    @foreach (var condition in Model.Conditions)
                     {
                         <CascadingValue Value="this">
                             <ConditionForm
