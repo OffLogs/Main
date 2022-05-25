@@ -1,0 +1,53 @@
+﻿@using OffLogs.Web.Resources
+@using OffLogs.Business.Common.Constants
+@using OffLogs.Business.Common.Constants.Notificatiions
+
+@inherits BaseComponent
+
+<div class="row mb-3">
+    <div class="col">
+        @if (true)
+        {
+            <RadzenTextBox
+                Placeholder="@NotificationResources.Condition_FieldType"
+                @bind-Value="@_model.ConditionField"
+                Disabled="true"
+                Class="w-100 mb-3 col"/>
+        }
+        else
+        {
+            <EnumDropDown 
+                TItem="ConditionFieldType" 
+                @bind-Value="@_conditionField"/>  
+        }
+    </div>
+    <div class="col-2 text-center fs-3">
+        =
+    </div>
+    <div class="col">
+        <div class="btn-group">
+            @if (_model.ConditionField == ConditionFieldType.LogLevel.ToString())
+            {
+                <EnumDropDown 
+                    TItem="LogLevel" 
+                    @bind-Value="@_logLevel"/> 
+            }
+            else
+            {
+                <RadzenTextBox
+                    Placeholder="@NotificationResources.Rules_ConditionValue"
+                    @bind-Value="@_value"
+                    Disabled="true"
+                    Class="w-100 mb-3 col"/>
+            }
+            <RadzenButton
+                    ButtonStyle="ButtonStyle.Danger"
+                    Size="ButtonSize.Small"
+                    Class="m-1"
+                    Icon="delete_outline"
+                    Click="OnDelete">
+                </RadzenButton>
+        </div>
+    </div>
+</div>
+

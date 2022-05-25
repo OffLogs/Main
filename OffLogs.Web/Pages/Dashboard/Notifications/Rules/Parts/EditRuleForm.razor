@@ -21,41 +21,79 @@
         <DataAnnotationsValidator/>
         <ValidationSummary/>
 
-        <RadzenLabel
-            Text="@NotificationResources.Rules_RuleTitle"
-            class="col-sm-3 mb-3"/>
-        <RadzenTextBox
-            @bind-Value="_model.Title"
-            Class="w-100 mb-3 col"/>
+        <RadzenTabs class="w-100 mb-3" RenderMode="TabRenderMode.Client">
+            <Tabs>
+                <RadzenTabsItem Text="Info">
+                    <RadzenLabel
+                        Text="@NotificationResources.Rules_RuleTitle"
+                        class="mb-3"/>
+                    <RadzenTextBox
+                        @bind-Value="_model.Title"
+                        Class="w-100 mb-3 col"/>
 
-        <RadzenLabel
-            Text="@NotificationResources.Rules_MessageTemplate"
-            class="col-sm-3 mb-3"/>
-        <NotificationTemplatesDropDown 
-            Class="mb-3"
-            @bind-Value="_model.TemplateId"/>
+                    <RadzenLabel
+                        Text="@NotificationResources.Rules_MessageTemplate"
+                        class="mb-3"/>
+                    <NotificationTemplatesDropDown
+                        Class="mb-3"
+                        @bind-Value="_model.TemplateId"/>
 
-        <RadzenLabel
-            Text="@NotificationResources.Rules_Application"
-            class="col-sm-3 mb-3"/>
-        <ApplicationsDropDown 
-            Class="mb-3"
-            @bind-Value="_applicationId"/>
+                    <div class="row">
+                        <div class="col col-md-6">
+                            <RadzenLabel
+                                Text="@NotificationResources.Rules_Application"
+                                class="mb-3"/>
+                            <ApplicationsDropDown
+                                Class="mb-3"
+                                @bind-Value="_applicationId"/>
+                        </div>
+                        <div class="col col-md-6">
+                            <RadzenLabel
+                                Text="@NotificationResources.Rules_Period"
+                                class="mb-3"/>
+                            <RadzenNumeric
+                                @bind-Value="_model.Period"
+                                Class="w-100 mb-3 col"/>
+                        </div>
+                    </div>
 
-        <RadzenLabel
-            Text="@NotificationResources.Rules_Period"
-            class="col-sm-3 mb-3"/>
-        <RadzenNumeric
-            @bind-Value="_model.Period"
-            Class="w-100 mb-3 col"/>
 
-        <RadzenLabel
-            Text="@NotificationResources.Rules_HowToCombineConditions"
-            class="col-sm-3 mb-3"/>
-        <EnumDropDown
-            TItem="LogicOperatorType"
-            Class="mb-3"
-            @bind-Value="@_logicOperatorType"/>
+                </RadzenTabsItem>
+                <RadzenTabsItem Text="Conditions">
+                    <RadzenLabel
+                        Text="@NotificationResources.Rules_HowToCombineConditions"
+                        class="mb-3"/>
+                    <EnumDropDown
+                        TItem="LogicOperatorType"
+                        Class="mb-3"
+                        @bind-Value="@_logicOperatorType"/>
+
+                    <RadzenButton
+                        ButtonStyle="ButtonStyle.Primary"
+                        Size="ButtonSize.Small"
+                        Class="m-1 mb-3"
+                        Icon="add_circle_outline"
+                        Click="OnAddCondition"
+                        Disabled="@(!_canAddCondition)"
+                        Text="@NotificationResources.Rules_AddCondition">
+                    </RadzenButton>
+
+                    @foreach (var condition in _model.Conditions)
+                    {
+                        <CascadingValue Value="this">
+                            <ConditionForm
+                                OnDeleted="OnDeleteCondition"
+                                Condition="@condition"/>
+                        </CascadingValue>
+                    }
+                </RadzenTabsItem>
+            </Tabs>
+        </RadzenTabs>
+
+        <RadzenButton
+            Disabled="_isLoading"
+            ButtonType="ButtonType.Submit"
+            Text="@(_isNew ? CommonResources.Add : CommonResources.Save)"/>
 
     </RadzenTemplateForm>
 

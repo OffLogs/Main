@@ -69,7 +69,7 @@ public partial class Index
     private async Task ShowEditModal(long id)
     {
         await DialogService.OpenAsync<EditRuleForm>(
-            id == 0 ? NotificationResources.AddNewTemplate : NotificationResources.EditTemplate,
+            id == 0 ? NotificationResources.AddNewRule : NotificationResources.EditRule,
             new Dictionary<string, object> { { "Id", id } },
             new DialogOptions { Width = "700px", Height = "570px", Resizable = true, Draggable = false }
         );
