@@ -63,28 +63,28 @@
                     {
                         <RadzenButton
                             Icon="info"
+                            Size="ButtonSize.Small"
                             ButtonStyle="ButtonStyle.Light"
-                            Class="m-1"
                             Click="@(args => ShowInfoModal(app))"
-                            @onclick:stopPropagation="true">
-                        </RadzenButton>
+                            @onclick:stopPropagation="true"/>
+                        
                     }
                     @if (app.IsFavorite)
                     {
                         <RadzenButton
                             Icon="favorite"
                             ButtonStyle="ButtonStyle.Danger"
-                            Class="m-1"
+                            Size="ButtonSize.Small"
                             Click="@(() => SetIsFavorite(app, false))"
-                            @onclick:stopPropagation="true">
-                        </RadzenButton>
+                            @onclick:stopPropagation="true"/>
+                        
                     }
                     else
                     {
                         <RadzenButton
                             Icon="favorite_border"
+                            Size="ButtonSize.Small"
                             ButtonStyle="ButtonStyle.Light"
-                            Class="m-1"
                             Click="@(() => SetIsFavorite(app, true))"
                             @onclick:stopPropagation="true">
                         </RadzenButton>

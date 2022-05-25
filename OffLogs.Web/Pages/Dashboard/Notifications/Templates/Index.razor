@@ -55,7 +55,6 @@
                         ButtonStyle="ButtonStyle.Danger"
                         Icon="delete"
                         Size="ButtonSize.Small"
-                        Class="m-1"
                         Disabled="@_isLoading"
                         Click="@(async () => await DeleteRowAsync(app))"
                         @onclick:stopPropagation="true">

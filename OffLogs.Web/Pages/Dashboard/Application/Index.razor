@@ -62,7 +62,6 @@
                     <RadzenButton
                         Icon="edit"
                         ButtonStyle="ButtonStyle.Light"
-                        Class="m-1"
                         Click="@(args => EditRow(app))"
                         @onclick:stopPropagation="true">
                     </RadzenButton>
@@ -72,7 +71,6 @@
                         <RadzenButton
                             Icon="info"
                             ButtonStyle="ButtonStyle.Light"
-                            Class="m-1"
                             Click="@(args => ShowInfoModal(app))"
                             @onclick:stopPropagation="true">
                         </RadzenButton>
@@ -80,9 +78,15 @@
                 </Template>
                 <EditTemplate Context="app">
 
-                    <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Primary" Class="m-1" Click="@((args) => OnClickSaveRow(app))">
-                    </RadzenButton>
-                    <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Class="m-1" Click="@((args) => OnClickCancelEditMode(app))">
+                    <RadzenButton 
+                        Icon="check"
+                        ButtonStyle="ButtonStyle.Primary"
+                        Click="@((args) => OnClickSaveRow(app))"/>
+                    
+                    <RadzenButton 
+                        Icon="close"
+                        ButtonStyle="ButtonStyle.Light"
+                        Click="@((args) => OnClickCancelEditMode(app))">
                     </RadzenButton>
                 </EditTemplate>
             </RadzenDataGridColumn>
@@ -100,7 +104,6 @@
                         <RadzenButton
                             ButtonStyle="ButtonStyle.Danger"
                             Icon="delete"
-                            Size="ButtonSize.Small"
                             Class="m-1"
                             Click="@(args => DeleteRow(app))"
                             @onclick:stopPropagation="true">
