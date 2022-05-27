@@ -1,18 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
-using OffLogs.Web.Core.Components;
-using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Services.i18;
-using OffLogs.Web.Shared.Ui.Form.CustomDropDown;
 using OffLogs.Web.Store.Auth;
 
-namespace OffLogs.Web.Pages.Landing.Shared;
+namespace OffLogs.Web.Shared;
 
-public partial class MainMenu
+public partial class MainHeader
 {
     [Inject]
     private ILocalizationService LocalizationService { get; set; }
