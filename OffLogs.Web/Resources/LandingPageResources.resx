@@ -18,6 +18,9 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
+    <data name="Main_About" xml:space="preserve">
+        <value>About</value>
+    </data>
     <data name="Main_Title" xml:space="preserve">
         <value>About the OffLogs project</value>
     </data>
@@ -86,5 +89,14 @@ for already reported and discussed bugs and feature requests.
         <value>
 If you have any questions please send us an email at **support@offlogs.com**
         </value> 
+    </data>
+    <data name="Menu_Login" xml:space="preserve">
+        <value>Login</value>
+    </data>
+    <data name="Menu_Dashboard" xml:space="preserve">
+        <value>Dashboard</value>
+    </data>
+    <data name="Menu_SignUp" xml:space="preserve">
+        <value>Sign Up</value>
     </data>
 </root>

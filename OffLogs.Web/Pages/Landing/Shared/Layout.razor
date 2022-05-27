@@ -1,12 +1,26 @@
 ﻿@inherits BaseLayout
 
-<MainMenu/>
-
-<div class="container p-3">
-    @Body
-</div>
-
-<Footer></Footer>
+<RadzenLayout>
+    <RadzenHeader>
+        <MainMenu/>
+    </RadzenHeader>
+    <RadzenBody>
+        <div class="container-fluid">
+            @Body
+        </div>
+        @if (!_isShowReCaptcha)
+        {
+            <style>
+                    .grecaptcha-badge {
+                        visibility: hidden;
+                    }
+                </style>
+        }
+    </RadzenBody>
+    <RadzenFooter>
+        <Footer></Footer>
+    </RadzenFooter>
+</RadzenLayout>
 
 <RadzenContextMenu/>
 <RadzenDialog />

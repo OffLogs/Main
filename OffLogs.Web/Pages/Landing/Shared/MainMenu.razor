@@ -1,52 +1,61 @@
 ﻿@using OffLogs.Web.Resources
 @using OffLogs.Web.Constants.Bootstrap
+@using OffLogs.Business.Common.Constants
+@using System.Globalization
 
 @inherits BaseComponent
 
-<nav class="navbar navbar-light bg-light">
-    <div class="container">
+<div class="row justify-content-start align-items-center p-1">
+    <div class="col-5 d-flex align-items-center">
         <a class="navbar-brand" href="#">
             <img src="/img/logo/40x.png" alt="" class="d-inline-block">
             OffLogs
         </a>
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <NavLink href="/" class="nav-link">About</NavLink>
-            </li>
-            <li class="nav-item">
-                <NavLink href="@SiteUrl.Support" class="nav-link">
-                    @LandingPageResources.Support_Title
-                </NavLink>
-            </li>
-            <li class="nav-item">
-                <NavLink href="@SiteUrl.Documentation_CommonInfo" class="nav-link">
-                    @LandingPageResources.Documentation_Title
-                </NavLink>
-            </li>
-        </ul>
-        <ul class="navbar-nav justify-content-end">
-            <li class="nav-item">
-                <CustomDropDown 
-                    BtnType="ColorType.Light"
-                    IsShowResetBtn="false"
-                    Items="@_languageMenuItems"
-                    OnChanged="@(async item => await OnSelectLanguageAsync(item))"></CustomDropDown>  
-            </li>
+
+        <RadzenLink
+            Path="/"
+            class="ml-3"
+            Text="@LandingPageResources.Main_About"/>
+        <RadzenLink
+            Path="@SiteUrl.Support"
+            class="ml-3"
+            Text="@LandingPageResources.Support_Title"/>
+        <RadzenLink
+            Path="@SiteUrl.Documentation_CommonInfo"
+            class="ml-3"
+            Text="@LandingPageResources.Documentation_Title"/>
+    </div>
+    <div class="col-7 d-flex align-items-center justify-content-end">
+        <div class="d-md-inline-flex align-items-center">
             @if (AuthState.Value.IsLoggedIn)
             {
-                <li class="nav-item">
-                    <NavLink href="@SiteUrl.Dashboard" class="nav-link">Dashboard</NavLink>
-                </li>
+                <RadzenLink
+                    Path="@SiteUrl.Dashboard"
+                    Text="@LandingPageResources.Menu_Dashboard"/>
             }
             else
             {
-                <li class="nav-item">
-                    <NavLink href="@SiteUrl.Login" class="nav-link">Login</NavLink>
-                </li>
-                <li class="nav-item">
-                    <NavLink href="@SiteUrl.Registration_Step1" class="nav-link">Registration</NavLink>
-                </li>
+                <RadzenLink
+                    Path="@SiteUrl.Login"
+                    Text="@LandingPageResources.Menu_Login"/>
+                <RadzenLink
+                    Path="@SiteUrl.Registration_Step1"
+                    Text="@LandingPageResources.Menu_SignUp"/>
             }
-        </ul>
+        </div>
+        <div class="mx-0 mx-lg-3">
+            <RadzenDropDown
+                AllowClear="false"
+                TValue="string"
+                Class="w-100"
+                AllowFiltering="false"
+                AllowVirtualization="false"
+                TextProperty="DisplayName"
+                ValueProperty="Name"
+                Data="@_languageMenuItems"
+                Placeholder="@CommonResources.SelectLanguage"
+                Value="@_currentLocaleId"
+                ValueChanged="OnSelectLanguageAsync"/>
+        </div>
     </div>
-</nav>
+</div>

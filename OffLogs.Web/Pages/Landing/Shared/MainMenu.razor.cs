@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Fluxor;
@@ -22,25 +23,20 @@ public partial class MainMenu
     [Inject]
     private IState<AuthState> AuthState { get; set; }
 
-    private List<DropDownListItem> _languageMenuItems = new();
-
+    private ICollection<CultureInfo> _languageMenuItems;
+    private string _currentLocaleId;
+    
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
 
-        _languageMenuItems = LocalizationService.GetAwailableLocales()
-            .Select(locale => new DropDownListItem
-            {
-                Id = locale.Name,
-                Label = locale.DisplayName,
-                IsSelected = LocalizationService.GetLocale().Equals(locale)
-            })
-            .ToList();
+        _languageMenuItems = LocalizationService.GetAwailableLocales();
+        _currentLocaleId = LocalizationService.GetLocale().Name;
     }
     
-    private async Task OnSelectLanguageAsync(DropDownListItem listItem)
+    private async Task OnSelectLanguageAsync(string id)
     {
-        await LocalizationService.SetLocaleAsync(listItem.Id);
+        await LocalizationService.SetLocaleAsync(id);
         NavigationManager.NavigateTo("/", forceLoad: true);
     }
 }
