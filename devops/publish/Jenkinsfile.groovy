@@ -73,7 +73,7 @@ node('vizit-mainframe-k8s-master') {
         checkout scm
     }
 
-    stage('Set environment vars') {
+    stage('Set environment vars') {    
         // Kafka
         envVariables.put('Kafka__Servers', '192.168.110.6:29092,192.168.110.6:29093')
         envVariables.put('Kafka__ProducerId', 'offlogs-reducer')
