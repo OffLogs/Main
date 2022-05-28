@@ -4,90 +4,34 @@
 @using Microsoft.AspNetCore.Components
 @using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User
 @using OffLogs.Web.Resources
-@using OffLogs.Web.Services.Http
-@using OffLogs.Web.Constants
-@using OffLogs.Web.Core.Components.Form
 
 @inherits BaseComponent
 
-@inject IApiService _apiService
-@inject NavigationManager _navigationManager
-@inject ToastService _toastService
-@inject IReCaptchaService _reCaptchaService
+<div class="row d-flex px-3 justify-content-center">
+    <div class="col-xl-4 p-3">
+        <RadzenCard>
+            <h2 class="mb-4">@CommonResources.Registration</h2>
+            <RadzenTemplateForm TItem="RegistrationStep1Request" Data="@model" Submit="HandleSubmit">
+                <DataAnnotationsValidator/>
+                <ValidationSummary/>
 
-<div class="card w-registration-step1-page">
-    <div class="card-body">
-        <h5 class="card-title">@CommonResources.Registration</h5>
-        <div class="card-text">
-            <EditForm Model="@model" OnSubmit="@HandleSubmit">
-                <DataAnnotationsValidator />
-                <ValidationSummary />
                 <div class="mb-2">
-                    @EmailError
-                    <CustomInputText 
-                        Label="@AuthResources.Registration_EnterEmail"
-                        @bind-Value="model.Email"
-                        type="email"
-                        ErrorMessage="@EmailError" />
+                    <RadzenLabel
+                        Text="@AuthResources.Registration_EnterEmail"
+                        class="col-sm-3 mb-3"/>
+                    <RadzenTextBox @bind-Value="model.Email" Class="w-100 mb-3 col"/>
                 </div>
                 @if (_isLoading)
                 {
-                    <Preloader />
+                    <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"/>
                 }
                 else
                 {
-                    <MyButton IsSubmit="true">@AuthResources.Registration_SendEmail</MyButton>
+                    <RadzenButton
+                        ButtonType="ButtonType.Submit"
+                        Text="@AuthResources.Registration_SendEmail"/>
                 }
-            </EditForm>
-        </div>
+            </RadzenTemplateForm>
+        </RadzenCard>
     </div>
 </div>
-
-@code {
-    private RegistrationStep1Request model = new();
-    private EditContext _editContext;
-    private bool _isLoading;
-
-    private string EmailError
-    {
-        get
-        {
-            var messages = _editContext.GetValidationMessages(() => model.Email);
-            return messages.FirstOrDefault();
-        }
-    }
-
-    protected override void OnInitialized()
-    {
-        _isLoading = false;
-        _editContext = new EditContext(model);
-    }
-
-    private async Task HandleSubmit()
-    {
-        model.ReCaptcha = await _reCaptchaService.GetReCaptchaTokenAsync();
-        var isValid = _editContext.Validate();
-        if (isValid)
-        {
-            _isLoading = true;
-            try
-            {
-                var isOk = await _apiService.RegistrationStep1Async(model);
-                if (isOk)
-                {
-                    _toastService.AddInfoMessage(AuthResources.Registration_EmailIsSent);
-                    model.Email = "";
-                }
-            }
-            catch (Exception)
-            {
-                _toastService.AddErrorMessage(AuthResources.Registration_RegistrationError);
-            }
-            finally
-            {
-                _isLoading = false;
-            }
-        }
-        StateHasChanged();
-    }
-}

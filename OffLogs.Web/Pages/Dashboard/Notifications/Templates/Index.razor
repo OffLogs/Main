@@ -1,0 +1,68 @@
+﻿@page "/dashboard/notifications/templates"
+@page "/{locale}/dashboard/notifications/templates"
+
+@using OffLogs.Web.Resources
+@using OffLogs.Api.Common.Dto.Entities
+@using OffLogs.Business.Extensions
+
+@layout Layout
+@inherits BaseComponent
+
+<RadzenCard class="m-3">
+
+    <h2>@NotificationResources.MenuItem_MessageTemplates</h2>
+
+    <RadzenButton
+        Icon="add_circle_outline"
+        class="mb-3"
+        Text="@NotificationResources.AddNewTemplate"
+        Disabled="@_isLoading"
+        Click="@AddNewTemplate"/>
+
+    <RadzenDataGrid
+        TItem="MessageTemplateDto"
+        @ref="_grid"
+        AllowSorting="false"
+
+        SelectionMode="DataGridSelectionMode.Single"
+        Data="@State.Value.MessageTemplates"
+        AllowPaging="true"
+        IsLoading="@State.Value.IsLoading"
+        ValueChanged="async (item) => await OnTemplateSelected(item.FirstOrDefault()?.Id ?? 0)"
+        ShowPagingSummary="false">
+
+        <Columns>
+            <RadzenDataGridColumn TItem="MessageTemplateDto" Property="Id" Title="ID"/>
+            <RadzenDataGridColumn TItem="MessageTemplateDto" Property="Subject" Title="Subject">
+                <Template Context="template">
+                    @template.Subject.Truncate(32)
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="MessageTemplateDto" Property="Body" Title="Body">
+                <Template Context="template">
+                    @template.Body.Truncate(32)
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn
+                TItem="MessageTemplateDto"
+                Context="app"
+                Filterable="false"
+                Sortable="false"
+                TextAlign="TextAlign.Center"
+                Width="60px">
+
+                <Template Context="app">
+                    <RadzenButton
+                        ButtonStyle="ButtonStyle.Danger"
+                        Icon="delete"
+                        Size="ButtonSize.Small"
+                        Disabled="@_isLoading"
+                        Click="@(async () => await DeleteRowAsync(app))"
+                        @onclick:stopPropagation="true">
+                    </RadzenButton>
+                </Template>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
+
+</RadzenCard>

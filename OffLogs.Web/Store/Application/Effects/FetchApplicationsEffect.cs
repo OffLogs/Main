@@ -4,11 +4,14 @@ using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.Extensions.Logging;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application;
+using OffLogs.Business.Common.Constants;
+using OffLogs.Web.Core.Helpers;
+using OffLogs.Web.Core.Utils;
 using OffLogs.Web.Services.Http;
 
 namespace OffLogs.Web.Store.Application.Effects;
 
-public class FetchApplicationsEffect: Effect<FetchNextListPageAction>
+public class FetchApplicationsEffect: Effect<FetchListPageAction>
 {
     private readonly IState<ApplicationsListState> _state;
     private readonly IApiService _apiService;
@@ -25,24 +28,19 @@ public class FetchApplicationsEffect: Effect<FetchNextListPageAction>
         _logger = logger;
     }
 
-    public override async Task HandleAsync(FetchNextListPageAction pageAction, IDispatcher dispatcher)
-    {
-        if (pageAction.IsLoadIfEmpty && _state.Value.List.Any())
-        {
-            return;
-        }
-        
+    public override async Task HandleAsync(FetchListPageAction pageAction, IDispatcher dispatcher)
+    {   
         try
         {
             var response = await _apiService.GetApplicationsAsync(new GetListRequest
             {
-                Page = _state.Value.Page
+                Page = PaginationUtils.CalculatePage(pageAction.Skip, _state.Value.PageSize)
             });
             dispatcher.Dispatch(new FetchListResultAction(
                 response.Items,
                 response.TotalPages,
-                response.TotalCount,
                 response.PageSize,
+                response.TotalCount,
                 response.IsHasMore
             ));
         }

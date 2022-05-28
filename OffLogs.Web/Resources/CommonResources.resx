@@ -54,6 +54,9 @@
     <data name="Save" xml:space="preserve">
         <value>Save</value>
     </data>
+    <data name="Apply" xml:space="preserve">
+        <value>Apply</value>
+    </data>
     <data name="Add" xml:space="preserve">
         <value>Add</value>
     </data>
@@ -65,5 +68,38 @@
     </data>
     <data name="LogLevel" xml:space="preserve">
         <value>Log level</value>
+    </data>
+    <data name="LogsStatistic" xml:space="preserve">
+        <value>Logs statistic</value>
+    </data>
+    <data name="Settings" xml:space="preserve">
+        <value>Settings</value>
+    </data>
+    <data name="DeletionConfirmation" xml:space="preserve">
+        <value>Confirm deletion</value>
+    </data>
+    <data name="Cancel" xml:space="preserve">
+        <value>Cancel</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value>Name</value>
+    </data>
+    <data name="CreateTime" xml:space="preserve">
+        <value>Create time</value>
+    </data>
+    <data name="Value" xml:space="preserve">
+        <value>Value</value>
+    </data>
+    <data name="SelectApplication" xml:space="preserve">
+        <value>Select application...</value>
+    </data>
+    <data name="SelectMessageTemplate" xml:space="preserve">
+        <value>Select message template...</value>
+    </data>
+    <data name="SelectItem" xml:space="preserve">
+        <value>Select item...</value>
+    </data>
+    <data name="SelectLanguage" xml:space="preserve">
+        <value>Select language...</value>
     </data>
 </root>

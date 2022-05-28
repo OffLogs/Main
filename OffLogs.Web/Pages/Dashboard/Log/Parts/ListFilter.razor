@@ -1,65 +1,72 @@
 ﻿@using OffLogs.Web.Resources
 @using OffLogs.Web.Constants.Bootstrap
+@using OffLogs.Web.Shared.Ui.Form.DropDowns
+@using OffLogs.Business.Common.Constants
 
 @inherits BaseComponent
 
-<div class="w-filter">
-    <div class="w-text-search">
-        <Icon Name="search-2"/>
-        <input type="text"
-               placeholder="@LogResources.SearchByLoadedRecords"
-               @bind="@_search"
-               @bind:event="oninput"/>
-        @if (_isApplied)
-        {
-            <Icon 
-                Class="text-primary"
-                Name="ui-check"/>    
-        }
-        <Icon
-            Name="@(_isFilterOpened ? "rounded-up" : "rounded-down")"
-            OnClick="@(() => _isFilterOpened = !_isFilterOpened)"/>
+<h4>1. @CommonResources.SelectApplication</h4>
+<div class="row">
+    <div class="col">
+        <ApplicationsDropDown @bind-Value="@_model.ApplicationId"/>
     </div>
-    
-    @if (_isFilterOpened)
-    {
-        <div class="w-filter p-1">
-            
-            <h5>@LogResources.FilterRecords</h5>
-            
-            <div class="form-row">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="is-favorite" @bind="@_model.IsOnlyFavorite">
-                    <label class="form-check-label" for="is-favorite">@LogResources.ShowOnlyFavorite</label>
-                </div>
-                <div class="form-group">
-                    <CustomDropDown
-                        NonSelectedLabel="@CommonResources.LogLevel"
-                        SelectedItemId="@(_model.LogLevel?.ToString())"
-                        OnChanged="OnChangeLogLevel"
-                        Size="FormControlSize.Small"
-                        Items="@_logLevelDownListItems"/>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <MyButton
-                        Class="w-100 mt-3"
-                        IsSmall="true"
-                        Type="ColorType.Secondary"
-                        OnClick="Reset">
-                        @CommonResources.Reset
-                    </MyButton>
-                </div>
-                <div class="col">
-                    <MyButton
-                        Class="w-100 mt-3"
-                        IsSmall="true"
-                        OnClick="OnSave">
-                        @CommonResources.Save
-                    </MyButton>
-                </div>
-            </div>
-        </div>    
-    }
+</div>
+
+<h4>2. @LogResources.FilterRecords</h4>
+<div class="row mb-3">
+    <div class="col col-md-6">
+        <EnumDropDown
+            TItem="LogLevel"
+            @bind-Value="@_logLevel"/>
+    </div>
+    <div class="col col-md-6 d-flex align-items-center">
+        <RadzenSwitch @bind-Value="@_model.IsOnlyFavorite"/>
+        <b class="ml-3">@LogResources.ShowOnlyFavorite</b>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col col-md-6">
+        <RadzenDatePicker
+            TValue="DateTime?"
+            Placeholder="@LogResources.FromTime"
+            ShowTime="true"
+            ShowSeconds="false"
+            HoursStep="1"
+            MinutesStep="5"
+            DateFormat="MM/dd/yyyy HH:mm"
+            @bind-Value="@_model.CreateTimeFrom"
+            Class="w-100"/>
+    </div>
+    <div class="col col-md-6">
+        <RadzenDatePicker
+            TValue="DateTime?"
+            Placeholder="@LogResources.ToTime"
+            ShowTime="true"
+            ShowSeconds="false"
+            HoursStep="1"
+            MinutesStep="5"
+            DateFormat="MM/dd/yyyy HH:mm"
+            @bind-Value="@_model.CreateTimeTo"
+            Class="w-100"/>
+    </div>
+</div>
+
+<div class="justify-content-end mb-3">
+    <RadzenButton
+        ButtonStyle="ButtonStyle.Light"
+        Size="ButtonSize.Small"
+        Class="m-1"
+        Click="Reset"
+        @onclick:stopPropagation="true"
+        Text="@CommonResources.Reset">
+    </RadzenButton>
+    <RadzenButton
+        ButtonStyle="ButtonStyle.Success"
+        Size="ButtonSize.Small"
+        Class="m-1"
+        Click="OnSave"
+        @onclick:stopPropagation="true"
+        Text="@CommonResources.Apply">
+    </RadzenButton>
 </div>

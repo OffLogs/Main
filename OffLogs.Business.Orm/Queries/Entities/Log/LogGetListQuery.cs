@@ -68,7 +68,7 @@ namespace OffLogs.Business.Orm.Queries.Entities.Log
                 .ListAsync<LogEntity>(cancellationToken);
             
             var count = await query.Clone()
-                .RowCountInt64Async(cancellationToken);
+                .RowCountAsync(cancellationToken);
 
             var favorites = await session.QueryOver<FavoriteLogEntity>()
                 .Where(

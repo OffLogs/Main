@@ -1,7 +1,6 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Globalization;
 using Blazored.LocalStorage;
 using Fluxor;
 using Majorsoft.Blazor.WebAssembly.Logging.Console;
@@ -16,6 +15,7 @@ using OffLogs.Web.Services.Http;
 using OffLogs.Web.Services.i18;
 using OffLogs.Web.Services.IO;
 using OffLogs.Web.Services.Validation;
+using Radzen;
 
 namespace OffLogs.Web
 {
@@ -67,6 +67,12 @@ namespace OffLogs.Web
             );
             builder.Services.AddBlazoredLocalStorage();
 
+            // Radzen services
+            builder.Services.AddScoped<DialogService>();
+            builder.Services.AddScoped<NotificationService>();
+            builder.Services.AddScoped<TooltipService>();
+            builder.Services.AddScoped<ContextMenuService>();
+            
             // Custom services
             builder.Services.AddLocalization();
             builder.Services.AddScoped<ILocalizationService, LocalizationService>();

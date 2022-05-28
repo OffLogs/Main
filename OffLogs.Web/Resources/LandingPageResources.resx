@@ -18,6 +18,9 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
+    <data name="Main_About" xml:space="preserve">
+        <value>About</value>
+    </data>
     <data name="Main_Title" xml:space="preserve">
         <value>About the OffLogs project</value>
     </data>
@@ -35,7 +38,7 @@
 2. Вы используя один из наших клиентов или создаете свой логгер для отправки логов в наше API.
    (Как это сделать можете прочитать [тут](/documentation/api/2_1_rest_api))
 3. После чего ваши сайты, в процессе работы, будут генерировать отладочную информацию которая будет получена и зашифрована нашим сервисом.
-4. Все :) Теперь вы можете просмотреть всю отладочную информацию с ваших ресурсов в [панели администрирования](/dashboard)
+4. Все :) Теперь вы можете просмотреть всю отладочную информацию с ваших ресурсов в [панели администрирования](/dashboard/main)
 5. А если вы настроите оповещения тогда, получите еще и оповещение если, к примеру, один из ваших ресурсов сгенерировал ошибку
         </value>
     </data>
@@ -86,5 +89,14 @@ for already reported and discussed bugs and feature requests.
         <value>
 If you have any questions please send us an email at **support@offlogs.com**
         </value> 
+    </data>
+    <data name="Menu_Login" xml:space="preserve">
+        <value>Login</value>
+    </data>
+    <data name="Menu_Dashboard" xml:space="preserve">
+        <value>Dashboard</value>
+    </data>
+    <data name="Menu_SignUp" xml:space="preserve">
+        <value>Sign Up</value>
     </data>
 </root>

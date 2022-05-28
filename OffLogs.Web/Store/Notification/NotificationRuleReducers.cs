@@ -9,12 +9,23 @@ namespace OffLogs.Web.Store.Notification;
 
 public class ApplicationReducers
 {
+    [ReducerMethod]
+    public static NotificationRuleState ReduceSetIsLoading(
+        NotificationRuleState state,
+        SetIsLoading action
+    )
+    {
+        var newState = state with {};;
+        newState.IsLoading = action.IsLoading;
+        return newState;
+    }
+    
     #region Message Templates
 
     [ReducerMethod(typeof(FetchMessageTemplatesAction))]
     public static NotificationRuleState ReduceFetchMessageTemplatesAction(NotificationRuleState state)
     {
-        var newState = state.JsonClone<NotificationRuleState>();
+        var newState = state with {};;
         newState.IsLoading = true;
         return newState;
     }
@@ -25,7 +36,7 @@ public class ApplicationReducers
         FetchMessageTemplatesResultAction action
     )
     {
-        var newState = state.JsonClone<NotificationRuleState>();
+        var newState = state with {};;
         newState.IsLoading = false;
         newState.MessageTemplates = action.List?.Items
                 .OrderBy(item => item.Id)
@@ -43,7 +54,7 @@ public class ApplicationReducers
         var oldList = state.MessageTemplates.Where(
             item => item.Id != action.Item.Id
         ).ToList();
-        var newState = state.JsonClone<NotificationRuleState>();
+        var newState = state with {};;
         newState.MessageTemplates = oldList;
         newState.MessageTemplates.Add(action.Item);
         newState.MessageTemplates = newState.MessageTemplates.OrderBy(item => item.Id).ToList();
@@ -56,7 +67,7 @@ public class ApplicationReducers
         DeleteMessageTemplatesAction action
     )
     {
-        var newState = state.JsonClone<NotificationRuleState>();
+        var newState = state with {};;
         newState.MessageTemplates = state.MessageTemplates.Where(
             item => item.Id != action.Id
         ).ToList();
@@ -69,7 +80,7 @@ public class ApplicationReducers
     [ReducerMethod(typeof(FetchNotificationRulesAction))]
     public static NotificationRuleState ReduceFetchNotificationRulesAction(NotificationRuleState state)
     {
-        var newState = state.JsonClone<NotificationRuleState>();
+        var newState = state with {};;
         newState.IsLoading = true;
         return newState;
     }
@@ -80,7 +91,7 @@ public class ApplicationReducers
         FetchNotificationRulesResultAction action
     )
     {
-        var newState = state.JsonClone<NotificationRuleState>();
+        var newState = state with {};;
         newState.IsLoading = false;
         newState.Rules = action.List?.Items ?? new List<NotificationRuleDto>();
         return newState;
@@ -95,7 +106,7 @@ public class ApplicationReducers
         var oldList = state.Rules.Where(
             item => item.Id != action.Item.Id
         ).ToList();
-        var newState = state.JsonClone<NotificationRuleState>();
+        var newState = state with {};
         newState.Rules = oldList;
         newState.Rules.Add(action.Item);
         newState.Rules = newState.Rules.OrderBy(item => item.Id).ToList();
@@ -108,7 +119,7 @@ public class ApplicationReducers
         DeleteNotificationRuleAction action
     )
     {
-        var newState = state.JsonClone<NotificationRuleState>();
+        var newState = state with {};;
         newState.Rules = state.Rules.Where(
             item => item.Id != action.Id
         ).ToList();

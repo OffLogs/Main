@@ -115,6 +115,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit template.
+        /// </summary>
+        internal static string EditTemplate {
+            get {
+                return ResourceManager.GetString("EditTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add new rue.
         /// </summary>
         internal static string MenuItem_AddRule {
@@ -309,6 +318,15 @@ namespace OffLogs.Web.Resources {
         internal static string Rules_Period {
             get {
                 return ResourceManager.GetString("Rules_Period", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The rule was deleted.
+        /// </summary>
+        internal static string Rules_RuleDeleted {
+            get {
+                return ResourceManager.GetString("Rules_RuleDeleted", resourceCulture);
             }
         }
         

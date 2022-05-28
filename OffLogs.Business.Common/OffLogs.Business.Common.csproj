@@ -32,6 +32,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Domain.Abstractions\Domain.Abstractions.csproj" />
+      <ProjectReference Include="..\OffLogs.Business.Extensions\OffLogs.Business.Extensions.csproj" />
     </ItemGroup>
 
     <ItemGroup>

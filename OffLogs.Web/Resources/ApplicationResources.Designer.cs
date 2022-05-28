@@ -79,6 +79,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Application info.
+        /// </summary>
+        internal static string ApplicationInfoModalTitle {
+            get {
+                return ResourceManager.GetString("ApplicationInfoModalTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The application has been deleted.
         /// </summary>
         internal static string ApplicationIsDeleted {
@@ -88,11 +97,29 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The application was updated.
+        /// </summary>
+        internal static string ApplicationWasUpdated {
+            get {
+                return ResourceManager.GetString("ApplicationWasUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         internal static string DeleteApplication {
             get {
                 return ResourceManager.GetString("DeleteApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove this application?.
+        /// </summary>
+        internal static string DeleteConfirmation {
+            get {
+                return ResourceManager.GetString("DeleteConfirmation", resourceCulture);
             }
         }
         

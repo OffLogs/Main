@@ -10,7 +10,7 @@ public static class Debug
         var values = "";
         foreach (var val in vals)
         {
-            values += JsonConvert.SerializeObject(val) + "\n";    
+            values += JsonConvert.SerializeObject(val) + " ";    
         }
         Console.WriteLine(values);
     }

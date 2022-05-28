@@ -1,0 +1,25 @@
+﻿@using OffLogs.Api.Common.Dto.Entities
+@using Newtonsoft.Json
+@using OffLogs.Business.Common.Constants
+
+@inherits BaseComponent
+
+<RadzenDropDown
+    AllowClear="true"
+    TValue="long"
+    Class="@("w-100 " + Class)"
+    AllowFiltering="false"
+    AllowVirtualization="true"
+    Data="@_state.Value.MessageTemplates"
+    TextProperty="Subject"
+    AllowSorting="false"
+    ValueProperty="Id"
+    Placeholder="@Placeholder"
+    Value="@_selectedId"
+    ValueChanged="OnValueChanged">
+
+    <Columns>
+        <RadzenDropDownDataGridColumn Property="Id" Title="ID"/>
+        <RadzenDropDownDataGridColumn Property="Subject" Title="Subject"/>
+    </Columns>
+</RadzenDropDown>

@@ -1,17 +1,20 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Fluxor;
+using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Business.Common.Extensions;
+using OffLogs.Web.Core.Helpers;
 
 namespace OffLogs.Web.Store.Application;
 
 public class ApplicationReducers
 {
-    [ReducerMethod(typeof(FetchNextListPageAction))]
-    public static ApplicationsListState ReduceFetchApplicationListAction(ApplicationsListState state)
+    [ReducerMethod(typeof(FetchListPageAction))]
+    public static ApplicationsListState ReduceFetchListPageAction(ApplicationsListState state)
     {
         var newState = state.JsonClone<ApplicationsListState>();
         newState.IsLoading = true;
-        newState.Page = state.Page + 1;
+        newState.SkipItems = state.SkipItems;
         return newState;
     }
     
@@ -20,7 +23,7 @@ public class ApplicationReducers
     {
         var newState = state.JsonClone<ApplicationsListState>();
         newState.IsLoading = false;
-        newState.Page = 0;
+        newState.SkipItems = 0;
         newState.List.Clear();
         return newState;
     }
@@ -28,11 +31,13 @@ public class ApplicationReducers
     [ReducerMethod]
     public static ApplicationsListState ReduceFetchListResultActionAction(ApplicationsListState state, FetchListResultAction action)
     {
-        var newState = state.JsonClone<ApplicationsListState>();
-        newState.IsLoading = false;
-        newState.HasMoreItems = action.IsHasMore;
-        newState.List = state.List.Concat(action.Items).ToList();
-        return newState;
+        return state with
+        {
+            IsLoading = false,
+            HasMoreItems = action.IsHasMore,
+            TotalCount = action.TotalCount,
+            List = action.Items
+        };
     }
     
     [ReducerMethod]
@@ -42,23 +47,61 @@ public class ApplicationReducers
         newState.List = state.List.Where(
             i => i.Id != action.Id
         ).ToList();
-        newState.SelectedApplicationId = null;
         return newState;
     }
     
     [ReducerMethod]
-    public static ApplicationsListState ReduceAddApplicationActionAction(ApplicationsListState state, AddApplicationAction action)
+    public static ApplicationsListState ReduceAddApplicationListItemAction(ApplicationsListState state, AddApplicationListItemAction action)
     {
-        var newState = state.JsonClone<ApplicationsListState>();
-        newState.List.Add(action.Application);
+        var newState = state with {};
+        newState.List.Add(new ApplicationListItemDto
+        {
+            Id = action.Item.Id,
+            CreateTime = action.Item.CreateTime,
+            Name = action.Item.Name,
+            UserId = action.Item.UserId
+        });
         return newState;
+    }
+
+    [ReducerMethod]
+    public static ApplicationsListState ReduceUpdateApplicationActionAction(ApplicationsListState state, UpdateApplicationAction action)
+    {
+        var newState = state with { };
+        foreach (var app in newState.List)
+        {
+            if (app.Id == action.Application.Id)
+            {
+                app.Name = action.Application.Name;
+            }
+        }
+        return newState;
+    }
+
+    #region Add new item
+    
+    [ReducerMethod(typeof(AddApplicationToAddListItemAction))]
+    public static ApplicationsListState ReduceAddApplicationToAddListItemAction(ApplicationsListState state)
+    {
+        var newList = state.List.ToList();
+        newList.Add(new ApplicationListItemDto()
+        {
+            Id = 0
+        });
+        return state with
+        {
+            List = newList
+        };
     }
     
-    [ReducerMethod]
-    public static ApplicationsListState ReduceSelectApplicationAction(ApplicationsListState state, SelectApplicationAction action)
+    [ReducerMethod(typeof(RemoveApplicationToAddListItemAction))]
+    public static ApplicationsListState ReduceRemoveApplicationToAddListItemAction(ApplicationsListState state)
     {
-        var newState = state.JsonClone<ApplicationsListState>();
-        newState.SelectedApplicationId = action.ApplicationId;
-        return newState;
+        return state with
+        {
+            List = state.List.Where(item => item.Id != 0).ToList()
+        };
     }
+    
+    #endregion
 }

@@ -46,10 +46,8 @@ public partial class BaseLayout
 
     protected bool IsRedirectIfNotLoggedIn = true;
 
-    protected bool _isShowMainMenu
-    {
-        get => AuthState.Value.IsLoggedIn && NavigationManager.GetPath().ToLower().StartsWith(SiteUrl.Dashboard);
-    }
+    protected bool _isShowMainMenu => AuthState.Value.IsLoggedIn
+        && NavigationManager.GetPath().ToLower().StartsWith(SiteUrl.DashboardBase);
 
     protected bool _isShowReCaptcha = false;
 

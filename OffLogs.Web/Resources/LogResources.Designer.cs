@@ -70,6 +70,33 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to From time.
+        /// </summary>
+        internal static string FromTime {
+            get {
+                return ResourceManager.GetString("FromTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Info.
+        /// </summary>
+        internal static string LogInfo {
+            get {
+                return ResourceManager.GetString("LogInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log time.
+        /// </summary>
+        internal static string LogTime {
+            get {
+                return ResourceManager.GetString("LogTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Application statistic.
         /// </summary>
         internal static string ModalTitle_ApplicationStatistic {
@@ -84,6 +111,15 @@ namespace OffLogs.Web.Resources {
         internal static string PageTitle {
             get {
                 return ResourceManager.GetString("PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Properties.
+        /// </summary>
+        internal static string Properties {
+            get {
+                return ResourceManager.GetString("Properties", resourceCulture);
             }
         }
         
@@ -120,6 +156,24 @@ namespace OffLogs.Web.Resources {
         internal static string ShowStatistic {
             get {
                 return ResourceManager.GetString("ShowStatistic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To time.
+        /// </summary>
+        internal static string ToTime {
+            get {
+                return ResourceManager.GetString("ToTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Traces.
+        /// </summary>
+        internal static string Traces {
+            get {
+                return ResourceManager.GetString("Traces", resourceCulture);
             }
         }
         

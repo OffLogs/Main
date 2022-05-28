@@ -75,12 +75,13 @@
         <PackageReference Include="BlazorDeferredRemove" Version="0.2.5" />
         <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
         <PackageReference Include="ChartJs.Blazor.Fork" Version="2.0.2" />
-        <PackageReference Include="Fluxor.Blazor.Web" Version="5.1.0" />
-        <PackageReference Include="Fluxor.Blazor.Web.ReduxDevTools" Version="5.1.0" />
+        <PackageReference Include="Fluxor.Blazor.Web" Version="5.4.0" />
+        <PackageReference Include="Fluxor.Blazor.Web.ReduxDevTools" Version="5.4.0" />
         <PackageReference Include="Majorsoft.Blazor.WebAssembly.Logging.Console" Version="1.5.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.3" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.3" PrivateAssets="all" />
-        <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.3" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.5" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.5" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.5" />
+        <PackageReference Include="Radzen.Blazor" Version="3.18.10" />
         <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
     </ItemGroup>
 
@@ -93,18 +94,13 @@
     <ItemGroup>
       <Folder Include="Pages\Dashboard\Settings\" />
       <Folder Include="Shared\Ui\Form\AutoComplete\" />
+      <Folder Include="Store\Log\Reducers" />
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="Pages\Dashboard\Application\Add\AddApplicationModal.razor.less" />
       <Content Include="Pages\Dashboard\Application\Index.razor.less" />
       <Content Include="Pages\Dashboard\Log\Index.razor.less" />
-      <Content Include="Pages\Dashboard\Log\Info\LogInfoModal.razor.less" />
       <Content Include="Pages\Dashboard\Log\Parts\LogInfoBlock.razor.less" />
-      <None Include="Shared\MainLayout.razor.less" />
-      <Content Include="Pages\Dashboard\Notifications\Shared\MessageTemplateForm.razor.less">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      </Content>
       <Content Include="Shared\Ui\Form\CustomDropDown\CustomDropDown.razor.less" />
       <Content Include="Shared\Ui\MyButton.razor.less" />
       <Content Include="Shared\Ui\Preloader.razor.less" />
@@ -139,6 +135,8 @@
       <_ContentIncludedByDefault Remove="wwwroot\img\logo\favicon\icons8-login-as-user-16.png" />
       <_ContentIncludedByDefault Remove="wwwroot\img\logo\favicon\icons8-login-as-user-32.png" />
       <_ContentIncludedByDefault Remove="wwwroot\img\logo\favicon\icons8-login-as-user-96.png" />
+      <_ContentIncludedByDefault Remove="Pages\Dashboard\Notifications\Shared\Rule\ConditionForm.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Dashboard\Notifications\Shared\Rule\NotificationRuleForm.razor" />
     </ItemGroup>
 
     <ItemGroup>

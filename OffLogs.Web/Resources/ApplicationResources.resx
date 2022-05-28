@@ -36,4 +36,14 @@
     <data name="SelectApplication" xml:space="preserve">
         <value>Please select application</value>
     </data>
+    <data name="DeleteConfirmation" xml:space="preserve">
+        <value>Are you sure you want to remove this application?</value>
+    </data>
+    <data name="ApplicationWasUpdated" xml:space="preserve">
+        <value>The application was updated</value>
+    </data>
+    <data name="ApplicationInfoModalTitle" xml:space="preserve">
+        <value>Application info</value>
+    </data>
 </root>
+

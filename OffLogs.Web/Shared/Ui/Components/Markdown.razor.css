@@ -51,4 +51,7 @@
   margin-top: 0.8rem;
   margin-bottom: 0.8rem;
 }
+.w-markdown-block ::deep code {
+  word-break: break-all;
+}
 /*# sourceMappingURL=Markdown.razor.css.map */

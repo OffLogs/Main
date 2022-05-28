@@ -1,123 +1,62 @@
 ﻿@page "/login"
 @page "/{locale}/login"
 
-@using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User
-@using OffLogs.Web.Core.Components.Form
 @using OffLogs.Web.Resources
-@using System.IO
 @using Microsoft.AspNetCore.Components
-@using Microsoft.Extensions.Logging
+@using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User
 
 @inherits BaseComponent
 
-@inject IAuthorizationService _authorizationService
-@inject NavigationManager _navigationManager
-@inject ToastService _toastService
-@inject ILogger<Login> _logger
-@inject IReCaptchaService _reCaptchaService;
+<div class="row d-flex px-3 justify-content-center">
+    <div class="col-xl-4 p-3">
+        <RadzenCard>
+            <h2 class="mb-4">Login to your account</h2>
+            <RadzenTemplateForm TItem="LoginRequest" Data="@model" Submit="HandleSubmit">
 
-<div class="card w-login-page">
-    <div class="card-body">
-        <h5 class="card-title">Login to your account</h5>
-        <div class="card-text">
-            <EditForm Model="@model" OnSubmit="@HandleSubmit">
-                <DataAnnotationsValidator />
-                <ValidationSummary />
-                <InputFile OnChange="@(async args => await OnSelectFiles(args))" />
-                <p>
-                    @PasswordError
-                    <CustomInputText Label="Password:"
-                                     @bind-Value="model.Password"
-                                     type="password"
-                                     ErrorMessage="@PasswordError" />
-                </p>
+                <DataAnnotationsValidator/>
+                <ValidationSummary/>
+
+                <div class="row">
+                    <RadzenLabel
+                        Text="Select secret file:"
+                        class="col-sm-3 mb-3"/>
+                    <InputFile
+                        OnChange="OnSelectFiles"
+                        class="w-100 mb-3 col"/>
+                </div>
+
+                <div class="row">
+                    <RadzenLabel
+                        Text="Password:"
+                        class="col-sm-3 mb-3"/>
+                    <RadzenPassword
+                        @bind-Value="model.Password"
+                        Placeholder="Enter password..."
+                        Class="w-100 mb-3 col"/>
+                </div>
+
                 @if (_isLoading)
                 {
-                    <Preloader />
+                    <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"/>
                 }
                 else
                 {
-                    <MyButton IsSubmit="true">Login</MyButton>
+                    <RadzenButton
+                        ButtonType="ButtonType.Submit"
+                        Text="@AuthResources.Login"/>
                 }
-            </EditForm>
-        </div>
+            </RadzenTemplateForm>
+
+            <div class="row mt-5">
+                <div class="col-md-3 mb-3 text-center">
+                    @AuthResources.Login_DontHaveAnAccount
+                </div>
+                <div class="col text-center">
+                    <RadzenButton
+                        Click="OnClickSignUp"
+                        Text="@AuthResources.Login_Registration"/>
+                </div>
+            </div>
+        </RadzenCard>
     </div>
 </div>
-
-@code
-{
-    private LoginRequest model = new();
-    private EditContext _editContext;
-    private bool _isLoading;
-    
-    private string PasswordError
-    {
-        get
-        {
-            var messages = _editContext.GetValidationMessages(() => model.Password);
-            return messages.FirstOrDefault();
-        }
-    }
-
-    protected override void OnInitialized()
-    {
-        _isLoading = false;
-        _editContext = new EditContext(model);
-    }
-
-    private async Task OnSelectFiles(InputFileChangeEventArgs changeEvent)
-    {
-        _isLoading = true;
-        var keyFile = changeEvent.GetMultipleFiles(1).FirstOrDefault();
-        try
-        {
-            if (keyFile == null)
-            {
-                throw new Exception();
-            }
-            using var stream = keyFile.OpenReadStream(5000000);
-            using var reader = new StreamReader(stream);
-            model.Pem = await reader.ReadToEndAsync();
-            if (string.IsNullOrEmpty(model.Pem))
-            {
-                throw new Exception("Empty key file");
-            }
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e.Message, e);
-            _toastService.AddErrorMessage(AuthResources.Login_PleaseEnterCorrectKeyFile);
-        }
-        _isLoading = false;
-        await Task.CompletedTask;
-    }
-
-    private async Task HandleSubmit()
-    {
-        model.ReCaptcha = await _reCaptchaService.GetReCaptchaTokenAsync();
-        var isValid = _editContext.Validate();
-        if (isValid)
-        {
-            _isLoading = true;
-            try
-            {
-                var isLoggedIn = await _authorizationService.LoginAsync(model);
-                if (isLoggedIn)
-                {
-                    _navigationManager.NavigateTo(SiteUrl.Dashboard);
-                    return;
-                }
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e.Message, e);
-                _toastService.AddErrorMessage("Login or password is incorrect");
-            }
-            finally
-            {
-                _isLoading = false;
-            }
-        }
-        StateHasChanged();
-    }
-}

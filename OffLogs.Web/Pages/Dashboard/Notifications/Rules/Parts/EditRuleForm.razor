@@ -1,0 +1,101 @@
+﻿@using OffLogs.Web.Resources
+@using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
+@using OffLogs.Business.Common.Constants.Notificatiions
+@inherits BaseComponent
+
+<div class="m-3">
+
+    <h3 class="h5">
+        @if (_isNew)
+        {
+            @NotificationResources.AddNewRule
+        }
+        else
+        {
+            <text>@Model.Title</text>
+        }
+    </h3>
+
+    <RadzenTemplateForm TItem="SetRuleRequest" Data="@Model" Submit="HandleSubmit">
+
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+
+        <RadzenTabs class="w-100 mb-3" RenderMode="TabRenderMode.Client">
+            <Tabs>
+                <RadzenTabsItem Text="Info">
+                    <RadzenLabel
+                        Text="@NotificationResources.Rules_RuleTitle"
+                        class="mb-3"/>
+                    <RadzenTextBox
+                        @bind-Value="Model.Title"
+                        Class="w-100 mb-3 col"/>
+
+                    <RadzenLabel
+                        Text="@NotificationResources.Rules_MessageTemplate"
+                        class="mb-3"/>
+                    <NotificationTemplatesDropDown
+                        Class="mb-3"
+                        @bind-Value="Model.TemplateId"/>
+
+                    <div class="row">
+                        <div class="col col-md-6">
+                            <RadzenLabel
+                                Text="@NotificationResources.Rules_Application"
+                                class="mb-3"/>
+
+                            <ApplicationsDropDown
+                                Class="mb-3"
+                                @bind-Value="_applicationId"/>
+                        </div>
+                        <div class="col col-md-6">
+                            <RadzenLabel
+                                Text="@NotificationResources.Rules_Period"
+                                class="mb-3"/>
+                            <RadzenNumeric
+                                @bind-Value="Model.Period"
+                                Class="w-100 mb-3 col"/>
+                        </div>
+                    </div>
+
+
+                </RadzenTabsItem>
+                <RadzenTabsItem Text="Conditions">
+                    <RadzenLabel
+                        Text="@NotificationResources.Rules_HowToCombineConditions"
+                        class="mb-3"/>
+                    <EnumDropDown
+                        TItem="LogicOperatorType"
+                        Class="mb-3"
+                        @bind-Value="@_logicOperatorType"/>
+
+                    <RadzenButton
+                        ButtonStyle="ButtonStyle.Primary"
+                        Size="ButtonSize.Small"
+                        Class="m-1 mb-3"
+                        Icon="add_circle_outline"
+                        Click="OnAddCondition"
+                        Disabled="@(!_canAddCondition)"
+                        Text="@NotificationResources.Rules_AddCondition">
+                    </RadzenButton>
+
+                    @foreach (var condition in Model.Conditions)
+                    {
+                        <CascadingValue Value="this">
+                            <ConditionForm
+                                OnDeleted="OnDeleteCondition"
+                                Condition="@condition"/>
+                        </CascadingValue>
+                    }
+                </RadzenTabsItem>
+            </Tabs>
+        </RadzenTabs>
+
+        <RadzenButton
+            Disabled="_isLoading"
+            ButtonType="ButtonType.Submit"
+            Text="@(_isNew ? CommonResources.Add : CommonResources.Save)"/>
+
+    </RadzenTemplateForm>
+
+</div>

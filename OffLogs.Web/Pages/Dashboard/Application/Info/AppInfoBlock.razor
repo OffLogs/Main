@@ -7,33 +7,33 @@
 @inject IApiService _apiService
 @inject ToastService _toastService
 
-<h3>@_title</h3>
-
 @if (_isLoading)
 {
-    <Preloader />
+    <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"/>
 }
 else
 {
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item">
-            <b>Name:</b> @_application.Name
-        </li>
-        <li class="list-group-item text-break">
-            <b>ApiToken:</b> @_application.ApiToken
-        </li>
-    </ul>
+    <div class="m-3">
+        <h3 class="h5">@_title</h3>
+        <div>@CommonResources.Name</div>
+        <b>@_application.Name</b>
+        <div class="mt-3">API Token</div>
+        <b class="text-break">@_application.ApiToken</b>
+    </div>
 }
 
 @code {
+
     [Parameter]
     public long? ApplicationId { get; set; }
 
     private bool _isLoading { get; set; }
     private ApplicationDto _application { get; set; }
 
-    private string _title {
-        get {
+    private string _title
+    {
+        get
+        {
             if (_application != null)
             {
                 return _application.Name;
@@ -41,15 +41,6 @@ else
             return "Application info";
         }
     }
-
-    private List<ModalButtonModel> _modalButtons = new ()
-    {
-        new (
-            "Cancel",
-            null,
-            ColorType.Light
-        )
-    };
 
     protected override async Task OnParametersSetAsync()
     {
@@ -93,4 +84,5 @@ else
             StateHasChanged();
         }
     }
+
 }

@@ -70,6 +70,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        internal static string Main_About {
+            get {
+                return ResourceManager.GetString("Main_About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No data.
         /// </summary>
         internal static string Main_Desc {
@@ -133,6 +142,33 @@ namespace OffLogs.Web.Resources {
         internal static string Main_Title {
             get {
                 return ResourceManager.GetString("Main_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dashboard.
+        /// </summary>
+        internal static string Menu_Dashboard {
+            get {
+                return ResourceManager.GetString("Menu_Dashboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login.
+        /// </summary>
+        internal static string Menu_Login {
+            get {
+                return ResourceManager.GetString("Menu_Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sign Up.
+        /// </summary>
+        internal static string Menu_SignUp {
+            get {
+                return ResourceManager.GetString("Menu_SignUp", resourceCulture);
             }
         }
         

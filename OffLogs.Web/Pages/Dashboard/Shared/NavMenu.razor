@@ -1,0 +1,50 @@
+﻿@using OffLogs.Web.Resources
+@using OffLogs.Web.Store.Auth
+
+@inherits BaseComponent
+
+@inject NavigationManager _navigationManager
+
+<RadzenSidebar>
+    <RadzenPanelMenu>
+        <RadzenPanelMenuItem 
+            Icon="dashboard"
+            Text="Dashboard"
+            Path="@SiteUrl.Dashboard"/>
+        <RadzenPanelMenuItem 
+            Icon="apps"
+            Text="Applications" 
+            Path="@SiteUrl.DashboardApplications"/>
+        <RadzenPanelMenuItem 
+            Icon="fact_check" 
+            Text="Logs" 
+            Path="@SiteUrl.DashboardLogs"/>
+        <RadzenPanelMenuItem
+            Icon="notifications_active" 
+            Text="Notifications">
+            <RadzenPanelMenuItem
+                Icon="rule"
+                Text="@NotificationResources.MenuItem_Rules" 
+                Path="@SiteUrl.DashboardNotificationRules"/>
+            <RadzenPanelMenuItem 
+                Icon="history_edu"
+                Text="@NotificationResources.MenuItem_MessageTemplates" 
+                Path="@SiteUrl.DashboardNotificationTemplates"/>
+        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem 
+            Icon="settings"
+            Text="Settings" 
+            Path="@SiteUrl.DashboardSettings"/>
+    </RadzenPanelMenu>
+</RadzenSidebar>
+
+@code 
+{
+    private bool IsShowLogoutConfirmation { get; set; }
+    
+    private void OnLogout()
+    {
+        Dispatcher.Dispatch(new LogoutAction());
+        _navigationManager.NavigateTo("/", true);
+    }
+}

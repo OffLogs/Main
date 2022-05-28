@@ -1,27 +1,16 @@
-﻿@page "/documentation/{menuItemId?}/{listItemId?}"
-@page "/{locale}/documentation/{menuItemId?}/{listItemId?}"
+﻿@page "/documentation/{mainPart?}/{subPath?}"
+@page "/{locale}/documentation/{mainPart?}/{subPath?}"
 
-@using OffLogs.Web.Resources
-@using OffLogs.Web.Shared.Ui.NavigationLayout
-
+@layout Layout
 @inherits BaseComponent
 
-<NavigationLayout
-    @ref="_navigationLayout"
-    MenuTitle="@DocResources.PageTitle"
-    MenuItems="@_menuItems"
-    ListItems="@_documentsList"
-    OnSelectMenuItem="@OnMenuItemSelected"
-    OnSelectListItem="@(async (menuEvent) => await OnSelectPageAsync(menuEvent))"
->
-    <BodyContent>
-        @if (_isLoading)
-        {
-            <Preloader/>
-        }
-        else
-        {
-            <Markdown MarkdownText="@_markdownString"/>
-        }
-    </BodyContent>
-</NavigationLayout>
+<RadzenCard class="mt-3">
+    @if (_isLoading)
+    {
+        <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"/>
+    }
+    else
+    {
+        <Markdown MarkdownText="@_markdownString"/>
+    }
+</RadzenCard>

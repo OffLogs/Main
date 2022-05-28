@@ -9,11 +9,15 @@ using OffLogs.Web.Store.Log.Models;
 namespace OffLogs.Web.Store.Log;
 
 [FeatureState]
-public class LogsListState
+public record LogsListState
 {
+    public int PageSize { get; set; } = GlobalConstants.ListPageSize * 2;
+    
     public bool IsLoadingList { get; set; }
     
-    public int Page { get; set; }
+    public int SkipItems { get; set; }
+    
+    public int TotalCount { get; set; }
     
     public bool HasMoreItems { get; set; }
 
@@ -25,8 +29,6 @@ public class LogsListState
     
     public ICollection<LogDto> LogsDetails { get; set; } = new List<LogDto>();
 
-    public long ApplicationId { get; set; }
-    
     public LogFilterModel Filter { get; set; } = new();
 
     public LogsListState() { }
@@ -34,10 +36,5 @@ public class LogsListState
     public LogsListState(ICollection<LogListItemDto> list)
     {
         List = list;
-    }
-
-    public LogsListState Clone()
-    {
-        return this.JsonClone<LogsListState>();
     }
 }

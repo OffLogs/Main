@@ -14,9 +14,6 @@ public partial class Index
     public IDispatcher Dispatcher { get; set; }
 
     [Inject]
-    private ToastService _toastService { get; set; }
-
-    [Inject]
     private IState<ToastMessagesState> _state { get; set; }
     
     [Inject]

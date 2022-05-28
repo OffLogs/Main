@@ -11,6 +11,13 @@ public class IsReCaptchaAttribute : ValidationAttribute
 {
     protected override ValidationResult IsValid(object value, ValidationContext validationContext)
     {
+        var reCaptchaService = validationContext.GetService<IReCaptchaService>();
+        if (reCaptchaService == null)
+        {
+            // This is frontend application
+            return ValidationResult.Success;
+        }
+
         if (value == null)
         {
             return GetError(validationContext);
@@ -18,9 +25,6 @@ public class IsReCaptchaAttribute : ValidationAttribute
 
         if (value is string stringValue)
         {
-            var reCaptchaService = validationContext.GetRequiredService<IReCaptchaService>();
-            if (reCaptchaService == null) throw new ArgumentNullException(nameof(IReCaptchaService));
-            
             var isValid = reCaptchaService.ValidateAsync(stringValue).Result;
             return isValid ? ValidationResult.Success : GetError(validationContext);
         }

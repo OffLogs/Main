@@ -1,37 +1,97 @@
 ﻿@page "/dashboard/logs"
 @page "/{locale}/dashboard/logs"
-
-@using OffLogs.Web.Pages.Dashboard.Log.Parts
 @using OffLogs.Web.Resources
-@using OffLogs.Web.Shared.Ui.NavigationLayout
+@using OffLogs.Web.Shared.Ui.Form.DropDowns
+@using OffLogs.Api.Common.Dto.Entities
+@using Microsoft.AspNetCore.Components
+@using OffLogs.Business.Common.Constants
+@using OffLogs.Web.Core.Extensions
+@using OffLogs.Web.Pages.Dashboard.Log.Parts
 
+@layout Layout
 @inherits BaseComponent
 
-<NavigationLayout
-    MenuTitle="@LogResources.PageTitle"
-    MenuItems="@_menuItems"
-    ListItems="@_logsList"
-    BodyButtons="@_menuButtons"
-    OnSelectMenuItem="@OnApplicationSelected"
-    OnSelectListItem="async (menuEvent) => await OnSelectLogAsync(menuEvent)"
-    IsShowMoreBtn="@State.Value.HasMoreItems"
-    IsListLoading="@State.Value.IsLoadingList"
-    OnClickMoreBtn="async () => await OnClickMoreBtnAsync()"
-    IsReadOnly="@State.Value.IsLoadingList"
->
-    <BodyContent>
-        @if (State.Value.SelectedLog != null)
-        {
-            <LogInfoBlock LogId="@State.Value.SelectedLog.Id"/>    
-        }
-    </BodyContent>
-    <ListTopContent>
-        <ListFilter/>
-    </ListTopContent>
-</NavigationLayout>
+<RadzenCard class="m-3">
 
-<LogStatisticModal
-    IsShowModal="@_isShowStatistic"
-    ApplicationId="@_selectedApplicationId"
-    OnClose="@(() => _isShowStatistic = false)"
-/>
+    <h2>@LogResources.PageTitle</h2>
+
+    <ListFilter OnFilterChanged="OnFilterChanged"/>
+
+    <RadzenDataGrid
+        @ref="@_grid"
+        TItem="LogListItemDto"
+        AllowSorting="false"
+        EditMode="DataGridEditMode.Single"
+        PageSize="@State.Value.PageSize"
+        Data="@State.Value.List"
+        AllowPaging="true"
+        IsLoading="@State.Value.IsLoadingList"
+        Count="@State.Value.TotalCount"
+        LoadData="@OnLoadList"
+        ShowPagingSummary="true"
+        ColumnWidth="200px">
+
+        <Columns>
+            <RadzenDataGridColumn TItem="LogListItemDto" Property="Id" Title="ID" Width="70px"/>
+            <RadzenDataGridColumn TItem="LogListItemDto" Title="Log Level" Width="80px">
+                <Template Context="log">
+                    <RadzenBadge
+                        BadgeStyle="@log.Level.GetBadgeStyle()"
+                        IsPill="true"
+                        Text="@log.Level.GetLabel()"/>
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="LogListItemDto" Property="Message" Title="Message" Width="300px"/>
+            <RadzenDataGridColumn TItem="LogListItemDto" Title="Log Time" Width="100px">
+                <Template Context="log">
+                    @log.LogTime.ToString("MM/dd/yyyy hh:mm tt")
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="LogListItemDto" Title="Create Time" Width="100px">
+                <Template Context="log">
+                    @log.CreateTime.ToString("MM/dd/yyyy hh:mm tt")
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn
+                TItem="LogListItemDto"
+                Context="app" Filterable="false"
+                Sortable="false"
+                TextAlign="TextAlign.Center"
+                Width="100px">
+
+                <Template Context="app">
+                    @if (app.Id > 0)
+                    {
+                        <RadzenButton
+                            Icon="info"
+                            Size="ButtonSize.Small"
+                            ButtonStyle="ButtonStyle.Light"
+                            Click="@(args => ShowInfoModal(app))"
+                            @onclick:stopPropagation="true"/>
+                        
+                    }
+                    @if (app.IsFavorite)
+                    {
+                        <RadzenButton
+                            Icon="favorite"
+                            ButtonStyle="ButtonStyle.Danger"
+                            Size="ButtonSize.Small"
+                            Click="@(() => SetIsFavorite(app, false))"
+                            @onclick:stopPropagation="true"/>
+                        
+                    }
+                    else
+                    {
+                        <RadzenButton
+                            Icon="favorite_border"
+                            Size="ButtonSize.Small"
+                            ButtonStyle="ButtonStyle.Light"
+                            Click="@(() => SetIsFavorite(app, true))"
+                            @onclick:stopPropagation="true">
+                        </RadzenButton>
+                    }
+                </Template>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
+</RadzenCard>

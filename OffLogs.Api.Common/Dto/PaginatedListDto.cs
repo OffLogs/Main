@@ -12,13 +12,13 @@ namespace OffLogs.Api.Common.Dto
         public ICollection<TItem> Items { get; set; }
 
         [JsonPropertyName("totalPages")]
-        public long TotalPages { get; set; }
+        public int TotalPages { get; set; }
 
         [JsonPropertyName("pageSize")]
         public int PageSize { get; set; }
 
         [JsonPropertyName("totalCount")]
-        public long TotalCount { get; set; }
+        public int TotalCount { get; set; }
 
         [JsonPropertyName("isHasMore")]
         public bool IsHasMore
@@ -32,7 +32,7 @@ namespace OffLogs.Api.Common.Dto
 
         public PaginatedListDto(
             ICollection<TItem> responseList,
-            long totalItems = 0,
+            int totalItems = 0,
             int pageSize = GlobalConstants.ListPageSize
         )
         {

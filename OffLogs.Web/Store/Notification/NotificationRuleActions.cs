@@ -27,4 +27,6 @@ public record struct SetNotificationRuleAction(NotificationRuleDto Item);
 
 public record struct DeleteNotificationRuleAction(long Id);
 
+public record struct SetIsLoading(bool IsLoading);
+
 #endregion

@@ -1,0 +1,20 @@
+﻿@inherits BaseLayout
+
+@if (CommonState.Value.IsInitialized)
+{
+    <RadzenLayout>
+        <MainHeader/>
+        <NavMenu/>
+        <RadzenBody>
+            <div class="container-fluid">
+                @Body
+            </div>
+        </RadzenBody>
+    </RadzenLayout>    
+}
+
+<RadzenContextMenu/>
+<RadzenDialog/>
+<RadzenTooltip/>
+<RadzenNotification/>
+
