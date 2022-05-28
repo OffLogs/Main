@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace OffLogs.Business.Services.Http.ThrottleRequests
 {
@@ -18,6 +19,13 @@ namespace OffLogs.Business.Services.Http.ThrottleRequests
 
         private readonly TimeSpan _defaultCountingPeriod = TimeSpan.FromMinutes(1);
 
+        public bool _isEnabled { get; }
+        
+        public ThrottleRequestsService(IConfiguration configuration)
+        {
+            _isEnabled = configuration.GetValue<bool>("App:IsThrottleTooManyRequests", true);
+        }
+
         public Task<int> CheckOrThrowExceptionAsync(RequestItemType type, long itemId, int maxCounter = 500)
         {
             return CheckOrThrowExceptionAsync(type, itemId, _defaultCountingPeriod, maxCounter);
@@ -25,6 +33,11 @@ namespace OffLogs.Business.Services.Http.ThrottleRequests
 
         public Task<int> CheckOrThrowExceptionAsync(RequestItemType type, long itemId, TimeSpan countingPeriod, int maxCounter = 500)
         {
+            if (!_isEnabled)
+            {
+                return Task.FromResult(0);
+            }
+
             var item = FindOrCreate(type, itemId, maxCounter, countingPeriod);
             if (item.IsPeriodOver)
             {

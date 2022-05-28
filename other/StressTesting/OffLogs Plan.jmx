@@ -80,7 +80,332 @@
           <stringProp name="HTTPSampler.port"></stringProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/log/add/serilog</stringProp>
+          <stringProp name="HTTPSampler.path">/log/add/serilog?api_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zeXN0ZW0iOiJBcHBsaWNhdGlvbiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiMTAyIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvcnNhIjoiTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF0WHNkSTlGd0psMkhtWE01NFBwRmU1clBZN3YzeDhQQVdseDhEaUNUWnJuNUZ2TlJTUEVLWm4wMjhaeDFIUXUzM3ZGYXloKy8wUUd1bm5nVC8rRFFncUtjSWNsZGY0T2pMdko5ZkF5QkJBaEpQRmVISFdsN25Rb0swbE1GWFJYd21XWWc1ZGd1YS9CQVp2TGpLQlVidUpFZTUxaXFpakVOUXl6bnlTM0JNMXJJcWtmV21ZR21BSFlOaDE3ZXNPZElrbmxJY3VabDNkenBoR3h1UURWbFZ6bmxqSlI5OEhPL1hZR2VleWQ3ekw5R0Uwcms1NHRzUXpPTDhLd0NqeU9MSDROTmZnbjRnTjhzUzV5a0RFc3FPZHdwaXluZGtOQ084M0lSSnFtMlNoeDF5UCtvVkNyRU9HdEJuV1RLRXlLbTlLaUpkb1dOaUhiZFlnN0wwZTh0elFJREFRQUIiLCJpc3MiOiJPZmZMb2dzIEFwcGxpY2F0aW9uIEFQSSIsImF1ZCI6Ik9mZkxvZ3MgQXBwbGljYXRpb24gQVBJIn0.KFs1TstHhR2igyiSUQXPNpxmAvynK8XAqKGypRpVgeU</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="API log request 2" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;Events&quot;: [&#xd;
+    {&#xd;
+      &quot;Timestamp&quot;: &quot;2021-02-28T14:12:29.7945730+02:00&quot;,&#xd;
+      &quot;Level&quot;: &quot;Error&quot;,&#xd;
+      &quot;MessageTemplate&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;RenderedMessage&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;Properties&quot;: {&#xd;
+        &quot;SourceContext&quot;: &quot;OffLogs.Api.Controller.HomeController&quot;,&#xd;
+        &quot;ActionId&quot;: &quot;5ea366e2-957e-42dc-9cd5-a59e132a2939&quot;,&#xd;
+        &quot;ActionName&quot;: &quot;OffLogs.Api.Controller.HomeController.Ping (OffLogs.Api)&quot;,&#xd;
+        &quot;RequestId&quot;: &quot;0HM6RS870K8CC:00000007&quot;,&#xd;
+        &quot;RequestPath&quot;: &quot;/ping&quot;,&#xd;
+        &quot;ConnectionId&quot;: &quot;0HM6RS870K8CC&quot;,&#xd;
+        &quot;MachineName&quot;: &quot;lampego-mint&quot;,&#xd;
+        &quot;ProcessId&quot;: 12394,&#xd;
+        &quot;ThreadId&quot;: 20&#xd;
+      },&#xd;
+      &quot;Traces&quot;: []&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Timestamp&quot;: &quot;2021-02-28T14:12:29.7945730+02:00&quot;,&#xd;
+      &quot;Level&quot;: &quot;Error&quot;,&#xd;
+      &quot;MessageTemplate&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;RenderedMessage&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;Properties&quot;: {&#xd;
+        &quot;SourceContext&quot;: &quot;OffLogs.Api.Controller.HomeController&quot;,&#xd;
+        &quot;ActionId&quot;: &quot;5ea366e2-957e-42dc-9cd5-a59e132a2939&quot;,&#xd;
+        &quot;ActionName&quot;: &quot;OffLogs.Api.Controller.HomeController.Ping (OffLogs.Api)&quot;,&#xd;
+        &quot;RequestId&quot;: &quot;0HM6RS870K8CC:00000007&quot;,&#xd;
+        &quot;RequestPath&quot;: &quot;/ping&quot;,&#xd;
+        &quot;ConnectionId&quot;: &quot;0HM6RS870K8CC&quot;,&#xd;
+        &quot;MachineName&quot;: &quot;lampego-mint&quot;,&#xd;
+        &quot;ProcessId&quot;: 12394,&#xd;
+        &quot;ThreadId&quot;: 20&#xd;
+      },&#xd;
+      &quot;Traces&quot;: []&#xd;
+    }&#xd;
+  ]&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">api.offlogs.com</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/log/add/serilog?api_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zeXN0ZW0iOiJBcHBsaWNhdGlvbiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiMTAzIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvcnNhIjoiTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFqYklhUlJZakdYYXg3LzVuaVdzSEZxN0FKcnBrTElEL0kxMFhiSW0rdmI1eDFXOE5jWmtjQ2tzNjdyeTBrS2cwK2dLaDVIeTZpd2dMN1hWZVJzaTBiaU9jQVpaRlBJdDFXejBkSEl5U3FJUFpWdXZNL2Nsa0NPTFpZc1QyenhtcXpPSDg3aHQrVmMvdmdnMWllaEl5ZnlVUFdhWWZTV2g0cXhPS2txejZNZ0tnUjB6WGxwLzQ1anNwc29nNSt5UUd3dUo5Y0pMWGwveGhscGlaUTRUUHo0eXFrSVpxb2hrTW1jNnpwekdwS0NlYWJXR2ExWXZHcjdKTGQwcnVwVStwaG5wT3g3K2RaazJrenhxeldCNFFjQUFmcDVKMmdGNDhiMHcrbHVIZ1BSUlJLbUJRSDRpSkpwZm5xVXZKQkdJSFRxWXVWYnRIWEpJNjg4Z2xhZHhLeHdJREFRQUIiLCJpc3MiOiJPZmZMb2dzIEFwcGxpY2F0aW9uIEFQSSIsImF1ZCI6Ik9mZkxvZ3MgQXBwbGljYXRpb24gQVBJIn0.5hbUtE4cVBmyl1X5wrnj66-l44h4v37PcKCnjZWkr1w</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="API log request 3" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;Events&quot;: [&#xd;
+    {&#xd;
+      &quot;Timestamp&quot;: &quot;2021-02-28T14:12:29.7945730+02:00&quot;,&#xd;
+      &quot;Level&quot;: &quot;Error&quot;,&#xd;
+      &quot;MessageTemplate&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;RenderedMessage&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;Properties&quot;: {&#xd;
+        &quot;SourceContext&quot;: &quot;OffLogs.Api.Controller.HomeController&quot;,&#xd;
+        &quot;ActionId&quot;: &quot;5ea366e2-957e-42dc-9cd5-a59e132a2939&quot;,&#xd;
+        &quot;ActionName&quot;: &quot;OffLogs.Api.Controller.HomeController.Ping (OffLogs.Api)&quot;,&#xd;
+        &quot;RequestId&quot;: &quot;0HM6RS870K8CC:00000007&quot;,&#xd;
+        &quot;RequestPath&quot;: &quot;/ping&quot;,&#xd;
+        &quot;ConnectionId&quot;: &quot;0HM6RS870K8CC&quot;,&#xd;
+        &quot;MachineName&quot;: &quot;lampego-mint&quot;,&#xd;
+        &quot;ProcessId&quot;: 12394,&#xd;
+        &quot;ThreadId&quot;: 20&#xd;
+      },&#xd;
+      &quot;Traces&quot;: []&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Timestamp&quot;: &quot;2021-02-28T14:12:29.7945730+02:00&quot;,&#xd;
+      &quot;Level&quot;: &quot;Error&quot;,&#xd;
+      &quot;MessageTemplate&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;RenderedMessage&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;Properties&quot;: {&#xd;
+        &quot;SourceContext&quot;: &quot;OffLogs.Api.Controller.HomeController&quot;,&#xd;
+        &quot;ActionId&quot;: &quot;5ea366e2-957e-42dc-9cd5-a59e132a2939&quot;,&#xd;
+        &quot;ActionName&quot;: &quot;OffLogs.Api.Controller.HomeController.Ping (OffLogs.Api)&quot;,&#xd;
+        &quot;RequestId&quot;: &quot;0HM6RS870K8CC:00000007&quot;,&#xd;
+        &quot;RequestPath&quot;: &quot;/ping&quot;,&#xd;
+        &quot;ConnectionId&quot;: &quot;0HM6RS870K8CC&quot;,&#xd;
+        &quot;MachineName&quot;: &quot;lampego-mint&quot;,&#xd;
+        &quot;ProcessId&quot;: 12394,&#xd;
+        &quot;ThreadId&quot;: 20&#xd;
+      },&#xd;
+      &quot;Traces&quot;: []&#xd;
+    }&#xd;
+  ]&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">api.offlogs.com</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/log/add/serilog?api_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zeXN0ZW0iOiJBcHBsaWNhdGlvbiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiMTA0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvcnNhIjoiTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFqalQwOVR2ZE1nY3FnQ0tNM1NaRk4vNXNsdHRQVU5mcGNTMTFwSDE1MVhXd1o1LzZ1NFdBRWd5bGxpcVl3T0hnUWZUckNLeVpGRUhta1hmZzUxYmJJZDB6TVo3ZVBMaGxmUUJrNmNELzNjb0ZZcVMzWFNRWW1XaGNqeStmNkN0Ym0zZVZHbXh2QWZmUDlpS0dQYjJXK1ZMNHArQzl1c0piclBONkIxZ1IxQ1lBcXp3amNvV0VLTEpDeGFaRFpsRVJBR28xSFVRV0FDcFdlQlIvNlVRd0wyK0MzUzQrZjQ0NFhhajJzdWZSeE9VQmhFUEhFQis4ekozalpaRE5mdmtYa0E2RzFJV1RZN1BlMWNSMEdZYTVGU0ozeERLM3pVT1NQOSs3MWxQWk5ZMGlZSXlmNmRMaXBBblFEN09uWFhRdXpITVdGWFlOcFR4eFQ5R0lvNzgzSXdJREFRQUIiLCJpc3MiOiJPZmZMb2dzIEFwcGxpY2F0aW9uIEFQSSIsImF1ZCI6Ik9mZkxvZ3MgQXBwbGljYXRpb24gQVBJIn0.5HeT_gPqovp_iKK_D-Jk9muRQoC8o-LxPIHyfO7lvWQ</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="API log request 4" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;Events&quot;: [&#xd;
+    {&#xd;
+      &quot;Timestamp&quot;: &quot;2021-02-28T14:12:29.7945730+02:00&quot;,&#xd;
+      &quot;Level&quot;: &quot;Error&quot;,&#xd;
+      &quot;MessageTemplate&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;RenderedMessage&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;Properties&quot;: {&#xd;
+        &quot;SourceContext&quot;: &quot;OffLogs.Api.Controller.HomeController&quot;,&#xd;
+        &quot;ActionId&quot;: &quot;5ea366e2-957e-42dc-9cd5-a59e132a2939&quot;,&#xd;
+        &quot;ActionName&quot;: &quot;OffLogs.Api.Controller.HomeController.Ping (OffLogs.Api)&quot;,&#xd;
+        &quot;RequestId&quot;: &quot;0HM6RS870K8CC:00000007&quot;,&#xd;
+        &quot;RequestPath&quot;: &quot;/ping&quot;,&#xd;
+        &quot;ConnectionId&quot;: &quot;0HM6RS870K8CC&quot;,&#xd;
+        &quot;MachineName&quot;: &quot;lampego-mint&quot;,&#xd;
+        &quot;ProcessId&quot;: 12394,&#xd;
+        &quot;ThreadId&quot;: 20&#xd;
+      },&#xd;
+      &quot;Traces&quot;: []&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Timestamp&quot;: &quot;2021-02-28T14:12:29.7945730+02:00&quot;,&#xd;
+      &quot;Level&quot;: &quot;Error&quot;,&#xd;
+      &quot;MessageTemplate&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;RenderedMessage&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;Properties&quot;: {&#xd;
+        &quot;SourceContext&quot;: &quot;OffLogs.Api.Controller.HomeController&quot;,&#xd;
+        &quot;ActionId&quot;: &quot;5ea366e2-957e-42dc-9cd5-a59e132a2939&quot;,&#xd;
+        &quot;ActionName&quot;: &quot;OffLogs.Api.Controller.HomeController.Ping (OffLogs.Api)&quot;,&#xd;
+        &quot;RequestId&quot;: &quot;0HM6RS870K8CC:00000007&quot;,&#xd;
+        &quot;RequestPath&quot;: &quot;/ping&quot;,&#xd;
+        &quot;ConnectionId&quot;: &quot;0HM6RS870K8CC&quot;,&#xd;
+        &quot;MachineName&quot;: &quot;lampego-mint&quot;,&#xd;
+        &quot;ProcessId&quot;: 12394,&#xd;
+        &quot;ThreadId&quot;: 20&#xd;
+      },&#xd;
+      &quot;Traces&quot;: []&#xd;
+    }&#xd;
+  ]&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">api.offlogs.com</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/log/add/serilog?api_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zeXN0ZW0iOiJBcHBsaWNhdGlvbiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiMTA1IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvcnNhIjoiTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFyWTQvQnh4NHN1MXZhQUJzUEFqRzRpZE8vYzBuQXRXb0ZSSmY2SU1RblI5UnZhY0ZKZC94UTBkeXRTVlh2anp4RlNseHZPRTlUTE9TR2RETnVVOEV2aHl1MFJ6YzhrMmJSNkVLZTRNZFNkK3dnamVTOXM4SHpOYlkvSk42ZHkwaFN0YnJMejhnd0VQYkNUN0RISzY0a3lrMUFLck5oZWxvQ3BSMTRmcFYrTkRjQ1BTMHd2ZGV6S3V1Zk1Way9UckhpSTNaYi8vTzRLL0s1SU9pT0x5c2ZYMVgwWTNSRXUxTDNIZExTYUg0VDJFWWtrSFdvd3FLQ1pLOUJMdWVmcGViakZ5SVRVTXJWVVJtcXcvNWtKaitubGFEYWtuWEppSE9ZUHhobTM0VFNrVFowZ1VqaFJIblI2Sk5XQVNCK1p2cUR5c2drSzVpc29NdkhJWWNzK2pwbVFJREFRQUIiLCJpc3MiOiJPZmZMb2dzIEFwcGxpY2F0aW9uIEFQSSIsImF1ZCI6Ik9mZkxvZ3MgQXBwbGljYXRpb24gQVBJIn0.CjZ1GOJO1H_Uo5DsqljgK-0Ee-gYpqcyM57bO2tgsAo</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="API log request 5" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;Events&quot;: [&#xd;
+    {&#xd;
+      &quot;Timestamp&quot;: &quot;2021-02-28T14:12:29.7945730+02:00&quot;,&#xd;
+      &quot;Level&quot;: &quot;Error&quot;,&#xd;
+      &quot;MessageTemplate&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;RenderedMessage&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;Properties&quot;: {&#xd;
+        &quot;SourceContext&quot;: &quot;OffLogs.Api.Controller.HomeController&quot;,&#xd;
+        &quot;ActionId&quot;: &quot;5ea366e2-957e-42dc-9cd5-a59e132a2939&quot;,&#xd;
+        &quot;ActionName&quot;: &quot;OffLogs.Api.Controller.HomeController.Ping (OffLogs.Api)&quot;,&#xd;
+        &quot;RequestId&quot;: &quot;0HM6RS870K8CC:00000007&quot;,&#xd;
+        &quot;RequestPath&quot;: &quot;/ping&quot;,&#xd;
+        &quot;ConnectionId&quot;: &quot;0HM6RS870K8CC&quot;,&#xd;
+        &quot;MachineName&quot;: &quot;lampego-mint&quot;,&#xd;
+        &quot;ProcessId&quot;: 12394,&#xd;
+        &quot;ThreadId&quot;: 20&#xd;
+      },&#xd;
+      &quot;Traces&quot;: []&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Timestamp&quot;: &quot;2021-02-28T14:12:29.7945730+02:00&quot;,&#xd;
+      &quot;Level&quot;: &quot;Error&quot;,&#xd;
+      &quot;MessageTemplate&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;RenderedMessage&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;Properties&quot;: {&#xd;
+        &quot;SourceContext&quot;: &quot;OffLogs.Api.Controller.HomeController&quot;,&#xd;
+        &quot;ActionId&quot;: &quot;5ea366e2-957e-42dc-9cd5-a59e132a2939&quot;,&#xd;
+        &quot;ActionName&quot;: &quot;OffLogs.Api.Controller.HomeController.Ping (OffLogs.Api)&quot;,&#xd;
+        &quot;RequestId&quot;: &quot;0HM6RS870K8CC:00000007&quot;,&#xd;
+        &quot;RequestPath&quot;: &quot;/ping&quot;,&#xd;
+        &quot;ConnectionId&quot;: &quot;0HM6RS870K8CC&quot;,&#xd;
+        &quot;MachineName&quot;: &quot;lampego-mint&quot;,&#xd;
+        &quot;ProcessId&quot;: 12394,&#xd;
+        &quot;ThreadId&quot;: 20&#xd;
+      },&#xd;
+      &quot;Traces&quot;: []&#xd;
+    }&#xd;
+  ]&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">api.offlogs.com</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/log/add/serilog?api_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zeXN0ZW0iOiJBcHBsaWNhdGlvbiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiMTA2IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvcnNhIjoiTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF0b1lUMFZLVG1FbGd5MHM3NUFaNTVaL3M3bWladTB2Y2g1K0J1dldsNzl0Z2h4cFpKUjk0a2NKMHBuWHRoRTh1aEhIRm5Qb3FPQUEwcXNRc3J3MHN3NkwzWWl4OXpJTDNISDI4NXZCRW8rQjZjOFozS2JGVTV3TkVydFRLc0U0NzJac0JiT2tpTmlSZ2VuT0FSWW5WS0xDdVI4WEIwSUVDYmNKSWxIbWZCOTV1N2VjWE00SXJFRDBESDRiRU04OE1ZS1kydXF6dlBwWVJjcWY1eTEwUnBCZlhIN2JKUHpHM1NlYTRhMXpmdXpuRDYrRTBKQURDckllVUU5cmpzZHMzZk10amdHajRybGxScS9MV3NQbWNyTnlQejNVdEIwWEhZbWxuRCtMTFIwdlFjODk5MGhERjVSV3NaRzVtdHNKd04wRDZ2RUV0OEFVRnZuWi9ZdnpydXdJREFRQUIiLCJpc3MiOiJPZmZMb2dzIEFwcGxpY2F0aW9uIEFQSSIsImF1ZCI6Ik9mZkxvZ3MgQXBwbGljYXRpb24gQVBJIn0.6GJLF3QPd-C-1TxM9JfLK1iV4K9WftQq9Q7yFknsK1s</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="API log request 6" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;Events&quot;: [&#xd;
+    {&#xd;
+      &quot;Timestamp&quot;: &quot;2021-02-28T14:12:29.7945730+02:00&quot;,&#xd;
+      &quot;Level&quot;: &quot;Error&quot;,&#xd;
+      &quot;MessageTemplate&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;RenderedMessage&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;Properties&quot;: {&#xd;
+        &quot;SourceContext&quot;: &quot;OffLogs.Api.Controller.HomeController&quot;,&#xd;
+        &quot;ActionId&quot;: &quot;5ea366e2-957e-42dc-9cd5-a59e132a2939&quot;,&#xd;
+        &quot;ActionName&quot;: &quot;OffLogs.Api.Controller.HomeController.Ping (OffLogs.Api)&quot;,&#xd;
+        &quot;RequestId&quot;: &quot;0HM6RS870K8CC:00000007&quot;,&#xd;
+        &quot;RequestPath&quot;: &quot;/ping&quot;,&#xd;
+        &quot;ConnectionId&quot;: &quot;0HM6RS870K8CC&quot;,&#xd;
+        &quot;MachineName&quot;: &quot;lampego-mint&quot;,&#xd;
+        &quot;ProcessId&quot;: 12394,&#xd;
+        &quot;ThreadId&quot;: 20&#xd;
+      },&#xd;
+      &quot;Traces&quot;: []&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Timestamp&quot;: &quot;2021-02-28T14:12:29.7945730+02:00&quot;,&#xd;
+      &quot;Level&quot;: &quot;Error&quot;,&#xd;
+      &quot;MessageTemplate&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;RenderedMessage&quot;: &quot;The method or operation is not implemented.&quot;,&#xd;
+      &quot;Properties&quot;: {&#xd;
+        &quot;SourceContext&quot;: &quot;OffLogs.Api.Controller.HomeController&quot;,&#xd;
+        &quot;ActionId&quot;: &quot;5ea366e2-957e-42dc-9cd5-a59e132a2939&quot;,&#xd;
+        &quot;ActionName&quot;: &quot;OffLogs.Api.Controller.HomeController.Ping (OffLogs.Api)&quot;,&#xd;
+        &quot;RequestId&quot;: &quot;0HM6RS870K8CC:00000007&quot;,&#xd;
+        &quot;RequestPath&quot;: &quot;/ping&quot;,&#xd;
+        &quot;ConnectionId&quot;: &quot;0HM6RS870K8CC&quot;,&#xd;
+        &quot;MachineName&quot;: &quot;lampego-mint&quot;,&#xd;
+        &quot;ProcessId&quot;: 12394,&#xd;
+        &quot;ThreadId&quot;: 20&#xd;
+      },&#xd;
+      &quot;Traces&quot;: []&#xd;
+    }&#xd;
+  ]&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">api.offlogs.com</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/log/add/serilog?api_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zeXN0ZW0iOiJBcHBsaWNhdGlvbiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiMTA3IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvcnNhIjoiTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFxbjNFVG1KRUtmZXhDWEJYb1lydElXV1ZGZTNOd2svNUpNVFdlWGNNVkwrQWVoYWtQYUdJOGFVbE5Ea1ZZK2hobkFCTUg3S1lia1ZlZysyWU5nbUhzQ3pZODR1SWgxNkM0U0M4ZHBQVlU5bnlHY3JsWHI5NXJUYUNvZklIcFNqdUpMOVFpbTY0STVRZ0F0aW5QMlBWN3VqcEtYeXplSEorVnMyUmViWlFqSklmVzBnR3hvaXFUdG82bFJIS0RLYkxYREp1aCtNYlhSM2pMYjJkLzQ4ekpINFowaWc3b1lpZmtLTjd3ZGRnNDJ4NzlzMy9lSElQU1g3ekNwaFY3dGNNb1lyK1FTb0hLemlCckhNSEFwdzVpcE1YY2pIK2c3OHB4R1Z0SWZiS2NtRVRHTVNsd0VyVUJQMWhkdE9MYnI1TkhodWtmd29wdFlqampqZFNNTHVoZHdJREFRQUIiLCJpc3MiOiJPZmZMb2dzIEFwcGxpY2F0aW9uIEFQSSIsImF1ZCI6Ik9mZkxvZ3MgQXBwbGljYXRpb24gQVBJIn0.__lQtlaWf5q2QdvFihm3h3Qr9Iv7Z1Erz--18e3iTnE</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -93,10 +418,6 @@
         <hashTree/>
         <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
           <collectionProp name="HeaderManager.headers">
-            <elementProp name="" elementType="Header">
-              <stringProp name="Header.name">Authorization</stringProp>
-              <stringProp name="Header.value">Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zeXN0ZW0iOiJBcHBsaWNhdGlvbiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiMTAiLCJpc3MiOiJPZmZMb2dzIEFwcGxpY2F0aW9uIEFQSSIsImF1ZCI6Ik9mZkxvZ3MgQXBwbGljYXRpb24gQVBJIn0.TlfT6CSQ1srYi4Z7IGuLstz_9BUZOKZAP770fNRTvtw</stringProp>
-            </elementProp>
             <elementProp name="" elementType="Header">
               <stringProp name="Header.name">Content-Type</stringProp>
               <stringProp name="Header.value">application/json</stringProp>

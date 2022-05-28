@@ -144,7 +144,7 @@ namespace OffLogs.Business.Services.Kafka.Consumer
                                 var startProcessingTime = DateTime.UtcNow;
                                 await ProcessItemAsync(consumeResult.Message.Value);
                                 var processingTime = DateTime.UtcNow - startProcessingTime;
-                                _logger.LogDebug(
+                                _logger.LogTrace(
                                     $"Kafka message processing time: {processingTime.TotalMilliseconds} ms"
                                 );
                             }
