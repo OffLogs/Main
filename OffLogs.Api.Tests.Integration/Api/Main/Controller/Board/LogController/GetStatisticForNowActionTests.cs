@@ -117,5 +117,53 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
                 Assert.True(actualListItem.TimeInterval > DateTime.UtcNow.AddMinutes(-5));
             }
         }
+        
+        [Theory]
+        [InlineData(MainApiUrl.LogGetStatisticForNow)]
+        public async Task ShouldReceiveStatisticForCurrentUser(string url)
+        {
+            var expectedCounter = 7;
+
+            var user = await DataSeeder.CreateActivatedUser();
+            await DataSeeder.CreateLogsAsync(user.Application.Id, LogLevel.Error, expectedCounter);
+            await DataSeeder.CreateLogsAsync(user.Application.Id, LogLevel.Information, expectedCounter);
+            await DataSeeder.CreateLogsAsync(user.Application.Id, LogLevel.Warning, expectedCounter);
+            await DataSeeder.CreateLogsAsync(user.Application.Id, LogLevel.Fatal, expectedCounter);
+            await DataSeeder.CreateLogsAsync(user.Application.Id, LogLevel.Debug, expectedCounter);
+
+            // Act
+            var response = await PostRequestAsync(url, user.ApiToken, new GetLogStatisticForNowRequest()
+            {
+                ApplicationId = null
+            });
+            response.EnsureSuccessStatusCode();
+            // Assert
+            var responseData = await response.GetJsonDataAsync<LogStatisticForNowDto>();
+            var list = responseData;
+            Assert.Equal(
+                expectedCounter,
+                list.Where(item => item.LogLevel == LogLevel.Error).Sum(item => item.Count)
+            );
+            Assert.Equal(
+                expectedCounter,
+                list.Where(item => item.LogLevel == LogLevel.Information).Sum(item => item.Count)
+            );
+            Assert.Equal(
+                expectedCounter,
+                list.Where(item => item.LogLevel == LogLevel.Warning).Sum(item => item.Count)
+            );
+            Assert.Equal(
+                expectedCounter,
+                list.Where(item => item.LogLevel == LogLevel.Fatal).Sum(item => item.Count)
+            );
+            Assert.Equal(
+                expectedCounter,
+                list.Where(item => item.LogLevel == LogLevel.Debug).Sum(item => item.Count)
+            );
+            foreach (var actualListItem in list)
+            {
+                Assert.True(actualListItem.TimeInterval > DateTime.UtcNow.AddMinutes(-5));
+            }
+        }
     }
 }
