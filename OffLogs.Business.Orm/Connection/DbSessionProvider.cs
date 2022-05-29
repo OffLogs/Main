@@ -16,14 +16,16 @@ namespace OffLogs.Business.Orm.Connection
         private readonly IConfiguration _configuration;
 
         private ISession _session { get; set; }
+        
         private ISessionFactory _sessionFactory { get; set; }
 
+        private bool _isShowSql { get; }
+        
         public ISession CurrentSession {
             get {
                 if (_session == null || !_session.IsOpen)
                 {
-                    var isShowSql = _configuration.GetValue<bool>("Hibernate:IsShowSql", false);
-                    if (isShowSql)
+                    if (_isShowSql)
                     {
                         _session = _sessionFactory.WithOptions()
                             .Interceptor(new SqlQueryInterceptor())
@@ -34,9 +36,13 @@ namespace OffLogs.Business.Orm.Connection
                         _session = _sessionFactory.OpenSession();
                     }
                 }
-                if (_transaction == null || !_transaction.IsActive)
+
+                lock (_session)
                 {
-                    _transaction = _session.BeginTransaction();
+                    if (_transaction == null || !_transaction.IsActive)
+                    {
+                        _transaction = _session.BeginTransaction();
+                    }    
                 }
                 return _session;
             }
@@ -54,6 +60,7 @@ namespace OffLogs.Business.Orm.Connection
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _configuration = configuration;
             _sessionFactory = _dbConnectionFactory.GetSessionFactoryAsync().Result;
+            _isShowSql = _configuration.GetValue<bool>("Hibernate:IsShowSql", false);
         }
 
         ~DbSessionProvider()
