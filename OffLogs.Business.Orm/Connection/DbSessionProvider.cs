@@ -23,21 +23,22 @@ namespace OffLogs.Business.Orm.Connection
         
         public ISession CurrentSession {
             get {
+                if (_session == null || !_session.IsOpen)
+                {
+                    if (_isShowSql)
+                    {
+                        _session = _sessionFactory.WithOptions()
+                            .Interceptor(new SqlQueryInterceptor())
+                            .OpenSession();
+                    }
+                    else
+                    {
+                        _session = _sessionFactory.OpenSession();
+                    }
+                }
+
                 lock (_session)
                 {
-                    if (_session == null || !_session.IsOpen)
-                    {
-                        if (_isShowSql)
-                        {
-                            _session = _sessionFactory.WithOptions()
-                                .Interceptor(new SqlQueryInterceptor())
-                                .OpenSession();
-                        }
-                        else
-                        {
-                            _session = _sessionFactory.OpenSession();
-                        }
-                    }
                     if (_transaction == null || !_transaction.IsActive)
                     {
                         _transaction = _session.BeginTransaction();
