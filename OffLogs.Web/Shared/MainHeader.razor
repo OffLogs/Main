@@ -9,7 +9,7 @@
                 <img src="/img/logo/40x.png" alt="" class="d-inline-block">
                 <b>OffLogs</b>
             </a>
-            
+
             <RadzenLink
                 Path="@SiteUrl.Support"
                 class="ml-3"
@@ -34,7 +34,8 @@
                         Text="@LandingPageResources.Menu_Login"/>
                     <RadzenLink
                         Path="@SiteUrl.Registration_Step1"
-                        Text="@LandingPageResources.Menu_SignUp"/>
+                        Text="@LandingPageResources.Menu_SignUp"
+                        class="ml-3"/>
                 }
             </div>
             <div class="mx-0 mx-lg-3">
@@ -51,6 +52,19 @@
                     Value="@_currentLocaleId"
                     ValueChanged="OnSelectLanguageAsync"/>
             </div>
+            @if (AuthState.Value.IsLoggedIn)
+            {
+                <RadzenProfileMenu Click="OnClickUserMenu">
+                    <Template>
+                        <RadzenGravatar Email="user@example.com">
+                        </RadzenGravatar>
+                    </Template>
+                    <ChildContent>
+                        <RadzenProfileMenuItem Text="@CommonResources.Settings" Path="@SiteUrl.DashboardSettings" Icon="settings"></RadzenProfileMenuItem>
+                        <RadzenProfileMenuItem Text="@AuthResources.Logout" Value="logout" Icon="logout"></RadzenProfileMenuItem>
+                    </ChildContent>
+                </RadzenProfileMenu>    
+            }
         </div>
     </div>
 </RadzenHeader>
