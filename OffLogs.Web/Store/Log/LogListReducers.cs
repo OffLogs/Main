@@ -86,10 +86,13 @@ public class LogReducers
     public static LogsListState ReduceSetListFilterSearchAction(LogsListState state, SetListFilterSearchAction action)
     {
         var newState = state with {};
-        newState.Filter = state.Filter with
+        if (state.Filter.HasValue)
         {
-            Search = action.Search
-        };
+            newState.Filter = state.Filter.Value with
+            {
+                Search = action.Search
+            };    
+        }
         return newState;
     }
     
@@ -99,12 +102,13 @@ public class LogReducers
         var newState = state with {};
         newState.FilteredList = state.List.Where(item =>
         {
-            if (string.IsNullOrEmpty(state.Filter.Search))
+            var searchString = state.Filter.Value.Search;
+            if (string.IsNullOrEmpty(searchString))
             {
                 return true;
             }
 
-            return item.Message.Contains(state.Filter.Search);
+            return item.Message.Contains(searchString);
         }).ToList();
         return newState;
     }

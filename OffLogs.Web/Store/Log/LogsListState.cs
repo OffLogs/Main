@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Fluxor;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Business.Common.Constants;
@@ -29,7 +30,7 @@ public record LogsListState
     
     public ICollection<LogDto> LogsDetails { get; set; } = new List<LogDto>();
 
-    public LogFilterModel Filter { get; set; } = new();
+    public LogFilterModel? Filter { get; set; }
 
     public LogsListState() { }
 

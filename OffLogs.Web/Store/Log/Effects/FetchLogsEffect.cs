@@ -6,6 +6,7 @@ using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log;
 using OffLogs.Web.Core.Utils;
 using OffLogs.Web.Services.Http;
 using OffLogs.Web.Store.Auth;
+using OffLogs.Web.Store.Log.Models;
 
 namespace OffLogs.Web.Store.Log.Effects;
 
@@ -33,7 +34,8 @@ public class FetchLogsEffect: Effect<FetchListPageAction>
     {
         try
         {
-            if (_state.Value.Filter.ApplicationId == 0)
+            var filterData = _state.Value.Filter ?? new LogFilterModel();
+            if (filterData.ApplicationId == 0)
             {
                 _logger.LogDebug("Application was not selected. Skip fetching logs");
                 dispatcher.Dispatch(new ResetListAction());
@@ -44,11 +46,11 @@ public class FetchLogsEffect: Effect<FetchListPageAction>
             var response = await _apiService.GetLogsAsync(new GetListRequest
             {
                 Page = page,
-                ApplicationId = _state.Value.Filter.ApplicationId,
-                LogLevel = _state.Value.Filter.LogLevel,
-                IsFavorite = _state.Value.Filter.IsOnlyFavorite,
-                CreateTimeFrom = _state.Value.Filter.CreateTimeFrom,
-                CreateTimeTo = _state.Value.Filter.CreateTimeTo,
+                ApplicationId = filterData.ApplicationId,
+                LogLevel = filterData.LogLevel,
+                IsFavorite = filterData.IsOnlyFavorite,
+                CreateTimeFrom = filterData.CreateTimeFrom,
+                CreateTimeTo = filterData.CreateTimeTo,
                 PrivateKeyBase64 = _authState.Value.PrivateKeyBase64
             });
             dispatcher.Dispatch(new FetchListResultAction(response));

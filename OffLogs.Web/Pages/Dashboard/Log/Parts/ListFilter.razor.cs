@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using OffLogs.Business.Common.Constants;
+using OffLogs.Business.Extensions;
 using OffLogs.Web.Core.Extensions;
 using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Shared.Ui.Form.CustomDropDown;
@@ -21,6 +22,15 @@ public partial class ListFilter
     public EventCallback OnFilterChanged { get; set; }
 
     private LogFilterModel _model;
+
+    private LogFilterModel _clearModel
+    {
+        get => new()
+        {
+            ApplicationId = _model.ApplicationId,
+            CreateTimeFrom = DateTime.Now.AddDays(-5).StartOfDay()
+        };
+    }
 
     private LogLevel _logLevel
     {
@@ -48,7 +58,15 @@ public partial class ListFilter
     {
         await base.OnInitializedAsync();
 
-        _model = State.Value.Filter;
+        if (State.Value.Filter.HasValue)
+        {
+            _model = State.Value.Filter.Value;
+        }
+        else
+        {
+            _model = _clearModel;
+            Dispatcher.Dispatch(new SetListFilterAction(_model));
+        }
     }
 
     private async Task OnSave()
@@ -59,10 +77,7 @@ public partial class ListFilter
     
     private async Task Reset()
     {
-        _model = new LogFilterModel()
-        {
-            ApplicationId = _model.ApplicationId
-        };
+        _model = _clearModel;
         await OnSave();
     }
 }
