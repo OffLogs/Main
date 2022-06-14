@@ -42,7 +42,7 @@ public partial class EditRuleForm
     private long _applicationId
     {
         get => Model.ApplicationId ?? default;
-        set => Model.ApplicationId = value;
+        set => Model.ApplicationId = value == default ? null : value;
     }
 
     private bool _isNew => Id == 0;
