@@ -9,6 +9,14 @@ namespace OffLogs.Business.Extensions
 {
     public static class DateTimeExtensions
     {
+        public enum RoundTo
+        {
+            Second,
+            Minute,
+            Hour, 
+            Day
+        }
+        
         public static long ToUnixTime(this DateTime d)
         {
             return (long)(
@@ -146,10 +154,15 @@ namespace OffLogs.Business.Extensions
 
             return dtRounded;
         }
-
-        public enum RoundTo
+        
+        public static DateTime StartOfDay(this DateTime theDate)
         {
-            Second, Minute, Hour, Day
+            return theDate.Date;
+        }
+
+        public static DateTime EndOfDay(this DateTime theDate)
+        {
+            return theDate.Date.AddDays(1).AddTicks(-1);
         }
     }
 }
