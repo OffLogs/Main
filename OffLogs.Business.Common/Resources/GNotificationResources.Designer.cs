@@ -69,7 +69,7 @@ namespace OffLogs.Business.Common.Resources {
         /// - Logs count: **{logsCount}**
         /// - Time: **{dateTime}**
         /// 
-        ///You can check your logs by (this)[navigateUrl] link
+        ///You can check your logs by (this)[{navigateUrl}] link
         ///        .
         /// </summary>
         public static string MessageTemplate_Default_Body {
