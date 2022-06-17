@@ -30,7 +30,7 @@
  - Logs count: **{logsCount}**
  - Time: **{dateTime}**
  
-You can check your logs by (this)[{navigateUrl}] link
+You can check your logs by [this]({navigateUrl}) link
         </value>
     </data>
 </root>
