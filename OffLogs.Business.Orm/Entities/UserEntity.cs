@@ -70,6 +70,11 @@ namespace OffLogs.Business.Orm.Entities
        )]
         public virtual ICollection<LogEntity> FavoriteLogs { get; set; } = new List<LogEntity>();
         
+        [Bag(Inverse = true, Lazy = CollectionLazy.Extra, Cascade = "none")]
+        [Key(Column = "user_id")]
+        [OneToMany(ClassType = typeof(UserEntity))]
+        public virtual ICollection<UserEntity> Emails { get; set; } = new List<UserEntity>();
+        
         public virtual bool IsVerificated => VerificationTime.HasValue;
         
         public UserEntity() {}
