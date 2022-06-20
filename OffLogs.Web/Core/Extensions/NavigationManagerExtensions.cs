@@ -49,6 +49,18 @@ namespace OffLogs.Web.Core.Extensions
                     value = (T)(object)valueAsInt;
                     return true;
                 }
+                
+                if (typeof(T) == typeof(long) && long.TryParse(valueFromQueryString, out var valueAsLong))
+                {
+                    value = (T)(object)valueAsLong;
+                    return true;
+                }
+                
+                if (typeof(T) == typeof(short) && short.TryParse(valueFromQueryString, out var valueAsShort))
+                {
+                    value = (T)(object)valueAsShort;
+                    return true;
+                }
 
                 if (typeof(T) == typeof(string))
                 {
