@@ -93,12 +93,15 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
         builder.AddPlaceholder("applicationName", rule.Application?.Name);
         builder.AddPlaceholder("userName", rule.User?.UserName);
         builder.AddPlaceholder("dateTime", rule.LastExecutionTime.ToString("MM/dd/yyyy H:mm"));
+        
         var navigateUrl = $"{_frontendUrl}/{_logsPageUrl}";
+        var queryString = System.Web.HttpUtility.ParseQueryString(string.Empty);
         if (rule.Application != null)
         {
-            navigateUrl += $"/{rule.Application?.Id}";
+            queryString.Add("application-id", $"{rule.Application?.Id}");
         }
-        builder.AddPlaceholder("navigateUrl", navigateUrl);
+        builder.AddPlaceholder("navigateUrl", $"{navigateUrl}?{queryString}");
+        
         builder.AddPlaceholder("logsCount", ruleData.LogCount.ToString());
         if (isSubject)
         {
