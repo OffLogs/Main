@@ -26,3 +26,5 @@ public record struct SetIsLogFavoriteAction(long LogId, bool IsFavorite);
 public record struct SetListFilterAction(LogFilterModel Filter);
 
 public record struct SetListFilterSearchAction(string Search);
+
+public record struct FillFilterFromQueryAction();

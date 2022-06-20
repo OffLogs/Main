@@ -29,7 +29,7 @@
             return null;
         }
         
-        public static string GetByName(this LogLevel level)
+        public static string GetName(this LogLevel level)
         {
             switch (level)
             {

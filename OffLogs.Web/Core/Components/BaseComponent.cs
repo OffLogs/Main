@@ -21,6 +21,9 @@ public class BaseComponent: Fluxor.Blazor.Web.Components.FluxorComponent
     [Inject]
     protected IApiService ApiService { get; set; }
     
+    [Inject]
+    protected NavigationManager NavigationManager { get; set; }
+    
     #region Radzen
     
     [Inject] 

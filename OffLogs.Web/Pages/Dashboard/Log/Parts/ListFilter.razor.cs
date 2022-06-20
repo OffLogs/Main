@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
@@ -15,11 +16,11 @@ namespace OffLogs.Web.Pages.Dashboard.Log.Parts;
 
 public partial class ListFilter
 {
-    [Inject]
-    private IState<LogsListState> State { get; set; }
-    
     [Parameter]
     public EventCallback OnFilterChanged { get; set; }
+    
+    [Inject]
+    private IState<LogsListState> State { get; set; }
 
     private LogFilterModel _model;
 
@@ -54,18 +55,39 @@ public partial class ListFilter
         get => _model.IsOnlyFavorite || _model.LogLevel.HasValue;
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await base.OnInitializedAsync();
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            if (State.Value.Filter.HasValue)
+            {
+                _model = State.Value.Filter.Value;
+            }
+            else
+            {
+                _model = _clearModel;
+                var values = NavigationManager.GetQueryParameterValue("application-id");
+                if (values.Any())
+                {
+                    long.TryParse(values.First(), out var applicationId);
+                    _model.ApplicationId = applicationId;
+                }
+                values = NavigationManager.GetQueryParameterValue("level");
+                if (values.Any())
+                {
+                    Enum.TryParse<LogLevel>(values.First().ToUpperFirstChar(), out var level);
+                    _model.LogLevel = level;
+                }
+                values = NavigationManager.GetQueryParameterValue("is-favorite");
+                if (values.Any())
+                {
+                    bool.TryParse(values.First(), out var value);
+                    _model.IsOnlyFavorite = value;
+                }
 
-        if (State.Value.Filter.HasValue)
-        {
-            _model = State.Value.Filter.Value;
-        }
-        else
-        {
-            _model = _clearModel;
-            Dispatcher.Dispatch(new SetListFilterAction(_model));
+                await OnSave();
+            }
         }
     }
 
