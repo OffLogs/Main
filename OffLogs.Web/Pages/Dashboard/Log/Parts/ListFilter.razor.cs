@@ -67,23 +67,17 @@ public partial class ListFilter
             else
             {
                 _model = _clearModel;
-                var values = NavigationManager.GetQueryParameterValue("application-id");
-                if (values.Any())
+                if (NavigationManager.TryGetQueryValue<long>("application-id", out var applicationId))
                 {
-                    long.TryParse(values.First(), out var applicationId);
                     _model.ApplicationId = applicationId;
                 }
-                values = NavigationManager.GetQueryParameterValue("level");
-                if (values.Any())
+                if (NavigationManager.TryGetQueryValue<LogLevel>("level", out var logLevel))
                 {
-                    Enum.TryParse<LogLevel>(values.First().ToUpperFirstChar(), out var level);
-                    _model.LogLevel = level;
+                    _model.LogLevel = logLevel;
                 }
-                values = NavigationManager.GetQueryParameterValue("is-favorite");
-                if (values.Any())
+                if (NavigationManager.TryGetQueryValue<bool>("is-favorite", out var isFavorite))
                 {
-                    bool.TryParse(values.First(), out var value);
-                    _model.IsOnlyFavorite = value;
+                    _model.IsOnlyFavorite = isFavorite;
                 }
 
                 await OnSave();
