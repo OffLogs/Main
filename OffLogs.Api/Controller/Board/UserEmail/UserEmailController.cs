@@ -36,5 +36,11 @@ namespace OffLogs.Api.Controller.Board.UserEmail
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public Task<IActionResult> Add(AddRequest request)
             => this.RequestAsync().For<UserEmailDto>().With(request);
+        
+        [HttpPost("delete")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public Task<IActionResult> Add(DeleteRequest request)
+            => this.RequestAsync(request);
     }
 }
