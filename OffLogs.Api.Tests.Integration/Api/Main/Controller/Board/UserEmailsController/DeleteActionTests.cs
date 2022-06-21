@@ -59,5 +59,25 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.UserEmailsCont
             
             Assert.Equal(0, user.Emails.Count);
         }
+        
+        [Fact]
+        public async Task ShouldSendErrorIfNotFound()
+        {
+            var fakeRecord = DataFactory.UserEmailFactory().Generate();
+            var userModel = await DataSeeder.CreateActivatedUser();
+            var user = userModel.Original;
+            fakeRecord.SetUser(user); 
+            await CommandBuilder.SaveAsync(user);
+            await CommitDbChanges();
+
+            // Act
+            var response = await PostRequestAsync(Url, userModel.ApiToken, new DeleteRequest()
+            {
+                Id = 333333
+            });
+            // Assert
+            var data = await response.GetJsonErrorAsync();
+            Assert.Equal(new RecordNotFoundException().GetTypeName(), data.Type);
+        }
     }
 }
