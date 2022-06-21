@@ -4,9 +4,7 @@ using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.User;
 
 namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.UserEmail
 {
-    public class GetListRequest : IRequest<UsersListDto>
+    public class GetListRequest : IRequest<UserEmailsListDto>
     {
-        [StringLength(100, MinimumLength = 2)]
-        public string Search { get; set; }
     }
 }

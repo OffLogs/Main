@@ -38,6 +38,27 @@ namespace OffLogs.Business.Services.Data
                 );
         }
         
+        public Faker<UserEmailEntity> UserEmailFactory()
+        {
+            return new Faker<UserEmailEntity>()
+                .RuleFor(
+                    entity => entity.Email,
+                    (faker) => faker.Internet.Email()
+                )
+                .RuleFor(
+                    entity => entity.VerificationToken,
+                    (faker) => faker.Random.String2(100)
+                )
+                .RuleFor(
+                    entity => entity.CreateTime,
+                    (faker) => faker.Date.Past().ToUniversalTime()
+                )
+                .RuleFor(
+                    entity => entity.UpdateTime,
+                    (faker) => faker.Date.Past().ToUniversalTime()
+                );
+        }
+        
         public Faker<ApplicationEntity> ApplicationFactory(UserEntity user)
         {
             return new Faker<ApplicationEntity>()

@@ -40,7 +40,9 @@ namespace AspNetCore.ApiControllers.Abstractions
             => (TResponse response) => new OkObjectResult(response);
 
         public virtual Func<Exception, IActionResult> Fail
-            => (Exception exception) => new BadRequestObjectResult(exception.Message);
+            => (Exception exception) => new BadRequestObjectResult(
+                new BadResponseModel(exception)
+            );
 
         public virtual Func<ModelStateDictionary, IActionResult> InvalidModelState
             => (ModelStateDictionary modelState) => new BadRequestObjectResult(new ValidationProblemDetails(modelState).Errors);

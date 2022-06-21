@@ -6,7 +6,7 @@ using NHibernate.Type;
 namespace OffLogs.Business.Orm.Entities
 {
     [Class(Table = "user_emails")]
-    public class EmailEntity: IEntity
+    public class UserEmailEntity: IEntity
     {
         [Id(Name = "Id", Generator = "native")]
         [Column(Name = "id", SqlType = "bigint", NotNull = true)]
@@ -14,7 +14,14 @@ namespace OffLogs.Business.Orm.Entities
 
         [Property(NotNull = false)]
         [Column(Name = "email", Length = 200, NotNull = true)]
-        public virtual string Email { get; set; }
+        public virtual string Email
+        {
+            get => _email;
+            set
+            {
+                _email = value?.ToLower().Trim();
+            }
+        }
         
         [Property(NotNull = false)]
         [Column(Name = "verification_token", Length = 512, NotNull = false)]
@@ -41,7 +48,15 @@ namespace OffLogs.Business.Orm.Entities
         public virtual UserEntity User { get; set; }
         
         public virtual bool IsVerified => VerificationTime.HasValue;
+
+        private string _email;
         
-        public EmailEntity() {}
+        public UserEmailEntity() {}
+
+        public virtual void SetUser(UserEntity user)
+        {
+            User = user;
+            user.Emails.Add(this);
+        }
     }
 }

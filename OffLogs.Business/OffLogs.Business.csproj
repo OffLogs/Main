@@ -56,6 +56,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\AspNetCore.ApiControllers.Abstractions\AspNetCore.ApiControllers.Abstractions.csproj" />
       <ProjectReference Include="..\Commands.Abstractions\Commands.Abstractions.csproj" />
       <ProjectReference Include="..\Domain.Abstractions\Domain.Abstractions.csproj" />
       <ProjectReference Include="..\Notification.Abstractions\Notification.Abstractions.csproj" />

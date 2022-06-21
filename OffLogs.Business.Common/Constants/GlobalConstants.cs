@@ -11,5 +11,10 @@ namespace OffLogs.Business.Common.Constants
         /// The maximum number of users who will be given access
         /// </summary>
         public const int ApplicationMaxShares = 20;
+        
+        /// <summary>
+        /// Max user's emails count
+        /// </summary>
+        public const int MaxUserEmailsCount = 10;
     }
 }

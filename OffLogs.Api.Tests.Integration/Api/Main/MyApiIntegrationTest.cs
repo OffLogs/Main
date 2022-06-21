@@ -89,15 +89,16 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
             GC.SuppressFinalize(this);
         }
 
-        private async Task CommitDbTransactions()
+        protected async Task CommitDbChanges()
         { 
             await DbSessionProvider.PerformCommitAsync();
+            DbSessionProvider.CurrentSession.Clear();
         }
 
         #region Http
         public async Task<HttpResponseMessage> PostRequestAsAnonymousAsync(string url, object data = null)
         {
-            await CommitDbTransactions();
+            await CommitDbChanges();
 
             var client = _factory.CreateClient();
             var requestData = JsonContent.Create(data ?? new { });
@@ -106,7 +107,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         
         public async Task<HttpResponseMessage> PostRequestAsync(string url, string jwtToken,  object data = null)
         {
-            await CommitDbTransactions();
+            await CommitDbChanges();
 
             var client = _factory.CreateClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
@@ -116,7 +117,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         
         public async Task<HttpResponseMessage> GetRequestAsAnonymousAsync(string url)
         {
-            await CommitDbTransactions();
+            await CommitDbChanges();
 
             var client = _factory.CreateClient();
             return await client.GetAsync(url);
@@ -124,7 +125,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         
         public async Task<HttpResponseMessage> GetRequestAsync(string url, string jwtToken,  object data = null)
         {
-            await CommitDbTransactions();
+            await CommitDbChanges();
 
             var client = _factory.CreateClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);

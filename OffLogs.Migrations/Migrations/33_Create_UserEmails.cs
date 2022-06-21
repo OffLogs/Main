@@ -20,6 +20,14 @@ namespace OffLogs.Migrations.Migrations
             Create.ForeignKey()
                 .FromTable("user_emails").ForeignColumn("user_id")
                 .ToTable("users").PrimaryColumn("id");
+
+            Create.UniqueConstraint()
+                .OnTable("user_emails")
+                .Columns(new string[]
+                {
+                    "user_id",
+                    "email"
+                });
             
             base.Up();
         }
