@@ -21,7 +21,7 @@ namespace OffLogs.Api.Controller.Public.UserEmail
         {
         }
         
-        [HttpPost("verify/{token}")]
+        [HttpGet("verify/{token}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public Task<IActionResult> CheckIsLoggedIn([FromRoute] VerificationRequest request)
