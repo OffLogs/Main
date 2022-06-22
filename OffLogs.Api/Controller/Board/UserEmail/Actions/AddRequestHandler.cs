@@ -12,6 +12,7 @@ using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Services.Api;
+using OffLogs.Business.Services.Entities.UserEmail;
 using Persistence.Transactions.Behaviors;
 using Queries.Abstractions;
 
@@ -24,13 +25,15 @@ namespace OffLogs.Api.Controller.Board.UserEmail.Actions
         private readonly IAsyncCommandBuilder _commandBuilder;
         private readonly IRequestService _requestService;
         private readonly IDbSessionProvider _commitPerformer;
+        private readonly IUserEmailService _userEmailService;
 
         public AddRequestHandler(
             IMapper mapper,
             IAsyncQueryBuilder queryBuilder,
             IAsyncCommandBuilder commandBuilder,
             IRequestService requestService,
-            IDbSessionProvider commitPerformer
+            IDbSessionProvider commitPerformer,
+            IUserEmailService userEmailService
         )
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -38,6 +41,7 @@ namespace OffLogs.Api.Controller.Board.UserEmail.Actions
             _commandBuilder = commandBuilder;
             _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
             _commitPerformer = commitPerformer;
+            _userEmailService = userEmailService;
         }
 
         public async Task<UserEmailDto> ExecuteAsync(AddRequest request)
@@ -49,23 +53,7 @@ namespace OffLogs.Api.Controller.Board.UserEmail.Actions
                 throw new RecordNotFoundException();
             }
 
-            var userEmail = new UserEmailEntity
-            {
-                Email = request.Email,
-                CreateTime = DateTime.UtcNow,
-                UpdateTime = DateTime.UtcNow,
-            };
-
-            if (user.Emails.Any(item => item.Email == userEmail.Email))
-            {
-                throw new RecordIsExistsException();
-            }
-            userEmail.SetUser(user);
-            if (user.Emails.Count > GlobalConstants.MaxUserEmailsCount)
-            {
-                throw new TooManyRecordsException();
-            }
-            await _commandBuilder.SaveAsync(user);
+            var userEmail = await _userEmailService.Add(user, request.Email);
             await _commitPerformer.PerformCommitAsync();
             
             return _mapper.Map<UserEmailDto>(userEmail);

@@ -13,11 +13,13 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Templates\Emails\en\ApplicationDeletedNotification.htm" />
+    <EmbeddedResource Include="Templates\Emails\en\EmailVerificationNotification.htm" />
     <EmbeddedResource Include="Templates\Emails\en\LogsDeletedNotification.htm" />
     <EmbeddedResource Include="Templates\Emails\en\NotificationRuleNotification.htm" />
     <EmbeddedResource Include="Templates\Emails\en\RegistrationNotification.htm" />
     <EmbeddedResource Include="Templates\Emails\en\RegularLogsNotification.htm" />
     <EmbeddedResource Include="Templates\Emails\en\TestNotification.htm" />
+    <EmbeddedResource Include="Templates\Emails\en\UserEmailVerifiedNotification.htm" />
     <EmbeddedResource Include="Templates\Emails\en\_EmailLayout.htm" />
   </ItemGroup>
 

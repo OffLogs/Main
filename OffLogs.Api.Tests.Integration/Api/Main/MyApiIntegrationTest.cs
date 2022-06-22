@@ -18,6 +18,7 @@ using OffLogs.Business.Services.Entities.Application;
 using OffLogs.Business.Services.Entities.Log;
 using OffLogs.Business.Services.Entities.NotificationRule;
 using OffLogs.Business.Services.Entities.User;
+using OffLogs.Business.Services.Entities.UserEmail;
 using OffLogs.Business.Services.Http.ThrottleRequests;
 using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Kafka;
@@ -49,6 +50,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         protected readonly ILogService LogService;
         protected readonly ILogShareService LogShareService;
         protected readonly IUserService UserService;
+        protected readonly IUserEmailService UserEmailService;
         protected readonly IApplicationService ApplicationService;
 
         protected readonly IAccessPolicyService AccessPolicyService;
@@ -60,24 +62,25 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         public MyApiIntegrationTest(ApiCustomWebApplicationFactory factory)
         {
             _factory = factory;
-            DbSessionProvider = _factory.Services.GetService(typeof(IDbSessionProvider)) as IDbSessionProvider;
-            QueryBuilder = _factory.Services.GetService(typeof(IAsyncQueryBuilder)) as IAsyncQueryBuilder;
-            CommandBuilder = _factory.Services.GetService(typeof(IAsyncCommandBuilder)) as IAsyncCommandBuilder;
-            DataFactory = _factory.Services.GetService(typeof(IDataFactoryService)) as IDataFactoryService;
-            DataSeeder = _factory.Services.GetService(typeof(IDataSeederService)) as IDataSeederService;
-            JwtAuthService = _factory.Services.GetService(typeof(IJwtAuthService)) as IJwtAuthService;
-            NotificationBuilder = _factory.Services.GetService(typeof(IAsyncNotificationBuilder)) as IAsyncNotificationBuilder;
-            KafkaProducerService = _factory.Services.GetService(typeof(IKafkaProducerService)) as IKafkaProducerService;
-            KafkaLogsConsumerService = _factory.Services.GetService(typeof(IKafkaLogsConsumerService)) as IKafkaLogsConsumerService;
-            KafkaNotificationsConsumerService = _factory.Services.GetService(typeof(IKafkaNotificationsConsumerService)) as IKafkaNotificationsConsumerService;
-            LogService = _factory.Services.GetService(typeof(ILogService)) as ILogService;
-            UserService = _factory.Services.GetService(typeof(IUserService)) as IUserService;
-            ApplicationService = _factory.Services.GetService(typeof(IApplicationService)) as IApplicationService;
-            AccessPolicyService = _factory.Services.GetService(typeof(IAccessPolicyService)) as IAccessPolicyService;
-            LogShareService = _factory.Services.GetService(typeof(ILogShareService)) as ILogShareService;
-            EmailSendingService = _factory.Services.GetService(typeof(IEmailSendingService)) as FakeEmailSendingService;
-            ThrottleRequestsService = _factory.Services.GetService(typeof(IThrottleRequestsService)) as IThrottleRequestsService;
-            LogAssembler = _factory.Services.GetService(typeof(ILogAssembler)) as ILogAssembler;
+            DbSessionProvider = _factory.Services.GetRequiredService<IDbSessionProvider>();
+            QueryBuilder = _factory.Services.GetRequiredService<IAsyncQueryBuilder>();
+            CommandBuilder = _factory.Services.GetRequiredService<IAsyncCommandBuilder>();
+            DataFactory = _factory.Services.GetRequiredService<IDataFactoryService>();
+            DataSeeder = _factory.Services.GetRequiredService<IDataSeederService>();
+            JwtAuthService = _factory.Services.GetRequiredService<IJwtAuthService>();
+            NotificationBuilder = _factory.Services.GetRequiredService<IAsyncNotificationBuilder>();
+            KafkaProducerService = _factory.Services.GetRequiredService<IKafkaProducerService>();
+            KafkaLogsConsumerService = _factory.Services.GetRequiredService<IKafkaLogsConsumerService>();
+            KafkaNotificationsConsumerService = _factory.Services.GetRequiredService<IKafkaNotificationsConsumerService>();
+            LogService = _factory.Services.GetRequiredService<ILogService>();
+            UserService = _factory.Services.GetRequiredService<IUserService>();
+            ApplicationService = _factory.Services.GetRequiredService<IApplicationService>();
+            AccessPolicyService = _factory.Services.GetRequiredService<IAccessPolicyService>();
+            LogShareService = _factory.Services.GetRequiredService<ILogShareService>();
+            EmailSendingService = _factory.Services.GetRequiredService<IEmailSendingService>() as FakeEmailSendingService;
+            ThrottleRequestsService = _factory.Services.GetRequiredService<IThrottleRequestsService>();
+            LogAssembler = _factory.Services.GetRequiredService<ILogAssembler>();
+            UserEmailService = _factory.Services.GetRequiredService<IUserEmailService>();
 
             ThrottleRequestsService.Clean();
             EmailSendingService?.Reset();

@@ -13,28 +13,28 @@ using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main.Notifications.Emails
 {
-    public class RegistrationNotificationSenderTests : MyApiIntegrationTest
+    public class UserEmailNotificationSenderTests : MyApiIntegrationTest
     {
-        public RegistrationNotificationSenderTests(ApiCustomWebApplicationFactory factory) : base(factory) { }
+        public UserEmailNotificationSenderTests(ApiCustomWebApplicationFactory factory) : base(factory) { }
 
         [Fact]
         public async Task ShouldSendNotification()
         {
+            var userEmail = DataFactory.UserEmailFactory().Generate();
             var userModel = await DataSeeder.CreateActivatedUser();
             var application = userModel.Applications.First();
 
             Assert.False(EmailSendingService.IsEmailSent);
-            var notificationContext = new RegistrationNotificationContext(
+            var notificationContext = new EmailVerifiedNotificationContext(
                 userModel.Email,
-                "https://font.url",
-                userModel.VerificationToken
+                userEmail.Email
             );
             await NotificationBuilder.SendAsync(notificationContext);
 
             Assert.True(EmailSendingService.IsEmailSent);
             var sentMessage = EmailSendingService.SentMessages.First();
             Assert.Equal(userModel.Email, sentMessage.To);
-            Assert.Contains(notificationContext.VerificationUrl, sentMessage.Body);
+            Assert.Contains(userEmail.Email, sentMessage.Body);
         }
     }
 }

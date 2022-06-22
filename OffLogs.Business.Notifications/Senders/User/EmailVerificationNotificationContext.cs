@@ -1,27 +1,27 @@
 ﻿using System.Net;
 using Notification.Abstractions;
 
-namespace OffLogs.Business.Notifications.Senders
+namespace OffLogs.Business.Notifications.Senders.User
 {
-    public class RegistrationNotificationContext : INotificationContext
+    public class EmailVerificationNotificationContext : INotificationContext
     {
         public string ToAddress { get; set; }
         public string FrontendUrl { get; set; }
         public string VerificationToken { get; set; }
         public string VerificationUrl { get; set; }
-        
-        public RegistrationNotificationContext() {}
 
-        public RegistrationNotificationContext(
+        public EmailVerificationNotificationContext() {}
+
+        public EmailVerificationNotificationContext(
             string toAddress, 
             string frontendUrl,
-            string verificationToken
+            string verificationToken    
         )
         {
             ToAddress = toAddress;
             FrontendUrl = frontendUrl;
-            VerificationToken = WebUtility.UrlEncode(verificationToken);
-            VerificationUrl = $"{FrontendUrl}/registration/verification/{VerificationToken}";
+            VerificationToken = verificationToken;
+            VerificationUrl = $"{FrontendUrl}/email/verification/{VerificationToken}";
         }
     }
 }

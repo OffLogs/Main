@@ -1,14 +1,10 @@
-﻿using Notification.Abstractions;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Notification.Abstractions;
 using OffLogs.Business.Notifications.Core.Emails;
 using OffLogs.Business.Notifications.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace OffLogs.Business.Notifications.Senders
+namespace OffLogs.Business.Notifications.Senders.User
 {
     public class RegistrationNotificationSender : IAsyncNotification<RegistrationNotificationContext>
     {

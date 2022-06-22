@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using OffLogs.Business.Notifications.Senders;
+using OffLogs.Business.Notifications.Senders.User;
 using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka

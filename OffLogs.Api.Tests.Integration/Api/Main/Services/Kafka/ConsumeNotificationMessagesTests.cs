@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using OffLogs.Business.Notifications.Senders;
 using OffLogs.Business.Notifications.Senders.NotificationRule;
+using OffLogs.Business.Notifications.Senders.User;
 using Xunit;
 
 namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
@@ -160,6 +161,51 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             {
                 return message.To == expectTo1 || message.To == expectTo2;
             });
+        }
+        
+        [Fact]
+        public async Task ShouldSendTestNotificationForEmailVerificationAndReceiveIt()
+        {
+            var toAddress = "test123@test.com";
+            var frontUrl = "https://font.url";
+            var token = "someToken";
+            var notificationContext = new EmailVerificationNotificationContext(toAddress, frontUrl, token);
+
+            // Push 2 messages
+            await KafkaProducerService.ProduceNotificationMessageAsync(notificationContext);
+            KafkaProducerService.Flush();
+
+            // Receive 2 messages
+            var processedRecords = await KafkaNotificationsConsumerService.ProcessNotificationsAsync(false);
+            Assert.True(processedRecords > 0);
+            Assert.True(EmailSendingService.IsEmailSent);
+
+            Assert.Contains(
+                EmailSendingService.SentMessages, 
+                sentMessage => sentMessage.Subject.Contains("verification") && sentMessage.To == toAddress
+            );
+        }
+        
+        [Fact]
+        public async Task ShouldSendTestNotificationForEmailVerifiedAndReceiveIt()
+        {
+            var toAddress = "test123@test.com";
+            var verifiedAddress = "test333@test.com";
+            var notificationContext = new EmailVerifiedNotificationContext(toAddress, verifiedAddress);
+
+            // Push 2 messages
+            await KafkaProducerService.ProduceNotificationMessageAsync(notificationContext);
+            KafkaProducerService.Flush();
+
+            // Receive 2 messages
+            var processedRecords = await KafkaNotificationsConsumerService.ProcessNotificationsAsync(false);
+            Assert.True(processedRecords > 0);
+            Assert.True(EmailSendingService.IsEmailSent);
+
+            Assert.Contains(
+                EmailSendingService.SentMessages, 
+                sentMessage => sentMessage.Subject.Contains("verification") && sentMessage.To == toAddress
+            );
         }
     }
 }
