@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Api.Requests.Abstractions;
 using AutoMapper;
-using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.User;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.UserEmail;
+using OffLogs.Business.Common.Exceptions.Api;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Orm.Queries.Entities.User;
 using OffLogs.Business.Services.Api;
 using Queries.Abstractions;
 
 namespace OffLogs.Api.Controller.Board.UserEmail.Actions
 {
-    public class GetListRequestHandler : IAsyncRequestHandler<SearchRequest, UsersListDto>
+    public class GetListRequestHandler : IAsyncRequestHandler<GetListRequest, UserEmailsListDto>
     {
         private readonly IMapper _mapper;
         private readonly IAsyncQueryBuilder _queryBuilder;
@@ -28,13 +31,16 @@ namespace OffLogs.Api.Controller.Board.UserEmail.Actions
             _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
         }
 
-        public async Task<UsersListDto> ExecuteAsync(SearchRequest request)
+        public async Task<UserEmailsListDto> ExecuteAsync(GetListRequest request)
         {
             var userId = _requestService.GetUserIdFromJwt();
-            var list = await _queryBuilder.For<ICollection<UserEntity>>()
-                .WithAsync(new UserSearchCriteria(request.Search, new long[] { userId }));
+            var user = await _queryBuilder.FindByIdAsync<UserEntity>(userId);
+            if (user == null)
+            {
+                throw new RecordNotFoundException();
+            }
 
-            return _mapper.Map<UsersListDto>(list);
+            return _mapper.Map<UserEmailsListDto>(user.Emails);
         }
     }
 }

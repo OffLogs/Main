@@ -25,7 +25,7 @@ namespace OffLogs.Business.Services.Data
                     (faker) => faker.Random.Bytes(32)
                 )
                 .RuleFor(
-                    entity => entity.IsVerificated,
+                    entity => entity.IsVerified,
                     () => true
                 )
                 .RuleFor(

@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OffLogs.Api.Common.Dto.Entities;
-using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.User;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.UserEmail;
 using Persistence.Transactions.Behaviors;
 
@@ -28,8 +27,8 @@ namespace OffLogs.Api.Controller.Board.UserEmail
         [HttpPost("list")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public Task<IActionResult> AddCommonLog(SearchRequest request)
-            => this.RequestAsync().For<UsersListDto>().With(request);
+        public Task<IActionResult> AddCommonLog(GetListRequest request)
+            => this.RequestAsync().For<UserEmailsListDto>().With(request);
         
         [HttpPost("add")]
         [ProducesResponseType(StatusCodes.Status200OK)]

@@ -21,13 +21,13 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.User
         {
             var newUser = DataFactory.UserFactory().Generate();
             var expectedUser = await UserService.CreatePendingUser(newUser.Email);
-            Assert.False(expectedUser.IsVerificated);
+            Assert.False(expectedUser.IsVerified);
             
             var (actualUser, pemFile) = await UserService.ActivateUser(
                 expectedUser.Id,
                 SecurityUtil.GeneratePassword()
             );
-            Assert.True(actualUser.IsVerificated);
+            Assert.True(actualUser.IsVerified);
             
             Assert.Equal(actualUser.Id, expectedUser.Id);
             Assert.True(newUser.PublicKey.Length > 0);
@@ -51,7 +51,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.User
         {
             var newUser = DataFactory.UserFactory().Generate();
             var expectedUser = await UserService.CreatePendingUser(newUser.Email);
-            Assert.False(expectedUser.IsVerificated);
+            Assert.False(expectedUser.IsVerified);
             
             await UserService.ActivateUser(
                 expectedUser.Id,

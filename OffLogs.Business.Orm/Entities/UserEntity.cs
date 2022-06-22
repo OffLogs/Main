@@ -79,7 +79,7 @@ namespace OffLogs.Business.Orm.Entities
         [OneToMany(ClassType = typeof(UserEmailEntity))]
         public virtual ICollection<UserEmailEntity> Emails { get; set; } = new List<UserEmailEntity>();
         
-        public virtual bool IsVerificated => VerificationTime.HasValue;
+        public virtual bool IsVerified => VerificationTime.HasValue;
         
         public UserEntity() {}
     }
