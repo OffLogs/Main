@@ -68,7 +68,7 @@ namespace OffLogs.Business.Services.Entities.User
                 .WithAsync(new FindByIdCriteria(userId));
             if (user == null)
                 throw new EntityIsNotExistException();
-            if (user.IsVerificated)
+            if (user.IsVerified)
                 throw new Exception("User already activated");
             
             // Generate private key

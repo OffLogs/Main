@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
+using AspNetCore.ApiControllers.Abstractions;
 using OffLogs.Business.Helpers;
 
 namespace OffLogs.Business.Test.Extensions
@@ -15,6 +16,11 @@ namespace OffLogs.Business.Test.Extensions
         public static async Task<object> GetJsonDataAsync(this HttpResponseMessage response)
         {
             return await response.GetJsonDataAsync<object>();
+        }
+        
+        public static async Task<BadResponseModel> GetJsonErrorAsync(this HttpResponseMessage response)
+        {
+            return await response.GetJsonDataAsync<BadResponseModel>();
         }
         
         public static async Task<string> GetDataAsStringAsync(this HttpResponseMessage response)

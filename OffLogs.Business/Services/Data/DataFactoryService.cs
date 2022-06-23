@@ -25,8 +25,29 @@ namespace OffLogs.Business.Services.Data
                     (faker) => faker.Random.Bytes(32)
                 )
                 .RuleFor(
-                    entity => entity.IsVerificated,
+                    entity => entity.IsVerified,
                     () => true
+                )
+                .RuleFor(
+                    entity => entity.CreateTime,
+                    (faker) => faker.Date.Past().ToUniversalTime()
+                )
+                .RuleFor(
+                    entity => entity.UpdateTime,
+                    (faker) => faker.Date.Past().ToUniversalTime()
+                );
+        }
+        
+        public Faker<UserEmailEntity> UserEmailFactory()
+        {
+            return new Faker<UserEmailEntity>()
+                .RuleFor(
+                    entity => entity.Email,
+                    (faker) => faker.Internet.Email()
+                )
+                .RuleFor(
+                    entity => entity.VerificationToken,
+                    (faker) => faker.Random.String2(100)
                 )
                 .RuleFor(
                     entity => entity.CreateTime,

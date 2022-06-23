@@ -8,6 +8,11 @@ namespace OffLogs.Business.Extensions
 {
     public static class ObjectExtensions
     {
+        public static string GetTypeName(this Object value)
+        {
+            return value.GetType().Name;
+        }
+        
         public static string GetAsJson(this Object value)
         {
             try

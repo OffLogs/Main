@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="BouncyCastle.NetCore" Version="1.8.10" />
+      <PackageReference Include="BouncyCastle.NetCore" Version="1.9.0" />
       <PackageReference Include="Markdig" Version="0.30.2" />
       <PackageReference Include="Markdown.ColorCode" Version="1.0.1" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />

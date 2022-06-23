@@ -13,7 +13,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
     {
         public LogShareActionTests(ApiCustomWebApplicationFactory factory) : base(factory) {}
         
-        [Theory]
+        [Theory(Skip = "Skip is not used")]
         [InlineData(MainApiUrl.LogShare)]
         public async Task OnlyAuthorizedUsersCanDoIt(string url)
         {
@@ -29,7 +29,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             Assert.True(response.StatusCode == HttpStatusCode.Unauthorized);
         }
 
-        [Theory]
+        [Theory(Skip = "Skip is not used")]
         [InlineData(MainApiUrl.LogShare)]
         public async Task OtherUsersShouldNotShareLog(string url)
         {
@@ -46,7 +46,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             Assert.True(response.StatusCode == HttpStatusCode.BadRequest);
         }
 
-        [Theory]
+        [Theory(Skip = "Skip is not used")]
         [InlineData(MainApiUrl.LogShare)]
         public async Task OwnerShouldShareLog(string url)
         {
@@ -71,7 +71,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.LogController
             Assert.Equal(log.LogShares.First().Token, logShare.Token);
         }
 
-        [Theory]
+        [Theory(Skip = "Skip is not used")]
         [InlineData(MainApiUrl.LogShare)]
         public async Task UsersWithReadOnlyAccessCanDoIt(string url)
         {

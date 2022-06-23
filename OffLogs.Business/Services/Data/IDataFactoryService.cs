@@ -9,6 +9,7 @@ namespace OffLogs.Business.Services.Data
     public interface IDataFactoryService
     {
         Faker<UserEntity> UserFactory();
+        Faker<UserEmailEntity> UserEmailFactory();
         Faker<ApplicationEntity> ApplicationFactory(UserEntity user);
         Faker<LogEntity> LogFactory(LogLevel level);
         Faker<LogTraceEntity> LogTraceFactory();

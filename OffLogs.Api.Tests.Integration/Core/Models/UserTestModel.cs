@@ -8,6 +8,8 @@ namespace OffLogs.Api.Tests.Integration.Core.Models
 {
     public class UserTestModel: UserEntity
     {
+        public UserEntity Original { get; }
+        
         public string PemFilePassword { get; }
         
         public string PemFile { get; }
@@ -54,6 +56,7 @@ namespace OffLogs.Api.Tests.Integration.Core.Models
             string pemFile
         )
         {
+            Original = entity;
             PemFilePassword = pemFilePassword;
             PemFile = pemFile;
             Id = entity.Id;

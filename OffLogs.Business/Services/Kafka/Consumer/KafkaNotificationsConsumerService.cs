@@ -8,6 +8,7 @@ using Notification.Abstractions;
 using OffLogs.Business.Notifications;
 using OffLogs.Business.Notifications.Senders;
 using OffLogs.Business.Notifications.Senders.NotificationRule;
+using OffLogs.Business.Notifications.Senders.User;
 using OffLogs.Business.Orm.Entities.Notifications;
 using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Kafka.Models;
@@ -89,6 +90,18 @@ namespace OffLogs.Business.Services.Kafka.Consumer
                 if (IsContext<EmailNotificationContext>(contextType))
                 {
                     var context = dto.GetDeserializedData<EmailNotificationContext>();
+                    await _notificationBuilder.SendAsync(context);
+                    return;
+                }
+                if (IsContext<EmailVerifiedNotificationContext>(contextType))
+                {
+                    var context = dto.GetDeserializedData<EmailVerifiedNotificationContext>();
+                    await _notificationBuilder.SendAsync(context);
+                    return;
+                }
+                if (IsContext<EmailVerificationNotificationContext>(contextType))
+                {
+                    var context = dto.GetDeserializedData<EmailVerificationNotificationContext>();
                     await _notificationBuilder.SendAsync(context);
                     return;
                 }

@@ -42,11 +42,9 @@ namespace OffLogs.Api.Frontend.Controllers
                 exception = new ServerException();
             }
 
-            return new BadRequestObjectResult(new
-            {
-                Type = exception.GetType().Name,
-                Message = exception.Message
-            });
+            return new BadRequestObjectResult(
+                new BadResponseModel(exception)
+            );
         }
     }
 }
