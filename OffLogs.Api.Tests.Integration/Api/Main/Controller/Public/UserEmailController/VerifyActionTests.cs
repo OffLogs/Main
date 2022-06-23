@@ -24,6 +24,7 @@ public class VerifyActionTests : MyApiIntegrationTest
         var userModel = await DataSeeder.CreateActivatedUser();
         var user = userModel.Original;
         userEmail = await UserEmailService.Add(user, userEmail.Email);
+        await CommitDbChanges();
         
         // Act
         var response = await GetRequestAsAnonymousAsync(Url + userEmail.VerificationToken);
