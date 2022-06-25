@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using NHibernate.Util;
 using Notification.Abstractions;
 using OffLogs.Business.Common.Constants.Notificatiions;
 using OffLogs.Business.Common.Services.Web;
@@ -52,26 +54,17 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
                 var dataByRule = await _notificationRuleService.GetDataForNotificationRule(rule);
                 if (dataByRule.LogCount > 0)
                 {
-                    var notificationReceivers = new List<string>()
-                    {
-                        rule.User.Email
-                    };
-                    
-                    INotificationContext notificationContext = null;
+                    var notificationContexts = new List<INotificationContext>();
                     if (rule.Type == NotificationType.Email)
                     {
-                        notificationContext = new EmailNotificationContext()
-                        {
-                            Subject = "OffLogs - " + PrepareText(rule, dataByRule, true),
-                            Body = PrepareText(rule, dataByRule, false),
-                            To = notificationReceivers
-                        };
+                        notificationContexts = notificationContexts.Concat(
+                            GetEmailNotifications(rule, dataByRule)
+                        ).ToList();
                     }
-
-                    if (notificationContext != null)
+                    notificationContexts.ForEach(context =>
                     {
-                        await _producerService.ProduceNotificationMessageAsync(notificationContext);
-                    }
+                        _producerService.ProduceNotificationMessageAsync(context);
+                    });
                 }
 
                 await _notificationRuleService.SetAsExecutedAsync(rule, cancellationToken);
@@ -109,5 +102,23 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
         }
         
         return _markdownService.ToHtml(builder.Build());
+    }
+
+    private IEnumerable<INotificationContext> GetEmailNotifications(NotificationRuleEntity rule, ProcessingDataDto data)
+    {
+        var notificationReceivers = rule.Emails.Select(item => item.Email).ToList();
+        notificationReceivers.Add(rule.User.Email);
+        
+        var notificationContexts = new List<INotificationContext>();
+        notificationContexts.Add(
+            new EmailNotificationContext()
+            {
+                Subject = "OffLogs - " + PrepareText(rule, data, true),
+                Body = PrepareText(rule, data, false),
+                To = notificationReceivers
+            }    
+        );
+
+        return notificationContexts;
     }
 }
