@@ -25,6 +25,10 @@ namespace OffLogs.Business.Common.Constants
         public const string LogGetStatisticForNow = "board/log/getStatisticForNow";
         
         public const string UserSearch = "board/user/search";
+        
+        public const string UserEmailsList = "board/user/email/list";
+        public const string UserEmailsAdd = "board/user/email/add";
+        public const string UserEmailsDelete = "board/user/email/delete";
 
         public const string PermissionAddAccess = "board/permission/addAccess";
         public const string PermissionRemoveAccess = "board/permission/removeAccess";

@@ -187,6 +187,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Emails.
+        /// </summary>
+        internal static string MenuItem_UserEmails {
+            get {
+                return ResourceManager.GetString("MenuItem_UserEmails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New message template was added.
         /// </summary>
         internal static string MessageTemplate_Added {

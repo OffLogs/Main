@@ -69,6 +69,10 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>ApplicationResources.resx</DependentUpon>
       </Compile>
+      <Compile Remove="Store\User\**" />
+      <EmbeddedResource Remove="Store\User\**" />
+      <None Remove="Store\User\**" />
+      <Content Remove="Store\User\**" />
     </ItemGroup>
 
     <ItemGroup>

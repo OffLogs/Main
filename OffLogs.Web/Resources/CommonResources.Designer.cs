@@ -304,6 +304,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to My emails.
+        /// </summary>
+        internal static string UserEmails {
+            get {
+                return ResourceManager.GetString("UserEmails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value.
         /// </summary>
         internal static string Value {

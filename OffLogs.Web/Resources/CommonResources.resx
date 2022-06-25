@@ -102,4 +102,7 @@
     <data name="SelectLanguage" xml:space="preserve">
         <value>Select language...</value>
     </data>
+    <data name="UserEmails" xml:space="preserve">
+        <value>My emails</value>
+    </data>
 </root>

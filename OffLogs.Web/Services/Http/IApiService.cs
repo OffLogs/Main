@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using OffLogs.Api.Common.Dto;
 using OffLogs.Api.Common.Dto.Entities;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Message;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule;
 using OffLogs.Business.Common.Constants.Permissions;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.User;
+using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.UserEmail;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
 
 namespace OffLogs.Web.Services.Http
@@ -13,11 +15,15 @@ namespace OffLogs.Web.Services.Http
     public interface IApiService
     {
         #region User
-        Task<Api.Common.Dto.RequestsAndResponses.Public.User.LoginResponseDto> LoginAsync(Api.Common.Dto.RequestsAndResponses.Public.User.LoginRequest model);
+        Task<LoginResponseDto> LoginAsync(Api.Common.Dto.RequestsAndResponses.Public.User.LoginRequest model);
         Task<bool> CheckIsLoggedInAsync(string token);
-        Task<Api.Common.Dto.RequestsAndResponses.Board.User.UsersListDto> FindUsers(string search);
+        Task<UsersListDto> FindUsers(string search);
         #endregion
 
+        #region UserEmails
+        Task<UserEmailsListDto> UserEmailsGetList();
+        #endregion
+        
         #region Application
         Task DeleteApplicationAsync(long id);
         Task<ApplicationDto> AddApplicationAsync(string name);
