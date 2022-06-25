@@ -12,6 +12,7 @@ using OffLogs.Api.Tests.Integration.Core.Models;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Constants.Notificatiions;
 using OffLogs.Business.Orm.Commands.Context;
+using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Entities.Notifications;
 using OffLogs.Business.Services.Entities.NotificationRule;
 using OffLogs.Business.Test.Extensions;
@@ -243,6 +244,77 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             var data = await response.GetDataAsStringAsync();
             Assert.Contains("The field Conditions must be a string or array type with a maximum length of", data);
+        }
+        
+        [Fact]
+        public async Task ShouldAddNewWithAdditionalEmails()
+        {
+            var emailFactory = DataFactory.UserEmailFactory();
+            var userEmail1 = await UserEmailService.AddAsync(_userModel.Original, emailFactory.Generate().Email);
+            var userEmail2 = await UserEmailService.AddAsync(_userModel.Original, emailFactory.Generate().Email);
+            await CommitDbChanges();
+            
+            var expectedOperator = LogicOperatorType.Conjunction;
+            var expectedTitle = _ruleFactory.Generate().Title;
+
+            var conditions = new List<SetConditionRequest>()
+            {
+                new() { ConditionField = ConditionFieldType.LogLevel.ToString(), Value = "Information"},
+            };
+            
+            // Act
+            var response = await PostRequestAsync(Url, _userModel.ApiToken, new SetRuleRequest
+            {
+                Period = DefaultPeriod,
+                ApplicationId = _userModel.ApplicationId,
+                Type = NotificationType.Email.ToString(),
+                LogicOperator = expectedOperator.ToString(),
+                TemplateId = _expectedMessageTemplate.Id,
+                Conditions = conditions,
+                Title = expectedTitle,
+                UserEmailIds = new []{ userEmail1.Id, userEmail2.Id }
+            });
+            // Assert
+            response.EnsureSuccessStatusCode();
+            var data = await response.GetJsonDataAsync<NotificationRuleDto>();
+            Assert.Equal(2, data.Emails.Count);
+        }
+        
+        [Fact]
+        public async Task ShouldAddNewWithAdditionalEmailsAndDoNotAddOtherEmails()
+        {
+            var userModel2 = await DataSeeder.CreateActivatedUser();
+            
+            var emailFactory = DataFactory.UserEmailFactory();
+            var userEmail1 = await UserEmailService.AddAsync(_userModel.Original, emailFactory.Generate().Email);
+            var userEmail2 = await UserEmailService.AddAsync(userModel2.Original, emailFactory.Generate().Email);
+            await CommitDbChanges();
+            
+            var expectedOperator = LogicOperatorType.Conjunction;
+            var expectedTitle = _ruleFactory.Generate().Title;
+
+            var conditions = new List<SetConditionRequest>()
+            {
+                new() { ConditionField = ConditionFieldType.LogLevel.ToString(), Value = "Information"},
+            };
+            
+            // Act
+            var response = await PostRequestAsync(Url, _userModel.ApiToken, new SetRuleRequest
+            {
+                Period = DefaultPeriod,
+                ApplicationId = _userModel.ApplicationId,
+                Type = NotificationType.Email.ToString(),
+                LogicOperator = expectedOperator.ToString(),
+                TemplateId = _expectedMessageTemplate.Id,
+                Conditions = conditions,
+                Title = expectedTitle,
+                UserEmailIds = new []{ userEmail1.Id, userEmail2.Id }
+            });
+            // Assert
+            response.EnsureSuccessStatusCode();
+            var data = await response.GetJsonDataAsync<NotificationRuleDto>();
+            Assert.Equal(1, data.Emails.Count);
+            Assert.Equal(userEmail1.Id, data.Emails.First().Id);
         }
         
         private async Task<NotificationRuleEntity> CreateRuleAsync(

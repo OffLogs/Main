@@ -98,6 +98,22 @@ namespace OffLogs.Business.Orm.Entities.Notifications
         ]
         public virtual ICollection<NotificationConditionEntity> Conditions { get; set; } = new List<NotificationConditionEntity>();
         
+        [Set(
+            Table = "notification_rule_emails",
+            Lazy = CollectionLazy.True,
+            Cascade = "delete-orphan",
+            BatchSize = 20
+        )]
+        [Key(
+            Column = "notification_rule_id"
+        )]
+        [ManyToMany(
+            Unique = true,
+            ClassType = typeof(UserEmailEntity),
+            Column = "user_email_id"
+        )]
+        public virtual ICollection<UserEmailEntity> Emails { get; set; } = new List<UserEmailEntity>();
+        
         public NotificationRuleEntity() {}
         
         public virtual bool IsOwner(long userId)

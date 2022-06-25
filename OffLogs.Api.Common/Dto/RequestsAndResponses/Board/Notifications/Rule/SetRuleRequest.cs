@@ -61,6 +61,9 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
         ]
         public ICollection<SetConditionRequest> Conditions { get; set; } = new List<SetConditionRequest>();
 
+        [ArrayLength(10)]
+        public long[] UserEmailIds { get; set; }
+        
         public void Fill(NotificationRuleDto item)
         {
             Id = item?.Id;

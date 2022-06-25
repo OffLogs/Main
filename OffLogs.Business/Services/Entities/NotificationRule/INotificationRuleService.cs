@@ -22,7 +22,8 @@ public interface INotificationRuleService: IDomainService
         MessageTemplateEntity messageTemplate,
         ICollection<NotificationConditionEntity> conditions,
         ApplicationEntity application = null,
-        long? existsRuleId = null
+        long? existsRuleId = null,
+        ICollection<UserEmailEntity> additionalEmails = null
     );
 
     Task<ProcessingDataDto> GetDataForNotificationRule(NotificationRuleEntity rule);

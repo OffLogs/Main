@@ -6,8 +6,8 @@ namespace OffLogs.Business.Services.Entities.UserEmail
 {
     public interface IUserEmailService: IDomainService
     {
-        Task<UserEmailEntity> VerifyByToken(string token);
+        Task<UserEmailEntity> VerifyByTokenAsync(string token);
 
-        Task<UserEmailEntity> Add(UserEntity user, string email);
+        Task<UserEmailEntity> AddAsync(UserEntity user, string email);
     }
 }

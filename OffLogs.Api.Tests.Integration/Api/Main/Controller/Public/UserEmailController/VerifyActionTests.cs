@@ -23,7 +23,7 @@ public class VerifyActionTests : MyApiIntegrationTest
         var userEmail = DataFactory.UserEmailFactory().Generate();
         var userModel = await DataSeeder.CreateActivatedUser();
         var user = userModel.Original;
-        userEmail = await UserEmailService.Add(user, userEmail.Email);
+        userEmail = await UserEmailService.AddAsync(user, userEmail.Email);
         await CommitDbChanges();
         
         // Act
@@ -38,7 +38,7 @@ public class VerifyActionTests : MyApiIntegrationTest
         var userEmail = DataFactory.UserEmailFactory().Generate();
         var userModel = await DataSeeder.CreateActivatedUser();
         var user = userModel.Original;
-        userEmail = await UserEmailService.Add(user, userEmail.Email);
+        userEmail = await UserEmailService.AddAsync(user, userEmail.Email);
         
         // Act
         var response = await GetRequestAsAnonymousAsync(Url + "fakeToken");

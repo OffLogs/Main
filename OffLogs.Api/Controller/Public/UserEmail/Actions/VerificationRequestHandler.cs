@@ -18,7 +18,7 @@ namespace OffLogs.Api.Controller.Public.UserEmail.Actions
 
         public async Task ExecuteAsync(VerificationRequest request)
         {
-            await _userEmailService.VerifyByToken(request.Token);
+            await _userEmailService.VerifyByTokenAsync(request.Token);
         }
     }
 }
