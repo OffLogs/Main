@@ -14,12 +14,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.UserEmail
         {
             var userEmail = DataFactory.UserEmailFactory().Generate();
             var expectedUser = await DataSeeder.CreateActivatedUser();
-            await UserEmailService.Add(expectedUser.Original, userEmail.Email);
+            await UserEmailService.AddAsync(expectedUser.Original, userEmail.Email);
             Assert.False(expectedUser.IsVerified);
 
             await Assert.ThrowsAsync<RecordNotFoundException>(async () =>
             {
-                await UserEmailService.VerifyByToken("Fake token");
+                await UserEmailService.VerifyByTokenAsync("Fake token");
             });
         }
         
@@ -28,10 +28,10 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.UserEmail
         {
             var userEmail = DataFactory.UserEmailFactory().Generate();
             var expectedUser = await DataSeeder.CreateActivatedUser();
-            userEmail = await UserEmailService.Add(expectedUser.Original, userEmail.Email);
+            userEmail = await UserEmailService.AddAsync(expectedUser.Original, userEmail.Email);
             Assert.False(expectedUser.IsVerified);
 
-            userEmail = await UserEmailService.VerifyByToken(userEmail.VerificationToken);
+            userEmail = await UserEmailService.VerifyByTokenAsync(userEmail.VerificationToken);
             
             Assert.True(userEmail.Id > 0);
             Assert.NotNull(userEmail.VerificationTime);

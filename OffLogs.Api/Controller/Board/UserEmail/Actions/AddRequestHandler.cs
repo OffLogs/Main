@@ -53,7 +53,7 @@ namespace OffLogs.Api.Controller.Board.UserEmail.Actions
                 throw new RecordNotFoundException();
             }
 
-            var userEmail = await _userEmailService.Add(user, request.Email);
+            var userEmail = await _userEmailService.AddAsync(user, request.Email);
             await _commitPerformer.PerformCommitAsync();
             
             return _mapper.Map<UserEmailDto>(userEmail);

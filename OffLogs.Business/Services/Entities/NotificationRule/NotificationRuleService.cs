@@ -43,7 +43,8 @@ public class NotificationRuleService: INotificationRuleService
         MessageTemplateEntity messageTemplate,
         ICollection<NotificationConditionEntity> conditions,
         ApplicationEntity application = null,
-        long? existsRuleId = null
+        long? existsRuleId = null,
+        ICollection<UserEmailEntity> additionalEmails = null
     )
     {
         if (messageTemplate == null || !messageTemplate.IsOwner(user.Id))
@@ -95,6 +96,16 @@ public class NotificationRuleService: INotificationRuleService
             condition.Rule = rule;
             rule.Conditions.Add(condition);
         }
+
+        if (additionalEmails != null)
+        {
+            rule.Emails.Clear();
+            foreach (var userEmail in additionalEmails)
+            {
+                rule.Emails.Add(userEmail);
+            }
+        }
+
         await _commandBuilder.SaveAsync(rule);
         return rule;
     }

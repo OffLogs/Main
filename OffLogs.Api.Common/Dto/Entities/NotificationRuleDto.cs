@@ -25,6 +25,8 @@ namespace OffLogs.Api.Common.Dto.Entities
 
         public ICollection<NotificationConditionDto> Conditions { get; set; } = new List<NotificationConditionDto>();
         
+        public ICollection<UserEmailDto> Emails { get; set; } = new List<UserEmailDto>();
+        
         public virtual DateTime CreateTime { get; set; }
         
         public virtual DateTime UpdateTime { get; set; }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Api.Requests.Abstractions;
 using AutoMapper;
@@ -52,6 +53,10 @@ namespace OffLogs.Api.Controller.Board.Notifications.Rules.Actions
             if (application != null && !application.IsOwner(user.Id))
                 throw new PermissionException("User has no permissions");
 
+            var userEmails = user.Emails.Where(
+                item => request.UserEmailIds.Contains(item.Id)
+            ).ToList();
+            
             Enum.TryParse<LogicOperatorType>(request.LogicOperator, out var logicOperator);
             Enum.TryParse<NotificationType>(request.Type, out var notificationType);
             var rule = await _notificationRuleService.SetRule(
@@ -63,7 +68,8 @@ namespace OffLogs.Api.Controller.Board.Notifications.Rules.Actions
                 message,
                 _mapper.Map<ICollection<NotificationConditionEntity>>(request.Conditions),
                 application,
-                request.Id
+                request.Id,
+                userEmails
             );
             return _mapper.Map<NotificationRuleDto>(rule);
         }

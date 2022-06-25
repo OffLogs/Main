@@ -45,7 +45,7 @@ namespace OffLogs.Business.Services.Entities.UserEmail
             _frontendUrl = configuration.GetValue<string>("App:FrontendUrl");
         }
 
-        public async Task<UserEmailEntity> Add(UserEntity user, string email)
+        public async Task<UserEmailEntity> AddAsync(UserEntity user, string email)
         {
             var userEmail = new UserEmailEntity
             {
@@ -77,7 +77,7 @@ namespace OffLogs.Business.Services.Entities.UserEmail
             return userEmail;
         }
         
-        public async Task<UserEmailEntity> VerifyByToken(string token)
+        public async Task<UserEmailEntity> VerifyByTokenAsync(string token)
         {
             var emailEntity = await _queryBuilder.For<UserEmailEntity>()
                 .WithAsync(new GetByTokenCriteria(token));
