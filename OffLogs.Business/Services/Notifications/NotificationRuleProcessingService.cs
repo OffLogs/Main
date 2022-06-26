@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using NHibernate.Util;
 using Notification.Abstractions;
 using OffLogs.Business.Common.Constants.Notificatiions;
@@ -48,10 +50,13 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
         NotificationRuleEntity rule = null;
         do
         {
+            Console.WriteLine($"11111111111111111111, Try find rules");
             rule = await _notificationRuleService.GetNextAndSetExecutingAsync(cancellationToken);
             if (rule != null)
             {
+                Console.WriteLine($"11111111111111111111, Rule found {rule.Id}");
                 var dataByRule = await _notificationRuleService.GetDataForNotificationRule(rule);
+                Console.WriteLine($"11111111111111111111, Rule data {JsonConvert.SerializeObject(dataByRule)}");
                 if (dataByRule.LogCount > 0)
                 {
                     var notificationContexts = new List<INotificationContext>();
