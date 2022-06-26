@@ -50,13 +50,10 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
         NotificationRuleEntity rule = null;
         do
         {
-            Console.WriteLine($"11111111111111111111, Try find rules");
             rule = await _notificationRuleService.GetNextAndSetExecutingAsync(cancellationToken);
             if (rule != null)
             {
-                Console.WriteLine($"11111111111111111111, Rule found {rule.Id}");
                 var dataByRule = await _notificationRuleService.GetDataForNotificationRule(rule);
-                Console.WriteLine($"11111111111111111111, Rule data {JsonConvert.SerializeObject(dataByRule)}");
                 if (dataByRule.LogCount > 0)
                 {
                     var notificationContexts = new List<INotificationContext>();
@@ -66,10 +63,11 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
                             GetEmailNotifications(rule, dataByRule)
                         ).ToList();
                     }
-                    notificationContexts.ForEach(context =>
+
+                    foreach (var context in notificationContexts)
                     {
-                        _producerService.ProduceNotificationMessageAsync(context);
-                    });
+                        await _producerService.ProduceNotificationMessageAsync(context);
+                    }
                 }
 
                 await _notificationRuleService.SetAsExecutedAsync(rule, cancellationToken);
