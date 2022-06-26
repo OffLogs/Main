@@ -2,6 +2,7 @@ using System;
 using Bogus;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Constants.Notificatiions;
+using OffLogs.Business.Common.Utils;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Entities.Notifications;
 
@@ -47,7 +48,7 @@ namespace OffLogs.Business.Services.Data
                 )
                 .RuleFor(
                     entity => entity.VerificationToken,
-                    (faker) => faker.Random.String2(100)
+                    (faker) => SecurityUtil.GetTimeBasedToken()
                 )
                 .RuleFor(
                     entity => entity.CreateTime,
