@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Business.Common.Exceptions;
-using OffLogs.Business.Common.Exceptions.Api;
 using OffLogs.Business.Common.Exceptions.Common;
 using OffLogs.Business.Extensions;
 using OffLogs.Web.Resources;
@@ -14,7 +12,7 @@ using OffLogs.Web.Store.UserEmails;
 using Radzen;
 using Radzen.Blazor;
 
-namespace OffLogs.Web.Pages.Dashboard.Settings.UserEmails;
+namespace OffLogs.Web.Pages.Dashboard.Settings.User;
 
 public partial class UserEmails
 {
@@ -24,7 +22,7 @@ public partial class UserEmails
     [Inject]
     private ILogger<UserEmails> Logger { get; set; }
 
-    private  RadzenDataGrid<UserEmailDto> _grid;
+    private RadzenDataGrid<UserEmailDto> _grid;
     
     protected override async Task OnInitializedAsync()
     {
