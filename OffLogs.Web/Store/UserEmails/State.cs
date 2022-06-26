@@ -9,13 +9,31 @@ namespace OffLogs.Web.Store.UserEmails;
 [FeatureState]
 public record UserEmailsState
 {
-    public int PageSize { get; set; } = GlobalConstants.ListPageSize;
-    
     public bool IsLoading { get; set; }
 
-    public int TotalCount { get; set; }
-    
-    public ICollection<UserEmailDto> List { get; set; }
+    private ICollection<UserEmailDto> _list = new List<UserEmailDto>();
+    public ICollection<UserEmailDto> List {
+        get
+        {
+            var query = _list.AsQueryable();
+            if (HasItemToAdd)
+            {
+                query = query.OrderBy(item => item.Id);
+            }
+            return query.ToList();
+        }
+        set => _list = value;
+    }
 
+    public bool HasItemToAdd
+    {
+        get => ItemToAdd != null;
+    }
+    
+    public UserEmailDto ItemToAdd
+    {
+        get => _list.FirstOrDefault(item => item.Id == 0);
+    }
+    
     public UserEmailsState() { }
 }

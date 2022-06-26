@@ -102,7 +102,7 @@
     <data name="SelectLanguage" xml:space="preserve">
         <value>Select language...</value>
     </data>
-    <data name="UserEmails" xml:space="preserve">
-        <value>My emails</value>
+    <data name="Error_ProvideValidEmailAddress" xml:space="preserve">
+        <value>Provide a valid email address</value>
     </data>
 </root>

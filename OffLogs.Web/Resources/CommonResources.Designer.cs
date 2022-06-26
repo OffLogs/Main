@@ -151,6 +151,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Provide a valid email address.
+        /// </summary>
+        internal static string Error_ProvideValidEmailAddress {
+            get {
+                return ResourceManager.GetString("Error_ProvideValidEmailAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No items....
         /// </summary>
         internal static string ListIsEmpty {
@@ -300,15 +309,6 @@ namespace OffLogs.Web.Resources {
         internal static string TableItemsNotFound {
             get {
                 return ResourceManager.GetString("TableItemsNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to My emails.
-        /// </summary>
-        internal static string UserEmails {
-            get {
-                return ResourceManager.GetString("UserEmails", resourceCulture);
             }
         }
         

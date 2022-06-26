@@ -8,3 +8,9 @@ public record struct FetchListAction();
 public record struct FetchListResultAction(
     ICollection<UserEmailDto> Items
 );
+
+public record struct AddEmailToAddListItemAction();
+
+public record struct RemoveEmailFromFromListAction(long Id = 0);
+
+public record struct UpdateApplicationAction(UserEmailDto Application);

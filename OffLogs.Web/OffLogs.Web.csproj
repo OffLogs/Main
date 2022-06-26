@@ -73,6 +73,15 @@
       <EmbeddedResource Remove="Store\User\**" />
       <None Remove="Store\User\**" />
       <Content Remove="Store\User\**" />
+      <EmbeddedResource Update="Resources\UserResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>UserResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <Compile Update="Resources\UserResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>UserResources.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

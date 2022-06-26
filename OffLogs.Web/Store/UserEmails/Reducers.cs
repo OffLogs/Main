@@ -10,7 +10,7 @@ public class Reducers
     [ReducerMethod(typeof(FetchListAction))]
     public static UserEmailsState ReduceFetchListAction(UserEmailsState state)
     {
-        var newState = state.JsonClone<UserEmailsState>();
+        var newState = state with {};
         newState.IsLoading = true;
         return newState;
     }
@@ -21,8 +21,31 @@ public class Reducers
         return state with
         {
             IsLoading = false,
-            TotalCount = action.TotalCount,
             List = action.Items
         };
+    }
+    
+    [ReducerMethod(typeof(AddEmailToAddListItemAction))]
+    public static UserEmailsState ReduceAddApplicationToAddListItemAction(UserEmailsState state)
+    {
+        var newList = state.List.ToList();
+        newList.Add(new UserEmailDto()
+        {
+            Id = 0
+        });
+        return state with
+        {
+            List = newList
+        };
+    }
+    
+    [ReducerMethod]
+    public static UserEmailsState ReduceRemoveEmailFromFromListAction(UserEmailsState state, RemoveEmailFromFromListAction action)
+    {
+        var newState = state with { };
+        newState.List = state.List.Where(
+            i => i.Id != action.Id
+        ).ToList();
+        return newState;
     }
 }
