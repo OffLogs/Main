@@ -1,0 +1,19 @@
+﻿@page "/email/verification/{token}"
+
+@using OffLogs.Web.Pages.Landing.Shared;
+@using OffLogs.Web.Resources
+
+@layout Layout
+@inherits BaseComponent
+
+<h1 class="display-2">@LandingPageResources.User_EmailVerification</h1>
+<p class="lead">
+    @if (_isLoading)
+    {
+        <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"/>
+    }
+    else
+    {
+        @LandingPageResources.User_EmailSuccessfullyVerified    
+    }
+</p>

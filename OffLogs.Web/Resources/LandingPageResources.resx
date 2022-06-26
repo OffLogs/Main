@@ -99,4 +99,13 @@ If you have any questions please send us an email at **support@offlogs.com**
     <data name="Menu_SignUp" xml:space="preserve">
         <value>Sign Up</value>
     </data>
+    <data name="User_EmailVerification" xml:space="preserve">
+        <value>Email verification</value>
+    </data>
+    <data name="User_EmailSuccessfullyVerified" xml:space="preserve">
+        <value>Your email address has been successfully verified!</value>
+    </data>
+    <data name="Error_500" xml:space="preserve">
+        <value>Server error. Please contact to the support :(</value>
+    </data>
 </root>

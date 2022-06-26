@@ -24,6 +24,7 @@ namespace OffLogs.Web.Services.Http
         Task<UserEmailsListDto> UserEmailsGetList();
         Task<UserEmailDto> UserEmailAddAsync(string email);
         Task<ApplicationDto> UserEmailDeleteAsync(long id);
+        Task UserEmailVerifyAsync(string token);
         #endregion
         
         #region Application
