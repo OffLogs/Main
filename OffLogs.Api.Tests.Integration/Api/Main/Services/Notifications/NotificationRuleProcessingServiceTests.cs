@@ -107,7 +107,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Notifications
                 {
                     IsExecuting = true,
                 });
-            await DbSessionProvider.PerformCommitAsync();
+            await CommitDbChanges();
         }
     }
 }
