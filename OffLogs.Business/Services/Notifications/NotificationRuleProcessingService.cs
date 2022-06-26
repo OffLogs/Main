@@ -115,7 +115,7 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
             {
                 Subject = "OffLogs - " + PrepareText(rule, data, true),
                 Body = PrepareText(rule, data, false),
-                To = notificationReceivers
+                To = notificationReceivers.Distinct().ToList()
             }    
         );
 

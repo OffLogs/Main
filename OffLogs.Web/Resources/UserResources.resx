@@ -31,4 +31,7 @@
     <data name="AddNewEmail" xml:space="preserve">
         <value>Add new email</value>
     </data>
+    <data name="EnterEmailAddress" xml:space="preserve">
+        <value>Enter email address</value>
+    </data>
 </root>

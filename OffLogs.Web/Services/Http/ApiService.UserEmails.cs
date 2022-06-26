@@ -1,8 +1,8 @@
 ﻿using OffLogs.Business.Common.Constants;
 using OffLogs.Web.Core.Exceptions;
 using System.Threading.Tasks;
+using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.UserEmail;
-using GetListRequest = OffLogs.Api.Common.Dto.RequestsAndResponses.Board.UserEmail.GetListRequest;
 
 namespace OffLogs.Web.Services.Http
 {
@@ -18,6 +18,40 @@ namespace OffLogs.Web.Services.Http
             {
                 throw new ServerErrorException();
             }
+            return response;
+        }
+        
+        public async Task<UserEmailDto> UserEmailAddAsync(string email)
+        {
+            var response = await PostAuthorizedAsync<UserEmailDto>(
+                MainApiUrl.UserEmailsAdd,
+                new AddRequest()
+                {
+                    Email = email
+                }
+            );
+            if (response == null)
+            {
+                throw new ServerErrorException();
+            }
+
+            return response;
+        }
+
+        public async Task<ApplicationDto> UserEmailDeleteAsync(long id)
+        {
+            var response = await PostAuthorizedAsync<ApplicationDto>(
+                MainApiUrl.UserEmailsDelete,
+                new DeleteRequest()
+                {
+                    Id = id
+                }
+            );
+            if (response == null)
+            {
+                throw new ServerErrorException();
+            }
+
             return response;
         }
     }

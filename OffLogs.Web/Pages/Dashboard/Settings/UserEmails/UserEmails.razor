@@ -34,27 +34,27 @@
             <RadzenDataGridColumn TItem="UserEmailDto" Property="Id" Title="ID" Width="70px"/>
             <RadzenDataGridColumn TItem="UserEmailDto" Property="Email" Title="Email">
                 <EditTemplate Context="app">
-                    <RadzenTextBox @bind-Value="@app.Email" Style="width:100%; display: block" Name="Email"/>
+                    
+                    <RadzenTextBox
+                        @bind-Value="@app.Email"
+                        Style="width:100%; display: block"
+                        Placeholder="@UserResources.EnterEmailAddress"
+                        Name="Email"/>
                     <RadzenLengthValidator
                         Component="Email"
                         Min="4"
-                        Max="255"
-                        Style="position: absolute"/>
+                        Max="255"/>
                     <RadzenEmailValidator
                         Component="Email"
-                        Text="@CommonResources.Error_ProvideValidEmailAddress"
-                        Style="position: absolute"/>
+                        Text="@CommonResources.Error_ProvideValidEmailAddress"/>
                 </EditTemplate>
             </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="UserEmailDto" Title="Status" Width="80px">
                 <Template Context="item">
-                    @if (item.IsVerified)
-                    {
-                        <RadzenBadge
-                            BadgeStyle="@(item.IsVerified ? BadgeStyle.Success : BadgeStyle.Danger)"
-                            IsPill="true"
-                            Text="@(item.IsVerified ? UserResources.Verified : UserResources.WaitForVerification)"/>
-                    }
+                    <RadzenBadge
+                        BadgeStyle="@(item.IsVerified ? BadgeStyle.Success : BadgeStyle.Danger)"
+                        IsPill="true"
+                        Text="@(item.IsVerified ? UserResources.Verified : UserResources.WaitForVerification)"/>
                 </Template>
             </RadzenDataGridColumn>
             <RadzenDataGridColumn
