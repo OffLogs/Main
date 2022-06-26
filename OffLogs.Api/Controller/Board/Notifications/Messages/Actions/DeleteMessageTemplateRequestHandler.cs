@@ -6,13 +6,14 @@ using Commands.Abstractions;
 using Microsoft.Extensions.Logging;
 using OffLogs.Api.Common.Dto.RequestsAndResponses;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Message;
-using OffLogs.Business.Exceptions;
+using OffLogs.Business.Common.Exceptions;
+using OffLogs.Business.Common.Exceptions.Common;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities.Notifications;
 using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Services.Api;
 using Queries.Abstractions;
-using ValidationException = OffLogs.Business.Exceptions.ValidationException;
+using ValidationException = OffLogs.Business.Common.Exceptions.Common.ValidationException;
 
 namespace OffLogs.Api.Controller.Board.Notifications.Messages.Actions
 {

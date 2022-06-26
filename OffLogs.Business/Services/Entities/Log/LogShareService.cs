@@ -1,5 +1,4 @@
 ﻿using Commands.Abstractions;
-using OffLogs.Business.Exceptions;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
 using System;
@@ -7,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OffLogs.Business.Common.Exceptions;
+using OffLogs.Business.Common.Exceptions.Common;
 
 namespace OffLogs.Business.Services.Entities.Log
 {

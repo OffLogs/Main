@@ -105,4 +105,7 @@
     <data name="Error_ProvideValidEmailAddress" xml:space="preserve">
         <value>Provide a valid email address</value>
     </data>
+    <data name="Error_ServerError" xml:space="preserve">
+        <value>Server error. Please contact to support</value>
+    </data>
 </root>

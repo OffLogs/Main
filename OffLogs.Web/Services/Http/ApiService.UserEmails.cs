@@ -47,11 +47,6 @@ namespace OffLogs.Web.Services.Http
                     Id = id
                 }
             );
-            if (response == null)
-            {
-                throw new ServerErrorException();
-            }
-
             return response;
         }
     }

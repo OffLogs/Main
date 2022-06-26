@@ -1,11 +1,7 @@
-﻿using Domain.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using Domain.Abstractions;
 
-namespace OffLogs.Business.Exceptions
+namespace OffLogs.Business.Common.Exceptions.Common
 {
     public class TooManyRequestsException : Exception, IDomainException
     {

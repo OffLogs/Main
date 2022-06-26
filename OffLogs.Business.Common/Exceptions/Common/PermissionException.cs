@@ -1,12 +1,8 @@
-﻿using Domain.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using Domain.Abstractions;
 using OffLogs.Business.Common.Resources;
 
-namespace OffLogs.Business.Exceptions
+namespace OffLogs.Business.Common.Exceptions.Common
 {
     public class PermissionException : Exception, IDomainException
     {

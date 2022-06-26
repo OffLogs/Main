@@ -160,6 +160,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Server error. Please contact to support.
+        /// </summary>
+        internal static string Error_ServerError {
+            get {
+                return ResourceManager.GetString("Error_ServerError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No items....
         /// </summary>
         internal static string ListIsEmpty {

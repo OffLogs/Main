@@ -34,7 +34,7 @@
             <RadzenDataGridColumn TItem="UserEmailDto" Property="Id" Title="ID" Width="70px"/>
             <RadzenDataGridColumn TItem="UserEmailDto" Property="Email" Title="Email">
                 <EditTemplate Context="app">
-                    
+
                     <RadzenTextBox
                         @bind-Value="@app.Email"
                         Style="width:100%; display: block"
@@ -68,9 +68,10 @@
                 <Template Context="app">
 
                     <RadzenButton
-                        Icon="edit"
-                        ButtonStyle="ButtonStyle.Light"
-                        Click="@(args => EditRow(app))"
+                        ButtonStyle="ButtonStyle.Danger"
+                        Icon="delete"
+                        Class="m-1"
+                        Click="@(args => DeleteRow(app))"
                         @onclick:stopPropagation="true">
                     </RadzenButton>
                 </Template>

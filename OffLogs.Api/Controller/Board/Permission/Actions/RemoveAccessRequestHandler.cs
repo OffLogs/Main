@@ -3,13 +3,14 @@ using System.Threading.Tasks;
 using Api.Requests.Abstractions;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Permission;
 using OffLogs.Business.Common.Constants.Permissions;
-using OffLogs.Business.Exceptions;
+using OffLogs.Business.Common.Exceptions;
+using OffLogs.Business.Common.Exceptions.Common;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Services.Api;
 using OffLogs.Business.Services.Entities.Application;
 using Queries.Abstractions;
-using ValidationException = OffLogs.Business.Exceptions.ValidationException;
+using ValidationException = OffLogs.Business.Common.Exceptions.Common.ValidationException;
 
 namespace OffLogs.Api.Controller.Board.Permission.Actions
 {

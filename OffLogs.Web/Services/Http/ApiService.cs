@@ -10,6 +10,7 @@ using OffLogs.Api.Common.Dto.RequestsAndResponses;
 using OffLogs.Business.Common.Exceptions;
 using OffLogs.Web.Store.Auth;
 using Microsoft.Extensions.DependencyInjection;
+using OffLogs.Business.Common.Exceptions.Common;
 using OffLogs.Web.Core.Helpers;
 
 namespace OffLogs.Web.Services.Http
@@ -66,7 +67,11 @@ namespace OffLogs.Web.Services.Http
             }
             finally
             {
-                throw new HttpResponseStatusException(response.StatusCode, badResponse?.Message ?? "Server error");
+                throw new HttpResponseException(
+                    response.StatusCode,
+                    badResponse?.Message ?? "Server error",
+                    badResponse?.Type
+                );
             }
         }
         

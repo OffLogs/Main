@@ -1,8 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using OffLogs.Api.Common.Dto.Entities;
+using OffLogs.Business.Common.Exceptions;
+using OffLogs.Business.Common.Exceptions.Api;
+using OffLogs.Business.Common.Exceptions.Common;
+using OffLogs.Business.Extensions;
 using OffLogs.Web.Resources;
 using OffLogs.Web.Store.UserEmails;
 using Radzen;
@@ -14,6 +20,9 @@ public partial class UserEmails
 {
     [Inject]
     private IState<UserEmailsState> State { get; set; }
+    
+    [Inject]
+    private ILogger<UserEmails> Logger { get; set; }
 
     private  RadzenDataGrid<UserEmailDto> _grid;
     
@@ -28,12 +37,7 @@ public partial class UserEmails
     private async Task InsertRow()
     {
         Dispatcher.Dispatch(new AddEmailToAddListItemAction());
-        await EditRow(State.Value.ItemToAdd);
-    }
-    
-    private async Task EditRow(UserEmailDto app)
-    {
-        await _grid.EditRow(app);
+        await _grid.EditRow(State.Value.ItemToAdd);
     }
 
     private async Task OnClickSaveRow(UserEmailDto app)
@@ -47,17 +51,10 @@ public partial class UserEmails
         _grid.CancelEditRow(app);
     }
 
-    private async Task DeleteRow(UserEmailDto app)
+    private async Task DeleteRow(UserEmailDto item)
     {
-        if (State.Value.HasItemToAdd)
-        {
-            Dispatcher.Dispatch(new RemoveEmailFromFromListAction());
-            _grid.CancelEditRow(app);
-            return;
-        }
-        
         var isOk = await DialogService.Confirm(
-            ApplicationResources.DeleteConfirmation,
+            UserResources.DeleteConfirmation,
             CommonResources.DeletionConfirmation,
             new ConfirmOptions()
             {
@@ -67,28 +64,55 @@ public partial class UserEmails
         );
         if (isOk.HasValue && isOk.Value)
         {
-            // Dispatcher.Dispatch(new DeleteApplicationAction(
-            //     app.Id
-            // ));
+            try
+            {
+                await ApiService.UserEmailDeleteAsync(item.Id);
+
+                Dispatcher.Dispatch(new FetchListAction());
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e, e.Message);
+                NotificationService.Notify(new NotificationMessage()
+                {
+                    Severity = NotificationSeverity.Error,
+                    Summary = CommonResources.Error_ServerError
+                });
+            }
         }
     }
 
-    private async Task OnUpdateRow(UserEmailDto app)
+    private async Task OnUpdateRow(UserEmailDto item)
     {
         Dispatcher.Dispatch(new RemoveEmailFromFromListAction());
-        if (app.Id > 0)
+        try
         {
-            // await UpdateApplication(app);
-            return;
-        }
+            await ApiService.UserEmailAddAsync(item.Email);
 
-        Dispatcher.Dispatch(new RemoveEmailFromFromListAction());
-        // Dispatcher.Dispatch(new AddApplicationAction(app.Name));
-        NotificationService.Notify(new NotificationMessage()
+            Dispatcher.Dispatch(new FetchListAction());
+            NotificationService.Notify(new NotificationMessage()
+            {
+                Severity = NotificationSeverity.Info,
+                Summary = UserResources.EmailWasAdded
+            });
+        }
+        catch (HttpResponseException exception)
         {
-            Severity = NotificationSeverity.Info,
-            Summary = "New application was added"
-        });
+            var error = CommonResources.Error_ServerError;
+            if (DomainException.TooManyRecordsException.EqualsToTypeName(exception.Type))
+            {
+                error = UserResources.Error_TooManyEmails;
+            }
+            if (DomainException.RecordIsExistsException.EqualsToTypeName(exception.Type))
+            {
+                error = UserResources.Error_RecordIsExists;
+            }
+            NotificationService.Notify(new NotificationMessage()
+            {
+                Severity = NotificationSeverity.Error,
+                Summary = error
+            });
+        }
     }
     #endregion
 }
