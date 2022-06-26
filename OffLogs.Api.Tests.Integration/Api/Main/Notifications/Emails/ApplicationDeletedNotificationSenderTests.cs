@@ -29,9 +29,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Notifications.Emails
             await NotificationBuilder.SendAsync(new ApplicationDeletedNotificationContext(sentTo, application.Name));
 
             Assert.True(EmailSendingService.IsEmailSent);
-            var sentMessage = EmailSendingService.SentMessages.First();
-            Assert.Equal(sentTo, sentMessage.To);
-            Assert.Contains(application.Name, sentMessage.Body);
+            
+            Assert.Contains(
+                EmailSendingService.SentMessages,
+                sentMessage => sentMessage.To.Contains(sentTo)
+                    && sentMessage.Body.Contains(application.Name)
+            );
         }
     }
 }

@@ -163,16 +163,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             var processedRecords = await KafkaNotificationsConsumerService.ProcessNotificationsAsync(false);
             Assert.True(processedRecords > 0);
             Assert.True(EmailSendingService.IsEmailSent);
-
-            var sentMessage = EmailSendingService.SentMessages.First();
+            
             Assert.Contains(
                 EmailSendingService.SentMessages,
                 sentMessage => sentMessage.Subject.Contains(expectSubject)
                     && sentMessage.Body.Contains(expectBody)
-                    && EmailSendingService.SentMessages.Any(message =>
-                    {
-                        return message.To == expectTo1 || message.To == expectTo2;
-                    })
+                    && (sentMessage.To == expectTo1 || sentMessage.To == expectTo2)
             );
         }
         
