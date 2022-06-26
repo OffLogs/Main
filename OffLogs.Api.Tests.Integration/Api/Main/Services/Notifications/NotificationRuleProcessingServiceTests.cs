@@ -35,7 +35,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Notifications
 
             var expectedCount = 2;
             var expectedLogLevel = LogLevel.Information;
-            var expectedPeriod = 5 * 60; // 5 minutes
+            var expectedPeriod = 15 * 60; // 5 minutes
             var expectedExecutionTime = DateTime.UtcNow.AddSeconds(-expectedPeriod - 5);
 
             var expectedRule = await CreateRule();
@@ -49,7 +49,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Notifications
                 expectedLogLevel,
                 expectedCount
             );
-            await DbSessionProvider.PerformCommitAsync();
+            await CommitDbChanges();
             
             await _processingService.FindAndProcessWaitingRules();
             
@@ -107,7 +107,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Notifications
                 {
                     IsExecuting = true,
                 });
-            await DbSessionProvider.PerformCommitAsync();
+            await CommitDbChanges();
         }
     }
 }

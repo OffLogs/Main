@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+
+    <data name="UserEmails" xml:space="preserve">
+        <value>My emails</value>
+    </data>
+    <data name="Verified" xml:space="preserve">
+        <value>Verified</value>
+    </data>
+    <data name="WaitForVerification" xml:space="preserve">
+        <value>Waiting for verification</value>
+    </data>
+    <data name="AddNewEmail" xml:space="preserve">
+        <value>Add new email</value>
+    </data>
+    <data name="EnterEmailAddress" xml:space="preserve">
+        <value>Enter email address</value>
+    </data>
+    <data name="Error_TooManyEmails" xml:space="preserve">
+        <value>You can't add more emails</value>
+    </data>
+    <data name="Error_RecordIsExists" xml:space="preserve">
+        <value>Enter another email address</value>
+    </data>
+    <data name="EmailWasAdded" xml:space="preserve">
+        <value>New email was added. Check your mailbox for address verification</value>
+    </data>
+    <data name="DeleteConfirmation" xml:space="preserve">
+        <value>Are you sure you want to remove this email address?</value>
+    </data>
+</root>

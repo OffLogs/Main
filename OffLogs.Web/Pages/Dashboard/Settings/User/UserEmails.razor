@@ -1,0 +1,94 @@
+﻿@page "/dashboard/settings/emails"
+@page "/{locale}/dashboard/settings/emails"
+
+@using OffLogs.Web.Resources
+@using OffLogs.Api.Common.Dto.Entities
+
+@layout Layout
+@inherits BaseComponent
+
+<RadzenCard class="m-3">
+    <h3 class="h5">@UserResources.UserEmails</h3>
+
+    <RadzenButton
+        Icon="add_circle_outline"
+        class="mb-3"
+        Text="@UserResources.AddNewEmail"
+        Click="@InsertRow"
+        Disabled="@State.Value.HasItemToAdd"/>
+
+    <RadzenDataGrid
+        TItem="UserEmailDto"
+        @ref="@_grid"
+        AllowSorting="false"
+        EditMode="DataGridEditMode.Single"
+        RowUpdate="@OnUpdateRow"
+        Data="@State.Value.List"
+        AllowPaging="false"
+        IsLoading="@State.Value.IsLoading"
+        Count="@State.Value.List.Count"
+        ShowPagingSummary="false"
+        ColumnWidth="200px">
+
+        <Columns>
+            <RadzenDataGridColumn TItem="UserEmailDto" Property="Id" Title="ID" Width="70px"/>
+            <RadzenDataGridColumn TItem="UserEmailDto" Property="Email" Title="Email">
+                <EditTemplate Context="app">
+
+                    <RadzenTextBox
+                        @bind-Value="@app.Email"
+                        Style="width:100%; display: block"
+                        Placeholder="@UserResources.EnterEmailAddress"
+                        Name="Email"/>
+                    <RadzenLengthValidator
+                        Component="Email"
+                        Min="4"
+                        Max="255"/>
+                    <RadzenEmailValidator
+                        Component="Email"
+                        Text="@CommonResources.Error_ProvideValidEmailAddress"/>
+                </EditTemplate>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="UserEmailDto" Title="Status" Width="80px">
+                <Template Context="item">
+                    <RadzenBadge
+                        BadgeStyle="@(item.IsVerified ? BadgeStyle.Success : BadgeStyle.Danger)"
+                        IsPill="true"
+                        Text="@(item.IsVerified ? UserResources.Verified : UserResources.WaitForVerification)"/>
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn
+                TItem="UserEmailDto"
+                Context="app"
+                Filterable="false"
+                Sortable="false"
+                TextAlign="TextAlign.Center"
+                Width="120px">
+
+                <Template Context="app">
+
+                    <RadzenButton
+                        ButtonStyle="ButtonStyle.Danger"
+                        Icon="delete"
+                        Class="m-1"
+                        Click="@(args => DeleteRow(app))"
+                        @onclick:stopPropagation="true">
+                    </RadzenButton>
+                </Template>
+                <EditTemplate Context="app">
+
+                    <RadzenButton
+                        Icon="check"
+                        ButtonStyle="ButtonStyle.Primary"
+                        Click="@((args) => OnClickSaveRow(app))"/>
+
+                    <RadzenButton
+                        Icon="close"
+                        ButtonStyle="ButtonStyle.Light"
+                        Click="@((args) => OnClickCancelEditMode(app))">
+                    </RadzenButton>
+                </EditTemplate>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
+</RadzenCard>

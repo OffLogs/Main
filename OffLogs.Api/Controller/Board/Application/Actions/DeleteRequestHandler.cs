@@ -2,7 +2,8 @@
 using System.Threading.Tasks;
 using Api.Requests.Abstractions;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application;
-using OffLogs.Business.Exceptions;
+using OffLogs.Business.Common.Exceptions;
+using OffLogs.Business.Common.Exceptions.Common;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Services.Api;
 using OffLogs.Business.Services.Entities.Application;

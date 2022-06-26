@@ -32,9 +32,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Notifications.Emails
             await NotificationBuilder.SendAsync(notificationContext);
 
             Assert.True(EmailSendingService.IsEmailSent);
-            var sentMessage = EmailSendingService.SentMessages.First();
-            Assert.Equal(userModel.Email, sentMessage.To);
-            Assert.Contains(userEmail.Email, sentMessage.Body);
+            
+            Assert.Contains(
+                EmailSendingService.SentMessages,
+                sentMessage => sentMessage.To.Contains(userModel.Email)
+                    && sentMessage.Body.Contains(userEmail.Email)
+            );
         }
     }
 }

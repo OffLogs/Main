@@ -13,6 +13,11 @@ namespace OffLogs.Business.Extensions
             return value.GetType().Name;
         }
         
+        public static bool EqualsToTypeName(this Object value, string typeName)
+        {
+            return value.GetType().Name.ToLower().Equals(typeName?.ToLower());
+        }
+        
         public static string GetAsJson(this Object value)
         {
             try

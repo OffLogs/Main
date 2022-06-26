@@ -24,6 +24,9 @@
     <data name="MenuItem_MessageTemplates" xml:space="preserve">
         <value>Message templates</value>
     </data>
+    <data name="MenuItem_UserEmails" xml:space="preserve">
+        <value>Emails</value>
+    </data>
     <data name="MenuItem_Rules" xml:space="preserve">
         <value>Notification rules</value>
     </data>

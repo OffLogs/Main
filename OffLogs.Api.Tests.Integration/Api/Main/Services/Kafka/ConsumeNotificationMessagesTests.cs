@@ -32,10 +32,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             Assert.True(processedRecords > 0);
 
             Assert.True(EmailSendingService.IsEmailSent);
-            var sentMessage = EmailSendingService.SentMessages.First();
-            Assert.Contains("Recent logs report", sentMessage.Subject);
-            Assert.Contains("logs were received recently", sentMessage.Body);
-            Assert.Contains(toAddress, sentMessage.To);
+            Assert.Contains(
+                EmailSendingService.SentMessages,
+                sentMessage => sentMessage.Subject.Contains("Recent logs report")
+                    && sentMessage.Body.Contains("logs were received recently")
+                    && toAddress.Contains(sentMessage.To)
+            );
         }
 
         [Fact]
@@ -54,10 +56,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             Assert.True(processedRecords > 0);
             Assert.True(EmailSendingService.IsEmailSent);
 
-            var sentMessage = EmailSendingService.SentMessages.First();
-            Assert.Contains("Logs deletion notification", sentMessage.Subject);
-            Assert.Contains(sentDate.ToString("G"), sentMessage.Body);
-            Assert.Contains(toAddress, sentMessage.To);
+            Assert.Contains(
+                EmailSendingService.SentMessages,
+                sentMessage => sentMessage.Subject.Contains("Logs deletion notification")
+                    && sentMessage.Body.Contains(sentDate.ToString("G"))
+                    && toAddress.Contains(sentMessage.To)
+            );
         }
 
         [Fact]
@@ -76,10 +80,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             Assert.True(processedRecords > 0);
             Assert.True(EmailSendingService.IsEmailSent);
 
-            var sentMessage = EmailSendingService.SentMessages.First();
-            Assert.Contains("Application has been deleted", sentMessage.Subject);
-            Assert.Contains(applicationName, sentMessage.Body);
-            Assert.Contains(toAddress, sentMessage.To);
+            Assert.Contains(
+                EmailSendingService.SentMessages,
+                sentMessage => sentMessage.Subject.Contains("Application has been deleted")
+                    && sentMessage.Body.Contains(applicationName)
+                    && toAddress.Contains(sentMessage.To)
+            );
         }
         
         [Fact]
@@ -99,10 +105,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             Assert.True(processedRecords > 0);
             Assert.True(EmailSendingService.IsEmailSent);
 
-            var sentMessage = EmailSendingService.SentMessages.First();
-            Assert.Contains("OffLogs verification", sentMessage.Subject);
-            Assert.Contains(notificationContext.VerificationUrl, sentMessage.Body);
-            Assert.Contains(toAddress, sentMessage.To);
+            Assert.Contains(
+                EmailSendingService.SentMessages,
+                sentMessage => sentMessage.Subject.Contains("OffLogs verification")
+                    && sentMessage.Body.Contains(notificationContext.VerificationUrl)
+                    && sentMessage.To.Contains(toAddress)
+            );
         }
         
         [Fact]
@@ -121,10 +129,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             var processedRecords = await KafkaNotificationsConsumerService.ProcessNotificationsAsync(false);
             Assert.True(processedRecords > 0);
             Assert.True(EmailSendingService.IsEmailSent);
-
-            var sentMessage = EmailSendingService.SentMessages.First();
-            Assert.Contains("Test notification", sentMessage.Subject);
-            Assert.Contains(toAddress, sentMessage.To);
+            
+            Assert.Contains(
+                EmailSendingService.SentMessages,
+                sentMessage => sentMessage.Subject.Contains("Test notification")
+                    && sentMessage.To.Contains(toAddress)
+            );
         }
         
         [Fact]
@@ -153,14 +163,13 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             var processedRecords = await KafkaNotificationsConsumerService.ProcessNotificationsAsync(false);
             Assert.True(processedRecords > 0);
             Assert.True(EmailSendingService.IsEmailSent);
-
-            var sentMessage = EmailSendingService.SentMessages.First();
-            Assert.Contains(expectSubject, sentMessage.Subject);
-            Assert.Contains(expectBody, sentMessage.Body);
-            Assert.Contains(EmailSendingService.SentMessages, message =>
-            {
-                return message.To == expectTo1 || message.To == expectTo2;
-            });
+            
+            Assert.Contains(
+                EmailSendingService.SentMessages,
+                sentMessage => sentMessage.Subject.Contains(expectSubject)
+                    && sentMessage.Body.Contains(expectBody)
+                    && (sentMessage.To == expectTo1 || sentMessage.To == expectTo2)
+            );
         }
         
         [Fact]
@@ -182,7 +191,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
 
             Assert.Contains(
                 EmailSendingService.SentMessages, 
-                sentMessage => sentMessage.Subject.Contains("verification") && sentMessage.To == toAddress
+                sentMessage => sentMessage.Subject.Contains("verification") 
+                    && sentMessage.To == toAddress
             );
         }
         
@@ -204,7 +214,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
 
             Assert.Contains(
                 EmailSendingService.SentMessages, 
-                sentMessage => sentMessage.Subject.Contains("verification") && sentMessage.To == toAddress
+                sentMessage => sentMessage.Subject.Contains("verification") 
+                    && sentMessage.To == toAddress
             );
         }
     }

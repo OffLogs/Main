@@ -31,10 +31,14 @@
                 Text="@NotificationResources.MenuItem_MessageTemplates" 
                 Path="@SiteUrl.DashboardNotificationTemplates"/>
         </RadzenPanelMenuItem>
-        <RadzenPanelMenuItem 
+        <RadzenPanelMenuItem
             Icon="settings"
-            Text="Settings" 
-            Path="@SiteUrl.DashboardSettings"/>
+            Text="Settings">
+            <RadzenPanelMenuItem 
+                Icon="mail"
+                Text="@NotificationResources.MenuItem_UserEmails" 
+                Path="@SiteUrl.DashboardSettingsEmails"/>
+        </RadzenPanelMenuItem>
     </RadzenPanelMenu>
 </RadzenSidebar>
 

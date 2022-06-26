@@ -14,7 +14,6 @@ namespace OffLogs.Business.Services.Kafka
 {
     public class KafkaProducerService: IKafkaProducerService, IDisposable
     {
-        private readonly IConfiguration _configuration;
         private readonly ILogger<IKafkaProducerService> _logger;
         private readonly ProducerConfig _producerConfig;
         private readonly string _producerId;
@@ -48,7 +47,6 @@ namespace OffLogs.Business.Services.Kafka
 
         public KafkaProducerService(IConfiguration configuration, ILogger<IKafkaProducerService> logger)
         {
-            _configuration = configuration;
             _logger = logger;
 
             var kafkaSection = configuration.GetSection("Kafka");

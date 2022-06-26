@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using NHibernate.Util;
 using Notification.Abstractions;
 using OffLogs.Business.Common.Constants.Notificatiions;
@@ -61,10 +63,11 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
                             GetEmailNotifications(rule, dataByRule)
                         ).ToList();
                     }
-                    notificationContexts.ForEach(context =>
+
+                    foreach (var context in notificationContexts)
                     {
-                        _producerService.ProduceNotificationMessageAsync(context);
-                    });
+                        await _producerService.ProduceNotificationMessageAsync(context);
+                    }
                 }
 
                 await _notificationRuleService.SetAsExecutedAsync(rule, cancellationToken);
@@ -115,7 +118,7 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
             {
                 Subject = "OffLogs - " + PrepareText(rule, data, true),
                 Body = PrepareText(rule, data, false),
-                To = notificationReceivers
+                To = notificationReceivers.Distinct().ToList()
             }    
         );
 
