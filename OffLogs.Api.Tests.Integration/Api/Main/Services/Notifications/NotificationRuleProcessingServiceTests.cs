@@ -49,7 +49,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Notifications
                 expectedLogLevel,
                 expectedCount
             );
-            await DbSessionProvider.PerformCommitAsync();
+            await CommitDbChanges();
             
             await _processingService.FindAndProcessWaitingRules();
             
