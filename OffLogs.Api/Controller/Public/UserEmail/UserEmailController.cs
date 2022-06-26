@@ -9,7 +9,6 @@ using Persistence.Transactions.Behaviors;
 
 namespace OffLogs.Api.Controller.Public.UserEmail
 {
-    [Route("/user/email")]
     [ApiController]
     public class UserEmailController : MainApiControllerBase
     {
@@ -21,7 +20,7 @@ namespace OffLogs.Api.Controller.Public.UserEmail
         {
         }
         
-        [HttpGet("verify/{token}")]
+        [HttpGet("/user/email/verify/{token}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public Task<IActionResult> CheckIsLoggedIn([FromRoute] VerificationRequest request)
