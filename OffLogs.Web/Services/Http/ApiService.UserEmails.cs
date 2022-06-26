@@ -1,6 +1,7 @@
 ﻿using OffLogs.Business.Common.Constants;
 using OffLogs.Web.Core.Exceptions;
 using System.Threading.Tasks;
+using System.Web;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.UserEmail;
 
@@ -48,6 +49,13 @@ namespace OffLogs.Web.Services.Http
                 }
             );
             return response;
+        }
+
+        public async Task UserEmailVerifyAsync(string token)
+        {
+            await GetAsync<object>(
+                MainApiUrl.UserEmailsVerify + HttpUtility.UrlPathEncode(token)
+            );
         }
     }
 }

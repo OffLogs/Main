@@ -2,6 +2,7 @@ namespace OffLogs.Web.Constants
 {
     public class SiteUrl
     {
+        #region Public
         public static readonly string Main = "/";
         public static readonly string Documentation = "/documentation";
         public static readonly string Documentation_CommonInfo = "/documentation/common/1_1_common";
@@ -12,6 +13,11 @@ namespace OffLogs.Web.Constants
         public static readonly string Registration_Step2 = "/registration/step2";
         
         public static readonly string Login = "/login";
+        
+        public static readonly string Error500 = "/error/500";
+        public static readonly string Error404 = "/error/404";
+        #endregion
+        
         
         public static readonly string DashboardBase = "/dashboard";
         public static readonly string Dashboard = "/dashboard/main";

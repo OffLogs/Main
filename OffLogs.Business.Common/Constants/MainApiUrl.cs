@@ -8,6 +8,7 @@ namespace OffLogs.Business.Common.Constants
         public const string LogGetSharedByToken = "log/getShared";
         public const string RegistrationStep1 = "user/registration/step1";
         public const string RegistrationStep2 = "user/registration/step2";
+        public const string UserEmailsVerify = "user/email/verify/";
         #endregion
 
         #region Board

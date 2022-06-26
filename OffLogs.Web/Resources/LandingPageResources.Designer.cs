@@ -70,6 +70,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Server error. Please contact to the support :(.
+        /// </summary>
+        internal static string Error_500 {
+            get {
+                return ResourceManager.GetString("Error_500", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
         internal static string Main_About {
@@ -250,6 +259,24 @@ namespace OffLogs.Web.Resources {
         internal static string Support_Title_Email {
             get {
                 return ResourceManager.GetString("Support_Title_Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your email address has been successfully verified!.
+        /// </summary>
+        internal static string User_EmailSuccessfullyVerified {
+            get {
+                return ResourceManager.GetString("User_EmailSuccessfullyVerified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email verification.
+        /// </summary>
+        internal static string User_EmailVerification {
+            get {
+                return ResourceManager.GetString("User_EmailVerification", resourceCulture);
             }
         }
     }

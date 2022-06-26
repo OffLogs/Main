@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Web;
 using Notification.Abstractions;
 
 namespace OffLogs.Business.Notifications.Senders.User
@@ -21,7 +22,7 @@ namespace OffLogs.Business.Notifications.Senders.User
             ToAddress = toAddress;
             FrontendUrl = frontendUrl;
             VerificationToken = verificationToken;
-            VerificationUrl = $"{FrontendUrl}/email/verification/{VerificationToken}";
+            VerificationUrl = $"{FrontendUrl}/email/verification/" + HttpUtility.UrlPathEncode(VerificationToken);
         }
     }
 }
