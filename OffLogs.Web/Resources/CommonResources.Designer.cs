@@ -304,6 +304,15 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select emails....
+        /// </summary>
+        internal static string SelectUserEmails {
+            get {
+                return ResourceManager.GetString("SelectUserEmails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         internal static string Settings {

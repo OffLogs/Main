@@ -3,7 +3,9 @@ using OffLogs.Api.Common.Dto.Entities;
 
 namespace OffLogs.Web.Store.UserEmails;
 
-public record struct FetchListAction();
+public record struct FetchListAction(bool IsLoadIfEmpty = true);
+
+public record struct SetIsLoadingAction(bool IsLoading);
 
 public record struct FetchListResultAction(
     ICollection<UserEmailDto> Items
