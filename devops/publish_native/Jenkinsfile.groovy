@@ -50,7 +50,7 @@ node('lampego-web-1') {
         envVariables.put('Serilog__MinimumLevel_Default', 'Warning')
 
         // Kafka
-        envVariables.put('Kafka__Servers', '192.168.110.6:29092,192.168.110.6:29093')
+        envVariables.put('Kafka__Servers', '10.10.0.2:29092,10.10.0.2:29093')
         envVariables.put('Kafka__ProducerId', 'offlogs-reducer')
         envVariables.put('Kafka__ConsumerClientId', 'offlogs-client')
         envVariables.put('Kafka__Topic__Logs', 'offlogs-production-logs')
@@ -61,7 +61,7 @@ node('lampego-web-1') {
         ]) {
             envVariables.put(
                 'ConnectionStrings__DefaultConnection',
-                "User ID=${USER_NAME};Password=${PASSWORD};Host=192.168.110.6;Port=5432;Database=offlogs;Pooling=true;"
+                "User ID=${USER_NAME};Password=${PASSWORD};Host=10.10.0.2;Port=5432;Database=offlogs;Pooling=true;"
             )
         }
         withCredentials([
