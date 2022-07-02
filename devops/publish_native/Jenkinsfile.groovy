@@ -116,6 +116,7 @@ node('lampego-web-1') {
 
     stage('Run worker') {
         mainContainer.tagName = 'offlogs-worker';
+        mainContainer.port = '';
         dockerHelper.stopContainer(mainContainer)
         
         mainContainer.envVariables = envVariables.clone()
