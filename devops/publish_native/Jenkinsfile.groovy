@@ -97,7 +97,7 @@ node('lampego-web-1') {
     stage('Run common API') {
         dockerHelper.stopContainer(mainContainer)
         
-        mainContainer.tag = 'offlogs-api';
+        mainContainer.tagName = 'offlogs-api';
         mainContainer.envVariables = envVariables.clone()
         mainContainer.envVariables.put('PROJECT_DIR', 'OffLogs.Api')
         dockerHelper.runContainer(mainContainer)
@@ -106,7 +106,7 @@ node('lampego-web-1') {
     stage('Run frontend API') {
         dockerHelper.stopContainer(mainContainer)
         
-        mainContainer.tag = 'offlogs-api-frontend';
+        mainContainer.tagName = 'offlogs-api-frontend';
         mainContainer.envVariables = envVariables.clone()
         mainContainer.envVariables.put('PROJECT_DIR', 'OffLogs.Api.Frontend')
         dockerHelper.runContainer(mainContainer)
@@ -115,7 +115,7 @@ node('lampego-web-1') {
     stage('Run worker') {
         dockerHelper.stopContainer(mainContainer)
         
-        mainContainer.tag = 'offlogs-worker';
+        mainContainer.tagName = 'offlogs-worker';
         mainContainer.envVariables = envVariables.clone()
         mainContainer.envVariables.put('PROJECT_DIR', 'OffLogs.WorkerService')
         dockerHelper.runContainer(mainContainer)
