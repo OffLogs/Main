@@ -38,11 +38,11 @@ node('lampego-web-1') {
         checkout scm
     }
 
-    stage('Build and push main image to the registry') {
+    stage('Build main image') {
         dockerHelper.buildContainer(mainContainer)
     }
 
-    stage('Build and push web image to the registry') {
+    stage('Build web image') {
         dockerHelper.buildContainer(webAppContainer)
     }
 
@@ -96,6 +96,7 @@ node('lampego-web-1') {
 
     stage('Run common API') {
         mainContainer.tagName = 'offlogs-api';
+        mainContainer.port = '6105:80';
         dockerHelper.stopContainer(mainContainer)
         
         mainContainer.envVariables = envVariables.clone()
@@ -105,6 +106,7 @@ node('lampego-web-1') {
 
     stage('Run frontend API') {
         mainContainer.tagName = 'offlogs-api-frontend';
+        mainContainer.port = '6106:80';
         dockerHelper.stopContainer(mainContainer)
         
         mainContainer.envVariables = envVariables.clone()
@@ -119,5 +121,11 @@ node('lampego-web-1') {
         mainContainer.envVariables = envVariables.clone()
         mainContainer.envVariables.put('PROJECT_DIR', 'OffLogs.WorkerService')
         dockerHelper.runContainer(mainContainer)
+    }
+
+    stage('Run web app') {
+        webAppContainer.port = '6107:80';
+        dockerHelper.stopContainer(webAppContainer)
+        dockerHelper.runContainer(webAppContainer)
     } 
 }
