@@ -25,6 +25,15 @@ public class Reducers
         };
     }
     
+    [ReducerMethod]
+    public static UserEmailsState ReduceSetIsLoadingAction(UserEmailsState state, SetIsLoadingAction action)
+    {
+        return state with
+        {
+            IsLoading = action.IsLoading
+        };
+    }
+    
     [ReducerMethod(typeof(AddEmailToAddListItemAction))]
     public static UserEmailsState ReduceAddApplicationToAddListItemAction(UserEmailsState state)
     {

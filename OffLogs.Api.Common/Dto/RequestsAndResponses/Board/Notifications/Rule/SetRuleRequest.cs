@@ -76,6 +76,7 @@ namespace OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule
                 LogicOperator = item.LogicOperator.ToString();
                 Period = item.Period;
                 Conditions = item.Conditions.Select(condition => new SetConditionRequest(condition)).ToList();
+                UserEmailIds = item.Emails.Select(item => item.Id).ToArray();
             }
         }
         

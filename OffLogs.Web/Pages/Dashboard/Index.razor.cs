@@ -9,7 +9,9 @@ namespace OffLogs.Web.Pages.Dashboard;
 public partial class Index
 {
     private readonly ICollection<MenuItem> _menuItems = new List<MenuItem>();
-    
+
+    private ICollection<long> items = new List<long>();
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
