@@ -313,7 +313,7 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select emails....
+        ///   Looks up a localized string similar to Additional emails.
         /// </summary>
         internal static string SelectUserEmails {
             get {

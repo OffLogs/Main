@@ -3,6 +3,7 @@
 
 @using OffLogs.Web.Resources
 @using OffLogs.Web.Shared.Components
+@using UserEmailsCheckbox = OffLogs.Web.Shared.Ui.Form.Checkboxes.UserEmailsCheckbox
 
 @layout Layout
 @inherits BaseComponent
@@ -11,9 +12,6 @@
     <h3 class="h5">@CommonResources.LogsStatistic</h3>
     
     <div class="d-flex flex-row">
-        
-        <UserEmailsCheckbox />
-
         <LogStatisticChart/>
     </div>
 </RadzenCard>

@@ -3,20 +3,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
-using NHibernate.Util;
 using OffLogs.Api.Common.Dto.Entities;
-using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Resources;
 using OffLogs.Web.Store.UserEmails;
-using Radzen.Blazor;
 
-namespace OffLogs.Web.Shared.Ui.Form.DropDowns;
-
-class TestModel
-{
-    public string Id { get; set; }
-    public string Email { get; set; }
-}
+namespace OffLogs.Web.Shared.Ui.Form.Checkboxes;
 
 public partial class UserEmailsCheckbox
 {
@@ -43,7 +34,7 @@ public partial class UserEmailsCheckbox
     public EventCallback<UserEmailDto[]> SelectedItemChanged { get; set; }
     
     [Parameter]
-    public string Placeholder { get; set; } = CommonResources.SelectUserEmails;
+    public string Label { get; set; } = CommonResources.SelectUserEmails;
     
     [Parameter]
     public string Class { get; set; }
