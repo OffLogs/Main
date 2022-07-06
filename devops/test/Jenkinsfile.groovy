@@ -1,4 +1,4 @@
-node('vizit-mainframe-testing-node') {
+node('testing-node') {
     properties([
         disableConcurrentBuilds(),
         gitLabConnection('gitlab_lampego'),

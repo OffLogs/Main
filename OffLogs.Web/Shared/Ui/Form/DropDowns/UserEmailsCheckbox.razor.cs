@@ -3,24 +3,32 @@ using System.Linq;
 using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
+using NHibernate.Util;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Resources;
 using OffLogs.Web.Store.UserEmails;
+using Radzen.Blazor;
 
 namespace OffLogs.Web.Shared.Ui.Form.DropDowns;
 
-public partial class UserEmailsDropDown
+class TestModel
+{
+    public string Id { get; set; }
+    public string Email { get; set; }
+}
+
+public partial class UserEmailsCheckbox
 {
     [Parameter]
-    public ICollection<long> Value
+    public IEnumerable<long> Value
     {
         get => _selectedIds.ToArray();
         set
         {
             if (value == null)
             {
-                _selectedIds.Clear();
+                _selectedIds = new long []{};
                 return;
             }
 
@@ -42,41 +50,35 @@ public partial class UserEmailsDropDown
     
     [Inject]
     private IState<UserEmailsState> State { get; set; }
-    
+
     private ICollection<UserEmailDto> _selectedItems;
 
-    private ICollection<long> _selectedIds = new List<long>();
+    private IEnumerable<long> _selectedIds = new long[] { };
 
-    IEnumerable<string> multipleValues;
-
-    private IEnumerable<UserEmailDto> _list2 = new List<UserEmailDto>()
-    {
-        new UserEmailDto() { Id = 1, Email = "test"}
-    };
-    
-    private ICollection<UserEmailDto> _list
-    {
-        get => State.Value.List.Where(item => item.IsVerified).ToList();
-    }
+    private ICollection<UserEmailDto> _list = new List<UserEmailDto>();
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        State.StateChanged += (sender, args) =>
+        {
+            _list.Clear();
+            var newList = State.Value.List
+                .Where(item => item.IsVerified)
+                .ToArray();
+            foreach (var item in newList)
+            {
+                _list.Add(item);
+            }
+            StateHasChanged();
+        };
         Dispatcher.Dispatch(new FetchListAction(true));
     }
-
-    private void OnValueChanged(ICollection<long>? selectedIds)
-    {
-        Debug.Log(selectedIds);
-        // _selectedItems = _list.Where(item => selectedIds.Contains(item.Id)).ToList();
-        // Debug.Log(selectedIds);
-        // SelectedItemChanged.InvokeAsync(_selectedItems.ToArray());
-        // ValueChanged.InvokeAsync(selectedIds.ToArray());
-    }
     
-    private void Callback(object value)
+    private void OnCheckboxChecked(IEnumerable<long> selectedIds)
     {
-        var str = value is IEnumerable<object> ? string.Join(", ", (IEnumerable<object>)value) : value;
-        Debug.Log(str);
+        _selectedItems = _list.Where(item => selectedIds.Contains(item.Id)).ToList();
+        SelectedItemChanged.InvokeAsync(_selectedItems.ToArray());
+        ValueChanged.InvokeAsync(selectedIds.ToArray());
     }
 }

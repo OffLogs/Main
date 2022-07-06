@@ -111,4 +111,7 @@
     <data name="SelectUserEmails" xml:space="preserve">
         <value>Select emails...</value>
     </data>
+    <data name="SelectAll" xml:space="preserve">
+        <value>Select all</value>
+    </data>
 </root>

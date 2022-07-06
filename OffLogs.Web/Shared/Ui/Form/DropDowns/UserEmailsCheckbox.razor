@@ -1,0 +1,26 @@
+﻿@using OffLogs.Api.Common.Dto.Entities
+@using Newtonsoft.Json
+@using OffLogs.Business.Common.Constants
+@using OffLogs.Web.Resources
+
+@inherits BaseComponent
+
+@if (State.Value.IsLoading)
+{
+    <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"/>
+}
+else
+{
+    <RadzenCheckBoxList
+        @bind-Value=@_selectedIds
+        TValue="long"
+        Data="@_list"
+        TextProperty="Email"
+        ValueProperty="Id"
+        Change="OnCheckboxChecked"
+    >
+        <Items>
+            <RadzenCheckBoxListItem Text="Static" Value="0"/>    
+        </Items>
+    </RadzenCheckBoxList>     
+}

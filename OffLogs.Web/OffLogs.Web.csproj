@@ -95,7 +95,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.6" PrivateAssets="all" />
         <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
         <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.6" />
-        <PackageReference Include="Radzen.Blazor" Version="3.18.16" />
+        <PackageReference Include="Radzen.Blazor" Version="3.19.2" />
         <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
     </ItemGroup>
 
@@ -108,6 +108,7 @@
     <ItemGroup>
       <Folder Include="Pages\Dashboard\Settings\" />
       <Folder Include="Shared\Ui\Form\AutoComplete\" />
+      <Folder Include="Shared\Ui\Form\Checkboxes" />
       <Folder Include="Store\Log\Reducers" />
     </ItemGroup>
 
