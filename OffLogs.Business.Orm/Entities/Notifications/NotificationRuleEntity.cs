@@ -101,9 +101,9 @@ namespace OffLogs.Business.Orm.Entities.Notifications
         [Set(
             Table = "notification_rule_emails",
             Lazy = CollectionLazy.True,
-            Cascade = "delete-orphan",
+            Cascade = "none",
             BatchSize = 20,
-            Inverse = true
+            Inverse = false
         )]
         [Key(
             Column = "notification_rule_id"
@@ -120,6 +120,11 @@ namespace OffLogs.Business.Orm.Entities.Notifications
         public virtual bool IsOwner(long userId)
         {
             return User.Id == userId;
+        }
+        
+        public virtual void AddEmail(UserEmailEntity email)
+        {
+            Emails.Add(email);
         }
     }
 }
