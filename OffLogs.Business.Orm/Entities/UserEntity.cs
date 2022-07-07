@@ -71,7 +71,6 @@ namespace OffLogs.Business.Orm.Entities
         public virtual ICollection<LogEntity> FavoriteLogs { get; set; } = new List<LogEntity>();
         
         [Bag(
-            Inverse = true,
             Lazy = CollectionLazy.Extra,
             Cascade = "all-delete-orphan"
         )]

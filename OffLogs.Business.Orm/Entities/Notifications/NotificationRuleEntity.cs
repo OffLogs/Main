@@ -102,7 +102,8 @@ namespace OffLogs.Business.Orm.Entities.Notifications
             Table = "notification_rule_emails",
             Lazy = CollectionLazy.True,
             Cascade = "delete-orphan",
-            BatchSize = 20
+            BatchSize = 20,
+            Inverse = true
         )]
         [Key(
             Column = "notification_rule_id"

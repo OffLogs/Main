@@ -14,6 +14,7 @@ using OffLogs.Business.Common.Constants.Notificatiions;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Entities.Notifications;
+using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Services.Entities.NotificationRule;
 using OffLogs.Business.Test.Extensions;
 using Xunit;
@@ -315,6 +316,54 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             var data = await response.GetJsonDataAsync<NotificationRuleDto>();
             Assert.Equal(1, data.Emails.Count);
             Assert.Equal(userEmail1.Id, data.Emails.First().Id);
+        }
+        
+        [Fact]
+        public async Task ShouldRemoveEmailsFromRule()
+        {
+            var actualRule = await CreateRuleAsync();
+            var emailFactory = DataFactory.UserEmailFactory();
+            var userEmail1 = await UserEmailService.AddAsync(_userModel.Original, emailFactory.Generate().Email);
+            var userEmail2 = await UserEmailService.AddAsync(_userModel.Original, emailFactory.Generate().Email);
+            actualRule.Emails.Add(userEmail1);
+            actualRule.Emails.Add(userEmail2);
+            
+            await CommitDbChanges();
+            
+            var expectedOperator = LogicOperatorType.Conjunction;
+            var expectedTitle = _ruleFactory.Generate().Title;
+
+            var conditions = new List<SetConditionRequest>()
+            {
+                new() { ConditionField = ConditionFieldType.LogLevel.ToString(), Value = "Information"},
+            };
+            
+            // Act
+            var response = await PostRequestAsync(Url, _userModel.ApiToken, new SetRuleRequest
+            {
+                Id = actualRule.Id,
+                Period = DefaultPeriod,
+                ApplicationId = _userModel.ApplicationId,
+                Type = NotificationType.Email.ToString(),
+                LogicOperator = expectedOperator.ToString(),
+                TemplateId = _expectedMessageTemplate.Id,
+                Conditions = conditions,
+                Title = expectedTitle,
+                UserEmailIds = Array.Empty<long>()
+            });
+            // Assert
+            response.EnsureSuccessStatusCode();
+            var data = await response.GetJsonDataAsync<NotificationRuleDto>();
+            Assert.Equal(0, data.Emails.Count);
+
+            // Emails should not be deleted from user
+            await CommitDbChanges();
+
+            var user1 = await QueryBuilder.FindByIdAsync<UserEntity>(_userModel.Id);
+            Assert.Equal(2, user1.Emails.Count);
+            
+            var rule = await QueryBuilder.FindByIdAsync<NotificationRuleEntity>(actualRule.Id);
+            Assert.Equal(0, rule.Emails.Count);
         }
         
         private async Task<NotificationRuleEntity> CreateRuleAsync(
