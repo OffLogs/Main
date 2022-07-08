@@ -12,7 +12,8 @@ namespace OffLogs.Business.Notifications.Core.Emails
 {
     class EmailFactory
     {
-        private ConcurrentDictionary<string, EmailTemplateModel> _cachedTemplates; // cached email templates
+        // cached email templates
+        private static readonly ConcurrentDictionary<string, EmailTemplateModel> _cachedTemplates = new();
 
         private string _layoutName = "_EmailLayout.htm"; // layout file name like "_EmailLayout.htm"
         private string _layoutTemplate; // cached content of the layout file
@@ -21,9 +22,6 @@ namespace OffLogs.Business.Notifications.Core.Emails
         {
             // load cached layout
             _layoutTemplate = LoadFile(_layoutName); // load this only once, on initialization
-
-            // init Cache
-            _cachedTemplates = new ConcurrentDictionary<string, EmailTemplateModel>();
         }
 
         public EmailTemplateModel GetEmailTemplate(string templateName)
