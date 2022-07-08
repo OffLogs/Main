@@ -21,7 +21,7 @@ namespace OffLogs.Business.Notifications.Senders.NotificationRule
         {
             var emailBuilder = _emailFactory.GetEmailBuilder("NotificationRuleNotification.htm");
             emailBuilder.Subject = commandContext.Subject;
-            emailBuilder.AddPlaceholder("body", commandContext.Body);
+            emailBuilder.AddPlaceholder("content", commandContext.Body);
             foreach (var to in commandContext.To)
             {
                 _emailSendingService.SendEmail(to, emailBuilder, null);    
