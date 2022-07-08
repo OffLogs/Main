@@ -47,7 +47,7 @@ node('lampego-web-1') {
     }
 
     stage('Set environment vars') {    
-        envVariables.put('Serilog__MinimumLevel_Default', 'Warning')
+        envVariables.put('Serilog__MinimumLevel_Default', 'Debug')
 
         // Kafka
         envVariables.put('Kafka__Servers', '10.10.0.2:29092,10.10.0.2:29093')
