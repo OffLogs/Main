@@ -48,7 +48,15 @@ namespace OffLogs.Business.Notifications.Services
             string bcc
         )
         {
-            emailBuilder.Build();
+            try
+            {
+                emailBuilder.Build();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+                return e.Message;
+            }
             return SendEmail(null, to, emailBuilder.Subject, emailBuilder.Body, null, bcc);
         }
 
@@ -76,7 +84,7 @@ namespace OffLogs.Business.Notifications.Services
             _logger.LogDebug($"Send email to {to} from {from} with subject {subject.MySubstring(0, 15)}");
             
             string res = string.Empty;
-            MailMessage message = new MailMessage();
+            var message = new MailMessage();
 
             message.From = string.IsNullOrWhiteSpace(from) ? _defaultFromAddress : new MailAddress(from);
             ParseEmails(message.ReplyToList, message.From?.Address);
