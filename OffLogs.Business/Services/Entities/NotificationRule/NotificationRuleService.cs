@@ -103,7 +103,7 @@ public class NotificationRuleService: INotificationRuleService
             rule.Emails.Clear();
             foreach (var userEmail in additionalEmails)
             {
-                rule.Emails.Add(userEmail);
+                rule.AddEmail(userEmail);
             }
         }
 

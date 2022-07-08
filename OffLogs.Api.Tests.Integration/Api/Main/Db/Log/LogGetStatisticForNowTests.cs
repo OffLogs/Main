@@ -30,6 +30,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Log
             await DataSeeder.CreateLogsAsync(application.Id, LogLevel.Warning, expectedCounter);
             await DataSeeder.CreateLogsAsync(application.Id, LogLevel.Fatal, expectedCounter);
             await DataSeeder.CreateLogsAsync(application.Id, LogLevel.Debug, expectedCounter);
+            await CommitDbChanges();
 
             var statisticList = await QueryBuilder.For<ICollection<LogStatisticForNowDto>>()
                 .WithAsync(new GetByApplicationOrUserCriteria(userModel.Id));

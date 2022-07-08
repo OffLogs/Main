@@ -325,8 +325,11 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             var emailFactory = DataFactory.UserEmailFactory();
             var userEmail1 = await UserEmailService.AddAsync(_userModel.Original, emailFactory.Generate().Email);
             var userEmail2 = await UserEmailService.AddAsync(_userModel.Original, emailFactory.Generate().Email);
-            actualRule.Emails.Add(userEmail1);
-            actualRule.Emails.Add(userEmail2);
+            
+            actualRule.AddEmail(userEmail1);
+            actualRule.AddEmail(userEmail2);
+            
+            await CommandBuilder.SaveAsync(actualRule);
             
             await CommitDbChanges();
             

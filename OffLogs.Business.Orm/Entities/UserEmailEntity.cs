@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using Domain.Abstractions;
 using NHibernate.Mapping.Attributes;
 using NHibernate.Type;
+using OffLogs.Business.Orm.Entities.Notifications;
 
 namespace OffLogs.Business.Orm.Entities
 {
@@ -46,6 +48,23 @@ namespace OffLogs.Business.Orm.Entities
             Cascade = "none"
         )]
         public virtual UserEntity User { get; set; }
+        
+        [Set(
+            Table = "notification_rule_emails",
+            Lazy = CollectionLazy.True,
+            Cascade = "none",
+            BatchSize = 20,
+            Inverse = false
+        )]
+        [Key(
+            Column = "user_email_id"
+        )]
+        [ManyToMany(
+            Unique = true,
+            ClassType = typeof(NotificationRuleEntity),
+            Column = "notification_rule_id"
+        )]
+        public virtual ICollection<NotificationRuleEntity> NotificationRules { get; set; } = new List<NotificationRuleEntity>();
         
         public virtual bool IsVerified => VerificationTime.HasValue;
 
