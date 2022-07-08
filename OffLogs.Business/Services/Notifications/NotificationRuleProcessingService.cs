@@ -56,17 +56,13 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
                 var dataByRule = await _notificationRuleService.GetDataForNotificationRule(rule);
                 if (dataByRule.LogCount > 0)
                 {
-                    var notificationContexts = new List<INotificationContext>();
                     if (rule.Type == NotificationType.Email)
                     {
-                        notificationContexts = notificationContexts.Concat(
-                            GetEmailNotifications(rule, dataByRule)
-                        ).ToList();
-                    }
-
-                    foreach (var context in notificationContexts)
-                    {
-                        await _producerService.ProduceNotificationMessageAsync(context);
+                        var notificationContexts = GetEmailNotifications(rule, dataByRule);
+                        foreach (var notificationContext in notificationContexts)
+                        {
+                            await _producerService.ProduceNotificationMessageAsync(notificationContext);
+                        }
                     }
                 }
 
@@ -121,7 +117,6 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
                 To = notificationReceivers.ToList()
             }    
         );
-
         return notificationContexts;
     }
 }
