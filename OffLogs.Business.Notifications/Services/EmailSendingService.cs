@@ -14,16 +14,19 @@ namespace OffLogs.Business.Notifications.Services
 
         private readonly MailAddress _defaultFromAddress;
         private readonly NetworkCredential _credentials;
-        private readonly ILogger<EmailSendingService> _Logger;
+        private readonly ILogger<EmailSendingService> _logger;
 
         private char[] Separators = ";".ToCharArray(); // for splitting lists of emails
 
-        public EmailSendingService(IConfiguration configuration, ILogger<EmailSendingService> Logger)
+        public EmailSendingService(
+            IConfiguration configuration, 
+            ILogger<EmailSendingService> logger
+        )
         {
             _smtpSettings = new SmtpSettings(configuration);
             _defaultFromAddress = new MailAddress(_smtpSettings.EmailFrom, _smtpSettings.UserNameFrom);
             _credentials = new NetworkCredential(_smtpSettings.UserName, _smtpSettings.Password);
-            _Logger = Logger;
+            _logger = logger;
         }
 
         private void ParseEmails(MailAddressCollection collection, string emails)
@@ -70,6 +73,8 @@ namespace OffLogs.Business.Notifications.Services
             string bcc
         )
         {
+            _logger.LogDebug($"Send email to {to} from {from} with subject {subject.MySubstring(0, 15)}");
+            
             string res = string.Empty;
             MailMessage message = new MailMessage();
 
@@ -107,7 +112,7 @@ namespace OffLogs.Business.Notifications.Services
             }
             catch (Exception e)
             {
-                _Logger.LogError(e.Message, e);
+                _logger.LogError(e.Message, e);
             }
         }
     }

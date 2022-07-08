@@ -63,6 +63,43 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Notifications
             Assert.False(actualRule.IsExecuting);
         }
         
+        [Fact]
+        public async Task ShouldProcessWaitingRulesWithSeveralEmails()
+        {
+            await RulesAsExecutingAsync();
+
+            var expectedCount = 2;
+            var expectedLogLevel = LogLevel.Information;
+            var expectedPeriod = 15 * 60; // 5 minutes
+            var expectedExecutionTime = DateTime.UtcNow.AddSeconds(-expectedPeriod - 5);
+
+            var expectedRule = await CreateRule();
+            
+            var emailFactory = DataFactory.UserEmailFactory();
+            var userEmail1 = await UserEmailService.AddAsync(expectedRule.User, emailFactory.Generate().Email);
+            var userEmail2 = await UserEmailService.AddAsync(expectedRule.User, emailFactory.Generate().Email);
+            expectedRule.AddEmail(userEmail1);
+            expectedRule.AddEmail(userEmail2);
+            
+            expectedRule.IsExecuting = false;
+            expectedRule.Period = expectedPeriod;
+            expectedRule.LastExecutionTime = expectedExecutionTime;
+            await CommandBuilder.SaveAsync(expectedRule);
+
+            await DataSeeder.CreateLogsAsync(
+                expectedRule.Application.Id,
+                expectedLogLevel,
+                expectedCount
+            );
+            await CommitDbChanges();
+            
+            await _processingService.FindAndProcessWaitingRules();
+            
+            var processedRecords = await KafkaNotificationsConsumerService.ProcessNotificationsAsync(false);
+            Assert.True(processedRecords > 0);
+            Assert.True(EmailSendingService.IsEmailSent);
+        }
+
         private async Task<NotificationRuleEntity> CreateRule(
             LogLevel logLevel = LogLevel.Information,
             ICollection<NotificationConditionEntity> conditions = null,
@@ -73,7 +110,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Notifications
             var user = await DataSeeder.CreateActivatedUser();
             
             var message = DataFactory.MessageTemplateFactory().Generate();
-            message.User = user;
+            message.User = user.Original;
             await CommandBuilder.SaveAsync(message);
 
             if (conditions == null)
@@ -89,7 +126,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Notifications
             }
             
             return await _notificationRuleService.SetRule(
-                user,
+                user.Original,
                 _ruleFactory.Generate().Title,
                 expectedPeriod,
                 logicOperatorType,
