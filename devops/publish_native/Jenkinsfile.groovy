@@ -130,3 +130,4 @@ node('lampego-web-1') {
         dockerHelper.runContainer(webAppContainer)
     } 
 }
+
