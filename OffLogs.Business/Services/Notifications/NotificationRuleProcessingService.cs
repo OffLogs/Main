@@ -53,19 +53,23 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
             rule = await _notificationRuleService.GetNextAndSetExecutingAsync(cancellationToken);
             if (rule != null)
             {
+                var notificationContexts = new List<INotificationContext>();
                 var dataByRule = await _notificationRuleService.GetDataForNotificationRule(rule);
                 if (dataByRule.LogCount > 0)
                 {
                     if (rule.Type == NotificationType.Email)
                     {
-                        var notificationContexts = GetEmailNotifications(rule, dataByRule);
-                        foreach (var notificationContext in notificationContexts)
-                        {
-                            await _producerService.ProduceNotificationMessageAsync(notificationContext);
-                        }
+                        notificationContexts = notificationContexts.Concat(
+                            GetEmailNotifications(rule, dataByRule)
+                        ).ToList();
                     }
                 }
 
+                foreach (var notificationContext in notificationContexts)
+                {
+                    await _producerService.ProduceNotificationMessageAsync(notificationContext);
+                }
+                
                 await _notificationRuleService.SetAsExecutedAsync(rule, cancellationToken);
                 await _sessionProvider.PerformCommitAsync(cancellationToken);
             }
@@ -108,15 +112,11 @@ public class NotificationRuleProcessingService: INotificationRuleProcessingServi
         var notificationReceivers = rule.Emails.Select(item => item.Email).ToList();
         notificationReceivers.Add(rule.User.Email);
         
-        var notificationContexts = new List<INotificationContext>();
-        notificationContexts.Add(
-            new EmailNotificationContext()
-            {
-                Subject = "OffLogs - " + PrepareText(rule, data, true),
-                Body = PrepareText(rule, data, false),
-                To = notificationReceivers.ToList()
-            }    
-        );
-        return notificationContexts;
+        return notificationReceivers.Select(receiversEmail => new EmailNotificationContext()
+        {
+            Subject = "OffLogs - " + PrepareText(rule, data, true),
+            Body = PrepareText(rule, data, false),
+            To = receiversEmail
+        }).ToList();
     }
 }
