@@ -9,7 +9,7 @@ namespace OffLogs.Business.Notifications.Senders.NotificationRule
 
         public string Body { get; set; }
         
-        public ICollection<string> To { get; set; } = new List<string>();
+        public string To { get; set; }
 
         // For Newtonsoft
         public EmailNotificationContext() { }

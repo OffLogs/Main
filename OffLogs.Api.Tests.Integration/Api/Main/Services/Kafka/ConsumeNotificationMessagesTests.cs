@@ -148,14 +148,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Kafka
             {
                 Body = expectBody,
                 Subject = expectSubject,
-                To = new List<string>()
-                {
-                    expectTo1,
-                    expectTo2
-                }
+                To = expectTo1
             };
 
             // Push 2 messages
+            await KafkaProducerService.ProduceNotificationMessageAsync(notificationContext);
+            notificationContext.To = expectTo2;
             await KafkaProducerService.ProduceNotificationMessageAsync(notificationContext);
             KafkaProducerService.Flush();
 

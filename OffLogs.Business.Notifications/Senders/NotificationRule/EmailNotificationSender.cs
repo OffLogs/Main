@@ -19,13 +19,10 @@ namespace OffLogs.Business.Notifications.Senders.NotificationRule
 
         public Task SendAsync(EmailNotificationContext commandContext, CancellationToken cancellationToken = default)
         {
-            foreach (var to in commandContext.To)
-            {
-                var emailBuilder = _emailFactory.GetEmailBuilder("NotificationRuleNotification.htm");
-                emailBuilder.Subject = commandContext.Subject;
-                emailBuilder.AddPlaceholder("content", commandContext.Body);
-                _emailSendingService.SendEmail(to, emailBuilder, null);    
-            }
+            var emailBuilder = _emailFactory.GetEmailBuilder("NotificationRuleNotification.htm");
+            emailBuilder.Subject = commandContext.Subject;
+            emailBuilder.AddPlaceholder("content", commandContext.Body);
+            _emailSendingService.SendEmail(commandContext.To, emailBuilder, null);
             return Task.CompletedTask;
         }
     }
