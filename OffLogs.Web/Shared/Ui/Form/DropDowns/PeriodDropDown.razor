@@ -4,7 +4,7 @@
 @using OffLogs.Web.Core.Helpers
 
 <RadzenDropDown
-    AllowClear="true"
+    AllowClear="@IsAllowClear"
     TValue="TimeSpan"
     Class="@("w-100 " + Class)"
     AllowFiltering="false"
@@ -15,10 +15,16 @@
     ValueChanged="OnItemSelected">
     
     <Template Context="value">
-        @if (value != null)
-        {
+        @{
             var period = (TimeSpan) value;
-            <text>@(period.ToReadableString())</text>
+            if (period == TimeSpan.Zero)
+            {
+                <text>@Placeholder</text>    
+            }
+            else
+            {
+                <text>@(period.ToReadableString())</text>
+            }
         }
     </Template>
 </RadzenDropDown>

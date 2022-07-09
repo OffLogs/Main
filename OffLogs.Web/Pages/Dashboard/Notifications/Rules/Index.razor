@@ -3,6 +3,7 @@
 
 @using OffLogs.Web.Resources
 @using OffLogs.Api.Common.Dto.Entities
+@using OffLogs.Business.Extensions
 
 @layout Layout
 @inherits BaseComponent
@@ -31,6 +32,11 @@
         <Columns>
             <RadzenDataGridColumn TItem="NotificationRuleDto" Property="Id" Title="ID"/>
             <RadzenDataGridColumn TItem="NotificationRuleDto" Property="Title" Title="Title"/>
+            <RadzenDataGridColumn TItem="NotificationRuleDto" Property="UpdateTime" Title="Period">
+                <Template Context="rule">
+                    @(TimeSpan.FromSeconds(rule.Period).ToReadableString())
+                </Template>
+            </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="NotificationRuleDto" Property="UpdateTime" Title="Update Time">
                 <Template Context="rule">
                     @rule.UpdateTime.ToFullDateTime()

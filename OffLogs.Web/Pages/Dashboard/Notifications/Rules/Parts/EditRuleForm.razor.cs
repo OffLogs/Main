@@ -5,6 +5,7 @@ using Fluxor;
 using Microsoft.AspNetCore.Components;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule;
 using OffLogs.Business.Common.Constants.Notificatiions;
+using OffLogs.Web.Core.Helpers;
 using OffLogs.Web.Resources;
 using OffLogs.Web.Store.Application;
 using OffLogs.Web.Store.Notification;
@@ -14,13 +15,17 @@ namespace OffLogs.Web.Pages.Dashboard.Notifications.Rules.Parts;
 
 public partial class EditRuleForm
 {
-    [Inject] private IState<NotificationRuleState> _state { get; set; }
+    [Inject]
+    private IState<NotificationRuleState> _state { get; set; }
 
-    [Inject] private IState<ApplicationsListState> _applicationState { get; set; }
+    [Inject]
+    private IState<ApplicationsListState> _applicationState { get; set; }
 
-    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
 
-    [Parameter] public long Id { get; set; }
+    [Parameter]
+    public long Id { get; set; }
 
     public SetRuleRequest Model = new() {Type = NotificationType.Email.ToString()};
     private bool _isLoading = false;
@@ -43,6 +48,15 @@ public partial class EditRuleForm
     {
         get => Model.ApplicationId ?? default;
         set => Model.ApplicationId = value == default ? null : value;
+    }
+
+    private TimeSpan _period
+    {
+        get => TimeSpan.FromSeconds(Model.Period);
+        set
+        {
+            Model.Period = (int)value.TotalSeconds;
+        }
     }
 
     private bool _isNew => Id == 0;

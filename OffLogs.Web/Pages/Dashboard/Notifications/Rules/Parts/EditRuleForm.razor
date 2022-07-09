@@ -52,9 +52,11 @@
                             <RadzenLabel
                                 Text="@NotificationResources.Rules_Period"
                                 class="mb-3"/>
-                            <RadzenNumeric
-                                @bind-Value="Model.Period"
-                                Class="w-100 mb-3 col"/>
+                            <PeriodDropDown
+                                @bind-Value="_period"
+                                IsAllowClear="false"
+                                Class="w-100 mb-3 col"
+                            />
                         </div>
                     </div>
 

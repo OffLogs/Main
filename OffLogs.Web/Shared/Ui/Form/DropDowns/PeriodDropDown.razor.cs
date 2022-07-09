@@ -25,6 +25,9 @@ public partial class PeriodDropDown
     [Parameter]
     public string Class { get; set; }
     
+    [Parameter]
+    public bool IsAllowClear { get; set; }
+    
     private TimeSpan _value;
 
     private List<TimeSpan> _list = new()
