@@ -196,6 +196,87 @@ namespace OffLogs.Business.Extensions.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0:0} day, .
+        /// </summary>
+        internal static string TimeSpan_Pattern_Days {
+            get {
+                return ResourceManager.GetString("TimeSpan_Pattern_Days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:0} hour, .
+        /// </summary>
+        internal static string TimeSpan_Pattern_Hours {
+            get {
+                return ResourceManager.GetString("TimeSpan_Pattern_Hours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:0} minute, .
+        /// </summary>
+        internal static string TimeSpan_Pattern_Minutes {
+            get {
+                return ResourceManager.GetString("TimeSpan_Pattern_Minutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:0} days, .
+        /// </summary>
+        internal static string TimeSpan_Pattern_Plural_Days {
+            get {
+                return ResourceManager.GetString("TimeSpan_Pattern_Plural_Days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:0} hours, .
+        /// </summary>
+        internal static string TimeSpan_Pattern_Plural_Hours {
+            get {
+                return ResourceManager.GetString("TimeSpan_Pattern_Plural_Hours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:0} minutes, .
+        /// </summary>
+        internal static string TimeSpan_Pattern_Plural_Minutes {
+            get {
+                return ResourceManager.GetString("TimeSpan_Pattern_Plural_Minutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:0} seconds, .
+        /// </summary>
+        internal static string TimeSpan_Pattern_Plural_Seconds {
+            get {
+                return ResourceManager.GetString("TimeSpan_Pattern_Plural_Seconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:0} second, .
+        /// </summary>
+        internal static string TimeSpan_Pattern_Seconds {
+            get {
+                return ResourceManager.GetString("TimeSpan_Pattern_Seconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 0 seconds.
+        /// </summary>
+        internal static string TimeSpan_ZeroSeconds {
+            get {
+                return ResourceManager.GetString("TimeSpan_ZeroSeconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  {0} year ago.
         /// </summary>
         internal static string YearAgo {
