@@ -10,14 +10,14 @@ namespace OffLogs.Web.Shared.Ui.Form.DropDowns;
 public partial class PeriodDropDown
 {
     [Parameter]
-    public int Value
+    public TimeSpan Value
     {
         get => _value;
         set => _value = value;
     }
     
     [Parameter]
-    public EventCallback<int> ValueChanged { get; set; }
+    public EventCallback<TimeSpan> ValueChanged { get; set; }
 
     [Parameter]
     public string Placeholder { get; set; } = CommonResources.SelectItem;
@@ -25,25 +25,25 @@ public partial class PeriodDropDown
     [Parameter]
     public string Class { get; set; }
     
-    private int _value;
+    private TimeSpan _value;
 
-    private Dictionary<int, string> _list = new()
+    private List<TimeSpan> _list = new()
     {
-        { 300, "5 minutes" },
-        { 900, "15 minutes" },
-        { 1_800, "30 minutes" },
-        { 3_600, "1 hour" },
-        { 10_800, "3 hours" },
-        { 21_600, "6 hours" },
-        { 43_200, "12 hours" },
-        { 86_400, "1 day" },
-        { 259_200, "3 days" },
-        { 604_800, "weekly" },
+        TimeSpan.FromMinutes(5),
+        TimeSpan.FromMinutes(15),
+        TimeSpan.FromMinutes(30),
+        TimeSpan.FromHours(1),
+        TimeSpan.FromHours(3),
+        TimeSpan.FromHours(6),
+        TimeSpan.FromHours(12),
+        TimeSpan.FromDays(1),
+        TimeSpan.FromDays(3),
+        TimeSpan.FromDays(7)
     };
     
-    private void OnItemSelected(KeyValuePair<int, string> item)
+    private void OnItemSelected(TimeSpan item)
     {
-        _value = item.Key;
+        _value = item;
         ValueChanged.InvokeAsync(_value);
         StateHasChanged();
     }
