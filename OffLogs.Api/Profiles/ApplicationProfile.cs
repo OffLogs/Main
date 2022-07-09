@@ -9,19 +9,7 @@ namespace OffLogs.Api.Profiles
     {
         public ApplicationProfile()
         {
-            CreateMap<ApplicationEntity, ApplicationDto>()
-                .ForPath(
-                    s => s.PublicKeyBase64,
-                    member => member.MapFrom(
-                        entity => Convert.ToBase64String(entity.PublicKey)
-                    )
-                )
-                .ForPath(
-                    s => s.EncryptedPrivateKeyBase64,
-                    member => member.MapFrom(
-                        entity => Convert.ToBase64String(entity.EncryptedPrivateKey)
-                    )
-                );
+            CreateMap<ApplicationEntity, ApplicationDto>();
             CreateMap<ApplicationEntity, ApplicationListItemDto>();
             CreateMap<OffLogs.Business.Orm.Dto.Entities.ApplicationStatisticDto, ApplicationStatisticDto>();
         }

@@ -17,20 +17,19 @@ public record ApplicationsListState
     
     public bool HasMoreItems { get; set; }
 
-    private ICollection<ApplicationListItemDto> _list { get; set; } = new List<ApplicationListItemDto>();
+    public ICollection<ApplicationListItemDto> List { get; set; } = new List<ApplicationListItemDto>();
 
-    public ICollection<ApplicationListItemDto> List
+    public ICollection<ApplicationListItemDto> SortedList
     {
         get
         {
-            var query = _list.AsQueryable();
+            var query = List.AsQueryable();
             if (HasItemToAdd)
             {
                 query = query.OrderBy(item => item.Id);
             }
             return query.ToList();
         }
-        set => _list = value;
     }
 
     public int SkipItems { get; set; } = 0;
@@ -42,7 +41,7 @@ public record ApplicationsListState
     
     public ApplicationListItemDto ItemToAdd
     {
-        get => _list.FirstOrDefault(item => item.Id == 0);
+        get => List.FirstOrDefault(item => item.Id == 0);
     }
 
     public ApplicationsListState() { }

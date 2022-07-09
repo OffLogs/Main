@@ -60,14 +60,6 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
             Assert.Equal(user1.Application.Id, responseData.Id);
             Assert.Equal(user1.Application.Name, responseData.Name);
             Assert.Equal(user1.Application.ApiToken, responseData.ApiToken);
-            Assert.Equal(
-                Convert.ToBase64String(user1.Application.PublicKey), 
-                responseData.PublicKeyBase64
-            );
-            Assert.Equal(
-                Convert.ToBase64String(user1.Application.EncryptedPrivateKey), 
-                responseData.EncryptedPrivateKeyBase64
-            );
         }
 
         [Theory]

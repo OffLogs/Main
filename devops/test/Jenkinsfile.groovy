@@ -90,10 +90,16 @@ node('testing-node') {
                 sh 'dotnet run --no-restore --no-build --project ./OffLogs.Migrations'
             }
 
-            runStage(Stage.RUN_TESTS) {
-                sh 'dotnet test --logger trx --results-directory /tmp/test ./OffLogs.Api.Tests.Unit'
-                sh 'dotnet test --logger trx --results-directory /tmp/test ./OffLogs.Business.Common.Tests.Unit'
-                sh 'dotnet test --logger trx --results-directory /tmp/test ./OffLogs.Api.Tests.Integration'
+            runStage(Stage.RUN_API_UNIT_TESTS) {
+                sh 'dotnet test --logger trx --verbosity=detailed --results-directory /tmp/test ./OffLogs.Api.Tests.Unit'
+            }
+            
+            runStage(Stage.RUN_BUSINESS_LOGIC_UNIT_TESTS) {
+                sh 'dotnet test --logger trx --verbosity=detailed --results-directory /tmp/test ./OffLogs.Business.Common.Tests.Unit'
+            }
+                        
+            runStage(Stage.RUN_INTEGRATION_TESTS) {
+                sh 'dotnet test --logger trx --verbosity=detailed --results-directory /tmp/test ./OffLogs.Api.Tests.Integration'
             }
         }
     } as Closure<String>))
@@ -108,7 +114,9 @@ enum Stage {
     INIT_KAFKA('Init Kafka'),
     INIT_DB('Init DB'),
     RUN_MIGRATIONS('Run migrations'),
-    RUN_TESTS('Run tests'),
+    RUN_API_UNIT_TESTS('Run API unit tests'),
+    RUN_BUSINESS_LOGIC_UNIT_TESTS('Run Business logic unit tests'),
+    RUN_INTEGRATION_TESTS('Run integration tests'),
 
 //    SAVE_ARTIFACTS('Save artifacts'),
 

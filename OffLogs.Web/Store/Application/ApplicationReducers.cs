@@ -24,7 +24,7 @@ public class ApplicationReducers
         var newState = state.JsonClone<ApplicationsListState>();
         newState.IsLoading = false;
         newState.SkipItems = 0;
-        newState.List.Clear();
+        newState.SortedList.Clear();
         return newState;
     }
     
@@ -44,7 +44,7 @@ public class ApplicationReducers
     public static ApplicationsListState ReduceRemoveApplicationFromListAction(ApplicationsListState state, RemoveApplicationFromListAction action)
     {
         var newState = state.JsonClone<ApplicationsListState>();
-        newState.List = state.List.Where(
+        newState.List = state.SortedList.Where(
             i => i.Id != action.Id
         ).ToList();
         return newState;
@@ -53,22 +53,21 @@ public class ApplicationReducers
     [ReducerMethod]
     public static ApplicationsListState ReduceAddApplicationListItemAction(ApplicationsListState state, AddApplicationListItemAction action)
     {
-        var newState = state with {};
-        newState.List.Add(new ApplicationListItemDto
+        state.List.Add(new ApplicationListItemDto
         {
             Id = action.Item.Id,
             CreateTime = action.Item.CreateTime,
             Name = action.Item.Name,
             UserId = action.Item.UserId
         });
-        return newState;
+        return state with {};
     }
 
     [ReducerMethod]
     public static ApplicationsListState ReduceUpdateApplicationActionAction(ApplicationsListState state, UpdateApplicationAction action)
     {
         var newState = state with { };
-        foreach (var app in newState.List)
+        foreach (var app in newState.SortedList)
         {
             if (app.Id == action.Application.Id)
             {
@@ -83,7 +82,7 @@ public class ApplicationReducers
     [ReducerMethod(typeof(AddApplicationToAddListItemAction))]
     public static ApplicationsListState ReduceAddApplicationToAddListItemAction(ApplicationsListState state)
     {
-        var newList = state.List.ToList();
+        var newList = state.SortedList.ToList();
         newList.Add(new ApplicationListItemDto()
         {
             Id = 0
