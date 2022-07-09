@@ -91,15 +91,15 @@ node('testing-node') {
             }
 
             runStage(Stage.RUN_API_UNIT_TESTS) {
-                sh 'dotnet test --logger "trx;console;verbosity=detailed" --results-directory /tmp/test ./OffLogs.Api.Tests.Unit'
+                sh 'dotnet test --logger trx --verbosity=detailed --results-directory /tmp/test ./OffLogs.Api.Tests.Unit'
             }
             
             runStage(Stage.RUN_BUSINESS_LOGIC_UNIT_TESTS) {
-                sh 'dotnet test --logger "trx;console;verbosity=detailed" --results-directory /tmp/test ./OffLogs.Business.Common.Tests.Unit'
+                sh 'dotnet test --logger trx --verbosity=detailed --results-directory /tmp/test ./OffLogs.Business.Common.Tests.Unit'
             }
                         
             runStage(Stage.RUN_INTEGRATION_TESTS) {
-                sh 'dotnet test --logger "trx;console;verbosity=detailed" --results-directory /tmp/test ./OffLogs.Api.Tests.Integration'
+                sh 'dotnet test --logger trx --verbosity=detailed --results-directory /tmp/test ./OffLogs.Api.Tests.Integration'
             }
         }
     } as Closure<String>))
