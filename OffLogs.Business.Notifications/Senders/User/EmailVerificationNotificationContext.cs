@@ -21,7 +21,7 @@ namespace OffLogs.Business.Notifications.Senders.User
         {
             ToAddress = toAddress;
             FrontendUrl = frontendUrl;
-            VerificationToken = verificationToken;
+            VerificationToken = WebUtility.UrlEncode(verificationToken);
             VerificationUrl = $"{FrontendUrl}/email/verification/" + HttpUtility.UrlPathEncode(VerificationToken);
         }
     }
