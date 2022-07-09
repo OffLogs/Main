@@ -39,8 +39,6 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
             var responseData = await response.GetJsonDataAsync<ApplicationDto>();
             Assert.True(responseData.Id > 0);
             Assert.NotEmpty(responseData.Name);
-            Assert.NotEmpty(responseData.PublicKeyBase64);
-            Assert.NotEmpty(responseData.EncryptedPrivateKeyBase64);
             Assert.Equal(user1.Id, responseData.UserId);
         }
     }
