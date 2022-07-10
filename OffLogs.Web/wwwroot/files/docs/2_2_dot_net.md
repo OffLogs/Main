@@ -1,16 +1,16 @@
 ﻿## .Net Client
 
-Для того что бы упростить отправку информации в OffLogs вы можете использовать уже готовую .Net
-библиотеку которая предоставляет для этого удобный наборе методов.
+In order to simplify sending information to OffLogs, you can use ready-made .Net
+a library that provides a convenient set of methods for this.
 
-### Установка
+### Installation
 
 #### NuGet package manager:
 ```bash
 Install-Package OffLogs.Client
 ```
 
-### Использование
+### Usage
 
 ```c#
 using OffLogs.Client;
@@ -36,7 +36,5 @@ namespace TestClient
 }
 ```
 
-> Используете .Net Core? Посмотрите другую библиотеку [тут](/documentation/common/2_4_serilog_extension)
-> которая адаптирована для этой платформы 
-> 
-> Looking for .NET Core? We have a quickstart for that too!
+> Looking for .Net Core? Check out another library [here](/documentation/common/2_4_serilog_extension)
+> which is adapted for this platform

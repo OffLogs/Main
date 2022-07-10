@@ -1,8 +1,8 @@
 ﻿## .Net Core Client
 
-Мы рекомендуем использовать это расширение если вы используете .Net Core.
+We recommend using this extension if you are using .Net Core.
 
-### Установка
+### Installation
 
 #### NuGet package manager
 ```bash
@@ -10,9 +10,9 @@ Install-Package OffLogs.Client
 Install-Package OffLogs.Client.AspNetCore
 ```
 
-### Использование
+### Usage
 
-#### 1. В файле Program.cs добавьте инициализацию нового логера
+#### 1. In the Program.cs file, add the initialization of the new logger
 
 ```c#
 using Microsoft.AspNetCore.Hosting;
@@ -45,7 +45,7 @@ namespace TestNetCoreClient
 ```
 
 
-#### 2. Добавьте необходимую конфигурацию библиотеки в appsettings.json
+#### 2. Add required library configuration to appsettings.json
 
 ```json
 {
@@ -56,18 +56,17 @@ namespace TestNetCoreClient
 }
 ```
 
-> MinLogLevel 
-> 
-> Этот конфигурационный параметр отвечает за то данные каких
-> логов будут отправлены в OffLogs.
-> 
-> Может содержать следующие значения:
+> MinLogLevel
+>
+> This configuration parameter controls which log data will be sent to OffLogs.
+>
+> May contain the following values:
 > - Trace
 > - Debug
 > - Information
 > - Warning
 > - Error
 > - Critical
-> 
-> Это означает, что если **MinLogLevel** будет содержать значение **Information** тогда информация
-> о логах с типом **Trace** и **Debug** отправлены не будут
+>
+> This means that if **MinLogLevel** contains the value **Information** 
+> then information about logs with type **Trace** and **Debug** will not be sent
