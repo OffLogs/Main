@@ -1,11 +1,11 @@
 ﻿## Common Info
-OffLogs разработан для того что бы упростить процесс отслеживания работоспособности приложений.
-Наш проект дает возможность агрегировать все логи в одном месте, удобно просматривать их и гибко 
-настроить нотификации для тех или иных условий.
-В дополнение, мы думаем и о безопасности и о том, что бы вы были уверены. OffLogs будет
-шифровать всю информацию. Только владелец секретного ключа сгенерируемого при регистрации 
-сможет ее расшифровать
+OffLogs is designed to simplify the process of tracking information about the stability of applications.
+Our project makes it possible to aggregate all logs in one place, conveniently and flexibly view them
+configure notifications for certain conditions.
+In addition, we think about safety and that you would be confident. OffLogs will be
+encrypt all information. Only the owner of the secret key generated during registration
+will be able to decipher it.
 
 ## General Usage
 
-Эти документы помогут вам взаимодействовать с REST API
+This documentation will help you use the REST API to send logs

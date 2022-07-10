@@ -15,8 +15,6 @@ public class MarkdownService: IMarkdownService
             {
                 _pipeline = new MarkdownPipelineBuilder()
                     .UseAdvancedExtensions()
-                    .UseGridTables()
-                    .UsePipeTables()
                     .UseColorCode()
                     .Build();
             }
