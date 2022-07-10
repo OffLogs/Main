@@ -1,12 +1,12 @@
 ﻿## Applications
 
-### Общая информация
+### General information
 
-OffLogs сохраняет всю полученную информацию в рамках приложений(Applications). Это означает,
-что перед отправкой информайции необходимо создать приложение в панели администрирования
+OffLogs saves all received information within Applications. It means,
+that before sending information, you need to create an application in the administration panel
 
-### Как это работает?
+### How it works?
 
-1. В [панели администрирования](/dashboard/applications) вам необходимо создать приложение.
-2. Для каждого приложения создается **Token** который используется при отправке информации(логов) по адресу https://api.offlogs.com
-3. После того как информация была отправлены вашей системой вы сможете просмотреть ее в [панели администрирования](/dashboard/logs)
+1. In [admin panel](/dashboard/applications) you need to create an application.
+2. For each application, a **Token** is created, which is used when sending information (logs) to the API located at https://api.offlogs.com
+3. After the information has been sent by your system, you can view it in the [dashboard](/dashboard/logs)

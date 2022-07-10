@@ -1,13 +1,13 @@
-﻿## Расширение для Serilog
+﻿## Serilog Extension
 
-Если в своем проекте вы используете Serilog, 
-тогда вы можете добавить Sink от OffLogs.
-Это расширение использует OffLogs.Client для отправки информации в OffLogsApi, 
-а так же поддерживает некоторые дополнительные опции
+If you are using Serilog in your project,
+then you can add Sink from OffLogs.
+This extension uses OffLogs.Client to send information to OffLogsApi,
+and also supports some additional options
 
-### Установка
+### Installation
 
-Установить его вы можете из NuGet:
+You can install it from NuGet:
 
 ```bash
 Install-Package Newtonsoft.Json
@@ -15,15 +15,15 @@ Install-Package OffLogs.Client
 Install-Package Serilog.Sinks.OffLogs
 ```
 
-### Настройка
+### Configuring
 
-> Процесс установки Serilog можно изучить на
-> [официальном сайте](https://serilog.net/)
+> See the Serilog installation process at
+> [official website](https://serilog.net/)
 > 
-> В текущем примере показано как настроить клиент OffLogs для 
+> The current example shows how to configure the OffLogs client for
 > [Serilog.AspNetCore](https://github.com/serilog/serilog-aspnetcore).
 
-Ниже приведен пример кода который включает возможности клиента OffLogs для Serilog:
+The following code example includes the capabilities of the OffLogs client for Serilog:
 
 ```c#
 builder.Host.UseSerilog((context, loggerConfiguration) =>
@@ -32,8 +32,8 @@ builder.Host.UseSerilog((context, loggerConfiguration) =>
 });
 ```
 
-> Тестовый проект вы можете скачать и опробовать из нашего репозитория на
+> You can download and test the test project from our repository on
 > [GitLab](https://gitlab.com/offlogs-public/client-dotnet/-/tree/dev/Serilog.Sinks.OffLogs.Example)
 
-> Информацию о том как можно получить API токен
-> можно прочитать [тут](/documentation/common/1_3_applications)
+> With information on how to get an API token
+> can be found [here](/documentation/common/1_3_applications)

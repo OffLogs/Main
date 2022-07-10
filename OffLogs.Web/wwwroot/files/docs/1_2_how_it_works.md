@@ -2,28 +2,25 @@
 
 ### Quick info
 
-1. Ваш интернет сайт(или сервис) генерирует исключение или логи для отладки приложения
-2. Эти логи с помощью клиента OffLogs(или вашего клиента) отправляются на https://api.offlogs.com
-3. OffLogs шифрует всю поступившую информацию
-4. Теперь перейдя на https://offlogs.com/dashboard вы можете просмотреть в удобном интерфейсе все поступившие логи
+1. Your website (or service) generates logs or debug information
+2. These logs, using the OffLogs client (or your client), must be sent to the API at https://api.offlogs.com
+3. OffLogs encrypts all incoming information
+4. Now by going to https://offlogs.com/dashboard you can view all received logs in a convenient interface
 
 ### Data encryption
 
-Ваши сервисы могут отправлять информацию для которой требуется повышенные требования к безопасности, 
-поэтому OffLogs шифрует всю полученную информацию.
+Your services may send information that requires increased security requirements,
+therefore OffLogs encrypts all received information.
 
-#### Как это происходит?
-1. После регистрации вы получаете файл с приватным и публичным ключем. Приватный ключ находится только у вас.
+#### Detailed information
+1. After registration, you will receive a file with a private and public key. The private key is only with you.
 
-> Внимание! Если этот файл будет утерян тогда вы не сможете получить доступ к аккаунту и вашим данным.
-> Мы не храним у себя ключи которые позволяют расшифровать эту информацию
+> Attention! If this file is lost then you will not be able to access your account and your data.
+> We store data and keys only in **encrypted** form and this information can only be **decrypted using your private key**.
+> This means that if you lose the key, **you will not be able to access your account**.
 
-2. Мы сохраняем у себя публичный ключ который позволяет зашифровать информацию, 
-но не позволяет ее дешифровать.
+2. We store a public key that allows you to encrypt information, but does not allow you to decrypt it.
 
-3. После того как OffLogs получит информацию(логи) от ваших сервисов, он сразу же зашифрует ее
+3. After OffLogs receives information from your services, it will immediately encrypt it
 
-4. Теперь в панели управления OffLogs будет производить дешифровку инфорации в процессе просмотра логов
-
-Что все это означает? Это означает то, что мы не имеем доступа к вашей **расшифрованной** информации.
-При всем желании мы не сможем этого сделать не получив ваш файл с ключами(pem файл) полученный после регистрации.
+4. Now in the control panel OffLogs will decrypt information while viewing logs

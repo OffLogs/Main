@@ -4,7 +4,7 @@
 Если вы не используете клиенты OffLogs, в этом случае, вы можете создать свой клиент который будет
 отправлять информацию на https:://api.offlogs.com
 
-### Пример запроса
+### HTTP request example
 
 > URL: **https://api.offlogs.com/log/add**
 >
@@ -14,22 +14,23 @@
 >
 > Authorization: **Bearer < Application API Token >**
 
-> Как получить Application API Token вы можете прочитать [в этом разделе](/documentation/common/1_3_applications).
-> Для тестовых целей вы можете использовать токет:
-> 
-> `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zeXN0ZW0iOiJBcHBsaWNhdGlvbiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiMjYiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9yc2EiOiJNSUlCSWpBTkJna3Foa2lHOXcwQkFRRUZBQU9DQVE4QU1JSUJDZ0tDQVFFQXhGMktaMWNoTUVDQUx2WTZLdkpFKzdkOW9oaFFCam9zdmVRRDhCTTJvVGJtM3h6NWxLaE0rZjJZSk9zSEI1QTduV0IzWlhaM3RQS2RleitGOHYyd2RoWEhuZ25VU1lwNG9DdFZmMmZ3T2RWdXRnbkcybXIrUmpQNTc2Q1llSVMrQlBuQVFwSEJmNTJJZDJienVyTU9PbFF1VERnRVBDcWdrZDkralZVNmZtbWZGQWNMSGw2TUNqTWNSLzh5YW9oRmtQRjhkVFJVWC9HTlZJSDBlMUZtNkRnSzNwL3ptRE5YZ0hMT0M5bGNXZ09oaVhvRWN6ZUI5NmNhdU9GOG54cGJwNVJ4YjZtMjVsQUFPWGlOdXJuUFVrVjA0MDlHZ05KOTdXTGlub2xrTitMMzNKZlBYVDNhamdTN3lRZ01CMkpVem9pZkdxME5ZQ1RSOWFzL0JpQ1JUd0lEQVFBQiIsImlzcyI6Ik9mZkxvZ3MgQXBwbGljYXRpb24gQVBJIiwiYXVkIjoiT2ZmTG9ncyBBcHBsaWNhdGlvbiBBUEkifQ.MACdClRtkUS4rTcakJ_u3mjRFom--ESYjti01Ol78Pk`
+> You can read about how to get the Application API Token [in this section](/documentation/common/1_3_applications).
+
+### For test purposes, you can use the token below:
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zeXN0ZW0iOiJBcHBsaWNhdGlvbiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiMjYiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9yc2EiOiJNSUlCSWpBTkJna3Foa2lHOXcwQkFRRUZBQU9DQVE4QU1JSUJDZ0tDQVFFQXhGMktaMWNoTUVDQUx2WTZLdkpFKzdkOW9oaFFCam9zdmVRRDhCTTJvVGJtM3h6NWxLaE0rZjJZSk9zSEI1QTduV0IzWlhaM3RQS2RleitGOHYyd2RoWEhuZ25VU1lwNG9DdFZmMmZ3T2RWdXRnbkcybXIrUmpQNTc2Q1llSVMrQlBuQVFwSEJmNTJJZDJienVyTU9PbFF1VERnRVBDcWdrZDkralZVNmZtbWZGQWNMSGw2TUNqTWNSLzh5YW9oRmtQRjhkVFJVWC9HTlZJSDBlMUZtNkRnSzNwL3ptRE5YZ0hMT0M5bGNXZ09oaVhvRWN6ZUI5NmNhdU9GOG54cGJwNVJ4YjZtMjVsQUFPWGlOdXJuUFVrVjA0MDlHZ05KOTdXTGlub2xrTitMMzNKZlBYVDNhamdTN3lRZ01CMkpVem9pZkdxME5ZQ1RSOWFzL0JpQ1JUd0lEQVFBQiIsImlzcyI6Ik9mZkxvZ3MgQXBwbGljYXRpb24gQVBJIiwiYXVkIjoiT2ZmTG9ncyBBcHBsaWNhdGlvbiBBUEkifQ.MACdClRtkUS4rTcakJ_u3mjRFom--ESYjti01Ol78Pk
+```
+
+>
+> Attention! You can only use this token to test an HTTP request and send test information.
+> You will not be able to view the sent information in OffLogs, 
+> for this you need to register and create an application with a new token
 >
 
-> 
-> Внимание! Этот токен вы можете использовать только для тестирования запроса и отправки информации.
-> Просмотреть отправленную информации в OffLogs вы не сможете, для этого необходимо зарегистрироваться
-> и создать приложение с новым токеном
-> 
+#### Request body example
 
-#### Пример тела запроса
-
-В этом примере используется только 2 лога типа Information и Error.
-Конечно же, вы можете предать в одном запросе столько сколько вам необходимо.
+In this example, only 2 logs of type Information and Error are used.
+But you can send logs of different types in one request.
 
 ```json
 {
@@ -53,37 +54,33 @@
 }
 ```
 
-### Параметры
+### Parameter List
 
 > #### logs
 > Тип: array
-> 
-> Массив обьектов содержащих информацию о логах.
-> 
-> Максимальное количество элементов которое может содержаться
-> в массиве: **99**
+>
+> An array of objects containing debug information.
+>
+> The maximum number of elements that can be contained in an array: **99**
 
 > #### Level
-> Тип: enum
-> 
-> Определяет уровень серьезности логируемой информации
-> За дополнительной информацией читайте [тут](/documentation/message_resource/3_1_log_level).
-> 
+> Тип: Enum
+>
 > Defines logging severity levels.
-> For more information, See details [here](/documentation/message_resource/3_1_log_level).
+> You can find the list of possible values [here](/documentation/message_resource/3_1_log_level).
 
 > #### Timestamp
 > Тип: DateTime<ISO 8601>
-> 
-> Время создания или отправки логируемой информации
+>
+> Time of creation or sending of logged information
 
 > #### Properties
 > Тип: Object<string, object>
-> 
-> Параметр должен содержать пары ключ-значение с дополнительной информацией, параметрами.
-> Вы можете передавать любые значимые для вас дополнительные данные
+>
+> The parameter must contain key-value pairs with additional information, parameters.
+> You can transfer any data you need
 
 > #### Traces
-> Тип: Array<string>
+> Тип: Array< string >
 >
-> Используется для паредачи информации о стеке выполнения.
+> Used to pass information about the execution stack.

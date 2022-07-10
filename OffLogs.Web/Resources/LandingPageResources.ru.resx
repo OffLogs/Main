@@ -21,4 +21,91 @@
 хранится на наших серверах в зашифрованном виде, и только вы имеете возможность получить и просмотреть
 ее в расшифрованном виде.</value>
     </data>
+    <data name="Main_HowItWorks_Desc" xml:space="preserve">
+        <value>
+Например. Один из случаев когда OffLogs может вам помочь:
+
+1. Предположим, у вас есть один или несколько сайтов. Эти сайты расположены на различных серверах
+2. Вы используя один из наших клиентов или создаете свой логгер для отправки логов в наше API.
+   (Об использовании нашего API вы можете прочитать [тут](/documentation/api/2_1_rest_api))
+3. Ваши сайты или сервисы, в процессе работы, будут генерировать отладочную информацию которая будет получена и зашифрована нашим сервисом.
+4. Все :) Теперь вы можете просмотреть всю отладочную информацию с ваших ресурсов в [панели администрирования](/dashboard/main)
+5. А если вы настроите оповещения тогда, получите еще и оповещение если, к примеру, один из ваших ресурсов сгенерировал ошибку
+        </value>
+    </data>
+    <data name="Main_Features_Title" xml:space="preserve">
+        <value>Возможности OffLogs</value>
+    </data>
+    <data name="Main_Features_Desc" xml:space="preserve">
+        <value>
+ - Нет необходимости в ручном режиме отслеживать отладочную информацию от ваших ресурсов, 
+особенно если они расположены на различных серверах
+ - Гибкая система оповещения при получении той или иной отладочной информации
+ - Просмотр развернутой статистики
+ - Удобный просмотр и фильтрация логов и отладочной информации
+        </value>
+    </data>
+    <data name="Documentation_Title" xml:space="preserve">
+        <value>Документация</value>
+    </data>
+    <data name="Support_Title" xml:space="preserve">
+        <value>Нужна помощь?</value>
+    </data>
+    <data name="Support_Header" xml:space="preserve">
+        <value>
+            По вопросам, касающимся самого программного обеспечения, 
+            есть несколько способов получить помощь.
+            
+            Выберите один из следующих вариантов:
+        </value>
+    </data>
+    <data name="Support_Title_Documentation" xml:space="preserve">
+        <value>Wiki</value>
+    </data>
+    <data name="Support_Desc_Documentation" xml:space="preserve">
+        <value>
+Получить дополнительную информацию по интеграции и работе с OffLogs поможет наша [Wiki](/documentation/common/1_1_common).
+        </value>
+    </data>
+    <data name="Support_Title_BugTracking" xml:space="preserve">
+        <value>Нашли ошибку?</value>
+    </data>
+    <data name="Support_Desc_BugTracking" xml:space="preserve">
+        <value>
+Если вы обнаружили какую-либо ошибку, проверьте или добавьте ее в нашу [систему отслеживания ошибок] (https://gitlab.com/offlogs-public/main/-/issues)
+для уже зарегистрированных и обсуждаемых ошибок или запросов на интеграцию новых функций.
+        </value> 
+    </data>
+    <data name="Support_Title_Email" xml:space="preserve">
+        <value>Контактная информация</value>
+    </data>
+    <data name="Support_Desc_Email" xml:space="preserve">
+        <value>
+Если у вас есть какие-либо вопросы, отправьте нам электронное письмо по адресу **support@offlogs.com**
+        </value> 
+    </data>
+    <data name="Menu_Login" xml:space="preserve">
+        <value>Авторизация</value>
+    </data>
+    <data name="Menu_Dashboard" xml:space="preserve">
+        <value>Панель управления</value>
+    </data>
+    <data name="Menu_SignUp" xml:space="preserve">
+        <value>Регистрация</value>
+    </data>
+    <data name="Error_500" xml:space="preserve">
+        <value>Ошибка. Пожалуйста, обратитесь в поддержку :(</value>
+    </data>
+    <data name="Main_About" xml:space="preserve">
+        <value>О нас</value>
+    </data>
+    <data name="Main_HowItWorks_Title" xml:space="preserve">
+        <value>Как это работает?</value>
+    </data>
+    <data name="User_EmailSuccessfullyVerified" xml:space="preserve">
+        <value>Email адрес был успешно верифицирован!</value>
+    </data>
+    <data name="User_EmailVerification" xml:space="preserve">
+        <value>Верификация email адреса</value>
+    </data>
 </root>

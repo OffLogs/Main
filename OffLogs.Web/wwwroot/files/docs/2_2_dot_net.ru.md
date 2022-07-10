@@ -36,5 +36,4 @@ namespace TestClient
 }
 ```
 
-> Looking for .Net Core? Check out another library [here](/documentation/common/2_4_serilog_extension)
-> which is adapted for this platform
+> Looking for .Net Core? We have a quickstart for that [too!](/documentation/common/2_4_serilog_extension)

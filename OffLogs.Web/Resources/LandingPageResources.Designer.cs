@@ -88,7 +88,12 @@ namespace OffLogs.Web.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No data.
+        ///   Looks up a localized string similar to OffLogs is a service that allows you to aggregate debugging information (logs) in one place
+        ///from your services or sites, it is convenient to view it, as well as receive operational statistics on this information.
+        ///One of the important principles that we adhere to is safety.
+        ///Therefore, most of the information stored on our servers in encrypted form, and only you have the opportunity to receive and view
+        ///it in decrypted form.        
+        ///        .
         /// </summary>
         internal static string Main_Desc {
             get {
@@ -98,11 +103,11 @@ namespace OffLogs.Web.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to 
-        /// - Нет необходимости в ручном режиме отслеживать отладочную информацию от ваших ресурсов, 
-        ///особенно если они расположены на различных серверах
-        /// - Гибкая система оповещения при получении той или иной отладочной информации
-        /// - Просмотр развернутой статистики
-        /// - Удобный просмотр и фильтрация логов
+        /// - There is no need to manually monitor debug information from your resources,
+        ///especially if they are located on different servers
+        /// - Flexible notification system when receiving certain debugging information
+        /// - Viewing detailed statistics
+        /// - Convenient viewing and filtering of logs and debugging information
         ///        .
         /// </summary>
         internal static string Main_Features_Desc {
@@ -122,13 +127,13 @@ namespace OffLogs.Web.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to 
-        ///Наиболее частый случай когда OffLogs может вам помочь:
+        ///For example. One of the cases where OffLogs can help you:
         ///
-        ///1. Предположим, у вас есть один или несколько сайтов. Эти сайты расположены на различных серверах
-        ///2. Вы используя один из наших клиентов или создаете свой логгер для отправки логов в наше API.
-        ///   (Как это сделать можете прочитать [тут](/documentation/api/2_1_rest_api))
-        ///3. После чего ваши сайты, в процессе работы, будут генерировать отладочную информацию которая будет получена и зашифрована нашим сервисом.
-        ///4. Все :) Теперь вы можете просмотреть всю отл [rest of string was truncated]&quot;;.
+        ///1. Suppose you have one or more websites. These sites are located on different servers
+        ///2. You use one of our clients or create your own logger to send logs to our API.
+        ///   (You can read about using our API [here](/documentation/api/2_1_rest_api))
+        ///3. Your sites or services, in the course of work, will generate debugging information that will be received and encrypted by our service.
+        ///4. It&apos;s all :) Now you can view all debug information from your reso [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Main_HowItWorks_Desc {
             get {
@@ -217,7 +222,9 @@ namespace OffLogs.Web.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to 
-        ///            For issues concerning the software itself, there are several ways to get help on questions about OffLogs. Please choose from the following:
+        ///            For issues concerning the software itself, there are several ways to get help on questions about OffLogs.
+        ///            
+        ///            Please choose from the following:
         ///        .
         /// </summary>
         internal static string Support_Header {
