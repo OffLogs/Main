@@ -53,5 +53,6 @@
 }
 .w-markdown-block ::deep code {
   word-break: break-all;
+  padding: 3px;
 }
 /*# sourceMappingURL=Markdown.razor.css.map */

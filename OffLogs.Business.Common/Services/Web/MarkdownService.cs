@@ -1,4 +1,7 @@
-﻿using Markdig;
+﻿using System;
+using ColorCode;
+using ColorCode.Styling;
+using Markdig;
 using Markdown.ColorCode;
 
 namespace OffLogs.Business.Common.Services.Web;
@@ -15,7 +18,7 @@ public class MarkdownService: IMarkdownService
             {
                 _pipeline = new MarkdownPipelineBuilder()
                     .UseAdvancedExtensions()
-                    .UseColorCode()
+                    .UseColorCode(StyleDictionary.DefaultDark)
                     .Build();
             }
 
@@ -25,6 +28,6 @@ public class MarkdownService: IMarkdownService
 
     public string ToHtml(string markdown)
     {
-        return Markdig.Markdown.ToHtml($"{markdown}", _pipeline);
+        return Markdig.Markdown.ToHtml($"{markdown}", Pipeline);
     }
 }
