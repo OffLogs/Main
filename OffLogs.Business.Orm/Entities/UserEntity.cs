@@ -79,6 +79,15 @@ namespace OffLogs.Business.Orm.Entities
         [OneToMany(ClassType = typeof(UserEmailEntity))]
         public virtual ICollection<UserEmailEntity> Emails { get; set; } = new List<UserEmailEntity>();
         
+        [Bag(
+            Inverse = true,
+            Lazy = CollectionLazy.Extra,
+            Cascade = "all-delete-orphan"
+        )]
+        [Key(Column = "user_id")]
+        [OneToMany(ClassType = typeof(UserPaymentPackageEntity))]
+        public virtual ICollection<UserPaymentPackageEntity> PaymentPackages { get; set; } = new List<UserPaymentPackageEntity>();
+        
         public virtual bool IsVerified => VerificationTime.HasValue;
         
         public UserEntity() {}
