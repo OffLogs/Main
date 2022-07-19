@@ -5,7 +5,7 @@ using NHibernate.Mapping.Attributes;
 using NHibernate.Type;
 using OffLogs.Business.Common.Constants;
 
-namespace OffLogs.Business.Orm.Entities
+namespace OffLogs.Business.Orm.Entities.User
 {
     [Class(Table = "users")]
     public class UserEntity: IEntity

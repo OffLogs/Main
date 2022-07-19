@@ -6,6 +6,7 @@ using OffLogs.Business.Common.Extensions;
 using OffLogs.Business.Common.Security;
 using OffLogs.Business.Common.Utils;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Entities.User;
 using OffLogs.Business.Orm.Exceptions;
 using OffLogs.Business.Orm.Queries.Entities.User;
 using OffLogs.Business.Services.Entities.User;

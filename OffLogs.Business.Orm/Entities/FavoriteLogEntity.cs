@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Domain.Abstractions;
 using NHibernate.Mapping.Attributes;
+using OffLogs.Business.Orm.Entities.User;
 
 namespace OffLogs.Business.Orm.Entities
 {

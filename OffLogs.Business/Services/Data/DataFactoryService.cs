@@ -5,6 +5,7 @@ using OffLogs.Business.Common.Constants.Notificatiions;
 using OffLogs.Business.Common.Utils;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Entities.Notifications;
+using OffLogs.Business.Orm.Entities.User;
 
 namespace OffLogs.Business.Services.Data
 {

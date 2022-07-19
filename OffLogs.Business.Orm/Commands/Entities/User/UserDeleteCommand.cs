@@ -7,6 +7,7 @@ using Domain.Abstractions;
 using NHibernate.Linq;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Entities.User;
 using Persistence.Transactions.Behaviors;
 
 namespace OffLogs.Business.Orm.Commands.Entities.User

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OffLogs.Business.Common.Security;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Entities.User;
 
 namespace OffLogs.Api.Tests.Integration.Core.Models
 {

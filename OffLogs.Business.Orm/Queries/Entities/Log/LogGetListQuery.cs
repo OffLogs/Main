@@ -8,6 +8,7 @@ using NHibernate.Linq;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Orm.Dto;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Entities.User;
 using Persistence.Transactions.Behaviors;
 using ICriterion = Queries.Abstractions.ICriterion;
 

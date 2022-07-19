@@ -10,6 +10,7 @@ using OffLogs.Business.Common.Utils;
 using OffLogs.Business.Helpers;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Entities.User;
 using OffLogs.Business.Orm.Exceptions;
 using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Orm.Queries.Entities.User;

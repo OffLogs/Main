@@ -4,6 +4,7 @@ using OffLogs.Api.Tests.Integration.Core.Models;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Constants;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Entities.User;
 
 namespace OffLogs.Api.Tests.Integration.Core.Service
 {

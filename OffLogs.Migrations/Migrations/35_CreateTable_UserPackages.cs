@@ -21,12 +21,6 @@ namespace OffLogs.Migrations.Migrations
                 .WithColumn("id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("user_id").AsInt64().NotNullable()
                 .WithColumn("payment_package_type_id").AsInt64().NotNullable()
-                .WithColumn("restriction_max_api_requests").AsInt32().NotNullable()
-                .WithColumn("restriction_max_notification_rules").AsInt32().NotNullable()
-                .WithColumn("restriction_max_user_emails").AsInt32().NotNullable()
-                .WithColumn("restriction_min_notification_rule_timeout").AsInt32().NotNullable()
-                .WithColumn("restriction_logs_expiration_timeout").AsInt32().NotNullable()
-                .WithColumn("restriction_favorite_logs_expiration_timeout").AsInt32().NotNullable()
                 .WithColumn("expiration_date").AsCustom("date").NotNullable()
                 .WithColumn("create_time").AsCustom("timestamptz").NotNullable()
                 .WithColumn("update_time").AsCustom("timestamptz").NotNullable();

@@ -5,7 +5,7 @@ using NHibernate.Mapping.Attributes;
 using NHibernate.Type;
 using OffLogs.Business.Orm.Entities.Notifications;
 
-namespace OffLogs.Business.Orm.Entities
+namespace OffLogs.Business.Orm.Entities.User
 {
     [Class(Table = "user_emails")]
     public class UserEmailEntity: IEntity

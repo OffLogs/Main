@@ -10,6 +10,7 @@ using OffLogs.Business.Common.Security;
 using OffLogs.Business.Notifications.Senders;
 using OffLogs.Business.Notifications.Senders.User;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Entities.User;
 using OffLogs.Business.Orm.Queries.Entities.User;
 using OffLogs.Business.Services.Entities.User;
 using OffLogs.Business.Services.Kafka;

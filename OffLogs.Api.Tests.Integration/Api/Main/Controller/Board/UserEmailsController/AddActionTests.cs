@@ -7,6 +7,7 @@ using OffLogs.Business.Common.Exceptions.Api;
 using OffLogs.Business.Extensions;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Entities.User;
 using OffLogs.Business.Test.Extensions;
 using Xunit;
 

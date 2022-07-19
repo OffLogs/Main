@@ -5,6 +5,7 @@ using OffLogs.Api.Tests.Integration.Core.Models;
 using OffLogs.Business.Common.Utils;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Entities.User;
 using OffLogs.Business.Services.Data;
 using OffLogs.Business.Services.Entities.Application;
 using OffLogs.Business.Services.Entities.Log;

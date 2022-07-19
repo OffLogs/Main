@@ -10,6 +10,7 @@ using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Exceptions.Api;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Entities.User;
 using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Services.Api;
 using OffLogs.Business.Services.Entities.UserEmail;

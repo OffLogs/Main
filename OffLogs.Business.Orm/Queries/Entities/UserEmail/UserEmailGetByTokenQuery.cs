@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NHibernate.Linq;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Entities.User;
 using OffLogs.Business.Orm.Queries.Criterias;
 using Persistence.Transactions.Behaviors;
 
