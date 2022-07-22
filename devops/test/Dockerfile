@@ -10,7 +10,7 @@ RUN apt install -y apt-transport-https wget ca-certificates iputils-ping telnet 
 # Configure time
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ = "UTC"
-RUN apt-get install -y tzdata
+RUN apt-get install -y tzdata lsb-release
 
 # Fix error: The configured user limit (128) on the number of inotify instances has been reached
 #RUN echo "fs.inotify.max_user_watches=524288" >> /etc/sysctl.conf
