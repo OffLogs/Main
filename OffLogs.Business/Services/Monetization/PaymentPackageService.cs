@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using OffLogs.Business.Common.Constants.Monetization;
 using OffLogs.Business.Common.Models;
-using OffLogs.Business.Extensions;
 using OffLogs.Business.Orm.Entities.User;
 using Persistence.Transactions.Behaviors;
-using Queries.Abstractions;
 
 namespace OffLogs.Business.Services.Monetization;
 
