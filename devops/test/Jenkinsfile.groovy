@@ -27,6 +27,9 @@ node('testing-node') {
         'POSTGRES_PASSWORD': postresUserPassword,
         'POSTGRES_DATABASE': "template1",
 
+        // Redis
+        'Redis_Server': "localhost:6379"
+
         'ConnectionStrings__DefaultConnection': "User ID=postgres;Password=postgres;Host=localhost;Port=5432;Database=postgres;Pooling=true;Include Error Detail=true;Log Parameters=true;",
         'Kafka__Servers': "localhost:9094",
         'Hibernate__IsShowSql': "false"
