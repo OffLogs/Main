@@ -89,6 +89,12 @@ node('testing-node') {
                 echo 'Postgre SQL is started'
             }
 
+            runStage(Stage.INIT_REDIS) {
+                sh 'systemctl restart redis.service'
+                sh 'until nc -z localhost 6379; do sleep 1; done'
+                echo "Redis is started"
+            }
+
             runStage(Stage.RUN_MIGRATIONS) {
                 sh 'dotnet run --no-restore --no-build --project ./OffLogs.Migrations'
             }
@@ -116,6 +122,7 @@ enum Stage {
     INIT_ZOOKEEPER('Init Zookeeper'),
     INIT_KAFKA('Init Kafka'),
     INIT_DB('Init DB'),
+    INIT_REDIS('Init Redis'),
     RUN_MIGRATIONS('Run migrations'),
     RUN_API_UNIT_TESTS('Run API unit tests'),
     RUN_BUSINESS_LOGIC_UNIT_TESTS('Run Business logic unit tests'),
