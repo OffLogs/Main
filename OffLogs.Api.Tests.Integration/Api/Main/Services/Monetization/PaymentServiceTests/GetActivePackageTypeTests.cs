@@ -25,7 +25,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Monetization.PaymentSe
         public void ShouldReceiveBasicPlanIfPackageNotFound()
         {
             Assert.Empty(_user.PaymentPackages);
-            var activePackage = PaymentService.GetActivePackageType(_user);
+            var activePackage = PaymentPackageService.GetActivePackageType(_user);
             Assert.Equal(PaymentPackageType.Basic, activePackage);
         }
         
@@ -44,7 +44,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Monetization.PaymentSe
 
             var actualUser = await QueryBuilder.FindByIdAsync<UserEntity>(_user.Id);
             Assert.NotEmpty(actualUser.PaymentPackages);
-            var activePackage = PaymentService.GetActivePackageType(actualUser);
+            var activePackage = PaymentPackageService.GetActivePackageType(actualUser);
             Assert.Equal(PaymentPackageType.Pro, activePackage);
         }
         
@@ -63,7 +63,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Monetization.PaymentSe
 
             var actualUser = await QueryBuilder.FindByIdAsync<UserEntity>(_user.Id);
             Assert.NotEmpty(actualUser.PaymentPackages);
-            var activePackage = PaymentService.GetActivePackageType(actualUser);
+            var activePackage = PaymentPackageService.GetActivePackageType(actualUser);
             Assert.Equal(PaymentPackageType.Basic, activePackage);
         }
     }

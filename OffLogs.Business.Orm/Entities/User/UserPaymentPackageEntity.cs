@@ -3,6 +3,7 @@ using Domain.Abstractions;
 using NHibernate.Mapping.Attributes;
 using NHibernate.Type;
 using OffLogs.Business.Common.Constants.Monetization;
+using OffLogs.Business.Extensions;
 
 namespace OffLogs.Business.Orm.Entities.User
 {
@@ -38,6 +39,19 @@ namespace OffLogs.Business.Orm.Entities.User
         public virtual UserEntity User { get; set; }
         
         public virtual bool IsExpired => ExpirationDate < DateTime.UtcNow;
+
+        public virtual int LeftPaidDays
+        {
+            get
+            {
+                if (Type == PaymentPackageType.Basic || IsExpired)
+                {
+                    return 0;
+                }
+
+                return (ExpirationDate - DateTime.UtcNow.Date).Days;
+            }
+        }
 
         public UserPaymentPackageEntity() {}
 

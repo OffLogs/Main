@@ -1,4 +1,5 @@
-﻿using OffLogs.Business.Common.Exceptions.Common;
+﻿using System;
+using OffLogs.Business.Common.Exceptions.Common;
 using OffLogs.Business.Common.Models;
 
 namespace OffLogs.Business.Common.Constants.Monetization;
@@ -48,5 +49,24 @@ public static class PaymentPackageTypeExtensions
                 };
         }
         throw new ItemNotFoundException();
+    }
+    
+    public static decimal GetPackageCostPerMonth(this PaymentPackageType level)
+    {
+        switch (level)
+        {
+            case PaymentPackageType.Basic:
+                return 0.0m;
+            case PaymentPackageType.Standart:
+                return 10.0m;
+            case PaymentPackageType.Pro:
+                return 30.0m;
+        }
+        throw new ItemNotFoundException();
+    }
+    
+    public static decimal GetPackageCostPerDay(this PaymentPackageType level)
+    {
+        return level.GetPackageCostPerMonth() / 31;
     }
 }

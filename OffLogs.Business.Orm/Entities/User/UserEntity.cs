@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Domain.Abstractions;
 using NHibernate.Mapping.Attributes;
 using NHibernate.Type;
@@ -90,6 +91,27 @@ namespace OffLogs.Business.Orm.Entities.User
         
         public virtual bool IsVerified => VerificationTime.HasValue;
         
+        public virtual UserPaymentPackageEntity LastPaymentPackage => PaymentPackages.MaxBy(
+            item => item.CreateTime
+        );
+
+        public virtual UserPaymentPackageEntity PreviousPaymentPackage
+        {
+            get
+            {
+                if (PaymentPackages.Count >= 2)
+                {
+                    return PaymentPackages
+                        .OrderByDescending(item => item.CreateTime)
+                        .Skip(1)
+                        .Take(1)
+                        .FirstOrDefault();
+                }
+
+                return null;
+            }
+        }
+
         public UserEntity() {}
     }
 }

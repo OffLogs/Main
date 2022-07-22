@@ -53,7 +53,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         protected readonly IUserService UserService;
         protected readonly IUserEmailService UserEmailService;
         protected readonly IApplicationService ApplicationService;
-        protected readonly IPaymentService PaymentService;
+        protected readonly IPaymentPackageService PaymentPackageService;
 
         protected readonly IAccessPolicyService AccessPolicyService;
 
@@ -83,7 +83,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
             ThrottleRequestsService = _factory.Services.GetRequiredService<IThrottleRequestsService>();
             LogAssembler = _factory.Services.GetRequiredService<ILogAssembler>();
             UserEmailService = _factory.Services.GetRequiredService<IUserEmailService>();
-            PaymentService = _factory.Services.GetRequiredService<IPaymentService>();
+            PaymentPackageService = _factory.Services.GetRequiredService<IPaymentPackageService>();
 
             ThrottleRequestsService.Clean();
             EmailSendingService?.Reset();
