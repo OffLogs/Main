@@ -82,7 +82,6 @@ node('testing-node') {
 
             runStage(Stage.INIT_DB) {
                 sh 'pg_ctlcluster 12 main start'
-                sh 'netstat -tulpn | grep LISTEN'
                 sh 'pg_isready'
                 sh "sudo -u postgres psql -c \"ALTER USER postgres PASSWORD '$postresUserPassword';\""
                 sh "PGPASSWORD=postgres psql -h localhost --username=$postresUserPassword --dbname=$postresUserPassword -c \"select 1\""
@@ -90,9 +89,11 @@ node('testing-node') {
             }
 
             runStage(Stage.INIT_REDIS) {
-                sh '/usr/bin/redis-server &'
+                sh '/usr/bin/redis-server /etc/redis.conf &'
                 sh 'until nc -z localhost 6379; do sleep 1; done'
                 echo "Redis is started"
+                
+                sh 'netstat -tulpn | grep LISTEN'
             }
 
             runStage(Stage.RUN_MIGRATIONS) {
@@ -100,15 +101,15 @@ node('testing-node') {
             }
 
             runStage(Stage.RUN_API_UNIT_TESTS) {
-                sh 'dotnet test --logger trx --verbosity=detailed --results-directory /tmp/test ./OffLogs.Api.Tests.Unit'
+                sh 'dotnet test --logger trx --verbosity=warning --results-directory /tmp/test ./OffLogs.Api.Tests.Unit'
             }
             
             runStage(Stage.RUN_BUSINESS_LOGIC_UNIT_TESTS) {
-                sh 'dotnet test --logger trx --verbosity=detailed --results-directory /tmp/test ./OffLogs.Business.Common.Tests.Unit'
+                sh 'dotnet test --logger trx --verbosity=warning --results-directory /tmp/test ./OffLogs.Business.Common.Tests.Unit'
             }
                         
             runStage(Stage.RUN_INTEGRATION_TESTS) {
-                sh 'dotnet test --logger trx --verbosity=detailed --results-directory /tmp/test ./OffLogs.Api.Tests.Integration'
+                sh 'dotnet test --logger trx --verbosity=warning --results-directory /tmp/test ./OffLogs.Api.Tests.Integration'
             }
         }
     } as Closure<String>))
