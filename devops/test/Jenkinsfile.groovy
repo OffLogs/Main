@@ -27,6 +27,9 @@ node('testing-node') {
         'POSTGRES_PASSWORD': postresUserPassword,
         'POSTGRES_DATABASE': "template1",
 
+        // Redis
+        'Redis__Server': "localhost:6379",
+
         'ConnectionStrings__DefaultConnection': "User ID=postgres;Password=postgres;Host=localhost;Port=5432;Database=postgres;Pooling=true;Include Error Detail=true;Log Parameters=true;",
         'Kafka__Servers': "localhost:9094",
         'Hibernate__IsShowSql': "false"
@@ -79,11 +82,18 @@ node('testing-node') {
 
             runStage(Stage.INIT_DB) {
                 sh 'pg_ctlcluster 12 main start'
-                sh 'netstat -tulpn | grep LISTEN'
                 sh 'pg_isready'
                 sh "sudo -u postgres psql -c \"ALTER USER postgres PASSWORD '$postresUserPassword';\""
                 sh "PGPASSWORD=postgres psql -h localhost --username=$postresUserPassword --dbname=$postresUserPassword -c \"select 1\""
                 echo 'Postgre SQL is started'
+            }
+
+            runStage(Stage.INIT_REDIS) {
+                sh '/usr/bin/redis-server &'
+                sh 'until nc -z localhost 6379; do sleep 1; done'
+                echo "Redis is started"
+                
+                sh 'netstat -tulpn | grep LISTEN'
             }
 
             runStage(Stage.RUN_MIGRATIONS) {
@@ -91,15 +101,15 @@ node('testing-node') {
             }
 
             runStage(Stage.RUN_API_UNIT_TESTS) {
-                sh 'dotnet test --logger trx --verbosity=detailed --results-directory /tmp/test ./OffLogs.Api.Tests.Unit'
+                sh 'dotnet test --logger trx --verbosity=normal --results-directory /tmp/test ./OffLogs.Api.Tests.Unit'
             }
             
             runStage(Stage.RUN_BUSINESS_LOGIC_UNIT_TESTS) {
-                sh 'dotnet test --logger trx --verbosity=detailed --results-directory /tmp/test ./OffLogs.Business.Common.Tests.Unit'
+                sh 'dotnet test --logger trx --verbosity=normal --results-directory /tmp/test ./OffLogs.Business.Common.Tests.Unit'
             }
                         
             runStage(Stage.RUN_INTEGRATION_TESTS) {
-                sh 'dotnet test --logger trx --verbosity=detailed --results-directory /tmp/test ./OffLogs.Api.Tests.Integration'
+                sh 'dotnet test --logger trx --verbosity=normal --results-directory /tmp/test ./OffLogs.Api.Tests.Integration'
             }
         }
     } as Closure<String>))
@@ -113,6 +123,7 @@ enum Stage {
     INIT_ZOOKEEPER('Init Zookeeper'),
     INIT_KAFKA('Init Kafka'),
     INIT_DB('Init DB'),
+    INIT_REDIS('Init Redis'),
     RUN_MIGRATIONS('Run migrations'),
     RUN_API_UNIT_TESTS('Run API unit tests'),
     RUN_BUSINESS_LOGIC_UNIT_TESTS('Run Business logic unit tests'),

@@ -10,7 +10,7 @@ RUN apt install -y apt-transport-https wget ca-certificates iputils-ping telnet 
 # Configure time
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ = "UTC"
-RUN apt-get install -y tzdata
+RUN apt-get install -y tzdata lsb-release
 
 # Fix error: The configured user limit (128) on the number of inotify instances has been reached
 #RUN echo "fs.inotify.max_user_watches=524288" >> /etc/sysctl.conf
@@ -23,10 +23,14 @@ RUN curl https://packages.microsoft.com/config/ubuntu/20.10/prod.list | tee /etc
 RUN apt update
 RUN apt install -y dotnet-sdk-6.0
 
+# Install Redis repositories
+RUN curl -fsSL https://packages.redis.io/gpg | gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+RUN echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/redis.list
+
 # Update
 RUN apt-get install -y net-tools sudo netcat \
     default-jre \
-    postgresql postgresql-client
+    postgresql postgresql-client redis
 
 # Create dirs
 RUN mkdir /tmp/test

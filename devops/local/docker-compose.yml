@@ -5,12 +5,12 @@ volumes:
   kafka-volume: {}
   kafka-2-volume: {}
   zookeeper-volume: {}
+  redis-volume: {}
 
 services:
   postgres:
     container_name: offlogs-local-postgres
     image: postgres:13.3
-    restart: always
     environment:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
@@ -24,7 +24,6 @@ services:
       dockerfile: zookeeper/Dockerfile
       args:
         BUILD_COMMAND: build
-    restart: always
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -38,7 +37,6 @@ services:
       dockerfile: kafka/Dockerfile
       args:
         BUILD_COMMAND: build
-    restart: always
     depends_on:
       - zookeeper
     ports:
@@ -58,7 +56,6 @@ services:
       dockerfile: kafka/Dockerfile
       args:
         BUILD_COMMAND: build
-    restart: always
     depends_on:
       - zookeeper
     ports:
@@ -72,3 +69,10 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
     volumes:
       - kafka-2-volume:/app/kafka-logs
+  redis:
+    image: redis:7-bullseye
+    container_name: offlogs-local-redis
+    ports:
+      - "6111:6379"
+    volumes:
+      - redis-volume:/data
