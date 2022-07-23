@@ -37,6 +37,7 @@ namespace OffLogs.Business.Services.Jwt
             {
                 new(ClaimTypes.System, "Application"),
                 new(ClaimTypes.NameIdentifier, application.Id.ToString()),
+                new(ClaimTypes.Sid, application.User.Id.ToString()),
                 new(ClaimTypes.Rsa, Convert.ToBase64String(application.PublicKey)),
             };
             
@@ -61,6 +62,21 @@ namespace OffLogs.Business.Services.Jwt
             {   
                 var jwt = new JwtSecurityToken(jwtString);
                 var applicationId = jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                return applicationId != null ? int.Parse(applicationId) : null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+        
+        public long? GetUserId(string jwtString)
+        {
+            jwtString = jwtString ?? throw new ArgumentNullException(nameof(jwtString));
+            try
+            {   
+                var jwt = new JwtSecurityToken(jwtString);
+                var applicationId = jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
                 return applicationId != null ? int.Parse(applicationId) : null;
             }
             catch (Exception)

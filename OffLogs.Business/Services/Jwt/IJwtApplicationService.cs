@@ -8,6 +8,7 @@ namespace OffLogs.Business.Services.Jwt
     {
         public string BuildJwt(ApplicationEntity application);
         public long? GetApplicationId(string jwtString);
+        long? GetUserId(string jwtString);
         byte[]? GetApplicationPublicKey(string jwtString);
         public bool IsValidJwt(string jwtString);
     }

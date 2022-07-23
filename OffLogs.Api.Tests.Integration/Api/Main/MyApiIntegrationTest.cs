@@ -23,6 +23,7 @@ using OffLogs.Business.Services.Http.ThrottleRequests;
 using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Kafka;
 using OffLogs.Business.Services.Kafka.Consumer;
+using OffLogs.Business.Services.Redis;
 using OffLogs.Business.Services.Security;
 using Persistence.Transactions.Behaviors;
 using Queries.Abstractions;
@@ -46,6 +47,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         protected readonly IAsyncCommandBuilder CommandBuilder;
         protected readonly IAsyncNotificationBuilder NotificationBuilder;
         protected readonly IThrottleRequestsService ThrottleRequestsService;
+        protected readonly IRedisClient RedisClient;
 
         protected readonly ILogService LogService;
         protected readonly ILogShareService LogShareService;
@@ -81,6 +83,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
             ThrottleRequestsService = _factory.Services.GetRequiredService<IThrottleRequestsService>();
             LogAssembler = _factory.Services.GetRequiredService<ILogAssembler>();
             UserEmailService = _factory.Services.GetRequiredService<IUserEmailService>();
+            RedisClient = _factory.Services.GetRequiredService<IRedisClient>();
 
             ThrottleRequestsService.Clean();
             EmailSendingService?.Reset();
