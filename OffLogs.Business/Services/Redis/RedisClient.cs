@@ -1,11 +1,13 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 
 namespace OffLogs.Business.Services.Redis;
 
 public class RedisClient: IRedisClient
 {
+    private readonly ILogger<RedisClient> _logger;
     private readonly string _redisHost;
 
     private ConnectionMultiplexer _connection = null;
@@ -15,14 +17,16 @@ public class RedisClient: IRedisClient
             if (_connection == null || !_connection.IsConnected)
             {
                 _connection = ConnectionMultiplexer.Connect(_redisHost);
+                _logger.LogDebug($"Connected to Redis server: {_redisHost}");
             }
 
             return _connection.GetDatabase();
         }
     }
 
-    public RedisClient(IConfiguration configuration)
+    public RedisClient(IConfiguration configuration, ILogger<RedisClient> logger)
     {
+        _logger = logger;
         _redisHost = configuration.GetValue<string>("Redis:Sever");
     }
 
