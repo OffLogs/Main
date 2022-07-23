@@ -16,17 +16,6 @@ public class PaymentPackagePackageService: IPaymentPackageService
         _dbSessionProvider = dbSessionProvider;
     }
 
-    public PaymentPackageType GetActivePackageType(UserEntity user)
-    {
-        var lastPackage = user.LastPaymentPackage;
-        if (lastPackage == null || lastPackage.IsExpired)
-        {
-            return PaymentPackageType.Basic;
-        }
-
-        return lastPackage.Type;
-    }
-    
     public async Task ExtendOrChangePackage(UserEntity user, PaymentPackageType type, decimal paidSum)
     {
         if (paidSum <= 0) throw new ArgumentException(nameof(paidSum));
@@ -54,12 +43,12 @@ public class PaymentPackagePackageService: IPaymentPackageService
         // Calculate paid period
         var paidDays = (int)Math.Ceiling(paidSum / type.GetPackageCostPerDay());
         newPackage.ExpirationDate = DateTime.UtcNow.Date.AddDays(paidDays);
-        newPackage.SetUser(user);
+        user.AddPaymentPackage(newPackage);
         await _dbSessionProvider.CurrentSession.UpdateAsync(user);
     }
     
     public PaymentPackageRestrictionsModel GetRestrictions(UserEntity user)
     {
-        return GetActivePackageType(user).GetRestrictions();
+        return user.ActivePaymentPackageType.GetRestrictions();
     }
 }

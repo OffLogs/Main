@@ -25,7 +25,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Monetization.PaymentSe
         public void ShouldReceiveBasicPlanIfPackageNotFound()
         {
             Assert.Empty(_user.PaymentPackages);
-            var activePackage = PaymentPackageService.GetActivePackageType(_user);
+            var activePackage = _user.ActivePaymentPackageType;
             Assert.Equal(PaymentPackageType.Basic, activePackage);
         }
         
@@ -39,12 +39,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Monetization.PaymentSe
                 UpdateTime = DateTime.UtcNow,
                 ExpirationDate = DateTime.UtcNow.AddDays(1)
             };
-            paymentPackage.SetUser(_user);
+            _user.AddPaymentPackage(paymentPackage);
             await CommitDbChanges();
 
             var actualUser = await QueryBuilder.FindByIdAsync<UserEntity>(_user.Id);
             Assert.NotEmpty(actualUser.PaymentPackages);
-            var activePackage = PaymentPackageService.GetActivePackageType(actualUser);
+            var activePackage = actualUser.ActivePaymentPackageType;
             Assert.Equal(PaymentPackageType.Pro, activePackage);
         }
         
@@ -58,12 +58,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Monetization.PaymentSe
                 UpdateTime = DateTime.UtcNow,
                 ExpirationDate = DateTime.UtcNow.AddDays(-1)
             };
-            paymentPackage.SetUser(_user);
+            _user.AddPaymentPackage(paymentPackage);
             await CommitDbChanges();
 
             var actualUser = await QueryBuilder.FindByIdAsync<UserEntity>(_user.Id);
             Assert.NotEmpty(actualUser.PaymentPackages);
-            var activePackage = PaymentPackageService.GetActivePackageType(actualUser);
+            var activePackage = actualUser.ActivePaymentPackageType;
             Assert.Equal(PaymentPackageType.Basic, activePackage);
         }
     }

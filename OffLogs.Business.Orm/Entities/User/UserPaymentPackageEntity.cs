@@ -54,11 +54,5 @@ namespace OffLogs.Business.Orm.Entities.User
         }
 
         public UserPaymentPackageEntity() {}
-
-        public virtual void SetUser(UserEntity user)
-        {
-            User = user;
-            user.PaymentPackages.Add(this);
-        }
     }
 }

@@ -8,8 +8,6 @@ namespace OffLogs.Business.Services.Monetization;
 
 public interface IPaymentPackageService: IDomainService
 {
-    PaymentPackageType GetActivePackageType(UserEntity user);
-
     PaymentPackageRestrictionsModel GetRestrictions(UserEntity user);
 
     Task ExtendOrChangePackage(UserEntity user, PaymentPackageType type, decimal paidSum);

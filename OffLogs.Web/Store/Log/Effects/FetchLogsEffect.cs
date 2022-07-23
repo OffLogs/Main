@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Fluxor;
 using Microsoft.Extensions.Logging;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Log;
-using OffLogs.Web.Core.Utils;
+using OffLogs.Business.Common.Utils;
 using OffLogs.Web.Services.Http;
 using OffLogs.Web.Store.Auth;
 using OffLogs.Web.Store.Log.Models;

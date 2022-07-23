@@ -72,5 +72,20 @@ public class RedisClient: IRedisClient, IDisposable
         return await Db.StringGetAsync(key);
     }
     
+    public async Task SetValueAsync(string key, object value)
+    {
+        await Db.StringSetAsync(key, value.ToString());
+    }
+
+    public void FlushKeysByPatter(string pattern)
+    {
+        var server = _connection.GetServer(_redisHost);
+        var keys = server.Keys(pattern: pattern);
+        foreach (var key in keys)
+        {
+            Db.KeyDelete(key);
+        }
+    }
+    
     #endregion
 }

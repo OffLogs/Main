@@ -5,6 +5,7 @@ using Domain.Abstractions;
 using NHibernate.Mapping.Attributes;
 using NHibernate.Type;
 using OffLogs.Business.Common.Constants;
+using OffLogs.Business.Common.Constants.Monetization;
 
 namespace OffLogs.Business.Orm.Entities.User
 {
@@ -95,6 +96,20 @@ namespace OffLogs.Business.Orm.Entities.User
             item => item.CreateTime
         );
 
+        public virtual PaymentPackageType ActivePaymentPackageType
+        {
+            get
+            {
+                var lastPackage = LastPaymentPackage;
+                if (lastPackage == null || lastPackage.IsExpired)
+                {
+                    return PaymentPackageType.Basic;
+                }
+
+                return lastPackage.Type;
+            }
+        }
+
         public virtual UserPaymentPackageEntity PreviousPaymentPackage
         {
             get
@@ -113,5 +128,11 @@ namespace OffLogs.Business.Orm.Entities.User
         }
 
         public UserEntity() {}
+
+        public virtual void AddPaymentPackage(UserPaymentPackageEntity package)
+        {
+            package.User = this;
+            PaymentPackages.Add(package);
+        }
     }
 }

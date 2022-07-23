@@ -6,7 +6,6 @@ using Microsoft.Extensions.Logging;
 using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Application;
 using OffLogs.Web.Core.Helpers;
-using OffLogs.Web.Core.Utils;
 using OffLogs.Web.Resources;
 using OffLogs.Web.Services.Http;
 using Radzen;
