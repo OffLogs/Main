@@ -153,7 +153,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Http
         [InlineData(PaymentPackageType.Basic)]
         [InlineData(PaymentPackageType.Standart)]
         [InlineData(PaymentPackageType.Pro)]
-        public async Task ShouldReceivePackageTypeFromRedisAndThrowExceptionForStandartPackage(PaymentPackageType expectedPackage)
+        public async Task ShouldReceivePackageTypeFromRedisAndThrowException(PaymentPackageType expectedPackage)
         {
             var userModel = (DataSeeder.CreateActivatedUser().Result);
             var user = userModel.Original;
