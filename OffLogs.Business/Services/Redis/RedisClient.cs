@@ -17,8 +17,9 @@ public class RedisClient: IRedisClient, IDisposable
         {
             if (_connection == null || !_connection.IsConnected)
             {
+                _logger.LogDebug($"Try to connec to Redis server: {_redisHost}");
                 _connection = ConnectionMultiplexer.Connect(_redisHost);
-                _logger.LogDebug($"Connected to Redis server: {_redisHost}");
+                _logger.LogDebug($"Connection to the Redis server estabilished...");
                 
                 _connection.ConnectionFailed += OnConnectionFailed;
                 _connection.ErrorMessage += OnErrorMessage;
@@ -32,7 +33,7 @@ public class RedisClient: IRedisClient, IDisposable
     public RedisClient(IConfiguration configuration, ILogger<RedisClient> logger)
     {
         _logger = logger;
-        _redisHost = configuration.GetValue<string>("Redis:Sever");
+        _redisHost = configuration.GetValue<string>("Redis:Server");
     }
 
     #region Event Actions
