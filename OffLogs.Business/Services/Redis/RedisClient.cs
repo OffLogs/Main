@@ -1,11 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 
 namespace OffLogs.Business.Services.Redis;
 
-public class RedisClient: IRedisClient
+public class RedisClient: IRedisClient, IDisposable
 {
     private readonly ILogger<RedisClient> _logger;
     private readonly string _redisHost;
@@ -18,6 +19,10 @@ public class RedisClient: IRedisClient
             {
                 _connection = ConnectionMultiplexer.Connect(_redisHost);
                 _logger.LogDebug($"Connected to Redis server: {_redisHost}");
+                
+                _connection.ConnectionFailed += OnConnectionFailed;
+                _connection.ErrorMessage += OnErrorMessage;
+                _connection.InternalError += OnInternalError;
             }
 
             return _connection.GetDatabase();
@@ -30,6 +35,30 @@ public class RedisClient: IRedisClient
         _redisHost = configuration.GetValue<string>("Redis:Sever");
     }
 
+    #region Event Actions
+    
+    private void OnErrorMessage(object sender, RedisErrorEventArgs e)
+    {
+        _logger.LogError($"Redis error: {e.Message}");
+    }
+
+    private void OnConnectionFailed(object sender, ConnectionFailedEventArgs e)
+    {
+        _logger.LogError(e.Exception, $"Redis connection failed: {e.Exception?.Message}");
+    }
+    
+    private void OnInternalError(object sender, InternalErrorEventArgs e)
+    {
+        _logger.LogError(e.Exception, $"Redis internal error: {e.Exception.Message}");
+    }
+    
+    #endregion
+    
+    public void Dispose()
+    {
+        _connection?.Dispose();
+    }
+    
     #region Common
     
     public async Task SetString(string key, string value)

@@ -89,7 +89,7 @@ node('testing-node') {
             }
 
             runStage(Stage.INIT_REDIS) {
-                sh '/usr/bin/redis-server /etc/redis.conf &'
+                sh '/usr/bin/redis-server &'
                 sh 'until nc -z localhost 6379; do sleep 1; done'
                 echo "Redis is started"
                 
