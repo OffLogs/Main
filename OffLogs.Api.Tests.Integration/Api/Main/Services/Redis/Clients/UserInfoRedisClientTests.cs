@@ -17,7 +17,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Redis.Clients
             _user = (DataSeeder.CreateActivatedUser().Result).Original;
             _userInfoRedisClient = _factory.Services.GetRequiredService<IUserInfoRedisClient>();
             
-            PaymentPackageService.ExtendOrChangePackage(_user, PaymentPackageType.Pro, 30);
+            PaymentPackageService.ExtendOrChangePackage(_user, PaymentPackageType.Pro, 30).Wait();
             CommitDbChanges().Wait();
         }
 

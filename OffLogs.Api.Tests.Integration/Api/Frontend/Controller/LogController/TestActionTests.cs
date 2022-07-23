@@ -42,7 +42,10 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
 
             for (int i = 0; i < 500; i++)
             {
-                await ThrottleRequestsService.CheckOrThrowExceptionAsync(RequestItemType.Application, user.ApplicationId);
+                await ThrottleRequestsService.CheckOrThrowExceptionByApplicationIdAsync(
+                    user.ApplicationId,
+                    user.Id
+                );
             }
 
             response = await PostRequestAsync(Url, user.ApplicationApiToken, new { logs });

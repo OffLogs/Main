@@ -5,8 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using OffLogs.Business.Common.Constants.Monetization;
 using OffLogs.Business.Common.Exceptions;
 using OffLogs.Business.Common.Exceptions.Common;
+using OffLogs.Business.Services.Redis.Clients;
 
 namespace OffLogs.Business.Services.Http.ThrottleRequests
 {
@@ -16,20 +18,35 @@ namespace OffLogs.Business.Services.Http.ThrottleRequests
     /// </summary>
     public class ThrottleRequestsService : IThrottleRequestsService
     {
+        private readonly IUserInfoRedisClient _userInfoRedisClient;
         private ConcurrentBag<RequestItemModel> _items = new();
 
         private readonly TimeSpan _defaultCountingPeriod = TimeSpan.FromMinutes(1);
 
         public bool _isEnabled { get; }
         
-        public ThrottleRequestsService(IConfiguration configuration)
+        public ThrottleRequestsService(
+            IConfiguration configuration,
+            IUserInfoRedisClient userInfoRedisClient
+        )
         {
+            _userInfoRedisClient = userInfoRedisClient;
             _isEnabled = configuration.GetValue<bool>("App:IsThrottleTooManyRequests", true);
         }
 
-        public Task<int> CheckOrThrowExceptionAsync(RequestItemType type, long itemId, int maxCounter = 500)
+        public async Task<int> CheckOrThrowExceptionByApplicationIdAsync(long applicationId, long userId)
         {
-            return CheckOrThrowExceptionAsync(type, itemId, _defaultCountingPeriod, maxCounter);
+            var usersPackageType = await _userInfoRedisClient.GetUsersPaymentPackageType(userId);
+            if (!usersPackageType.HasValue)
+            {
+                usersPackageType = PaymentPackageType.Basic;
+            }
+            return await CheckOrThrowExceptionAsync(
+                RequestItemType.Application,
+                applicationId,
+                _defaultCountingPeriod,
+                usersPackageType.Value.GetRestrictions().MaxApiRequests
+            );
         }
 
         public Task<int> CheckOrThrowExceptionAsync(RequestItemType type, long itemId, TimeSpan countingPeriod, int maxCounter = 500)
