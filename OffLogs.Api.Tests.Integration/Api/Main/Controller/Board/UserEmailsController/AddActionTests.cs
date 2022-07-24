@@ -69,11 +69,11 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.UserEmailsCont
         }
         
         [Fact]
-        public async Task CanNotAddIfTooMany()
+        public async Task ShouldReturnErrorIfPackageRestrictions()
         {
             UserEmailEntity fakeRecord;
             var user1 = await DataSeeder.CreateActivatedUser();
-            for (int i = 0; i < GlobalConstants.MaxUserEmailsCount + 1; i++)
+            for (int i = 0; i <= 5 + 1; i++)
             {
                 fakeRecord = DataFactory.UserEmailFactory().Generate();
                 fakeRecord.SetUser(user1.Original); 
@@ -88,7 +88,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.UserEmailsCont
             });
             // Assert
             var responseData = await response.GetJsonErrorAsync();
-            Assert.Equal(new TooManyRecordsException().GetTypeName(), responseData.Type);
+            Assert.Equal(new PaymentPackageRestrictionException().GetTypeName(), responseData.Type);
         }
     }
 }
