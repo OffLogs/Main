@@ -54,7 +54,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Monetization.Restricti
             await DbSessionProvider.CurrentSession.RefreshAsync(_user);
             
             var newRule = new NotificationRuleEntity();
-            newRule.Period = packageType.GetRestrictions().MaxNotificationRuleTimeout;
+            newRule.Period = packageType.GetRestrictions().MinNotificationRuleTimeout;
             newRule.User = _user;
             _restrictionValidationService.CheckNotificationRulesAddingAvailable(newRule);;
         }
@@ -62,13 +62,13 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Monetization.Restricti
         [Theory]
         [InlineData(PaymentPackageType.Basic, 5)]
         [InlineData(PaymentPackageType.Standart, 20)]
-        public async Task ShouldThrowExceptionIfMaxRulesCounterMoreThanPackageRestriction(PaymentPackageType packageType, int maxRules)
+        public async Task ShouldThrowExceptionIfMaxRulesCounterMoreThanPackageRestriction(PaymentPackageType packageType, int createdRules)
         {
             if (packageType != PaymentPackageType.Basic)
             {
                 await _paymentPackageService.ExtendOrChangePackage(_user, packageType, 10);    
             }
-            for (int i = 0; i < maxRules; i++)
+            for (int i = 0; i < createdRules; i++)
             {
                 await CreateRule();
             }
@@ -79,7 +79,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Monetization.Restricti
                 var user = await QueryBuilder.FindByIdAsync<UserEntity>(_user.Id);
                 
                 var newRule = new NotificationRuleEntity();
-                newRule.Period = packageType.GetRestrictions().MaxNotificationRuleTimeout;
+                newRule.Period = user.ActivePaymentPackageType.GetRestrictions().MinNotificationRuleTimeout;
                 newRule.User = user;
                 _restrictionValidationService.CheckNotificationRulesAddingAvailable(newRule);
             });
@@ -124,8 +124,10 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Monetization.Restricti
             _restrictionValidationService.CheckNotificationRulesAddingAvailable(newRule);
         }
         
-        private async Task<NotificationRuleEntity> CreateRule(int period = 5 * 60)
+        private async Task<NotificationRuleEntity> CreateRule(int? period = null)
         {
+            period ??= _user.ActivePaymentPackageType.GetRestrictions().MinNotificationRuleTimeout;
+            
             var message = DataFactory.MessageTemplateFactory().Generate();
             message.User = _user;
             await CommandBuilder.SaveAsync(message);
@@ -139,7 +141,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Monetization.Restricti
             return await _notificationRuleService.SetRule(
                 _user,
                 _ruleFactory.Generate().Title,
-                period,
+                period.Value,
                 LogicOperatorType.Conjunction,
                 NotificationType.Email,
                 message,

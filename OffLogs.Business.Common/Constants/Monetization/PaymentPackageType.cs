@@ -23,7 +23,7 @@ public static class PaymentPackageTypeExtensions
                     MaxApiRequests = 50,
                     MaxNotificationRules = 5,
                     MaxUserEmails = 3,
-                    MaxNotificationRuleTimeout = 60 * 60 * 6, // 6 hours
+                    MinNotificationRuleTimeout = 60 * 60 * 6, // 6 hours
                     LogsExpirationTimeout = 60 * 60 * 24 * 7, // 1 week
                     FavoriteLogsExpirationTimeout = 60 * 60 * 24 * 31 * 3, // 3 months
                     MaxApplications = 5
@@ -34,7 +34,7 @@ public static class PaymentPackageTypeExtensions
                     MaxApiRequests = 300,
                     MaxNotificationRules = 20,
                     MaxUserEmails = 10,
-                    MaxNotificationRuleTimeout = 60 * 30, // 30 minutes
+                    MinNotificationRuleTimeout = 60 * 30, // 30 minutes
                     LogsExpirationTimeout = 60 * 60 * 24 * 31 * 1, // 1 month
                     FavoriteLogsExpirationTimeout = 60 * 60 * 24 * 31 * 6, // 6 months
                     MaxApplications = 15
@@ -45,7 +45,7 @@ public static class PaymentPackageTypeExtensions
                     MaxApiRequests = 600,
                     MaxNotificationRules = 0, // unlimited
                     MaxUserEmails = 50,
-                    MaxNotificationRuleTimeout = 60 * 5, // 5 minutes
+                    MinNotificationRuleTimeout = 60 * 5, // 5 minutes
                     LogsExpirationTimeout = 60 * 60 * 24 * 31 * 6, // 6 month
                     FavoriteLogsExpirationTimeout = 0, // always
                     MaxApplications = 45

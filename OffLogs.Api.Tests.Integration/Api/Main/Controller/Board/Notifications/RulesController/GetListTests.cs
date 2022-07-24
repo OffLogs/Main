@@ -8,6 +8,7 @@ using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule;
 using OffLogs.Api.Tests.Integration.Core.Models;
 using OffLogs.Business.Common.Constants;
+using OffLogs.Business.Common.Constants.Monetization;
 using OffLogs.Business.Common.Constants.Notificatiions;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
@@ -118,7 +119,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             return await _notificationRuleService.SetRule(
                 user,
                 _ruleFactory.Generate().Title,
-                5 * 60,
+                user.ActivePaymentPackageType.GetRestrictions().MinNotificationRuleTimeout,
                 LogicOperatorType.Conjunction,
                 NotificationType.Email,
                 messageTemplate,

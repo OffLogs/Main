@@ -17,7 +17,7 @@ public class RestrictionValidationService: IRestrictionValidationService
         }
 
         var restrictions = newRule.User.ActivePaymentPackageType.GetRestrictions();
-        var maxRuleTimeout = restrictions.MaxNotificationRuleTimeout;
+        var maxRuleTimeout = restrictions.MinNotificationRuleTimeout;
         if (newRule.Period < maxRuleTimeout)
         {
             throw new PaymentPackageRestrictionException();

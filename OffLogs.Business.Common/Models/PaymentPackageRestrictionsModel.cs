@@ -4,7 +4,7 @@ public record struct PaymentPackageRestrictionsModel(
     int MaxApiRequests,
     int MaxNotificationRules,
     int MaxUserEmails,
-    int MaxNotificationRuleTimeout,
+    int MinNotificationRuleTimeout,
     int LogsExpirationTimeout,
     int FavoriteLogsExpirationTimeout,
     int MaxApplications

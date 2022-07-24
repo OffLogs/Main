@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NHibernate.Linq;
 using OffLogs.Api.Tests.Integration.Core.Models;
 using OffLogs.Business.Common.Constants;
+using OffLogs.Business.Common.Constants.Monetization;
 using OffLogs.Business.Common.Constants.Notificatiions;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
@@ -33,7 +34,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
         [Fact]
         public async Task ShouldCreateRule()
         {
-            var expectedPeriod = 5 * 60;
+            var expectedPeriod = PaymentPackageType.Basic.GetRestrictions().MinNotificationRuleTimeout;
             var expectedOperator = LogicOperatorType.Conjunction;
 
             var actualRule = await CreateRule();
@@ -213,7 +214,6 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
             LogicOperatorType logicOperatorType = LogicOperatorType.Conjunction
         )
         {
-            var expectedPeriod = 5 * 60;
             
             var message = DataFactory.MessageTemplateFactory().Generate();
             message.User = UserModel;
@@ -234,7 +234,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Entities.NotificationR
             return await _notificationRuleService.SetRule(
                 UserModel,
                 _ruleFactory.Generate().Title,
-                expectedPeriod,
+                UserModel.ActivePaymentPackageType.GetRestrictions().MinNotificationRuleTimeout,
                 logicOperatorType,
                 NotificationType.Email,
                 message,
