@@ -6,5 +6,6 @@ public record struct PaymentPackageRestrictionsModel(
     int MaxUserEmails,
     int MaxNotificationRuleTimeout,
     int LogsExpirationTimeout,
-    int FavoriteLogsExpirationTimeout
+    int FavoriteLogsExpirationTimeout,
+    int MaxApplications
 );

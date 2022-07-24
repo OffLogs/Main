@@ -16,6 +16,7 @@ using OffLogs.Business.Orm.Entities.User;
 using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Kafka;
+using OffLogs.Business.Services.Monetization;
 using Queries.Abstractions;
 
 namespace OffLogs.Business.Services.Entities.Application
@@ -26,25 +27,31 @@ namespace OffLogs.Business.Services.Entities.Application
         private readonly IAsyncQueryBuilder _queryBuilder;
         private readonly IJwtApplicationService _jwtService;
         private readonly IKafkaProducerService _kafkaProducer;
+        private readonly IRestrictionValidationService _restrictionValidationService;
 
         public ApplicationService(
             IAsyncCommandBuilder commandBuilder,
             IAsyncQueryBuilder asyncQueryBuilder,
             IJwtApplicationService jwtService,
-            IKafkaProducerService kafkaProducer
+            IKafkaProducerService kafkaProducer,
+            IRestrictionValidationService restrictionValidationService
         )
         {
             _commandBuilder = commandBuilder;
             _queryBuilder = asyncQueryBuilder;
             _jwtService = jwtService;
             _kafkaProducer = kafkaProducer;
+            _restrictionValidationService = restrictionValidationService;
         }
 
         public async Task<ApplicationEntity> CreateNewApplication(UserEntity user,  string name)
         {
+            _restrictionValidationService.CheckApplicationsAddingAvailable(user);
+            
             var userEncryptor = AsymmetricEncryptor.FromPublicKeyBytes(user.PublicKey);
             
-            var application = new ApplicationEntity(user, name);
+            var application = new ApplicationEntity(name);
+            user.AddApplication(application);
             
             // Application keys encryption
             var applicationEncryptor = AsymmetricEncryptor.GenerateKeyPair();
@@ -55,6 +62,7 @@ namespace OffLogs.Business.Services.Entities.Application
             
             await _commandBuilder.SaveAsync(application);
             application.ApiToken = _jwtService.BuildJwt(application);
+            
             await _commandBuilder.SaveAsync(application);
             return application;
         }

@@ -25,7 +25,8 @@ public static class PaymentPackageTypeExtensions
                     MaxUserEmails = 3,
                     MaxNotificationRuleTimeout = 60 * 60 * 6, // 6 hours
                     LogsExpirationTimeout = 60 * 60 * 24 * 7, // 1 week
-                    FavoriteLogsExpirationTimeout = 60 * 60 * 24 * 31 * 3 // 3 months
+                    FavoriteLogsExpirationTimeout = 60 * 60 * 24 * 31 * 3, // 3 months
+                    MaxApplications = 5
                 };
             case PaymentPackageType.Standart:
                 return new PaymentPackageRestrictionsModel
@@ -35,7 +36,8 @@ public static class PaymentPackageTypeExtensions
                     MaxUserEmails = 10,
                     MaxNotificationRuleTimeout = 60 * 30, // 30 minutes
                     LogsExpirationTimeout = 60 * 60 * 24 * 31 * 1, // 1 month
-                    FavoriteLogsExpirationTimeout = 60 * 60 * 24 * 31 * 6 // 6 months
+                    FavoriteLogsExpirationTimeout = 60 * 60 * 24 * 31 * 6, // 6 months
+                    MaxApplications = 15
                 };
             case PaymentPackageType.Pro:
                 return new PaymentPackageRestrictionsModel
@@ -45,7 +47,8 @@ public static class PaymentPackageTypeExtensions
                     MaxUserEmails = 50,
                     MaxNotificationRuleTimeout = 60 * 5, // 5 minutes
                     LogsExpirationTimeout = 60 * 60 * 24 * 31 * 6, // 6 month
-                    FavoriteLogsExpirationTimeout = 0 // always
+                    FavoriteLogsExpirationTimeout = 0, // always
+                    MaxApplications = 45
                 };
         }
         throw new ItemNotFoundException();

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Commands.Abstractions;
 using OffLogs.Api.Tests.Integration.Core.Models;
@@ -55,7 +56,7 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
                 pemFilePassword
             );
             var userModel = new UserTestModel(activatedUser, pemFilePassword, pemFile);
-            var fakeApplication = _dataFactory.ApplicationFactory(userModel).Generate();
+            var fakeApplication = _dataFactory.ApplicationFactory().Generate();
             var application = await _applicationService.CreateNewApplication(userModel, fakeApplication.Name);
             userModel.Applications.Add(
                 application
@@ -64,17 +65,16 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
             return userModel;
         }
 
-        public async Task<List<ApplicationEntity>> CreateApplicationsAsync(UserEntity user, int counter = 1)
+        public async Task<IList<ApplicationEntity>> CreateApplicationsAsync(UserEntity user, int counter = 1)
         {
-            var factory = _dataFactory.ApplicationFactory(user);
-            var result = new List<ApplicationEntity>();
+            var factory = _dataFactory.ApplicationFactory();
             for (int i = 1; i <= counter; i++)
             {
                 var application = factory.Generate();
-                result.Add(application);
+                user.AddApplication(application);
                 await _commandBuilder.SaveAsync(application);
             }
-            return result;
+            return user.Applications.ToList();
         }
     }
 }

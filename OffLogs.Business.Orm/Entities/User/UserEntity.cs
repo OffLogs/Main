@@ -84,6 +84,15 @@ namespace OffLogs.Business.Orm.Entities.User
         
         [Bag(
             Inverse = true,
+            Lazy = CollectionLazy.True,
+            Cascade = "none"
+        )]
+        [Key(Column = "user_id")]
+        [OneToMany(ClassType = typeof(ApplicationEntity))]
+        public virtual ICollection<ApplicationEntity> Applications { get; set; } = new List<ApplicationEntity>();
+        
+        [Bag(
+            Inverse = true,
             Lazy = CollectionLazy.Extra,
             Cascade = "all-delete-orphan"
         )]
@@ -143,6 +152,12 @@ namespace OffLogs.Business.Orm.Entities.User
         {
             package.User = this;
             PaymentPackages.Add(package);
+        }
+        
+        public virtual void AddApplication(ApplicationEntity application)
+        {
+            application.User = this;
+            Applications.Add(application);
         }
     }
 }

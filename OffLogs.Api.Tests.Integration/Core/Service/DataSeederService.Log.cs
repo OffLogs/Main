@@ -55,7 +55,7 @@ namespace OffLogs.Api.Tests.Integration.Core.Service
             return result;
         }
 
-        public async Task<List<LogEntity>> CreateLogsAsync(long applicationId, LogLevel level, int counter = 1)
+        public async Task<IList<LogEntity>> CreateLogsAsync(long applicationId, LogLevel level, int counter = 1)
         {
             var application = await _queryBuilder.FindByIdAsync<ApplicationEntity>(applicationId);
             return await CreateLogsAsync(application, level, counter);

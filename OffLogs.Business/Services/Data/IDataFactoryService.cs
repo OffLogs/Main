@@ -11,7 +11,7 @@ namespace OffLogs.Business.Services.Data
     {
         Faker<UserEntity> UserFactory();
         Faker<UserEmailEntity> UserEmailFactory();
-        Faker<ApplicationEntity> ApplicationFactory(UserEntity user);
+        Faker<ApplicationEntity> ApplicationFactory();
         Faker<LogEntity> LogFactory(LogLevel level);
         Faker<LogTraceEntity> LogTraceFactory();
         Faker<LogPropertyEntity> LogPropertyFactory();

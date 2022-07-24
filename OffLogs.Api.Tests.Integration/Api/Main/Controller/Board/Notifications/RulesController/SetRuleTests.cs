@@ -10,7 +10,10 @@ using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule;
 using OffLogs.Api.Tests.Integration.Core.Models;
 using OffLogs.Business.Common.Constants;
+using OffLogs.Business.Common.Constants.Monetization;
 using OffLogs.Business.Common.Constants.Notificatiions;
+using OffLogs.Business.Common.Exceptions.Api;
+using OffLogs.Business.Extensions;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Entities.Notifications;
@@ -370,11 +373,45 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             Assert.Equal(0, rule.Emails.Count);
         }
         
+        [Fact]
+        public async Task ShouldReturnErrorIfPackageRestrictions()
+        {
+            var expectedPeriod = 2000;
+            var expectedOperator = LogicOperatorType.Conjunction;
+
+            for (int i = 0; i <= 4; i++)
+            {
+                await CreateRuleAsync();
+            }
+            
+            var conditions = new List<SetConditionRequest>()
+            {
+                new() { ConditionField = ConditionFieldType.LogLevel.ToString(), Value = "Information"},
+            };
+            
+            // Act
+            var response = await PostRequestAsync(Url, _userModel.ApiToken, new SetRuleRequest
+            {
+                Period = expectedPeriod,
+                ApplicationId = _userModel.ApplicationId,
+                Type = NotificationType.Email.ToString(),
+                LogicOperator = expectedOperator.ToString(),
+                TemplateId = _expectedMessageTemplate.Id,
+                Conditions = conditions,
+                Title = _ruleFactory.Generate().Title
+            });
+            // Assert
+            var responseData = await response.GetJsonErrorAsync();
+            Assert.Equal(new PaymentPackageRestrictionException().GetTypeName(), responseData.Type);
+        }
+        
         private async Task<NotificationRuleEntity> CreateRuleAsync(
             LogLevel logLevel = LogLevel.Information
         )
         {
-            var expectedPeriod = 5 * 60;
+            var expectedPeriod = _userModel.Original.ActivePaymentPackageType
+                .GetRestrictions()
+                .FavoriteLogsExpirationTimeout;
             var fakeRule = _ruleFactory.Generate();
 
             var conditions = new List<NotificationConditionEntity>();

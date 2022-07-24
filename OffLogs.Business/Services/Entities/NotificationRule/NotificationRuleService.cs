@@ -14,6 +14,7 @@ using OffLogs.Business.Orm.Entities.Notifications;
 using OffLogs.Business.Orm.Entities.User;
 using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Orm.Queries.Entities.NotificationRule;
+using OffLogs.Business.Services.Monetization;
 using Persistence.Transactions.Behaviors;
 using Queries.Abstractions;
 
@@ -24,16 +25,19 @@ public class NotificationRuleService: INotificationRuleService
     private readonly IAsyncCommandBuilder _commandBuilder;
     private readonly IAsyncQueryBuilder _queryBuilder;
     private readonly IDbSessionProvider _dbSessionProvider;
+    private readonly IRestrictionValidationService _restrictionValidationService;
 
     public NotificationRuleService(
         IAsyncCommandBuilder commandBuilder,
         IAsyncQueryBuilder queryBuilder,
-        IDbSessionProvider dbSessionProvider
+        IDbSessionProvider dbSessionProvider,
+        IRestrictionValidationService restrictionValidationService
     )
     {
         _commandBuilder = commandBuilder;
         _queryBuilder = queryBuilder;
         _dbSessionProvider = dbSessionProvider;
+        _restrictionValidationService = restrictionValidationService;
     }
 
     public async Task<NotificationRuleEntity> SetRule(
@@ -73,15 +77,7 @@ public class NotificationRuleService: INotificationRuleService
         {
             rule = existsRule;
         }
-        else
-        {
-            rule.Type = type;
-            rule.User = user;
-            rule.CreateTime = DateTime.UtcNow;
-            rule.LastExecutionTime = DateTime.UtcNow;
-            rule.IsExecuting = false;
-        }
-
+        
         rule.Title = title;
         rule.Application = application;
         rule.MessageTemplate = messageTemplate;
@@ -89,6 +85,17 @@ public class NotificationRuleService: INotificationRuleService
         rule.Type = NotificationType.Email;
         rule.LogicOperator = logicOperator;
         rule.UpdateTime = DateTime.UtcNow;
+        
+        if (rule.Id == 0)
+        {
+            rule.Type = type;
+            rule.User = user;
+            rule.CreateTime = DateTime.UtcNow;
+            rule.LastExecutionTime = DateTime.UtcNow;
+            rule.IsExecuting = false;
+            
+            _restrictionValidationService.CheckNotificationRulesAddingAvailable(rule);
+        }
 
         rule.Conditions.Clear();
         foreach (var condition in conditions)

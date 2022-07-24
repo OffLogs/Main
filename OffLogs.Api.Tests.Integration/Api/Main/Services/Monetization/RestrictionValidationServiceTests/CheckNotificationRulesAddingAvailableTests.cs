@@ -52,7 +52,11 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Monetization.Restricti
             await CommitDbChanges();
             
             await DbSessionProvider.CurrentSession.RefreshAsync(_user);
-            _restrictionValidationService.CheckNotificationRulesAddingAvailable(_user);;
+            
+            var newRule = new NotificationRuleEntity();
+            newRule.Period = packageType.GetRestrictions().MaxNotificationRuleTimeout;
+            newRule.User = _user;
+            _restrictionValidationService.CheckNotificationRulesAddingAvailable(newRule);;
         }
         
         [Theory]
@@ -73,14 +77,55 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Monetization.Restricti
             await Assert.ThrowsAsync<PaymentPackageRestrictionException>(async () =>
             {
                 var user = await QueryBuilder.FindByIdAsync<UserEntity>(_user.Id);
-                _restrictionValidationService.CheckNotificationRulesAddingAvailable(user);
+                
+                var newRule = new NotificationRuleEntity();
+                newRule.Period = packageType.GetRestrictions().MaxNotificationRuleTimeout;
+                newRule.User = user;
+                _restrictionValidationService.CheckNotificationRulesAddingAvailable(newRule);
             });
         }
         
-        private async Task<NotificationRuleEntity> CreateRule()
+        [Theory]
+        [InlineData(PaymentPackageType.Basic, 60 * 60 * 6 - 1)]
+        [InlineData(PaymentPackageType.Standart, 60 * 30 - 1)]
+        [InlineData(PaymentPackageType.Pro, 60 * 5 - 1)]
+        public async Task ShouldThrowExceptionIfMaxTimeoutLessThanPackageRestriction(PaymentPackageType packageType, int timeout)
         {
-            var expectedPeriod = 5 * 60;
+            if (packageType != PaymentPackageType.Basic)
+            {
+                await _paymentPackageService.ExtendOrChangePackage(_user, packageType, 10);    
+            }
+            await CommitDbChanges();
             
+            Assert.Throws<PaymentPackageRestrictionException>( () =>
+            {
+                var newRule = new NotificationRuleEntity();
+                newRule.Period = timeout;
+                newRule.User = _user;
+                _restrictionValidationService.CheckNotificationRulesAddingAvailable(newRule);
+            });
+        }
+        
+        [Theory]
+        [InlineData(PaymentPackageType.Basic, 60 * 60 * 6)]
+        [InlineData(PaymentPackageType.Standart, 60 * 30)]
+        [InlineData(PaymentPackageType.Pro, 60 * 5)]
+        public async Task ShouldNotThrowExceptionIfCorrectMaxTimeout(PaymentPackageType packageType, int timeout)
+        {
+            if (packageType != PaymentPackageType.Basic)
+            {
+                await _paymentPackageService.ExtendOrChangePackage(_user, packageType, 10);    
+            }
+            await CommitDbChanges();
+            
+            var newRule = new NotificationRuleEntity();
+            newRule.Period = timeout;
+            newRule.User = _user;
+            _restrictionValidationService.CheckNotificationRulesAddingAvailable(newRule);
+        }
+        
+        private async Task<NotificationRuleEntity> CreateRule(int period = 5 * 60)
+        {
             var message = DataFactory.MessageTemplateFactory().Generate();
             message.User = _user;
             await CommandBuilder.SaveAsync(message);
@@ -94,7 +139,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Monetization.Restricti
             return await _notificationRuleService.SetRule(
                 _user,
                 _ruleFactory.Generate().Title,
-                expectedPeriod,
+                period,
                 LogicOperatorType.Conjunction,
                 NotificationType.Email,
                 message,
