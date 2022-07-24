@@ -11,6 +11,7 @@ using OffLogs.Business.Common.Exceptions;
 using OffLogs.Business.Common.Exceptions.Common;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Entities.Notifications;
+using OffLogs.Business.Orm.Entities.User;
 using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Services.Api;
 using OffLogs.Business.Services.Entities.NotificationRule;

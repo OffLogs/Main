@@ -7,6 +7,7 @@ using OffLogs.Business.Common.Exceptions.Api;
 using OffLogs.Business.Extensions;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Entities.User;
 using OffLogs.Business.Test.Extensions;
 using Xunit;
 
@@ -68,11 +69,11 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.UserEmailsCont
         }
         
         [Fact]
-        public async Task CanNotAddIfTooMany()
+        public async Task ShouldReturnErrorIfPackageRestrictions()
         {
             UserEmailEntity fakeRecord;
             var user1 = await DataSeeder.CreateActivatedUser();
-            for (int i = 0; i < GlobalConstants.MaxUserEmailsCount + 1; i++)
+            for (int i = 0; i <= 5 + 1; i++)
             {
                 fakeRecord = DataFactory.UserEmailFactory().Generate();
                 fakeRecord.SetUser(user1.Original); 
@@ -87,7 +88,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.UserEmailsCont
             });
             // Assert
             var responseData = await response.GetJsonErrorAsync();
-            Assert.Equal(new TooManyRecordsException().GetTypeName(), responseData.Type);
+            Assert.Equal(new PaymentPackageRestrictionException().GetTypeName(), responseData.Type);
         }
     }
 }

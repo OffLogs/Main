@@ -7,6 +7,7 @@ using NHibernate.Mapping.Attributes;
 using NHibernate.Type;
 using OffLogs.Business.Common.Constants;
 using OffLogs.Business.Common.Utils;
+using OffLogs.Business.Orm.Entities.User;
 
 namespace OffLogs.Business.Orm.Entities
 {

@@ -124,7 +124,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.ApplicationCon
             // Assert
             var responseData = await response.GetJsonDataAsync<PaginatedListDto<ApplicationListItemDto>>();
             Assert.Equal(1, responseData.TotalPages);
-            Assert.Equal(17, responseData.Items.Count);
+            Assert.Equal(19, responseData.Items.Count);
         }
         #endregion
         

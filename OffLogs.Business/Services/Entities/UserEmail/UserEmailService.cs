@@ -12,11 +12,13 @@ using OffLogs.Business.Helpers;
 using OffLogs.Business.Notifications.Senders.User;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Entities.User;
 using OffLogs.Business.Orm.Exceptions;
 using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Orm.Queries.Criterias;
 using OffLogs.Business.Orm.Queries.Entities.User;
 using OffLogs.Business.Services.Kafka;
+using OffLogs.Business.Services.Monetization;
 using Queries.Abstractions;
 
 namespace OffLogs.Business.Services.Entities.UserEmail
@@ -27,6 +29,7 @@ namespace OffLogs.Business.Services.Entities.UserEmail
         private readonly ILogger<UserEmailService> _logger;
         private readonly IAsyncQueryBuilder _queryBuilder;
         private readonly IKafkaProducerService _kafkaProducerService;
+        private readonly IRestrictionValidationService _restrictionValidationService;
 
         private readonly string _frontendUrl;
         
@@ -35,18 +38,22 @@ namespace OffLogs.Business.Services.Entities.UserEmail
             ILogger<UserEmailService> logger,
             IAsyncQueryBuilder queryBuilder,
             IKafkaProducerService kafkaProducerService,
-            IConfiguration configuration
+            IConfiguration configuration,
+            IRestrictionValidationService restrictionValidationService
         )
         {
             _commandBuilder = commandBuilder;
             _logger = logger;
             _queryBuilder = queryBuilder;
             _kafkaProducerService = kafkaProducerService;
+            _restrictionValidationService = restrictionValidationService;
             _frontendUrl = configuration.GetValue<string>("App:FrontendUrl");
         }
 
         public async Task<UserEmailEntity> AddAsync(UserEntity user, string email)
         {
+            _restrictionValidationService.CheckUserEmailsAddingAvailable(user);
+            
             var userEmail = new UserEmailEntity
             {
                 Email = email,
@@ -60,10 +67,6 @@ namespace OffLogs.Business.Services.Entities.UserEmail
                 throw new RecordIsExistsException();
             }
             userEmail.SetUser(user);
-            if (user.Emails.Count > GlobalConstants.MaxUserEmailsCount)
-            {
-                throw new TooManyRecordsException();
-            }
             await _commandBuilder.SaveAsync(user);
             
             await _kafkaProducerService.ProduceNotificationMessageAsync(

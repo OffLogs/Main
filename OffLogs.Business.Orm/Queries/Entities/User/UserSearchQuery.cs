@@ -4,7 +4,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using NHibernate.Criterion;
 using NHibernate.Linq;
+using OffLogs.Business.Common.Constants;
+using OffLogs.Business.Common.Utils;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Entities.User;
 using Persistence.Transactions.Behaviors;
 
 namespace OffLogs.Business.Orm.Queries.Entities.User
@@ -20,14 +23,23 @@ namespace OffLogs.Business.Orm.Queries.Entities.User
         {
             UserEntity userAlias = null;
             var query = TransactionProvider.CurrentSession
-                .QueryOver<UserEntity>(() => userAlias)
-                .Where(
+                .QueryOver<UserEntity>(() => userAlias);
+
+            if (!string.IsNullOrWhiteSpace(criterion.Search))
+            {
+                query = query.And(
                     Restrictions.Or(
                         Restrictions.InsensitiveLike("UserName", criterion.Search, MatchMode.Anywhere),
                         Restrictions.InsensitiveLike("Email", criterion.Search, MatchMode.Anywhere)
                     )
                 );
-
+            }
+            
+            if (criterion.Status.HasValue)
+            {
+                query = query.And(user => user.Status == criterion.Status.Value);
+            }
+            
             if (criterion.ExceludeIds != null && criterion.ExceludeIds.Count() > 0)
             {
                 query = query.And(
@@ -36,9 +48,11 @@ namespace OffLogs.Business.Orm.Queries.Entities.User
                     )
                 );
             }
+            
             return await query
-                .Take(10)
-                .ListAsync();
+                .Take(GlobalConstants.ListPageSize)
+                .Skip(PaginationUtils.CalculateOffset(criterion.Page))
+                .ListAsync(cancellationToken);
         }
     }
 }

@@ -33,9 +33,9 @@ namespace OffLogs.Api.Frontend.Controllers.Log.Actions.Log
 
         public async Task ExecuteAsync(AddCommonLogsRequest request)
         {
-            await _throttleRequestsService.CheckOrThrowExceptionAsync(
-                RequestItemType.Application,
-                _requestService.GetApplicationIdFromJwt()
+            await _throttleRequestsService.CheckOrThrowExceptionByApplicationIdAsync(
+                _requestService.GetApplicationIdFromJwt(),
+                _requestService.GetUserIdFromJwt()
             );
 
             var application = new ApplicationEntity(

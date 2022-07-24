@@ -10,10 +10,14 @@ using OffLogs.Api.Common.Dto.Entities;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.Notifications.Rule;
 using OffLogs.Api.Tests.Integration.Core.Models;
 using OffLogs.Business.Common.Constants;
+using OffLogs.Business.Common.Constants.Monetization;
 using OffLogs.Business.Common.Constants.Notificatiions;
+using OffLogs.Business.Common.Exceptions.Api;
+using OffLogs.Business.Extensions;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Entities.Notifications;
+using OffLogs.Business.Orm.Entities.User;
 using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Services.Entities.NotificationRule;
 using OffLogs.Business.Test.Extensions;
@@ -24,18 +28,18 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
     public partial class SetRuleTests : MyApiIntegrationTest
     {
         private const string Url = MainApiUrl.NotificationRulesSet;
-
-        private const int DefaultPeriod = 300;
-
+        
         private readonly Faker<MessageTemplateEntity> _messageFactory;
         private readonly Faker<NotificationRuleEntity> _ruleFactory;
         private readonly INotificationRuleService _notificationRuleService;
         private readonly MessageTemplateEntity _expectedMessageTemplate;
         private UserTestModel _userModel { get; set; }
+        private UserEntity _user { get; set; }
 
         public SetRuleTests(ApiCustomWebApplicationFactory factory) : base(factory)
         {
             _userModel = DataSeeder.CreateActivatedUser().Result;
+            _user = _userModel.Original;
             _messageFactory = DataFactory.MessageTemplateFactory();
             _ruleFactory = DataFactory.NotificationRuleFactory();
             _expectedMessageTemplate = _messageFactory.Generate();
@@ -68,7 +72,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             // Act
             var response = await PostRequestAsync(Url, _userModel.ApiToken, new SetRuleRequest
             {
-                Period = DefaultPeriod,
+                Period = _user.ActivePaymentPackageType.GetRestrictions().MinNotificationRuleTimeout,
                 ApplicationId = _userModel.ApplicationId,
                 Type = NotificationType.Email.ToString(),
                 LogicOperator = expectedOperator.ToString(),
@@ -95,7 +99,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             // Act
             var response = await PostRequestAsync(Url, _userModel.ApiToken, new SetRuleRequest
             {
-                Period = DefaultPeriod,
+                Period = _user.ActivePaymentPackageType.GetRestrictions().MinNotificationRuleTimeout,
                 ApplicationId = _userModel.ApplicationId,
                 Type = NotificationType.Email.ToString(),
                 LogicOperator = expectedOperator.ToString(),
@@ -104,10 +108,14 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
                 Title = expectedTitle
             });
             // Assert
+            await response.GetJsonDataAsync<NotificationRuleDto>();
             response.EnsureSuccessStatusCode();
             var data = await response.GetJsonDataAsync<NotificationRuleDto>();
             Assert.True(data.Id > 0);
-            Assert.Equal(DefaultPeriod, data.Period);
+            Assert.Equal(
+                _user.ActivePaymentPackageType.GetRestrictions().MinNotificationRuleTimeout, 
+                data.Period
+            );
             Assert.Equal(_expectedMessageTemplate.Id, data.MessageTemplate.Id);
             Assert.Equal(conditions.Count, data.Conditions.Count);
             Assert.Equal(expectedOperator, data.LogicOperator);
@@ -130,7 +138,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             var response = await PostRequestAsync(Url, _userModel.ApiToken, new SetRuleRequest
             {
                 Id = 0,
-                Period = DefaultPeriod,
+                Period = _user.ActivePaymentPackageType.GetRestrictions().MinNotificationRuleTimeout,
                 ApplicationId = _userModel.ApplicationId,
                 Type = NotificationType.Email.ToString(),
                 LogicOperator = expectedOperator.ToString(),
@@ -142,7 +150,10 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             response.EnsureSuccessStatusCode();
             var data = await response.GetJsonDataAsync<NotificationRuleDto>();
             Assert.True(data.Id > 0);
-            Assert.Equal(DefaultPeriod, data.Period);
+            Assert.Equal(
+                _user.ActivePaymentPackageType.GetRestrictions().MinNotificationRuleTimeout,
+                data.Period
+            );
             Assert.Equal(_expectedMessageTemplate.Id, data.MessageTemplate.Id);
             Assert.Equal(conditions.Count, data.Conditions.Count);
             Assert.Equal(expectedOperator, data.LogicOperator);
@@ -233,7 +244,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             // Act
             var response = await PostRequestAsync(Url, _userModel.ApiToken, new SetRuleRequest
             {
-                Period = DefaultPeriod,
+                Period = _user.ActivePaymentPackageType.GetRestrictions().MinNotificationRuleTimeout,
                 ApplicationId = _userModel.ApplicationId,
                 Type = NotificationType.Email.ToString(),
                 LogicOperator = expectedOperator.ToString(),
@@ -266,7 +277,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             // Act
             var response = await PostRequestAsync(Url, _userModel.ApiToken, new SetRuleRequest
             {
-                Period = DefaultPeriod,
+                Period = _user.ActivePaymentPackageType.GetRestrictions().MinNotificationRuleTimeout,
                 ApplicationId = _userModel.ApplicationId,
                 Type = NotificationType.Email.ToString(),
                 LogicOperator = expectedOperator.ToString(),
@@ -302,7 +313,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             // Act
             var response = await PostRequestAsync(Url, _userModel.ApiToken, new SetRuleRequest
             {
-                Period = DefaultPeriod,
+                Period = _user.ActivePaymentPackageType.GetRestrictions().MinNotificationRuleTimeout,
                 ApplicationId = _userModel.ApplicationId,
                 Type = NotificationType.Email.ToString(),
                 LogicOperator = expectedOperator.ToString(),
@@ -345,7 +356,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             var response = await PostRequestAsync(Url, _userModel.ApiToken, new SetRuleRequest
             {
                 Id = actualRule.Id,
-                Period = DefaultPeriod,
+                Period = _user.ActivePaymentPackageType.GetRestrictions().MinNotificationRuleTimeout,
                 ApplicationId = _userModel.ApplicationId,
                 Type = NotificationType.Email.ToString(),
                 LogicOperator = expectedOperator.ToString(),
@@ -369,11 +380,45 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.Notifications.
             Assert.Equal(0, rule.Emails.Count);
         }
         
+        [Fact]
+        public async Task ShouldReturnErrorIfPackageRestrictions()
+        {
+            var expectedPeriod = 2000;
+            var expectedOperator = LogicOperatorType.Conjunction;
+
+            for (int i = 0; i <= 4; i++)
+            {
+                await CreateRuleAsync();
+            }
+            
+            var conditions = new List<SetConditionRequest>()
+            {
+                new() { ConditionField = ConditionFieldType.LogLevel.ToString(), Value = "Information"},
+            };
+            
+            // Act
+            var response = await PostRequestAsync(Url, _userModel.ApiToken, new SetRuleRequest
+            {
+                Period = expectedPeriod,
+                ApplicationId = _userModel.ApplicationId,
+                Type = NotificationType.Email.ToString(),
+                LogicOperator = expectedOperator.ToString(),
+                TemplateId = _expectedMessageTemplate.Id,
+                Conditions = conditions,
+                Title = _ruleFactory.Generate().Title
+            });
+            // Assert
+            var responseData = await response.GetJsonErrorAsync();
+            Assert.Equal(new PaymentPackageRestrictionException().GetTypeName(), responseData.Type);
+        }
+        
         private async Task<NotificationRuleEntity> CreateRuleAsync(
             LogLevel logLevel = LogLevel.Information
         )
         {
-            var expectedPeriod = 5 * 60;
+            var expectedPeriod = _userModel.Original.ActivePaymentPackageType
+                .GetRestrictions()
+                .FavoriteLogsExpirationTimeout;
             var fakeRule = _ruleFactory.Generate();
 
             var conditions = new List<NotificationConditionEntity>();

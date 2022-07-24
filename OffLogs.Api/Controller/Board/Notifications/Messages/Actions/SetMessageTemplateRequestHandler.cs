@@ -11,6 +11,7 @@ using OffLogs.Business.Extensions;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Entities.Notifications;
+using OffLogs.Business.Orm.Entities.User;
 using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Services.Api;
 using Queries.Abstractions;

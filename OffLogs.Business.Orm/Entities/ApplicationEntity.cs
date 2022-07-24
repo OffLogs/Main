@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Domain.Abstractions;
 using NHibernate.Mapping.Attributes;
 using NHibernate.Type;
+using OffLogs.Business.Orm.Entities.User;
 
 namespace OffLogs.Business.Orm.Entities
 {
@@ -17,7 +18,7 @@ namespace OffLogs.Business.Orm.Entities
             ClassType = typeof(UserEntity), 
             Column = "user_id", 
             Lazy = Laziness.False,
-            Cascade = "delete-orphan"
+            Cascade = "none"
         )]
         public virtual UserEntity User { get; set; }
 
@@ -69,9 +70,8 @@ namespace OffLogs.Business.Orm.Entities
             PublicKey = publicKey ?? throw new ArgumentNullException(nameof(publicKey));
         }
         
-        public ApplicationEntity(UserEntity user, string name)
+        public ApplicationEntity(string name)
         {
-            User = user;
             Name = name;
             ApiToken = "tempToken";
             CreateTime = DateTime.UtcNow;

@@ -1,6 +1,7 @@
 ﻿using Commands.Abstractions;
 using OffLogs.Business.Orm.Entities;
 using System;
+using OffLogs.Business.Orm.Entities.User;
 
 namespace OffLogs.Business.Orm.Commands.Entities.Application
 {

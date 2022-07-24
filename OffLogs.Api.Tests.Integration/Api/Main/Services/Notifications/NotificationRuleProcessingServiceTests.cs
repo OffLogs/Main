@@ -5,6 +5,7 @@ using Bogus;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate.Linq;
 using OffLogs.Business.Common.Constants;
+using OffLogs.Business.Common.Constants.Monetization;
 using OffLogs.Business.Common.Constants.Notificatiions;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities.Notifications;
@@ -35,11 +36,14 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Notifications
 
             var expectedCount = 2;
             var expectedLogLevel = LogLevel.Information;
-            var expectedPeriod = 15 * 60; // 5 minutes
-            var expectedExecutionTime = DateTime.UtcNow.AddSeconds(-expectedPeriod - 5);
-
             var expectedRule = await CreateRule();
             expectedRule.IsExecuting = false;
+            
+            var expectedPeriod = expectedRule.User.ActivePaymentPackageType
+                .GetRestrictions()
+                .MinNotificationRuleTimeout;
+            var expectedExecutionTime = DateTime.UtcNow.AddSeconds(-expectedPeriod - 5);
+            
             expectedRule.Period = expectedPeriod;
             expectedRule.LastExecutionTime = expectedExecutionTime;
             await CommandBuilder.SaveAsync(expectedRule);
@@ -70,10 +74,13 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Notifications
 
             var expectedCount = 2;
             var expectedLogLevel = LogLevel.Information;
-            var expectedPeriod = 15 * 60; // 5 minutes
-            var expectedExecutionTime = DateTime.UtcNow.AddSeconds(-expectedPeriod - 5);
-
+            
             var expectedRule = await CreateRule();
+            
+            var expectedPeriod = expectedRule.User.ActivePaymentPackageType
+                .GetRestrictions()
+                .MinNotificationRuleTimeout; // 5 minutes
+            var expectedExecutionTime = DateTime.UtcNow.AddSeconds(-expectedPeriod - 5);
             
             var emailFactory = DataFactory.UserEmailFactory();
             var userEmail1 = await UserEmailService.AddAsync(expectedRule.User, emailFactory.Generate().Email);
@@ -128,7 +135,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Notifications
             return await _notificationRuleService.SetRule(
                 user.Original,
                 _ruleFactory.Generate().Title,
-                expectedPeriod,
+                user.ActivePaymentPackageType.GetRestrictions().MinNotificationRuleTimeout,
                 logicOperatorType,
                 NotificationType.Email,
                 message,

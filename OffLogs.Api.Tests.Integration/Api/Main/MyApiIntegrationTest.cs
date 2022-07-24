@@ -24,6 +24,7 @@ using OffLogs.Business.Services.Jwt;
 using OffLogs.Business.Services.Kafka;
 using OffLogs.Business.Services.Kafka.Consumer;
 using OffLogs.Business.Services.Redis;
+using OffLogs.Business.Services.Monetization;
 using OffLogs.Business.Services.Security;
 using Persistence.Transactions.Behaviors;
 using Queries.Abstractions;
@@ -54,6 +55,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
         protected readonly IUserService UserService;
         protected readonly IUserEmailService UserEmailService;
         protected readonly IApplicationService ApplicationService;
+        protected readonly IPaymentPackageService PaymentPackageService;
 
         protected readonly IAccessPolicyService AccessPolicyService;
 
@@ -84,6 +86,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main
             LogAssembler = _factory.Services.GetRequiredService<ILogAssembler>();
             UserEmailService = _factory.Services.GetRequiredService<IUserEmailService>();
             RedisClient = _factory.Services.GetRequiredService<IRedisClient>();
+            PaymentPackageService = _factory.Services.GetRequiredService<IPaymentPackageService>();
 
             ThrottleRequestsService.Clean();
             EmailSendingService?.Reset();

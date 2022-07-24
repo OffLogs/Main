@@ -7,6 +7,7 @@ using OffLogs.Business.Common.Exceptions.Api;
 using OffLogs.Business.Extensions;
 using OffLogs.Business.Orm.Commands.Context;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Entities.User;
 using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Test.Extensions;
 using Xunit;
@@ -36,7 +37,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Controller.Board.UserEmailsCont
         [Fact]
         public async Task ShouldReceiveList()
         {
-            var recordsCount = GlobalConstants.MaxUserEmailsCount - 3;
+            var recordsCount = 2;
             
             var userModel = await DataSeeder.CreateActivatedUser();
             UserEmailEntity fakeRecord;

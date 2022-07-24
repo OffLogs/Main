@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Domain.Abstractions;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Entities.User;
 
 namespace OffLogs.Business.Services.Entities.UserEmail
 {

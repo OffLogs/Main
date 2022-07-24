@@ -7,6 +7,7 @@ using AutoMapper;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Board.UserEmail;
 using OffLogs.Business.Common.Exceptions.Api;
 using OffLogs.Business.Orm.Entities;
+using OffLogs.Business.Orm.Entities.User;
 using OffLogs.Business.Orm.Queries;
 using OffLogs.Business.Orm.Queries.Entities.User;
 using OffLogs.Business.Services.Api;

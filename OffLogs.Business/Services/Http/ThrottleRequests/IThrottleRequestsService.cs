@@ -9,7 +9,7 @@ namespace OffLogs.Business.Services.Http.ThrottleRequests
 {
     public interface IThrottleRequestsService
     {
-        Task<int> CheckOrThrowExceptionAsync(RequestItemType type, long itemId, int maxCounter = 500);
+        Task<int> CheckOrThrowExceptionByApplicationIdAsync(long applicationId, long userId);
 
         Task<int> CheckOrThrowExceptionAsync(RequestItemType type, long itemId, TimeSpan countingPeriod, int maxCounter = 500);
         void Clean();

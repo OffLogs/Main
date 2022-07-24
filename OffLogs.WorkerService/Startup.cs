@@ -24,6 +24,7 @@ namespace OffLogs.WorkerService
             services.AddHostedService<Services.LogsDeletionHostedService>();
             services.AddHostedService<Services.NotificationProcessingHostedService>();
             services.AddHostedService<Services.NotificationRuleProcessingHostedService>();
+            services.AddHostedService<Services.Redis.UserInfoSeedingHostedService>();
         }
 
         public void ConfigureContainer(ContainerBuilder containerBuilder)

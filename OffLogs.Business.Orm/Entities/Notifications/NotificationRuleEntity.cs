@@ -4,6 +4,7 @@ using Domain.Abstractions;
 using NHibernate.Mapping.Attributes;
 using NHibernate.Type;
 using OffLogs.Business.Common.Constants.Notificatiions;
+using OffLogs.Business.Orm.Entities.User;
 
 namespace OffLogs.Business.Orm.Entities.Notifications
 {

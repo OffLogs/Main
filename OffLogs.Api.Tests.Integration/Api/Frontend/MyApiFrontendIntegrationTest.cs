@@ -54,6 +54,16 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend
             GC.SuppressFinalize(this);
         }
         
+        #region Db
+        
+        protected async Task CommitDbChanges()
+        { 
+            await DbSessionProvider.PerformCommitAsync();
+            DbSessionProvider.CurrentSession.Clear();
+        }
+        
+        #endregion
+        
         public async Task<HttpResponseMessage> PostRequestAsAnonymousAsync(string url, object data = null)
         {
             var client = _factory.CreateClient();

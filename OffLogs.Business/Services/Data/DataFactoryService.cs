@@ -5,6 +5,7 @@ using OffLogs.Business.Common.Constants.Notificatiions;
 using OffLogs.Business.Common.Utils;
 using OffLogs.Business.Orm.Entities;
 using OffLogs.Business.Orm.Entities.Notifications;
+using OffLogs.Business.Orm.Entities.User;
 
 namespace OffLogs.Business.Services.Data
 {
@@ -60,7 +61,7 @@ namespace OffLogs.Business.Services.Data
                 );
         }
         
-        public Faker<ApplicationEntity> ApplicationFactory(UserEntity user)
+        public Faker<ApplicationEntity> ApplicationFactory()
         {
             return new Faker<ApplicationEntity>()
                 .RuleFor(
@@ -86,10 +87,6 @@ namespace OffLogs.Business.Services.Data
                 .RuleFor(
                     entity => entity.UpdateTime,
                     (faker) => faker.Date.Past().ToUniversalTime()
-                )
-                .RuleFor(
-                    entity => entity.User,
-                    (_) => user
                 );
         }
         

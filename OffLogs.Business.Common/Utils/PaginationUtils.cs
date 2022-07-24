@@ -1,7 +1,7 @@
 ﻿using System;
 using OffLogs.Business.Common.Constants;
 
-namespace OffLogs.Web.Core.Utils;
+namespace OffLogs.Business.Common.Utils;
 
 public static class PaginationUtils
 {
@@ -9,5 +9,11 @@ public static class PaginationUtils
     {
         var page = (int) Math.Ceiling((decimal) (skip / pageSize));
         return page == 0 ? 1 : page + 1;
+    }
+    
+    public static int CalculateOffset(int page, int pageSize = GlobalConstants.ListPageSize)
+    {
+        page = page - 1;
+        return (int)((page <= 0 ? 0 : page) * pageSize);
     }
 }
