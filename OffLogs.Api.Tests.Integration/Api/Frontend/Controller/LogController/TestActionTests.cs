@@ -35,7 +35,6 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
         {
             // Arrange
             var user = await DataSeeder.CreateActivatedUser();
-
             // Act
             var logs = new List<object>()
             {
