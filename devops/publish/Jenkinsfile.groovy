@@ -74,6 +74,9 @@ node('vizit-mainframe-k8s-master') {
     }
 
     stage('Set environment vars') {    
+        // Redis
+        envVariables.put('Redis__Server', '192.168.110.6:6379')
+    
         // Kafka
         envVariables.put('Kafka__Servers', '192.168.110.6:29092,192.168.110.6:29093')
         envVariables.put('Kafka__ProducerId', 'offlogs-reducer')
