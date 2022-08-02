@@ -35,11 +35,20 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Log
             var statisticList = await QueryBuilder.For<ICollection<LogStatisticForNowDto>>()
                 .WithAsync(new GetByApplicationOrUserCriteria(userModel.Id));
 
-            Assert.Contains(statisticList, item => item.LogLevel == LogLevel.Error && item.Count >= expectedCounter);
-            Assert.Contains(statisticList, item => item.LogLevel == LogLevel.Information && item.Count >= expectedCounter);
-            Assert.Contains(statisticList, item => item.LogLevel == LogLevel.Warning && item.Count >= expectedCounter);
-            Assert.Contains(statisticList, item => item.LogLevel == LogLevel.Fatal && item.Count >= expectedCounter);
-            Assert.Contains(statisticList, item => item.LogLevel == LogLevel.Debug && item.Count >= expectedCounter);
+            var actualGrouped = statisticList.GroupBy(item => item.LogLevel).ToList();
+
+            var groupedLogStatistic = actualGrouped
+                .Select(item => item.ToList())
+                .ToList();
+            Assert.Contains(actualGrouped, item => item.Key == LogLevel.Error);
+            Assert.Contains(actualGrouped, item => item.Key == LogLevel.Warning);
+            Assert.Contains(actualGrouped, item => item.Key == LogLevel.Fatal);
+            Assert.Contains(actualGrouped, item => item.Key == LogLevel.Debug);
+            Assert.Contains(actualGrouped, item => item.Key == LogLevel.Information);
+            foreach (var logStatistic in groupedLogStatistic)
+            {
+                Assert.True(logStatistic.Sum(logItem => logItem.Count) >= expectedCounter);
+            }
         }
 
         [Fact]

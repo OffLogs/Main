@@ -115,7 +115,7 @@ namespace OffLogs.Business.Services.Data
                 )
                 .RuleFor(
                     entity => entity.CreateTime,
-                    (faker) => DateTime.UtcNow
+                    (faker) => DateTime.UtcNow.AddSeconds(-1)
                 );
         }
 
