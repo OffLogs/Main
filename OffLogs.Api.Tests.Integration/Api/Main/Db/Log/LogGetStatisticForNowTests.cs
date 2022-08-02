@@ -49,6 +49,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Db.Log
             {
                 Assert.True(logStatistic.Sum(logItem => logItem.Count) >= expectedCounter);
             }
+            
         }
 
         [Fact]
