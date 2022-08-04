@@ -4,6 +4,7 @@ node('testing-node') {
     ])
 
 
+
     stage("Test test") {
         checkout scm
         updateGithubCommitStatus("Hello message", "SUCCESS");
