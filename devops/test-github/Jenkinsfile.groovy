@@ -3,7 +3,6 @@ node('testing-node') {
         disableConcurrentBuilds(),
     ])
 
-
     stage("Test test") {
         checkout scm
         updateGithubCommitStatus("Hello message", "SUCCESS");
