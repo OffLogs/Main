@@ -38,11 +38,11 @@ node('testing-node') {
         'Hibernate__IsShowSql': "false"
     ]
 
-    preconfigureAndStart(({ networkId ->
-        runStage(Stage.UPDATE_GIT_STATUS) {
-            updateGithubCommitStatus('Set PENDING status', 'PENDING')
-        }
+    runStage(Stage.UPDATE_GIT_STATUS) {
+        updateGithubCommitStatus('Set PENDING status', 'PENDING')
+    }
 
+    preconfigureAndStart(({ networkId ->
         runStage(Stage.CLEAN) {
             // Clean before build
             cleanWs()
