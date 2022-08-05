@@ -118,10 +118,10 @@ node('testing-node') {
             runStage(Stage.RUN_INTEGRATION_TESTS) {
                 sh 'dotnet test --logger trx --verbosity=normal --results-directory /tmp/test ./OffLogs.Api.Tests.Integration'
             }
+        }
 
-            runStage(Stage.UPDATE_GIT_STATUS) {
-                updateGithubCommitStatus('Set SUCCESS status', 'SUCCESS')
-            }
+        runStage(Stage.UPDATE_GIT_STATUS) {
+            updateGithubCommitStatus('Set SUCCESS status', 'SUCCESS')
         }
     } as Closure<String>))
 }
