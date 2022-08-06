@@ -10,9 +10,6 @@ node('testing-node') {
     String testScriptParameters = '--logger=trx --no-restore --no-build --results-directory=./results'
     String postresUserPassword = 'postgres'
 
-    String commitHash = getCommitSha()
-    String repositoryUrl = getRepoURL()
-
     Map<String, String> containerEnvVars = [
         // Zookeeper
         'ZOOKEEPER_CLIENT_PORT': 2181,
@@ -41,17 +38,17 @@ node('testing-node') {
         'Hibernate__IsShowSql': "false"
     ]
 
-    runStage(Stage.UPDATE_GIT_STATUS, repositoryUrl, commitHash) {
-        updateGithubCommitStatus('Set PENDING status', 'PENDING', repositoryUrl, commitHash)
+    runStage(Stage.UPDATE_GIT_STATUS) {
+        updateGithubCommitStatus('Set PENDING status', 'PENDING')
     }
 
     preconfigureAndStart(({ networkId ->
-        runStage(Stage.CLEAN, repositoryUrl, commitHash) {
+        runStage(Stage.CLEAN) {
             // Clean before build
             cleanWs()
         }
     
-        runStage(Stage.CHECKOUT, repositoryUrl, commitHash) {
+        runStage(Stage.CHECKOUT) {
             sh """
                 git config --global http.postBuffer 2048M
                 git config --global http.maxRequestBuffer 1024M
@@ -64,7 +61,7 @@ node('testing-node') {
         String containerEnvVarString = mapToEnvVars(containerEnvVars)
         testImage.inside(containerEnvVarString.concat(" --network=$networkId")) {
 
-            runStage(Stage.BUILD, repositoryUrl, commitHash) {
+            runStage(Stage.BUILD) {
                 sh 'echo "{}" > appsettings.Local.json'
                 sh 'echo "{}" > OffLogs.Api.Tests.Integration/appsettings.Local.json'
                 sh 'echo "{}" > OffLogs.Migrations/appsettings.Local.json'
@@ -72,25 +69,25 @@ node('testing-node') {
                 sh 'dotnet build --'
             }
 
-            runStage(Stage.ASSIGN_PERMISSIONS, repositoryUrl, commitHash) {
+            runStage(Stage.ASSIGN_PERMISSIONS) {
                 sh 'chmod -R 700 $KAFKA_HOME'
                 sh 'chmod -R 700 ./devops/common/kafka/boot.sh'
                 sh 'chmod -R 770 ./devops/common/zookeeper/boot.sh'
             }
 
-            runStage(Stage.INIT_ZOOKEEPER, repositoryUrl, commitHash) {
+            runStage(Stage.INIT_ZOOKEEPER) {
                 sh './devops/common/zookeeper/boot.sh &'
                 sh 'until nc -z localhost 2181; do sleep 1; done'
                 echo "Zookeeper is started"
             }
 
-            runStage(Stage.INIT_KAFKA, repositoryUrl, commitHash) {
+            runStage(Stage.INIT_KAFKA) {
                 sh './devops/common/kafka/boot.sh &'
                 sh 'until nc -z localhost 9094; do sleep 1; done'
                 echo "Kafka is started"
             }
 
-            runStage(Stage.INIT_DB, repositoryUrl, commitHash) {
+            runStage(Stage.INIT_DB) {
                 sh 'pg_ctlcluster 12 main start'
                 sh 'pg_isready'
                 sh "sudo -u postgres psql -c \"ALTER USER postgres PASSWORD '$postresUserPassword';\""
@@ -98,7 +95,7 @@ node('testing-node') {
                 echo 'Postgre SQL is started'
             }
 
-            runStage(Stage.INIT_REDIS, repositoryUrl, commitHash) {
+            runStage(Stage.INIT_REDIS) {
                 sh '/usr/bin/redis-server &'
                 sh 'until nc -z localhost 6379; do sleep 1; done'
                 echo "Redis is started"
@@ -106,24 +103,24 @@ node('testing-node') {
                 sh 'netstat -tulpn | grep LISTEN'
             }
 
-            runStage(Stage.RUN_MIGRATIONS, repositoryUrl, commitHash) {
+            runStage(Stage.RUN_MIGRATIONS) {
                 sh 'dotnet run --no-restore --no-build --project ./OffLogs.Migrations'
             }
 
-            runStage(Stage.RUN_API_UNIT_TESTS, repositoryUrl, commitHash) {
+            runStage(Stage.RUN_API_UNIT_TESTS) {
                 sh 'dotnet test --logger trx --verbosity=normal --results-directory /tmp/test ./OffLogs.Api.Tests.Unit'
             }
             
-            runStage(Stage.RUN_BUSINESS_LOGIC_UNIT_TESTS, repositoryUrl, commitHash) {
+            runStage(Stage.RUN_BUSINESS_LOGIC_UNIT_TESTS) {
                 sh 'dotnet test --logger trx --verbosity=normal --results-directory /tmp/test ./OffLogs.Business.Common.Tests.Unit'
             }
                         
-            runStage(Stage.RUN_INTEGRATION_TESTS, repositoryUrl, commitHash) {
+            runStage(Stage.RUN_INTEGRATION_TESTS) {
                 sh 'dotnet test --logger trx --verbosity=normal --results-directory /tmp/test ./OffLogs.Api.Tests.Integration'
             }
 
-            runStage(Stage.UPDATE_GIT_STATUS, repositoryUrl, commitHash) {
-                updateGithubCommitStatus('Set SUCCESS status', 'SUCCESS', repositoryUrl, commitHash)
+            runStage(Stage.UPDATE_GIT_STATUS) {
+                updateGithubCommitStatus('Set SUCCESS status', 'SUCCESS')
             }
         }
     } as Closure<String>))
@@ -178,24 +175,21 @@ def preconfigureAndStart(Closure<String> inner) {
     try {
         sh "docker network rm ${networkId}"
     } catch(Exception exception) {
+        updateGithubCommitStatus(exception.getMessage(), 'ERROR')
         println exception.getMessage()
     }
     try {
         sh "docker network create ${networkId}"
-        gitlabBuilds(builds: Stage.toListOfStrings()) {
-            inner.call(networkId)
-        }
     } finally {
         sh "docker network rm ${networkId}"
     }
 }
 
-def runStage(Stage stageAction, Closure callback, String repositoryUrl, String commitHash) {
+def runStage(Stage stageAction, Closure callback) {
     stage(stageAction.toString()) {
         try {
             callback()
         } catch (Exception e) {
-            updateGithubCommitStatus(e.getMessage(), 'ERROR', repositoryUrl, commitHash)
             throw new Exception(e.getMessage())
         }
     }
@@ -211,7 +205,10 @@ def getCommitSha() {
   return readFile(".git/current-commit").trim()
 }
 
-def updateGithubCommitStatus(String message, String state, String repositoryUrl, String commitHash) {
+def updateGithubCommitStatus(String message, String state) {
+        String commitHash = getCommitSha()
+        String repositoryUrl = getRepoURL()
+
         // workaround https://issues.jenkins-ci.org/browse/JENKINS-38674
         step([
             $class: 'GitHubCommitStatusSetter',
