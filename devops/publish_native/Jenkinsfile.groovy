@@ -28,6 +28,12 @@ properties([
 node('lampego-web-1') {
     env.ENVIRONMENT = "Development"
 
+    stage('CleanUp Docker') {
+        sh """
+            docker image prune -f
+        """
+    }
+
     stage('Checkout') {
         // cleanWs()
         sh """
