@@ -42,7 +42,7 @@ namespace OffLogs.Api.Frontend.Di.Autofac.Modules
                 .RegisterType<LogAssembler>()
                 .As<ILogAssembler>()
                 .InstancePerLifetimeScope();
-            
+
             builder
                 .RegisterAssemblyTypes(typeof(ApiFrontendAssemblyMarker).Assembly)
                 .AsClosedTypesOf(typeof(IAsyncRequestHandler<>))
