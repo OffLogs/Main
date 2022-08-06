@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Web;
 using OffLogs.Api.Common.Dto.RequestsAndResponses.Public.User;
 using OffLogs.Business.Common.Exceptions.Api;
 using OffLogs.Business.Common.Security;
@@ -27,7 +28,7 @@ public class VerifyActionTests : MyApiIntegrationTest
         await CommitDbChanges();
         
         // Act
-        var response = await GetRequestAsAnonymousAsync(Url + userEmail.VerificationToken);
+        var response = await GetRequestAsAnonymousAsync(Url + HttpUtility.HtmlEncode(userEmail.VerificationToken));
         // Assert
         response.EnsureSuccessStatusCode();
     }
