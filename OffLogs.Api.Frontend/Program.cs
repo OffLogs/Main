@@ -1,12 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using OffLogs.Business.Helpers;
 using Serilog;
 
@@ -16,11 +11,7 @@ namespace OffLogs.Api.Frontend
     {
         public static void Main(string[] args)
         {
-            var configuration = ApplicationHelper.BuildConfiguration();
-            
-            using var log = new LoggerConfiguration()
-                .ReadFrom.Configuration(configuration)
-                .CreateLogger();
+            using var log = ApplicationHelper.BuildSerilogInstance();
             Log.Logger = log;
 
             try

@@ -17,15 +17,14 @@ namespace OffLogs.Api
     {    
         public static void Main(string[] args)
         {
-            var configuration = ApplicationHelper.BuildConfiguration();
-            
-            using var log = new LoggerConfiguration()
-                .ReadFrom.Configuration(configuration)
-                .CreateLogger();
+            using var log = ApplicationHelper.BuildSerilogInstance();
             Log.Logger = log;
+            
+            Serilog.Debugging.SelfLog.Enable(Console.WriteLine);
 
             try
             {
+                Log.Logger.Error("Testttt aaa");
                 CreateHostBuilder(args).Build().Run();
             }
             catch (Exception e)

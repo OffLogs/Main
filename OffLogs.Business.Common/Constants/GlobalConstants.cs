@@ -2,6 +2,18 @@ namespace OffLogs.Business.Common.Constants
 {
     public static class GlobalConstants
     {
+        public static bool IsDebugMode
+        {
+            get
+            {
+#if DEBUG
+                return true;
+#endif
+                return false;
+            }
+
+        }
+        
         /// <summary>
         /// Page size
         /// </summary>
