@@ -22,12 +22,12 @@ namespace OffLogs.Api.Tests.Integration.Api.Frontend.Controller.LogController
         private const string Url = "/log/add/test";
 
         private readonly IPaymentPackageService _paymentPackageService;
-        private readonly IUserInfoRedisClient _userInfoRedisClient;
+        private readonly IUserInfoProducerRedisClient _userInfoProducerRedisClient;
 
         public TestActionTests(ApiFrontendCustomWebApplicationFactory factory) : base(factory)
         {
             _paymentPackageService = _factory.Services.GetRequiredService<IPaymentPackageService>();
-            _userInfoRedisClient = _factory.Services.GetRequiredService<IUserInfoRedisClient>();
+            _userInfoProducerRedisClient = _factory.Services.GetRequiredService<IUserInfoProducerRedisClient>();
         }
 
         [Fact]

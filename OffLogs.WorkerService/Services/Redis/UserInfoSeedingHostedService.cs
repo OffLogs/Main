@@ -10,14 +10,14 @@ namespace OffLogs.WorkerService.Services.Redis
 {
     internal class UserInfoSeedingHostedService : ABackgroundService
     {
-        private readonly IUserInfoRedisClient _userInfoRedisClient;
+        private readonly IUserInfoProducerRedisClient _userInfoProducerRedisClient;
 
         public UserInfoSeedingHostedService(
             ILogger<ABackgroundService> logger,
-            IUserInfoRedisClient userInfoRedisClient
+            IUserInfoProducerRedisClient userInfoProducerRedisClient
         ) : base(logger)
         {
-            _userInfoRedisClient = userInfoRedisClient;
+            _userInfoProducerRedisClient = userInfoProducerRedisClient;
             ServiceName = "LogsProcessingHostedService";
         }
 
@@ -30,7 +30,7 @@ namespace OffLogs.WorkerService.Services.Redis
         protected override async Task DoWorkAsync(CancellationToken cancellationToken)
         {
             LogDebug($"Seeding of the Users info started: {DateTime.Now}");
-            await _userInfoRedisClient.SeedUsersPackages(cancellationToken);
+            await _userInfoProducerRedisClient.SeedUsersPackages(cancellationToken);
         }
     }
 }
