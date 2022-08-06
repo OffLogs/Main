@@ -110,7 +110,8 @@ namespace OffLogs.Api.Frontend
         {
             containerBuilder
                 .RegisterModule<ApiModule>()
-                .RegisterModule<KafkaModule>();
+                .RegisterModule<KafkaModule>()
+                .RegisterModule<RedisModule>();
         }
         
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
