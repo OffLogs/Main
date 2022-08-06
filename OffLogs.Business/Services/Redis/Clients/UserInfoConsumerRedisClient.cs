@@ -15,15 +15,12 @@ public class UserInfoConsumerRedisClient: IUserInfoConsumerRedisClient
     private readonly string _keyPattern = "offlogs_user_package_type_{0}";
     
     private readonly IRedisClient _redisClient;
-    private readonly IAsyncQueryBuilder _queryBuilder;
 
     public UserInfoConsumerRedisClient(
-        IRedisClient redisClient,
-        IAsyncQueryBuilder queryBuilder
+        IRedisClient redisClient
     )
     {
         _redisClient = redisClient;
-        _queryBuilder = queryBuilder;
     }
     
     public async Task<PaymentPackageType?> GetUsersPaymentPackageType(long userId)
