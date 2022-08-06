@@ -14,11 +14,6 @@ namespace OffLogs.Api.Frontend.Di.Autofac.Modules
                 .SingleInstance();            
             
             builder
-                .RegisterType<UserInfoProducerRedisClient>()
-                .As<IUserInfoProducerRedisClient>()
-                .InstancePerLifetimeScope();
-            
-            builder
                 .RegisterType<UserInfoConsumerRedisClient>()
                 .As<IUserInfoConsumerRedisClient>()
                 .InstancePerLifetimeScope();
