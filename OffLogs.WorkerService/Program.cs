@@ -16,11 +16,7 @@ namespace OffLogs.WorkerService
     {
         public static void Main(string[] args)
         {
-            var configuration = ApplicationHelper.BuildConfiguration();
-            
-            using var log = new LoggerConfiguration()
-                .ReadFrom.Configuration(configuration)
-                .CreateLogger();
+            using var log = ApplicationHelper.BuildSerilogInstance();
             Log.Logger = log;
 
             try

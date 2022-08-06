@@ -21,11 +21,11 @@ namespace OffLogs.Api.Controller.Public.Home
         ) : base(asyncRequestBuilder, commitPerformer, logger)
         {
         }
-        
+
         [HttpGet("/ping")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public Task<IActionResult> AddCommonLog(PingRequest request)
+        public Task<IActionResult> AddCommonLog([FromQuery] PingRequest request)
             => this.RequestAsync().For<PongResponse>().With(request);
 
         [HttpGet("/application-auth-ping")]

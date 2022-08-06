@@ -47,7 +47,8 @@ node('lampego-web-1') {
     }
 
     stage('Set environment vars') {    
-        envVariables.put('Serilog__MinimumLevel_Default', 'Debug')
+        envVariables.put('Serilog__IsSendEmailIfError', 'true')
+        envVariables.put('Serilog__MinimumLevel__Default', 'Debug')
 
         // Kafka
         envVariables.put('Kafka__Servers', '10.10.0.2:29092,10.10.0.2:29093')
@@ -72,7 +73,7 @@ node('lampego-web-1') {
             envVariables.put('Smtp__Password', PASSWORD)
             envVariables.put('Smtp__From__Name', 'OffLogs')
             envVariables.put('Smtp__From__Email', 'support@offlogs.com')
-            envVariables.put('Smtp__Port', '2525')
+            envVariables.put('Smtp__Port', '465')
             envVariables.put('Smtp__EnableSsl', 'true')
         }
         withCredentials([string(credentialsId: "offlogs_production_user_jwt", variable: 'AUTH_SECRET')]) {
