@@ -10,9 +10,6 @@ node('testing-node') {
     String testScriptParameters = '--logger=trx --no-restore --no-build --results-directory=./results'
     String postresUserPassword = 'postgres'
 
-    String commitHash = getCommitSha()
-    String repositoryUrl = getRepoURL()
-
     Map<String, String> containerEnvVars = [
         // Zookeeper
         'ZOOKEEPER_CLIENT_PORT': 2181,
@@ -121,10 +118,10 @@ node('testing-node') {
             runStage(Stage.RUN_INTEGRATION_TESTS) {
                 sh 'dotnet test --logger trx --verbosity=normal --results-directory /tmp/test ./OffLogs.Api.Tests.Integration'
             }
+        }
 
-            runStage(Stage.UPDATE_GIT_STATUS) {
-                updateGithubCommitStatus('Set SUCCESS status', 'SUCCESS')
-            }
+        runStage(Stage.UPDATE_GIT_STATUS) {
+            updateGithubCommitStatus('Set SUCCESS status', 'SUCCESS')
         }
     } as Closure<String>))
 }
@@ -182,9 +179,10 @@ def preconfigureAndStart(Closure<String> inner) {
     }
     try {
         sh "docker network create ${networkId}"
-        gitlabBuilds(builds: Stage.toListOfStrings()) {
-            inner.call(networkId)
-        }
+        inner(networkId)
+    } catch(Exception exception) {
+        updateGithubCommitStatus(exception.getMessage(), 'ERROR')
+        println exception.getMessage()
     } finally {
         sh "docker network rm ${networkId}"
     }
@@ -195,7 +193,6 @@ def runStage(Stage stageAction, Closure callback) {
         try {
             callback()
         } catch (Exception e) {
-            updateGithubCommitStatus(e.getMessage(), 'ERROR')
             throw new Exception(e.getMessage())
         }
     }
@@ -212,12 +209,15 @@ def getCommitSha() {
 }
 
 def updateGithubCommitStatus(String message, String state) {
-  // workaround https://issues.jenkins-ci.org/browse/JENKINS-38674
-  step([
-    $class: 'GitHubCommitStatusSetter',
-    reposSource: [$class: "ManuallyEnteredRepositorySource", url: repositoryUrl],
-    commitShaSource: [$class: "ManuallyEnteredShaSource", sha: commitHash],
-    errorHandlers: [[$class: 'ShallowAnyErrorHandler']],
-    statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
-  ])
-}
+        String commitHash = getCommitSha()
+        String repositoryUrl = getRepoURL()
+
+        // workaround https://issues.jenkins-ci.org/browse/JENKINS-38674
+        step([
+            $class: 'GitHubCommitStatusSetter',
+            reposSource: [$class: "ManuallyEnteredRepositorySource", url: repositoryUrl],
+            commitShaSource: [$class: "ManuallyEnteredShaSource", sha: commitHash],
+            errorHandlers: [[$class: 'ShallowAnyErrorHandler']],
+            statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
+        ])
+    }
