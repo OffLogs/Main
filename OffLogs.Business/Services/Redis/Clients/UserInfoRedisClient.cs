@@ -38,11 +38,6 @@ public class UserInfoRedisClient: IUserInfoRedisClient
             
             foreach (var user in users)
             {
-                if (user.Id > 100)
-                {
-                    var aaa = 123;
-                }
-
                 var activePackage = user.ActivePaymentPackageType;
                 var key = GetPaymentPackageKey(user.Id);
                 await _redisClient.SetValueAsync(

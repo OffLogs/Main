@@ -25,7 +25,7 @@
         <value>About the OffLogs project</value>
     </data>
     <data name="Main_Desc" xml:space="preserve">
-        <value>OffLogs is a service that allows you to aggregate debugging information (logs) in one place
+        <value>OffLogs is free Open Source service that allows you to aggregate debugging information (logs) in one place
 from your services or sites, it is convenient to view it, as well as receive operational statistics on this information.
 One of the important principles that we adhere to is safety.
 Therefore, most of the information stored on our servers in encrypted form, and only you have the opportunity to receive and view
@@ -94,7 +94,7 @@ for already reported and discussed bugs and feature requests.
     </data>
     <data name="Support_Desc_Email" xml:space="preserve">
         <value>
-If you have any questions please send us an email at **support@offlogs.com**
+If you have any questions please send us an email at **support@offlogs.com** or you can write your question in the [Discord](https://discord.gg/gQQEeK5RVB) Chat 
         </value> 
     </data>
     <data name="Menu_Login" xml:space="preserve">
