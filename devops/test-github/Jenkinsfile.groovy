@@ -175,11 +175,14 @@ def preconfigureAndStart(Closure<String> inner) {
     try {
         sh "docker network rm ${networkId}"
     } catch(Exception exception) {
-        updateGithubCommitStatus(exception.getMessage(), 'ERROR')
         println exception.getMessage()
     }
     try {
         sh "docker network create ${networkId}"
+        inner(networkId)
+    } catch(Exception exception) {
+        updateGithubCommitStatus(exception.getMessage(), 'ERROR')
+        println exception.getMessage()
     } finally {
         sh "docker network rm ${networkId}"
     }
