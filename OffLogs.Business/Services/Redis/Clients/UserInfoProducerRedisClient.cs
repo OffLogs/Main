@@ -10,14 +10,14 @@ using Queries.Abstractions;
 
 namespace OffLogs.Business.Services.Redis.Clients;
 
-public class UserInfoRedisClient: IUserInfoRedisClient
+public class UserInfoProducerRedisClient: IUserInfoProducerRedisClient
 {
     private readonly string _keyPattern = "offlogs_user_package_type_{0}";
     
     private readonly IRedisClient _redisClient;
     private readonly IAsyncQueryBuilder _queryBuilder;
 
-    public UserInfoRedisClient(
+    public UserInfoProducerRedisClient(
         IRedisClient redisClient,
         IAsyncQueryBuilder queryBuilder
     )
@@ -48,22 +48,6 @@ public class UserInfoRedisClient: IUserInfoRedisClient
         } while (users.Count > 0);
     }
     
-    public async Task<PaymentPackageType?> GetUsersPaymentPackageType(long userId)
-    {
-        var packageTypeString = await _redisClient.GetString(GetPaymentPackageKey(userId));
-        if (string.IsNullOrEmpty(packageTypeString))
-        {
-            return null;
-        }
-
-        if (Enum.TryParse<PaymentPackageType>(packageTypeString, out var parsedType))
-        {
-            return parsedType;
-        }
-
-        return null;
-    }
-
     private string GetPaymentPackageKey(long userId)
     {
         return string.Format(_keyPattern, userId);

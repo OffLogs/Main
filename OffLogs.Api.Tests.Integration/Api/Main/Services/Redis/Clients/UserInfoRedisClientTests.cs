@@ -10,12 +10,14 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Redis.Clients
     public class UserInfoRedisClientTests: MyApiIntegrationTest
     {
         private readonly UserEntity _user;
-        private readonly IUserInfoRedisClient _userInfoRedisClient;
+        private readonly IUserInfoProducerRedisClient _producer;
+        private readonly IUserInfoConsumerRedisClient _consumer;
 
         public UserInfoRedisClientTests(ApiCustomWebApplicationFactory factory) : base(factory)
         {
             _user = (DataSeeder.CreateActivatedUser().Result).Original;
-            _userInfoRedisClient = _factory.Services.GetRequiredService<IUserInfoRedisClient>();
+            _producer = _factory.Services.GetRequiredService<IUserInfoProducerRedisClient>();
+            _consumer = _factory.Services.GetRequiredService<IUserInfoConsumerRedisClient>();
             
             PaymentPackageService.ExtendOrChangePackage(_user, PaymentPackageType.Pro, 30).Wait();
             CommitDbChanges().Wait();
@@ -24,8 +26,8 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Redis.Clients
         [Fact]
         public async Task ShouldSeedAndReadPackageInfoFromRedis()
         {
-            await _userInfoRedisClient.SeedUsersPackages();
-            var actualPackage = await _userInfoRedisClient.GetUsersPaymentPackageType(_user.Id);
+            await _producer.SeedUsersPackages();
+            var actualPackage = await _consumer.GetUsersPaymentPackageType(_user.Id);
             
             Assert.Equal(PaymentPackageType.Pro, actualPackage);
         }

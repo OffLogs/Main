@@ -157,7 +157,7 @@ namespace OffLogs.Api.Tests.Integration.Api.Main.Services.Http
         {
             var userModel = (DataSeeder.CreateActivatedUser().Result);
             var user = userModel.Original;
-            var userInfoRedisClient = _factory.Services.GetRequiredService<IUserInfoRedisClient>();
+            var userInfoRedisClient = _factory.Services.GetRequiredService<IUserInfoProducerRedisClient>();
 
             if (expectedPackage != PaymentPackageType.Basic)
             {

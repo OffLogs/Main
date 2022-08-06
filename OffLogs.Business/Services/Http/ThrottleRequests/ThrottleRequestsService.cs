@@ -18,7 +18,7 @@ namespace OffLogs.Business.Services.Http.ThrottleRequests
     /// </summary>
     public class ThrottleRequestsService : IThrottleRequestsService
     {
-        private readonly IUserInfoRedisClient _userInfoRedisClient;
+        private readonly IUserInfoConsumerRedisClient _userInfoConsumerRedisClient;
         private ConcurrentBag<RequestItemModel> _items = new();
 
         private readonly TimeSpan _defaultCountingPeriod = TimeSpan.FromMinutes(1);
@@ -27,16 +27,16 @@ namespace OffLogs.Business.Services.Http.ThrottleRequests
         
         public ThrottleRequestsService(
             IConfiguration configuration,
-            IUserInfoRedisClient userInfoRedisClient
+            IUserInfoConsumerRedisClient userInfoConsumerRedisClient
         )
         {
-            _userInfoRedisClient = userInfoRedisClient;
+            _userInfoConsumerRedisClient = userInfoConsumerRedisClient;
             _isEnabled = configuration.GetValue<bool>("App:IsThrottleTooManyRequests", true);
         }
 
         public async Task<int> CheckOrThrowExceptionByApplicationIdAsync(long applicationId, long userId)
         {
-            var usersPackageType = await _userInfoRedisClient.GetUsersPaymentPackageType(userId);
+            var usersPackageType = await _userInfoConsumerRedisClient.GetUsersPaymentPackageType(userId);
             if (!usersPackageType.HasValue)
             {
                 usersPackageType = PaymentPackageType.Basic;

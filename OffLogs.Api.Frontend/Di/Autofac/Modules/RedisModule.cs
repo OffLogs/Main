@@ -1,8 +1,4 @@
-﻿using Api.Requests.Abstractions;
-using Autofac;
-using Microsoft.AspNetCore.Http;
-using OffLogs.Business.Services.Api;
-using OffLogs.Business.Services.Kafka;
+﻿using Autofac;
 using OffLogs.Business.Services.Redis;
 using OffLogs.Business.Services.Redis.Clients;
 
@@ -18,8 +14,8 @@ namespace OffLogs.Api.Frontend.Di.Autofac.Modules
                 .SingleInstance();            
             
             builder
-                .RegisterType<UserInfoRedisClient>()
-                .As<IUserInfoRedisClient>()
+                .RegisterType<UserInfoConsumerRedisClient>()
+                .As<IUserInfoConsumerRedisClient>()
                 .InstancePerLifetimeScope();
         }
     }
