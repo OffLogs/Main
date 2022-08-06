@@ -41,17 +41,17 @@ node('testing-node') {
         'Hibernate__IsShowSql': "false"
     ]
 
-    runStage(Stage.UPDATE_GIT_STATUS) {
-        updateGithubCommitStatus('Set PENDING status', 'PENDING')
+    runStage(Stage.UPDATE_GIT_STATUS, repositoryUrl, commitHash) {
+        updateGithubCommitStatus('Set PENDING status', 'PENDING', repositoryUrl, commitHash)
     }
 
     preconfigureAndStart(({ networkId ->
-        runStage(Stage.CLEAN) {
+        runStage(Stage.CLEAN, repositoryUrl, commitHash) {
             // Clean before build
             cleanWs()
         }
     
-        runStage(Stage.CHECKOUT) {
+        runStage(Stage.CHECKOUT, repositoryUrl, commitHash) {
             sh """
                 git config --global http.postBuffer 2048M
                 git config --global http.maxRequestBuffer 1024M
@@ -64,7 +64,7 @@ node('testing-node') {
         String containerEnvVarString = mapToEnvVars(containerEnvVars)
         testImage.inside(containerEnvVarString.concat(" --network=$networkId")) {
 
-            runStage(Stage.BUILD) {
+            runStage(Stage.BUILD, repositoryUrl, commitHash) {
                 sh 'echo "{}" > appsettings.Local.json'
                 sh 'echo "{}" > OffLogs.Api.Tests.Integration/appsettings.Local.json'
                 sh 'echo "{}" > OffLogs.Migrations/appsettings.Local.json'
@@ -72,25 +72,25 @@ node('testing-node') {
                 sh 'dotnet build --'
             }
 
-            runStage(Stage.ASSIGN_PERMISSIONS) {
+            runStage(Stage.ASSIGN_PERMISSIONS, repositoryUrl, commitHash) {
                 sh 'chmod -R 700 $KAFKA_HOME'
                 sh 'chmod -R 700 ./devops/common/kafka/boot.sh'
                 sh 'chmod -R 770 ./devops/common/zookeeper/boot.sh'
             }
 
-            runStage(Stage.INIT_ZOOKEEPER) {
+            runStage(Stage.INIT_ZOOKEEPER, repositoryUrl, commitHash) {
                 sh './devops/common/zookeeper/boot.sh &'
                 sh 'until nc -z localhost 2181; do sleep 1; done'
                 echo "Zookeeper is started"
             }
 
-            runStage(Stage.INIT_KAFKA) {
+            runStage(Stage.INIT_KAFKA, repositoryUrl, commitHash) {
                 sh './devops/common/kafka/boot.sh &'
                 sh 'until nc -z localhost 9094; do sleep 1; done'
                 echo "Kafka is started"
             }
 
-            runStage(Stage.INIT_DB) {
+            runStage(Stage.INIT_DB, repositoryUrl, commitHash) {
                 sh 'pg_ctlcluster 12 main start'
                 sh 'pg_isready'
                 sh "sudo -u postgres psql -c \"ALTER USER postgres PASSWORD '$postresUserPassword';\""
@@ -98,7 +98,7 @@ node('testing-node') {
                 echo 'Postgre SQL is started'
             }
 
-            runStage(Stage.INIT_REDIS) {
+            runStage(Stage.INIT_REDIS, repositoryUrl, commitHash) {
                 sh '/usr/bin/redis-server &'
                 sh 'until nc -z localhost 6379; do sleep 1; done'
                 echo "Redis is started"
@@ -106,38 +106,27 @@ node('testing-node') {
                 sh 'netstat -tulpn | grep LISTEN'
             }
 
-            runStage(Stage.RUN_MIGRATIONS) {
+            runStage(Stage.RUN_MIGRATIONS, repositoryUrl, commitHash) {
                 sh 'dotnet run --no-restore --no-build --project ./OffLogs.Migrations'
             }
 
-            runStage(Stage.RUN_API_UNIT_TESTS) {
+            runStage(Stage.RUN_API_UNIT_TESTS, repositoryUrl, commitHash) {
                 sh 'dotnet test --logger trx --verbosity=normal --results-directory /tmp/test ./OffLogs.Api.Tests.Unit'
             }
             
-            runStage(Stage.RUN_BUSINESS_LOGIC_UNIT_TESTS) {
+            runStage(Stage.RUN_BUSINESS_LOGIC_UNIT_TESTS, repositoryUrl, commitHash) {
                 sh 'dotnet test --logger trx --verbosity=normal --results-directory /tmp/test ./OffLogs.Business.Common.Tests.Unit'
             }
                         
-            runStage(Stage.RUN_INTEGRATION_TESTS) {
+            runStage(Stage.RUN_INTEGRATION_TESTS, repositoryUrl, commitHash) {
                 sh 'dotnet test --logger trx --verbosity=normal --results-directory /tmp/test ./OffLogs.Api.Tests.Integration'
             }
 
-            runStage(Stage.UPDATE_GIT_STATUS) {
-                updateGithubCommitStatus('Set SUCCESS status', 'SUCCESS')
+            runStage(Stage.UPDATE_GIT_STATUS, repositoryUrl, commitHash) {
+                updateGithubCommitStatus('Set SUCCESS status', 'SUCCESS', repositoryUrl, commitHash)
             }
         }
     } as Closure<String>))
-
-    def updateGithubCommitStatus(String message, String state) {
-        // workaround https://issues.jenkins-ci.org/browse/JENKINS-38674
-        step([
-            $class: 'GitHubCommitStatusSetter',
-            reposSource: [$class: "ManuallyEnteredRepositorySource", url: repositoryUrl],
-            commitShaSource: [$class: "ManuallyEnteredShaSource", sha: commitHash],
-            errorHandlers: [[$class: 'ShallowAnyErrorHandler']],
-            statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
-        ])
-    }
 }
 
 enum Stage {
@@ -201,12 +190,12 @@ def preconfigureAndStart(Closure<String> inner) {
     }
 }
 
-def runStage(Stage stageAction, Closure callback) {
+def runStage(Stage stageAction, Closure callback, String repositoryUrl, String commitHash) {
     stage(stageAction.toString()) {
         try {
             callback()
         } catch (Exception e) {
-            updateGithubCommitStatus(e.getMessage(), 'ERROR')
+            updateGithubCommitStatus(e.getMessage(), 'ERROR', repositoryUrl, commitHash)
             throw new Exception(e.getMessage())
         }
     }
@@ -221,3 +210,14 @@ def getCommitSha() {
   sh "git rev-parse HEAD > .git/current-commit"
   return readFile(".git/current-commit").trim()
 }
+
+def updateGithubCommitStatus(String message, String state, String repositoryUrl, String commitHash) {
+        // workaround https://issues.jenkins-ci.org/browse/JENKINS-38674
+        step([
+            $class: 'GitHubCommitStatusSetter',
+            reposSource: [$class: "ManuallyEnteredRepositorySource", url: repositoryUrl],
+            commitShaSource: [$class: "ManuallyEnteredShaSource", sha: commitHash],
+            errorHandlers: [[$class: 'ShallowAnyErrorHandler']],
+            statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
+        ])
+    }
