@@ -65,7 +65,7 @@ namespace OffLogs.Business.Helpers
                     EnableSsl = configuration.GetValue<bool>("Smtp:EnableSsl"),
                     Port = configuration.GetValue<int>("Smtp:Port")
                 };
-                logBuilder.WriteTo.Email(connectionInfo, restrictedToMinimumLevel: LogEventLevel.Verbose);
+                logBuilder.WriteTo.Email(connectionInfo, restrictedToMinimumLevel: LogEventLevel.Error);
             }
             
             return logBuilder.CreateLogger();
