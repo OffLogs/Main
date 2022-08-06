@@ -127,6 +127,17 @@ node('testing-node') {
             }
         }
     } as Closure<String>))
+
+    def updateGithubCommitStatus(String message, String state) {
+        // workaround https://issues.jenkins-ci.org/browse/JENKINS-38674
+        step([
+            $class: 'GitHubCommitStatusSetter',
+            reposSource: [$class: "ManuallyEnteredRepositorySource", url: repositoryUrl],
+            commitShaSource: [$class: "ManuallyEnteredShaSource", sha: commitHash],
+            errorHandlers: [[$class: 'ShallowAnyErrorHandler']],
+            statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
+        ])
+    }
 }
 
 enum Stage {
@@ -209,15 +220,4 @@ def getRepoURL() {
 def getCommitSha() {
   sh "git rev-parse HEAD > .git/current-commit"
   return readFile(".git/current-commit").trim()
-}
-
-def updateGithubCommitStatus(String message, String state) {
-  // workaround https://issues.jenkins-ci.org/browse/JENKINS-38674
-  step([
-    $class: 'GitHubCommitStatusSetter',
-    reposSource: [$class: "ManuallyEnteredRepositorySource", url: repositoryUrl],
-    commitShaSource: [$class: "ManuallyEnteredShaSource", sha: commitHash],
-    errorHandlers: [[$class: 'ShallowAnyErrorHandler']],
-    statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
-  ])
 }
