@@ -56,6 +56,9 @@ node('lampego-web-1') {
         envVariables.put('Serilog__IsSendEmailIfError', 'true')
         envVariables.put('Serilog__MinimumLevel__Default', 'Debug')
 
+        // Redis
+        envVariables.put('Redis__Server', '10.10.0.2:6379')
+
         // Kafka
         envVariables.put('Kafka__Servers', '10.10.0.2:29092,10.10.0.2:29093')
         envVariables.put('Kafka__ProducerId', 'offlogs-reducer')
