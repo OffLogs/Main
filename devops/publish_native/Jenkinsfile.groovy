@@ -53,7 +53,7 @@ node('lampego-web-1') {
     }
 
     stage('Set environment vars') {    
-        envVariables.put('Serilog__IsSendEmailIfError', 'true')
+        envVariables.put('Serilog__IsSendEmailIfError', 'false')
         envVariables.put('Serilog__MinimumLevel__Default', 'Debug')
 
         // Redis
