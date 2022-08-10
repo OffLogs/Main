@@ -51,21 +51,21 @@ namespace OffLogs.Business.Helpers
             var isSendEmailIfError = configuration.GetValue<bool>("Serilog:IsSendEmailIfError", false);
             if (isSendEmailIfError)
             {
-                var connectionInfo = new EmailConnectionInfo()
-                {
-                    FromEmail = configuration.GetValue<string>("Smtp:From:Email"),
-                    ToEmail = configuration.GetValue<string>("App:Email:Notification"),
-                    MailServer = configuration.GetValue<string>("Smtp:Server"),
-                    NetworkCredentials = new NetworkCredential(
-                        configuration.GetValue<string>("Smtp:UserName"),
-                        configuration.GetValue<string>("Smtp:Password")
-                    ),
-                    EmailSubject =
-                        "OffLogs System Error: {Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}",
-                    EnableSsl = configuration.GetValue<bool>("Smtp:EnableSsl"),
-                    Port = configuration.GetValue<int>("Smtp:Port")
-                };
-                logBuilder.WriteTo.Email(connectionInfo, restrictedToMinimumLevel: LogEventLevel.Error);
+                // var connectionInfo = new EmailConnectionInfo()
+                // {
+                //     FromEmail = configuration.GetValue<string>("Smtp:From:Email"),
+                //     ToEmail = configuration.GetValue<string>("App:Email:Notification"),
+                //     MailServer = configuration.GetValue<string>("Smtp:Server"),
+                //     NetworkCredentials = new NetworkCredential(
+                //         configuration.GetValue<string>("Smtp:UserName"),
+                //         configuration.GetValue<string>("Smtp:Password")
+                //     ),
+                //     EmailSubject =
+                //         "OffLogs System Error: {Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}",
+                //     EnableSsl = configuration.GetValue<bool>("Smtp:EnableSsl"),
+                //     Port = configuration.GetValue<int>("Smtp:Port")
+                // };
+                // logBuilder.WriteTo.Email(connectionInfo, restrictedToMinimumLevel: LogEventLevel.Error);
             }
             
             return logBuilder.CreateLogger();
