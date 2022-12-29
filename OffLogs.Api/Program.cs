@@ -24,7 +24,6 @@ namespace OffLogs.Api
 
             try
             {
-                Log.Logger.Error("Testttt aaa");
                 CreateHostBuilder(args).Build().Run();
             }
             catch (Exception e)
