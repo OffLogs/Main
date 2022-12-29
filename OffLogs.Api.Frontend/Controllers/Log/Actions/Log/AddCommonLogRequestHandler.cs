@@ -33,7 +33,7 @@ namespace OffLogs.Api.Frontend.Controllers.Log.Actions.Log
 
         public async Task ExecuteAsync(AddCommonLogsRequest request)
         {
-            await _throttleRequestsService.CheckOrThrowExceptionByApplicationIdAsync(
+             await _throttleRequestsService.CheckOrThrowExceptionByApplicationIdAsync(
                 _requestService.GetApplicationIdFromJwt(),
                 _requestService.GetUserIdFromJwt()
             );

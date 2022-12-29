@@ -36,8 +36,8 @@ public class FetchLogEffect: Effect<FetchLogAction>
     {
         try
         {
-            var response = await _apiService.GetLogAsync(pageAction.LogId, _authState.Value.PrivateKeyBase64);
-            dispatcher.Dispatch(new AddLogDetailsAction(response));
+            // var response = await _apiService.GetLogAsync(pageAction.LogId, _authState.Value.PrivateKeyBase64);
+            // dispatcher.Dispatch(new AddLogDetailsAction(response));
         }
         catch (Exception e)
         {
